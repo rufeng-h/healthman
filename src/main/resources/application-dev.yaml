@@ -1,0 +1,8 @@
+logging:
+  level:
+    web: DEBUG
+    com.rufeng.healthman: DEBUG
+    sql: DEBUG
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

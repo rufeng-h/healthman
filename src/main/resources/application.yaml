@@ -1,0 +1,27 @@
+server:
+  port: 8000
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/vuemall?serverTimezone=Asia/Shanghai
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:SS
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-request-size: 1000MB
+      max-file-size: 1000MB
+      resolve-lazily: true
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    use-generated-keys: true
+    jdbc-type-for-null: null
+    local-cache-scope: statement
+  mapper-locations: classpath:/mapper/**/*.xml
