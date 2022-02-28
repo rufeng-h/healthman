@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
  * @author rufeng
  * @time 2022-02-24 10:09
  * @package com.rufeng.healthman.config
- * @description TODO
+ * @description Api文档配置
  */
 @Profile("dev")
 @Configuration

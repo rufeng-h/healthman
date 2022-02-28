@@ -11,5 +11,3 @@ springdoc:
     enabled: true
     path: /docs
   packages-to-scan: com.rufeng.healthman.controller
-#  show-actuator: true
-#  use-management-port: true

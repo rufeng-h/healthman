@@ -3,6 +3,7 @@ package com.rufeng.healthman.controller.test;
 import com.rufeng.healthman.common.ApiPage;
 import com.rufeng.healthman.common.ApiResponse;
 import com.rufeng.healthman.domain.User;
+import com.rufeng.healthman.exceptions.test.TestException;
 import com.rufeng.healthman.service.test.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,5 +47,11 @@ public class TestController {
             @Parameter(description = "当前页数") @RequestParam(defaultValue = "1") @Range(min = 1) Integer pageNum,
             @Parameter(description = "每页条数") @RequestParam(defaultValue = "5") Integer pageSize) {
         return ApiResponse.success(testService.selectPage(pageNum, pageSize));
+    }
+
+    @GetMapping("/error")
+    @Operation(description = "测试异常处理")
+    public ApiResponse<Void> testError() {
+        throw new TestException("测试异常");
     }
 }
