@@ -12,14 +12,21 @@ import java.util.Map;
  * @author rufeng
  * @time 2022-01-10 15:30
  * @package com.rufeng.healthman.mapper.test
- * @description TODO
+ * @description 测试
  */
 
 @Mapper
 public interface TestMapper {
+    /**
+     * 接口测试
+     * @return .
+     */
     @Select("select * from sp_user")
     List<Map<String, Object>> getAll();
 
-    @Select("select * from sp_user")
+    /**
+     * 接口测试
+     * @return .
+     */
     Page<User> selectPage();
 }

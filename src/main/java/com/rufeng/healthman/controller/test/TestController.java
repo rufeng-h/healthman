@@ -43,8 +43,8 @@ public class TestController {
     @GetMapping("/page")
     @Operation(description = "分页查询", summary = "分页")
     public ApiResponse<ApiPage<User>> testPage(
-            @Parameter(description = "每页条数") @RequestParam(defaultValue = "1") @Range(min = 1) Integer pageNum,
-            @Parameter(description = "当前页数") @RequestParam(defaultValue = "5") Integer pageSize) {
+            @Parameter(description = "当前页数") @RequestParam(defaultValue = "1") @Range(min = 1) Integer pageNum,
+            @Parameter(description = "每页条数") @RequestParam(defaultValue = "5") Integer pageSize) {
         return ApiResponse.success(testService.selectPage(pageNum, pageSize));
     }
 }
