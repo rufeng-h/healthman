@@ -10,12 +10,12 @@ import java.io.Serializable;
  */
 public class ApiResponse<T> implements Serializable {
     private final Long code;
-    private final T result;
+    private final T data;
     private final String message;
 
-    private ApiResponse(Long code, String message, T result) {
+    private ApiResponse(Long code, String message, T data) {
         this.code = code;
-        this.result = result;
+        this.data = data;
         this.message = message;
     }
 
@@ -63,8 +63,17 @@ public class ApiResponse<T> implements Serializable {
         return ApiResponse.failed(ApiCode.FORBBIDEN.getCode(), message, null);
     }
 
+    public static <T> ApiResponse<T> unAuthorized() {
+        return unAuthorized(ApiCode.FORBBIDEN.getMessage());
+    }
+
+
     public static <T> ApiResponse<T> authenticationFailed(String message) {
         return ApiResponse.failed(ApiCode.AUTHENTICATE_FAILED.getCode(), message, null);
+    }
+
+    public static <T> ApiResponse<T> authenticationFailed() {
+        return authenticationFailed(ApiCode.AUTHENTICATE_FAILED.getMessage());
     }
 
     public static <T> ApiResponse<T> validateFailed(String message) {
@@ -85,8 +94,8 @@ public class ApiResponse<T> implements Serializable {
     }
 
 
-    public T getResult() {
-        return result;
+    public T getData() {
+        return data;
     }
 
 }
