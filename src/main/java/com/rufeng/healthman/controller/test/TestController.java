@@ -2,18 +2,19 @@ package com.rufeng.healthman.controller.test;
 
 import com.rufeng.healthman.common.ApiPage;
 import com.rufeng.healthman.common.ApiResponse;
+import com.rufeng.healthman.common.JwtTokenUtil;
 import com.rufeng.healthman.domain.User;
+import com.rufeng.healthman.exceptions.test.TestException;
 import com.rufeng.healthman.service.test.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +35,9 @@ public class TestController {
         this.testService = testService;
     }
 
-    @Operation()
-    @GetMapping("/all")
+    @Operation(description = "所有用户")
+    @SecurityRequirement(name = "JWT")
+    @GetMapping("/api/all")
     public List<Map<String, Object>> getAll() {
         return testService.getAll();
     }
@@ -47,4 +49,16 @@ public class TestController {
             @Parameter(description = "每页条数") @RequestParam(defaultValue = "5") Integer pageSize) {
         return ApiResponse.success(testService.selectPage(pageNum, pageSize));
     }
+
+    @GetMapping("/error")
+    @Operation(description = "测试异常处理")
+    public ApiResponse<Void> testError() {
+        throw new TestException("测试异常");
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<Map<String, String>> login(@RequestBody User user) {
+        return ApiResponse.success(Collections.singletonMap("token", JwtTokenUtil.generateToken(user)));
+    }
+
 }
