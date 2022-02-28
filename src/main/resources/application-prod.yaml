@@ -1,0 +1,9 @@
+server:
+  port: 8888
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+  show-actuator: false
