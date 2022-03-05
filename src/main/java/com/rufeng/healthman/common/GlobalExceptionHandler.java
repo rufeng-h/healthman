@@ -1,9 +1,8 @@
 package com.rufeng.healthman.common;
 
 import com.rufeng.healthman.exceptions.test.TestException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @author rufeng
@@ -11,11 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @package com.rufeng.healthman.common
  * @description 全局异常处理
  */
-@ControllerAdvice
-@ResponseBody
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(TestException.class)
     public ApiResponse<Void> testError(TestException exception) {
-        return ApiResponse.failed(exception.getMessage());
+        return ApiResponse.serverError(exception.getMessage());
     }
 }
