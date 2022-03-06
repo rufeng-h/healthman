@@ -120,7 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             response.setContentType(MediaType.APPLICATION_JSON.toString());
             logger.debug(authException.getMessage());
             response.getWriter().println(objectMapper.writeValueAsString(
-                    ApiResponse.authenticationFailed()));
+                    ApiResponse.authenticateFailed()));
             response.getWriter().flush();
         }
     }
