@@ -1,6 +1,5 @@
 package com.rufeng.healthman.common;
 
-import com.rufeng.healthman.exceptions.test.TestException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -12,8 +11,4 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(TestException.class)
-    public ApiResponse<Void> testError(TestException exception) {
-        return ApiResponse.serverError(exception.getMessage());
-    }
 }

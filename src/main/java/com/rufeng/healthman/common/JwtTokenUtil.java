@@ -1,6 +1,5 @@
 package com.rufeng.healthman.common;
 
-import com.rufeng.healthman.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,9 +18,9 @@ public class JwtTokenUtil {
     private static final SecretKey KEY = Keys.hmacShaKeyFor(
             Decoders.BASE64.decode("SyI/8w+X528KqE2S8JKU8Sv1Bb+coixCZrU/fYYKDqc="));
 
-    public static String generateToken(User user) {
-        return Jwts.builder().setSubject(user.getUsername())
-                .setId(String.valueOf(user.getId()))
+    public static String generateToken(String username, Number id) {
+        return Jwts.builder().setSubject(username)
+                .setId(String.valueOf(id))
                 .signWith(KEY)
                 .compact();
     }
