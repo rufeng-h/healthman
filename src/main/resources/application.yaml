@@ -20,5 +20,6 @@ mybatis:
     jdbc-type-for-null: null
     local-cache-scope: statement
   mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.rufeng.healthman.domain
 
 

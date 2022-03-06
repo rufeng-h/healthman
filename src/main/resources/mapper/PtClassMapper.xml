@@ -1,0 +1,28 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rufeng.healthman.mapper.PtClassMapper">
+    <select id="pagePtClass" parameterType="PtClass" resultType="PtClass">
+        select id,
+        code,
+        name,
+        college_id,
+        major_code,
+        college_name,
+        major_name,
+        grade,
+        created_time,
+        last_modify_time
+        from pt_class
+        <where>
+            deleted = '0'
+            <if test="ptClass.collegeName != null and ptClass.collegeName != ''">
+                and college_name like concat('%', #{ptClass.collegeName}, '%')
+            </if>
+            <if test="ptClass.grade != null">
+                and grade = #{ptClass.grade}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,9 +1,10 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.ApiResponse;
+import com.rufeng.healthman.common.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -18,9 +19,9 @@ import java.util.Map;
  */
 @RestController
 @Validated
-@RequestMapping("/api")
+@Tag(name = "common", description = "common")
 public class CommonController {
-    @GetMapping("/getUserInfo")
+    @GetMapping("/api/getUserInfo")
     public ApiResponse<Map<String, Object>> getUserInfo() {
         HashMap<String, Object> map = new HashMap<>(10);
         HashMap<String, String> roleMap = new HashMap<>(2);
@@ -35,8 +36,14 @@ public class CommonController {
         return ApiResponse.success(map);
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/api/logout")
     public ApiResponse<Void> logout() {
         return ApiResponse.success();
+    }
+
+    @GetMapping("/login")
+    public ApiResponse<Map<String, String>> login() {
+        String token = JwtTokenUtil.generateToken("vben", 123456);
+        return ApiResponse.success(Collections.singletonMap("token", token));
     }
 }
