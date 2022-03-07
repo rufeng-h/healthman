@@ -20,6 +20,7 @@ import static com.rufeng.healthman.config.SecurityConfig.JWT_HEADER_NAME;
 @Profile("dev")
 @Configuration
 public class OpenApiConfig {
+    public static final String JWT_SCHEME_NAME = "JWT";
 
     @Bean
     public OpenAPI openApi() {
@@ -29,7 +30,7 @@ public class OpenApiConfig {
                         .description("兴趣所至")
                         .title("体质健康系统")
                         .license(new License().url("https://opensource.org/licenses/MIT")).version("v1.0"))
-                .schemaRequirement("JWT", new SecurityScheme()
+                .schemaRequirement(JWT_SCHEME_NAME, new SecurityScheme()
                         .scheme("bearer")
                         .in(SecurityScheme.In.HEADER)
                         .type(SecurityScheme.Type.APIKEY)

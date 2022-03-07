@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
+
 /**
  * @author rufeng
  * @time 2022-03-06 22:17
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 @RequestMapping("/api/class")
-@SecurityRequirement(name = "JWT")
+@SecurityRequirement(name = JWT_SCHEME_NAME)
 @Tag(name = "PtClass Operation", description = "PtClass")
 public class PtClassController {
     private final PtClassService ptClassService;
@@ -29,12 +31,12 @@ public class PtClassController {
 
     @PostMapping("/list")
     public ApiResponse<ApiPage<PtClass>> list(
-            @RequestParam(defaultValue = "1") Integer current,
+            @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestBody(required = false) PtClass ptClass) {
         if (ptClass == null) {
             ptClass = new PtClass();
         }
-        return ApiResponse.success(ptClassService.pagePtClass(current, pageSize, ptClass));
+        return ApiResponse.success(ptClassService.pagePtClass(page, pageSize, ptClass));
     }
 }

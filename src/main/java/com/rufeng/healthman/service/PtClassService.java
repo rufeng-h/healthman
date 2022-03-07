@@ -21,8 +21,8 @@ public class PtClassService {
         this.ptClassMapper = ptClassMapper;
     }
 
-    public ApiPage<PtClass> pagePtClass(Integer current, Integer pageSize, @NonNull PtClass ptClass) {
-        PageHelper.startPage(current, pageSize);
+    public ApiPage<PtClass> pagePtClass(Integer page, Integer pageSize, @NonNull PtClass ptClass) {
+        PageHelper.startPage(page, pageSize);
         return ApiPage.convert(ptClassMapper.pagePtClass(ptClass));
     }
 }

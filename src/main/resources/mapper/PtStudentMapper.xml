@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rufeng.healthman.mapper.PtStudentMapper">
+    <select id="getPtStudentByNo" resultType="PtStudent">
+        select number,
+               name,
+               birthday,
+               gender,
+               password,
+               avatar,
+               college_id,
+               major_code,
+               class_code,
+               created_time,
+               last_modify_time,
+               last_login_time
+        from pt_student
+        where number = #{number}
+          and deleted = '0'
+    </select>
+</mapper>
