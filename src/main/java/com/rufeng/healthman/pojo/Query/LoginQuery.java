@@ -21,5 +21,5 @@ public class LoginQuery {
     @NotEmpty
     private String password;
     @NotNull
-    private UserTypeEnum userTypeEnum;
+    private UserTypeEnum userType;
 }

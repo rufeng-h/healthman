@@ -52,7 +52,7 @@ public class PtUserServiceImpl implements PtUserService {
 
     @Override
     public LoginResult login(LoginQuery loginQuery) {
-        UserTypeEnum userTypeEnum = loginQuery.getUserTypeEnum();
+        UserTypeEnum userTypeEnum = loginQuery.getUserType();
         if (userTypeEnum == UserTypeEnum.ADMIN) {
             return doLogin(loginQuery);
         } else if (userTypeEnum == UserTypeEnum.STUDENT) {

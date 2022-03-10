@@ -7,29 +7,49 @@ package com.rufeng.healthman.service;
  * @description .
  */
 public interface RedisService {
+    /**
+     * .
+     *
+     * @param key key
+     * @return bool
+     */
     boolean hasKey(String key);
+
     /**
      * 获取对象
+     *
+     * @param key          the key
+     * @param requeiedType 目标对象类型
+     * @return 目标对象
      */
     <T> T getObject(Object key, Class<T> requeiedType);
 
     /**
      * 存储对象
+     *
+     * @param key   k
+     * @param value v
      */
     void setObject(Object key, Object value);
 
     /**
-     * 存储数据
+     * 存储字符串
+     *
+     * @param key   k
+     * @param value v
      */
     void set(String key, String value);
 
     /**
-     * 获取数据
+     * 获取字符串
      */
     String get(String key);
 
     /**
-     * 设置超期时间
+     * 设置超期时间，毫秒
+     *
+     * @param key    k
+     * @param expire 过期时间，毫秒
      */
     void expire(String key, long expire);
 

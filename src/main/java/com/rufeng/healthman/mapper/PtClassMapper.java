@@ -1,25 +1,27 @@
 package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
-import com.rufeng.healthman.domain.PtClass;
+import com.rufeng.healthman.pojo.DO.PtClass;
+import com.rufeng.healthman.pojo.Query.PtClassQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.NonNull;
 
 /**
  * @author rufeng
- * @time 2022-03-06 22:03
- * @package com.rufeng.healthman.mapper
- * @description 班级
+ * @description 针对表【pt_class(班级表)】的数据库操作Mapper
  */
 @Mapper
 public interface PtClassMapper {
     /**
-     * .
+     * 分页
      *
-     * @param ptClass 条件
-     * @return list
+     * @param query 查询参数 不为null
+     * @return page
      */
-    @NonNull
-    Page<PtClass> pagePtClass(@NonNull @Param("ptClass") PtClass ptClass);
+    Page<PtClass> pageClass(@Param("query") @NonNull PtClassQuery query);
 }
+
+
+
+
