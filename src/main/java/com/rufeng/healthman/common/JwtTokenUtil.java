@@ -18,11 +18,15 @@ public class JwtTokenUtil {
     private static final SecretKey KEY = Keys.hmacShaKeyFor(
             Decoders.BASE64.decode("SyI/8w+X528KqE2S8JKU8Sv1Bb+coixCZrU/fYYKDqc="));
 
-    public static String generateToken(String username, Number id) {
+    public static String generateToken(String username, Long id) {
         return Jwts.builder().setSubject(username)
                 .setId(String.valueOf(id))
                 .signWith(KEY)
                 .compact();
+    }
+
+    public static Long getId(String token) {
+        return Long.parseLong(getClaimsBody(token).getId());
     }
 
     public static String getSubject(String token) {

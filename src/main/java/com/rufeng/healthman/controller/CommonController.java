@@ -1,10 +1,14 @@
 package com.rufeng.healthman.controller;
 
-import com.rufeng.healthman.common.ApiResponse;
-import com.rufeng.healthman.common.JwtTokenUtil;
+import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.BO.LoginResult;
+import com.rufeng.healthman.pojo.Query.LoginQuery;
+import com.rufeng.healthman.service.PtUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -21,6 +25,12 @@ import java.util.Map;
 @Validated
 @Tag(name = "common", description = "common")
 public class CommonController {
+    private final PtUserService userService;
+
+    public CommonController(PtUserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/api/getUserInfo")
     public ApiResponse<Map<String, Object>> getUserInfo() {
         HashMap<String, Object> map = new HashMap<>(10);
@@ -41,9 +51,9 @@ public class CommonController {
         return ApiResponse.success();
     }
 
-    @GetMapping("/login")
-    public ApiResponse<Map<String, String>> login() {
-        String token = JwtTokenUtil.generateToken("vben", 123456);
-        return ApiResponse.success(Collections.singletonMap("token", token));
+    @PostMapping("/login")
+    public ApiResponse<LoginResult> login(
+            @RequestBody @Validated LoginQuery loginQuery) {
+        return ApiResponse.success(userService.login(loginQuery));
     }
 }

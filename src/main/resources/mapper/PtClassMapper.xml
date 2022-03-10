@@ -1,28 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.rufeng.healthman.mapper.PtClassMapper">
-    <select id="pagePtClass" parameterType="PtClass" resultType="PtClass">
-        select id,
-        code,
-        name,
-        college_id,
-        major_code,
-        college_name,
-        major_name,
-        grade,
-        created_time,
+
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtClass">
+        <id property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="collegeId" column="college_id" jdbcType="BIGINT"/>
+        <result property="majorCode" column="major_code" jdbcType="VARCHAR"/>
+        <result property="collegeName" column="college_name" jdbcType="VARCHAR"/>
+        <result property="majorName" column="major_name" jdbcType="VARCHAR"/>
+        <result property="grade" column="grade" jdbcType="INTEGER"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        code,name,
+        college_id,major_code,college_name,
+        major_name,grade,created_time,
         last_modify_time
-        from pt_class
+    </sql>
+
+    <sql id="Query_Code">
+        <if test="query.code != null">
+            AND code = #{query.code}
+        </if>
+    </sql>
+
+    <sql id="Query_name">
+        <if test="query.name != null">
+            AND name like concat('%', #{query.name}, '%')
+        </if>
+    </sql>
+
+    <sql id="Query_grade">
+        <if test="query.grade != null">
+            AND grade = #{query.grade}
+        </if>
+    </sql>
+
+    <select id="pageClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_class
         <where>
-            deleted = '0'
-            <if test="ptClass.collegeName != null and ptClass.collegeName != ''">
-                and college_name like concat('%', #{ptClass.collegeName}, '%')
-            </if>
-            <if test="ptClass.grade != null">
-                and grade = #{ptClass.grade}
-            </if>
+            <include refid="Query_Code"/>
+            <include refid="Query_name"/>
+            <include refid="Query_grade"/>
         </where>
     </select>
 </mapper>

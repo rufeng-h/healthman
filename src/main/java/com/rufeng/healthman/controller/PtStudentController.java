@@ -1,7 +1,7 @@
 package com.rufeng.healthman.controller;
 
-import com.rufeng.healthman.common.ApiResponse;
-import com.rufeng.healthman.domain.PtStudent;
+import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.DO.PtStudent;
 import com.rufeng.healthman.service.PtStudentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +31,6 @@ public class PtStudentController {
 
     @GetMapping("/{number}")
     public ApiResponse<PtStudent> getPtStuByNo(@PathVariable Long number) {
-        return ApiResponse.success(ptStudentService.getPtStudentByNo(number));
+        return ApiResponse.success(ptStudentService.getStudent(number));
     }
 }

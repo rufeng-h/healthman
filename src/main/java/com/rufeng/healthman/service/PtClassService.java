@@ -1,28 +1,23 @@
 package com.rufeng.healthman.service;
 
-import com.github.pagehelper.PageHelper;
-import com.rufeng.healthman.common.ApiPage;
-import com.rufeng.healthman.domain.PtClass;
-import com.rufeng.healthman.mapper.PtClassMapper;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Service;
+import com.rufeng.healthman.common.api.ApiPage;
+import com.rufeng.healthman.pojo.DO.PtClass;
+import com.rufeng.healthman.pojo.Query.PtClassQuery;
 
 /**
  * @author rufeng
- * @time 2022-03-06 22:15
+ * @time 2022-03-09 22:09
  * @package com.rufeng.healthman.service
- * @description 班级
+ * @description .
  */
-@Service
-public class PtClassService {
-    private final PtClassMapper ptClassMapper;
-
-    public PtClassService(PtClassMapper ptClassMapper) {
-        this.ptClassMapper = ptClassMapper;
-    }
-
-    public ApiPage<PtClass> pagePtClass(Integer page, Integer pageSize, @NonNull PtClass ptClass) {
-        PageHelper.startPage(page, pageSize);
-        return ApiPage.convert(ptClassMapper.pagePtClass(ptClass));
-    }
+public interface PtClassService {
+    /**
+     * 分页
+     *
+     * @param page     当前页
+     * @param pageSize 每页条数
+     * @param ptClassQuery  查询条件
+     * @return page
+     */
+    ApiPage<PtClass> pageClass(Integer page, Integer pageSize, PtClassQuery ptClassQuery);
 }

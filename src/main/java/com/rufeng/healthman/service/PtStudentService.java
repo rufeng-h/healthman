@@ -1,29 +1,29 @@
 package com.rufeng.healthman.service;
 
-import com.rufeng.healthman.domain.PtStudent;
-import com.rufeng.healthman.mapper.PtStudentMapper;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import com.rufeng.healthman.pojo.BO.LoginResult;
+import com.rufeng.healthman.pojo.DO.PtStudent;
+import com.rufeng.healthman.pojo.Query.LoginQuery;
 
 /**
  * @author rufeng
- * @time 2022-03-07 16:10
+ * @time 2022-03-09 22:09
  * @package com.rufeng.healthman.service
- * @description stu service
+ * @description .
  */
-@Service
-public class PtStudentService {
-    private final PtStudentMapper ptStudentMapper;
+public interface PtStudentService {
+    /**
+     * 主键查询
+     *
+     * @param number 学号
+     * @return stu
+     */
+    PtStudent getStudent(Long number);
 
-    public PtStudentService(PtStudentMapper ptStudentMapper) {
-        this.ptStudentMapper = ptStudentMapper;
-    }
-
-    @Nullable
-    public PtStudent getPtStudentByNo(@NonNull Long number) {
-        Assert.notNull(number, "学号不能为null");
-        return ptStudentMapper.getPtStudentByNo(number);
-    }
+    /**
+     * 学生登录
+     *
+     * @param loginQuery 登陆参数
+     * @return login result
+     */
+    LoginResult login(LoginQuery loginQuery);
 }

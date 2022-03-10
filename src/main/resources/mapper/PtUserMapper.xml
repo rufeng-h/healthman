@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.healthman.mapper.PtUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtUser">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="desp" column="desp" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,password,
+        avatar,desp,created_time,
+        last_login_time,last_modify_time
+    </sql>
+    <update id="updateUserByKey">
+        UPDATE pt_user
+        <set>
+            <if test="user.username != null">username=#{user.username},</if>
+            <if test="user.password != null">password=#{user.password},</if>
+            <if test="user.avatar != null">avatar=#{user.avatar},</if>
+            <if test="user.lastLoginTime != null">last_login_time=#{user.lastLoginTime},</if>
+            <if test="user.lastModifyTime != null">last_modify_time=#{user.lastModifyTime},</if>
+            <if test="user.desp != null">desp=#{user.desp},</if>
+        </set>
+        where id = #{user.id}
+    </update>
+    <select id="getUser" resultType="com.rufeng.healthman.pojo.DO.PtUser">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_user WHERE id = #{id}
+    </select>
+</mapper>

@@ -1,8 +1,9 @@
 package com.rufeng.healthman.controller;
 
-import com.rufeng.healthman.common.ApiPage;
-import com.rufeng.healthman.common.ApiResponse;
-import com.rufeng.healthman.domain.PtClass;
+import com.rufeng.healthman.common.api.ApiPage;
+import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.DO.PtClass;
+import com.rufeng.healthman.pojo.Query.PtClassQuery;
 import com.rufeng.healthman.service.PtClassService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,10 +34,10 @@ public class PtClassController {
     public ApiResponse<ApiPage<PtClass>> list(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestBody(required = false) PtClass ptClass) {
-        if (ptClass == null) {
-            ptClass = new PtClass();
+            @RequestBody(required = false) PtClassQuery ptClassQuery) {
+        if (ptClassQuery == null) {
+            ptClassQuery = new PtClassQuery();
         }
-        return ApiResponse.success(ptClassService.pagePtClass(page, pageSize, ptClass));
+        return ApiResponse.success(ptClassService.pageClass(page, pageSize, ptClassQuery));
     }
 }

@@ -1,6 +1,6 @@
 package com.rufeng.healthman.controller;
 
-import com.rufeng.healthman.common.ApiResponse;
+import com.rufeng.healthman.common.api.ApiResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;

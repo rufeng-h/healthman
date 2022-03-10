@@ -2,6 +2,11 @@ server:
   port: 8000
 
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/healthman?serverTimezone=Asia/Shanghai
   jackson:
     default-property-inclusion: non_null
     date-format: yyyy-MM-dd HH:mm:SS
@@ -20,6 +25,6 @@ mybatis:
     jdbc-type-for-null: null
     local-cache-scope: statement
   mapper-locations: classpath:/mapper/**/*.xml
-  type-aliases-package: com.rufeng.healthman.domain
+  type-aliases-package: com.rufeng.healthman.pojo
 
 
