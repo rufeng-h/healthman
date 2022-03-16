@@ -6,7 +6,10 @@ import com.rufeng.healthman.mapper.PtClassMapper;
 import com.rufeng.healthman.pojo.DO.PtClass;
 import com.rufeng.healthman.pojo.Query.PtClassQuery;
 import com.rufeng.healthman.service.PtClassService;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author rufeng
@@ -22,8 +25,23 @@ public class PtClassServiceImpl implements PtClassService {
     }
 
     @Override
-    public ApiPage<PtClass> pageClass(Integer page, Integer pageSize, PtClassQuery ptClassQuery) {
+    public ApiPage<PtClass> pageClass(Integer page, Integer pageSize, @NonNull PtClassQuery ptClassQuery) {
         PageHelper.startPage(page, pageSize);
         return ApiPage.convert(ptClassMapper.pageClass(ptClassQuery));
+    }
+
+    @Override
+    public List<PtClass> listClass(@NonNull PtClassQuery query) {
+        return ptClassMapper.listClass(query);
+    }
+
+    @Override
+    public List<Integer> listGrade(@NonNull PtClassQuery query) {
+        return ptClassMapper.listGrade(query);
+    }
+
+    @Override
+    public PtClass getPtClass(String classCode) {
+        return ptClassMapper.getPtClass(classCode);
     }
 }

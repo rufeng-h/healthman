@@ -1,19 +1,19 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.BO.LoginResult;
+import com.rufeng.healthman.pojo.DTO.ptuser.LoginResult;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
 import com.rufeng.healthman.service.PtUserService;
+import com.rufeng.healthman.service.RedisService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import static com.rufeng.healthman.config.RedisConfig.REDIS_KEY_PREFIX;
 
 /**
  * @author rufeng
@@ -26,28 +26,17 @@ import java.util.Map;
 @Tag(name = "common", description = "common")
 public class CommonController {
     private final PtUserService userService;
+    private final RedisService redisService;
 
-    public CommonController(PtUserService userService) {
+    public CommonController(PtUserService userService, RedisService redisService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/api/getUserInfo")
-    public ApiResponse<Map<String, Object>> getUserInfo() {
-        HashMap<String, Object> map = new HashMap<>(10);
-        HashMap<String, String> roleMap = new HashMap<>(2);
-        roleMap.put("roleName", "管理员");
-        roleMap.put("value", "admin");
-        map.put("roles", Collections.singletonList(roleMap));
-        map.put("userId", 100102);
-        map.put("username", "rufeng");
-        map.put("realName", "chunfengh");
-        map.put("avatar", "https://p1.music.126.net/Y3C5ob6SQjXRijaVNBu4Sw==/109951164400648086.jpg");
-        map.put("desc", "兴趣所致");
-        return ApiResponse.success(map);
+        this.redisService = redisService;
     }
 
     @GetMapping("/api/logout")
     public ApiResponse<Void> logout() {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        redisService.remove(REDIS_KEY_PREFIX + ":" + userId);
         return ApiResponse.success();
     }
 

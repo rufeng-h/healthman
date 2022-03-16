@@ -5,19 +5,30 @@
 <mapper namespace="com.rufeng.healthman.mapper.PtCollegeMapper">
 
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtCollege">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="principal" column="principal" jdbcType="VARCHAR"/>
-            <result property="office" column="office" jdbcType="VARCHAR"/>
-            <result property="tel" column="tel" jdbcType="VARCHAR"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-            <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-            <result property="deleted" column="deleted" jdbcType="CHAR"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="principal" column="principal" jdbcType="VARCHAR"/>
+        <result property="office" column="office" jdbcType="VARCHAR"/>
+        <result property="tel" column="tel" jdbcType="VARCHAR"/>
+        <result property="home" column="home" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,principal,
         office,tel,created_time,
-        last_modify_time,deleted
+        last_modify_time,home
     </sql>
+    <select id="listCollege" resultType="com.rufeng.healthman.pojo.DO.PtCollege">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_college;
+    </select>
+    <select id="getCollege" resultType="com.rufeng.healthman.pojo.DO.PtCollege">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_college WHERE id = #{collegeId}
+    </select>
 </mapper>

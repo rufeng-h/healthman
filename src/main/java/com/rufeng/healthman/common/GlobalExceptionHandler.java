@@ -2,6 +2,7 @@ package com.rufeng.healthman.common;
 
 import com.rufeng.healthman.common.api.ApiResponse;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,5 +30,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ApiResponse<Void> authenticationError(AuthenticationException e) {
         return ApiResponse.authenticateFailed(e.getMessage());
+    }
+
+    /**
+     * 请求参数、请求体异常
+     */
+    @ExceptionHandler({BindException.class})
+    public ApiResponse<Void> validateFailed() {
+        return ApiResponse.validateFailed();
     }
 }

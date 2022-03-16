@@ -1,7 +1,9 @@
-package com.rufeng.healthman.pojo.BO.support;
+package com.rufeng.healthman.pojo.DTO.ptuser;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
@@ -11,13 +13,15 @@ import org.springframework.security.core.GrantedAuthority;
  * @description .
  */
 @Data
-class Role implements GrantedAuthority {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Role implements GrantedAuthority {
     private String roleName;
     private String value;
 
     @JsonIgnore
     @Override
     public String getAuthority() {
-        return this.value;
+        return this.getValue();
     }
 }

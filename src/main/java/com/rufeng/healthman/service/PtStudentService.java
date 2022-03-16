@@ -1,8 +1,13 @@
 package com.rufeng.healthman.service;
 
-import com.rufeng.healthman.pojo.BO.LoginResult;
+import com.rufeng.healthman.common.api.ApiPage;
+import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DO.PtStudent;
+import com.rufeng.healthman.pojo.DTO.ptuser.LoginResult;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
+import com.rufeng.healthman.pojo.Query.PtStudentQuery;
+
+import java.util.List;
 
 /**
  * @author rufeng
@@ -26,4 +31,13 @@ public interface PtStudentService {
      * @return login result
      */
     LoginResult login(LoginQuery loginQuery);
+
+    /**
+     * 按条件查询
+     * @param page 页码
+     * @param pageSize 每页条数
+     * @param query 查询条件
+     * @return page
+     */
+    ApiPage<PtStudent> pageStudent(Integer page, Integer pageSize, PtStudentQuery query);
 }

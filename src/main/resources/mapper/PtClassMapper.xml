@@ -43,14 +43,58 @@
         </if>
     </sql>
 
+    <sql id="Query_CollegeId">
+        <if test="query.collegeId != null">
+            AND college_id = #{query.collegeId}
+        </if>
+    </sql>
+
+    <sql id="Query_CollegeName">
+        <if test="query.collegeName != null">
+            AND college_name = #{query.collegeName}
+        </if>
+    </sql>
+
+    <sql id="Query_MajorCode">
+        <if test="query.majorCode != null">
+            AND major_code = #{query.majorCode}
+        </if>
+    </sql>
+
+    <sql id="Query_All">
+        <include refid="Query_Code"/>
+        <include refid="Query_name"/>
+        <include refid="Query_grade"/>
+        <include refid="Query_CollegeId"/>
+        <include refid="Query_CollegeName"/>
+        <include refid="Query_MajorCode"/>
+    </sql>
+
     <select id="pageClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_class
         <where>
-            <include refid="Query_Code"/>
-            <include refid="Query_name"/>
-            <include refid="Query_grade"/>
+            <include refid="Query_All"/>
         </where>
+    </select>
+    <select id="listClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_class
+        <where>
+            <include refid="Query_All"/>
+        </where>
+    </select>
+    <select id="listGrade" resultType="java.lang.Integer">
+        SELECT DISTINCT grade FROM pt_class
+        <where>
+            <include refid="Query_All"/>
+        </where>
+    </select>
+    <select id="getPtClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_class WHERE code = #{code}
     </select>
 </mapper>

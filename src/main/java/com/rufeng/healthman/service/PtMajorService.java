@@ -1,8 +1,7 @@
-package com.rufeng.healthman.mapper;
+package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.pojo.DO.PtMajor;
 import com.rufeng.healthman.pojo.Query.PtMajorQuery;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.NonNull;
 
@@ -10,19 +9,16 @@ import java.util.List;
 
 /**
  * @author rufeng
- * @description 针对表【pt_major(专业表)】的数据库操作Mapper
+ * @time 2022-03-13 9:28
+ * @package com.rufeng.healthman.service
+ * @description TODO
  */
-@Mapper
-public interface PtMajorMapper {
+public interface PtMajorService {
     /**
-     * 查询列表
+     * page
      *
-     * @param query 查询参数
+     * @param query 查询条件
      * @return page
      */
     List<PtMajor> listMajor(@Param("query") @NonNull PtMajorQuery query);
 }
-
-
-
-

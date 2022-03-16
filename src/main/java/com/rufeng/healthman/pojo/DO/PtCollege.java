@@ -37,6 +37,10 @@ public class PtCollege implements Serializable {
      */
     private String tel;
     /**
+     * 主页
+     */
+    private String home;
+    /**
      * 创建时间
      */
     private LocalDateTime createdTime;

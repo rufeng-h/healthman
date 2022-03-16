@@ -1,11 +1,14 @@
 package com.rufeng.healthman.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.JwtTokenUtil;
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtStudentMapper;
-import com.rufeng.healthman.pojo.BO.LoginResult;
-import com.rufeng.healthman.pojo.BO.support.UserInfo;
 import com.rufeng.healthman.pojo.DO.PtStudent;
+import com.rufeng.healthman.pojo.DTO.ptuser.LoginResult;
+import com.rufeng.healthman.pojo.DTO.ptuser.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
+import com.rufeng.healthman.pojo.Query.PtStudentQuery;
 import com.rufeng.healthman.service.PtStudentService;
 import com.rufeng.healthman.service.RedisService;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,6 +21,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import static com.rufeng.healthman.config.RedisConfig.REDIS_KEY_PREFIX;
 
@@ -67,5 +71,11 @@ public class PtStudentServiceImpl implements PtStudentService {
         UserInfo info = new UserInfo(student);
         String token = JwtTokenUtil.generateToken(student.getName(), student.getNumber());
         return new LoginResult(token, info);
+    }
+
+    @Override
+    public ApiPage<PtStudent> pageStudent(Integer page, Integer pageSize, PtStudentQuery query) {
+        PageHelper.startPage(page, pageSize);
+        return ApiPage.convert(ptStudentMapper.pageStudent(query));
     }
 }

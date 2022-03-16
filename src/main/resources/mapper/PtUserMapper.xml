@@ -13,13 +13,36 @@
         <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
         <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
         <result property="deleted" column="deleted" jdbcType="CHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,username,password,
-        avatar,desp,created_time,
-        last_login_time,last_modify_time
+        id,username,password,email,phone,avatar,desp,created_time,last_login_time,last_modify_time
     </sql>
+
+    <sql id="Query_Id">
+        <if test="query.id != null">
+            AND id = #{query.id}
+        </if>
+    </sql>
+
+    <sql id="Query_Userame">
+        <if test="query.username != null">
+            AND username like concat('%', #{query.username}, '%')
+        </if>
+    </sql>
+
+    <sql id="Query_All">
+        <include refid="Query_Id"/>
+        <include refid="Query_Userame"/>
+    </sql>
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pt_user (username, password, email, phone, desp) value (#{user.username}, #{user.password},
+                                                                            #{user.email}, #{user.phone},
+                                                                            #{user.desp})
+    </insert>
+
     <update id="updateUserByKey">
         UPDATE pt_user
         <set>
@@ -32,9 +55,19 @@
         </set>
         where id = #{user.id}
     </update>
+
+
     <select id="getUser" resultType="com.rufeng.healthman.pojo.DO.PtUser">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_user WHERE id = #{id}
+    </select>
+    <select id="pageUser" resultType="com.rufeng.healthman.pojo.DO.PtUser">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_user
+        <where>
+            <include refid="Query_All"/>
+        </where>
     </select>
 </mapper>

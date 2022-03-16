@@ -1,5 +1,7 @@
 package com.rufeng.healthman.pojo.DO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 @Alias("PtStudent")
 public class PtStudent implements Serializable {
     private static final long serialVersionUID = 1L;
+    private String email;
+    private String phone;
     /**
      * 学号
      */
@@ -36,10 +40,11 @@ public class PtStudent implements Serializable {
     /**
      * 性别
      */
-    private String gender;
+    private GenderEnum gender;
     /**
      * 登陆密码
      */
+    @JsonIgnore
     private String password;
     /**
      * 头像
@@ -78,5 +83,6 @@ public class PtStudent implements Serializable {
     /**
      *
      */
+    @JsonIgnore
     private String deleted;
 }

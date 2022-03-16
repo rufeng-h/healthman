@@ -19,15 +19,64 @@
         <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
         <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
         <result property="deleted" column="deleted" jdbcType="CHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        number,name,
+        number,name,phone,email,
         birthday,gender,password,
         avatar,college_id,major_code,
         class_code,created_time,last_modify_time,
         last_login_time,desp
     </sql>
+    <sql id="Query_Number">
+        <if test="query.number != null">
+            AND number = #{query.number}
+        </if>
+    </sql>
+    <sql id="Query_CollegeId">
+        <if test="query.collegeId != null">
+            AND college_id = #{query.collegeId}
+        </if>
+    </sql>
+    <sql id="Query_Name">
+        <if test="query.name != null">
+            AND name = #{query.name}
+        </if>
+    </sql>
+    <sql id="Query_Gender">
+        <if test="query.gender != null">
+            AND gender = #{query.gender}
+        </if>
+    </sql>
+    <sql id="Query_ClassCode">
+        <if test="query.classCode != null">
+            AND class_code = #{query.classCode}
+        </if>
+    </sql>
+    <sql id="Query_MajorCode">
+        <if test="query.majorCode != null">
+            AND major_code = #{query.majorCode}
+        </if>
+    </sql>
+
+    <sql id="OrderBy">
+        <if test="query.order != null and query.field != null">
+            ORDER BY ${query.field} ${query.order}
+        </if>
+    </sql>
+
+    <sql id="Query_All">
+        <include refid="Query_Number"/>
+        <include refid="Query_Name"/>
+        <include refid="Query_Gender"/>
+        <include refid="Query_CollegeId"/>
+        <include refid="Query_MajorCode"/>
+        <include refid="Query_ClassCode"/>
+    </sql>
+
+
     <update id="updateStudentByKey">
         UPDATE pt_student
         <set>
@@ -46,5 +95,14 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_student WHERE number = #{number}
+    </select>
+    <select id="pageStudent" resultType="com.rufeng.healthman.pojo.DO.PtStudent">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_student
+        <where>
+            <include refid="Query_All"/>
+        </where>
+        <include refid="OrderBy"/>
     </select>
 </mapper>

@@ -1,8 +1,12 @@
 package com.rufeng.healthman.service;
 
-import com.rufeng.healthman.pojo.BO.LoginResult;
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.pojo.DO.PtUser;
+import com.rufeng.healthman.pojo.DO.UserAddData;
+import com.rufeng.healthman.pojo.DTO.ptuser.LoginResult;
+import com.rufeng.healthman.pojo.DTO.ptuser.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
+import com.rufeng.healthman.pojo.Query.PtUserQuery;
 
 /**
  * @author rufeng
@@ -35,4 +39,22 @@ public interface PtUserService {
      * @return count
      */
     Integer updateUserByKey(PtUser user);
+
+    /**
+     * 分页查询
+     *
+     * @param page     页码
+     * @param pageSize 每页条数
+     * @param query    查询
+     * @return page
+     */
+    ApiPage<PtUser> pageUser(Integer page, Integer pageSize, PtUserQuery query);
+
+    /**
+     * 用户(管理员)添加
+     *
+     * @param data 用户信息
+     * @return userinfo
+     */
+    UserInfo addUser(UserAddData data);
 }

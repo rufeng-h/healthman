@@ -5,20 +5,54 @@
 <mapper namespace="com.rufeng.healthman.mapper.PtMajorMapper">
 
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtMajor">
-            <id property="code" column="code" jdbcType="VARCHAR"/>
-            <result property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="enName" column="en_name" jdbcType="VARCHAR"/>
-            <result property="collegeId" column="college_id" jdbcType="BIGINT"/>
-            <result property="collegeName" column="college_name" jdbcType="VARCHAR"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-            <result property="lastMidifyTime" column="last_midify_time" jdbcType="TIMESTAMP"/>
-            <result property="deleted" column="deleted" jdbcType="CHAR"/>
+        <id property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="enName" column="en_name" jdbcType="VARCHAR"/>
+        <result property="collegeId" column="college_id" jdbcType="BIGINT"/>
+        <result property="collegeName" column="college_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="lastMidifyTime" column="last_midify_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         code,name,
         en_name,college_id,college_name,
-        created_time,last_midify_time,deleted
+        created_time,last_midify_time
     </sql>
+    <sql id="Query_Code">
+        <if test="query.code != null">
+            AND code = #{query.code}
+        </if>
+    </sql>
+    <sql id="Query_Name">
+        <if test="query.name != null">
+            AND name = #{query.name}
+        </if>
+    </sql>
+    <sql id="Query_CollegeId">
+        <if test="query.collegeId != null">
+            AND college_id = #{query.collegeId}
+        </if>
+    </sql>
+    <sql id="QUery_CollegeName">
+        <if test="query.collegeName != null">
+            AND college_name = #{query.collegeName}
+        </if>
+    </sql>
+    <sql id="Query_All">
+        <include refid="Query_Code"/>
+        <include refid="Query_CollegeId"/>
+        <include refid="Query_Name"/>
+        <include refid="QUery_CollegeName"/>
+    </sql>
+    <select id="listMajor" resultType="com.rufeng.healthman.pojo.DO.PtMajor">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_major
+        <where>
+            <include refid="Query_All"/>
+        </where>
+    </select>
 </mapper>

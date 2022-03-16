@@ -1,6 +1,8 @@
 package com.rufeng.healthman.mapper;
 
+import com.github.pagehelper.Page;
 import com.rufeng.healthman.pojo.DO.PtUser;
+import com.rufeng.healthman.pojo.Query.PtUserQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.NonNull;
@@ -26,6 +28,17 @@ public interface PtUserMapper {
      * @return 受影响的行数
      */
     Integer updateUserByKey(@NonNull @Param("user") PtUser user);
+
+    /**
+     * 分页查询
+     *
+     * @param query 查询参数
+     * @return page
+     */
+    Page<PtUser> pageUser(@NonNull @Param("query") PtUserQuery query);
+
+
+    Integer insertUser(@NonNull @Param("user") PtUser user);
 }
 
 
