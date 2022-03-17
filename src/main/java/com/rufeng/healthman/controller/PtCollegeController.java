@@ -4,7 +4,6 @@ import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DO.PtCollege;
 import com.rufeng.healthman.pojo.DTO.ptcollege.PtCollegeInfo;
 import com.rufeng.healthman.pojo.DTO.ptcollege.PtCollegeTreeItem;
-import com.rufeng.healthman.pojo.Query.PtCollegeQuery;
 import com.rufeng.healthman.service.PtCollegeService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +51,7 @@ public class PtCollegeController {
     }
 
     @GetMapping("/info")
-    public ApiResponse<PtCollegeInfo> collegeInfo(@RequestParam Long id) {
+    public ApiResponse<PtCollegeInfo> collegeInfo(@RequestParam @Min(1) Long id) {
         return ApiResponse.success(ptCollegeService.getCollegeInfo(id));
     }
 }

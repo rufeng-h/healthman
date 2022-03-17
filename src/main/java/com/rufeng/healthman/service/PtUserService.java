@@ -48,7 +48,7 @@ public interface PtUserService {
      * @param query    查询
      * @return page
      */
-    ApiPage<PtUser> pageUser(Integer page, Integer pageSize, PtUserQuery query);
+    ApiPage<UserInfo> pageUserInfo(Integer page, Integer pageSize, PtUserQuery query);
 
     /**
      * 用户(管理员)添加
@@ -57,4 +57,11 @@ public interface PtUserService {
      * @return userinfo
      */
     UserInfo addUser(UserAddData data);
+
+
+    /**
+     * 登出
+     *
+     */
+    void logout();
 }

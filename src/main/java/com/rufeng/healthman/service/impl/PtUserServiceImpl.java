@@ -1,5 +1,6 @@
 package com.rufeng.healthman.service.impl;
 
+import com.github.pagehelper.Page;
 import com.rufeng.healthman.common.JwtTokenUtil;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.RoleTypeEnum;
@@ -7,15 +8,17 @@ import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtUserMapper;
 import com.rufeng.healthman.pojo.DO.*;
 import com.rufeng.healthman.pojo.DTO.ptuser.LoginResult;
-import com.rufeng.healthman.pojo.DTO.ptuser.Role;
 import com.rufeng.healthman.pojo.DTO.ptuser.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
 import com.rufeng.healthman.pojo.Query.PtUserQuery;
 import com.rufeng.healthman.service.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,9 +28,6 @@ import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.rufeng.healthman.config.RedisConfig.REDIS_KEY_PREFIX;
 
 /**
  * @author rufeng
@@ -37,6 +37,7 @@ import static com.rufeng.healthman.config.RedisConfig.REDIS_KEY_PREFIX;
  */
 @Service
 public class PtUserServiceImpl implements PtUserService {
+    private final Log logger = LogFactory.getLog(PtUserServiceImpl.class);
     private final PtUserMapper ptUserMapper;
     private final PtStudentService ptStudentService;
     private final PasswordEncoder passwordEncoder;
@@ -45,7 +46,10 @@ public class PtUserServiceImpl implements PtUserService {
     private final PtCollegeService ptCollegeService;
     private final PtClassService ptClassService;
 
-    public PtUserServiceImpl(PtUserMapper ptUserMapper, PtStudentService ptStudentService, PasswordEncoder passwordEncoder, RedisService redisService, PtRoleService ptRoleService, PtCollegeService ptCollegeService, PtClassService ptClassService) {
+    public PtUserServiceImpl(PtUserMapper ptUserMapper, PtStudentService ptStudentService,
+                             PasswordEncoder passwordEncoder, RedisService redisService,
+                             PtRoleService ptRoleService, PtCollegeService ptCollegeService,
+                             PtClassService ptClassService) {
         this.ptUserMapper = ptUserMapper;
         this.ptStudentService = ptStudentService;
         this.passwordEncoder = passwordEncoder;
@@ -80,8 +84,10 @@ public class PtUserServiceImpl implements PtUserService {
     }
 
     @Override
-    public ApiPage<PtUser> pageUser(Integer page, Integer pageSize, PtUserQuery query) {
-        return ApiPage.convert(ptUserMapper.pageUser(query));
+    public ApiPage<UserInfo> pageUserInfo(Integer page, Integer pageSize, PtUserQuery query) {
+        Page<PtUser> users = ptUserMapper.pageUser(query);
+        //TODO 连表
+        return ApiPage.convert(users, u -> new UserInfo(u, ptRoleService.listRole(u.getId())));
     }
 
     @Override
@@ -103,6 +109,7 @@ public class PtUserServiceImpl implements PtUserService {
         switch (roleType) {
             case SYSTEM:
                 ptRole.setRoleName(roleType.getName());
+                ptRole.setValue("0");
                 break;
             case COLLEGE:
                 college = ptCollegeService.getCollege(data.getCollegeId());
@@ -121,7 +128,16 @@ public class PtUserServiceImpl implements PtUserService {
         ptRoleService.insertRole(ptRole);
 
         user.setCreatedTime(LocalDateTime.now());
-        return new UserInfo(user, Collections.singletonList(new Role(ptRole.getRoleName(), ptRole.getValue())));
+        return new UserInfo(user, Collections.singletonList(ptRole));
+    }
+
+    @Override
+    public void logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            Long userId = (Long) authentication.getPrincipal();
+            redisService.remove(userId.toString());
+        }
     }
 
     private LoginResult doLogin(LoginQuery loginQuery) {
@@ -135,12 +151,10 @@ public class PtUserServiceImpl implements PtUserService {
 
         /* 查询角色权限 */
         List<PtRole> roles = ptRoleService.listRole(user.getId());
-        List<Role> authorities = roles.stream()
-                .map(role -> new Role(role.getRoleName(), role.getValue())).collect(Collectors.toList());
 
         /* 认证信息 */
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword(), authorities);
-        redisService.setObject(REDIS_KEY_PREFIX + ":" + user.getId(), authentication);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword(), roles);
+        redisService.setObject(user.getId().toString(), authentication);
 
         /* 更新上次登录时间 */
         PtUser u = new PtUser();
@@ -149,7 +163,7 @@ public class PtUserServiceImpl implements PtUserService {
         this.updateUserByKey(u);
 
         /* 返回结果 */
-        UserInfo info = new UserInfo(user, authorities);
+        UserInfo info = new UserInfo(user, roles);
         String token = JwtTokenUtil.generateToken(user.getUsername(), user.getId());
         return new LoginResult(token, info);
     }

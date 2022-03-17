@@ -30,7 +30,7 @@ public interface PtUserMapper {
     Integer updateUserByKey(@NonNull @Param("user") PtUser user);
 
     /**
-     * 分页查询
+     * 分页查询用户信息
      *
      * @param query 查询参数
      * @return page
@@ -38,6 +38,12 @@ public interface PtUserMapper {
     Page<PtUser> pageUser(@NonNull @Param("query") PtUserQuery query);
 
 
+    /**
+     * 添加user
+     *
+     * @param user user obj
+     * @return cnt
+     */
     Integer insertUser(@NonNull @Param("user") PtUser user);
 }
 

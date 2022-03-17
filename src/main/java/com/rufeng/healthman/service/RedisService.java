@@ -22,7 +22,7 @@ public interface RedisService {
      * @param requeiedType 目标对象类型
      * @return 目标对象
      */
-    <T> T getObject(Object key, Class<T> requeiedType);
+    <T> T getObject(String key, Class<T> requeiedType);
 
     /**
      * 存储对象
@@ -30,7 +30,7 @@ public interface RedisService {
      * @param key   k
      * @param value v
      */
-    void setObject(Object key, Object value);
+    void setObject(String key, Object value);
 
     /**
      * 存储字符串

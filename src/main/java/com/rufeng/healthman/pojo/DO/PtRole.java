@@ -1,6 +1,8 @@
 package com.rufeng.healthman.pojo.DO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,11 +14,12 @@ import java.time.LocalDateTime;
  * @TableName pt_role
  */
 @Data
-public class PtRole implements Serializable {
+public class PtRole implements Serializable, GrantedAuthority {
     private static final long serialVersionUID = 1L;
     /**
      *
      */
+    @JsonIgnore
     private Long id;
     /**
      *
@@ -37,9 +40,16 @@ public class PtRole implements Serializable {
     /**
      *
      */
+    @JsonIgnore
     private String deleted;
     /**
      *
      */
     private Long userId;
+
+    @Override
+    @JsonIgnore
+    public String getAuthority() {
+        return this.value;
+    }
 }

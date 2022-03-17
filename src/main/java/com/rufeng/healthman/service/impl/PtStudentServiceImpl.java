@@ -21,9 +21,6 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
-
-import static com.rufeng.healthman.config.RedisConfig.REDIS_KEY_PREFIX;
 
 /**
  * @author rufeng
@@ -60,7 +57,7 @@ public class PtStudentServiceImpl implements PtStudentService {
         }
         /* 认证信息 */
         Authentication authentication = new UsernamePasswordAuthenticationToken(student.getNumber(), student.getPassword(), Collections.emptyList());
-        redisService.setObject(REDIS_KEY_PREFIX + ":" + student.getNumber(), authentication);
+        redisService.setObject(student.getNumber().toString(), authentication);
 
         /* 更新登录时间 */
         PtStudent stu = new PtStudent();

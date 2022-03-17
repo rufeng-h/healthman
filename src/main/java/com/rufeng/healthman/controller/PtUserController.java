@@ -2,7 +2,6 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DO.PtUser;
 import com.rufeng.healthman.pojo.DO.UserAddData;
 import com.rufeng.healthman.pojo.DTO.ptuser.UserInfo;
 import com.rufeng.healthman.pojo.Query.PtUserQuery;
@@ -34,11 +33,11 @@ public class PtUserController {
     }
 
     @GetMapping
-    public ApiResponse<ApiPage<PtUser>> pageUser(
+    public ApiResponse<ApiPage<UserInfo>> pageUser(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
             @RequestParam(defaultValue = "10") @Range(min = 10, max = 100) Integer pageSize,
-            PtUserQuery query) {
-        return ApiResponse.success(ptUserService.pageUser(page, pageSize, query));
+            @Validated PtUserQuery query) {
+        return ApiResponse.success(ptUserService.pageUserInfo(page, pageSize, query));
     }
 
     @PostMapping

@@ -1,5 +1,6 @@
 package com.rufeng.healthman.pojo.DTO.ptuser;
 
+import com.rufeng.healthman.pojo.DO.PtRole;
 import com.rufeng.healthman.pojo.DO.PtStudent;
 import com.rufeng.healthman.pojo.DO.PtUser;
 import lombok.Data;
@@ -16,8 +17,6 @@ import java.util.List;
  */
 @Data
 public class UserInfo {
-    private static final Role STU_ROLE =
-            new Role("学生", "student");
     private Long userId;
     private String email;
     private String phone;
@@ -26,9 +25,9 @@ public class UserInfo {
     private LocalDateTime createdTime;
     private LocalDateTime lastLoginTime;
     private String desp;
-    private List<Role> roles;
+    private List<PtRole> roles;
 
-    public UserInfo(PtUser user, List<Role> roles) {
+    public UserInfo(PtUser user, List<PtRole> roles) {
         this.userId = user.getId();
         this.username = user.getUsername();
         this.avatar = user.getAvatar();
@@ -49,6 +48,10 @@ public class UserInfo {
         this.desp = student.getDesp();
         this.email = student.getEmail();
         this.phone = student.getPhone();
-        this.roles = Collections.singletonList(STU_ROLE);
+        PtRole role = new PtRole();
+        role.setUserId(student.getId());
+        role.setRoleName(role.getRoleName());
+        role.setValue(role.getValue());
+        this.roles = Collections.singletonList(role);
     }
 }

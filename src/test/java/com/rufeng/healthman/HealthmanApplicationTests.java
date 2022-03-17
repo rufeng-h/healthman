@@ -17,9 +17,4 @@ class HealthmanApplicationTests {
     void contextLoads() {
     }
 
-    @Test
-    public void clearAuthentication() {
-        redisTemplate.delete("*" + REDIS_KEY_PREFIX + ":");
-    }
-
 }

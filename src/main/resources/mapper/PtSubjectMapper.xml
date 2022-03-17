@@ -5,16 +5,21 @@
 <mapper namespace="com.rufeng.healthman.mapper.PtSubjectMapper">
 
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtSubject">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="desp" column="desp" jdbcType="VARCHAR"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-            <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-            <result property="deleted" column="deleted" jdbcType="CHAR"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="desp" column="desp" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,desp,
-        created_time,last_modify_time,deleted
+        created_time,last_modify_time
     </sql>
+    <select id="listSubject" resultType="com.rufeng.healthman.pojo.DO.PtSubject">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_subject
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.rufeng.healthman.pojo.DO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -39,5 +40,6 @@ public class PtSubject implements Serializable {
     /**
      *
      */
+    @JsonIgnore
     private String deleted;
 }
