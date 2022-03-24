@@ -5,26 +5,26 @@
 <mapper namespace="com.rufeng.healthman.mapper.PtRoleMapper">
 
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtRole">
-        <id property="id" column="id" jdbcType="BIGINT"/>
+        <id property="roleId" column="rid" jdbcType="BIGINT"/>
+        <result property="adminId" column="admin_id" jdbcType="BIGINT"/>
         <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
-        <result property="value" column="value" jdbcType="VARCHAR"/>
-        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-        <result property="deleted" column="deleted" jdbcType="CHAR"/>
-        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="roleValue" column="role_value" jdbcType="VARCHAR"/>
+        <result property="roleCreated" column="role_created" jdbcType="TIMESTAMP"/>
+        <result property="roleModified" column="role_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,role_name,value,
-        created_time,last_modify_time,deleted,
-        user_id
+        role_id,admin_id,role_name,
+        role_value,role_created,role_modified
     </sql>
+
     <insert id="insertRole">
-        INSERT INTO pt_role (user_id, role_name, value) value (#{role.userId}, #{role.roleName}, #{role.value})
+        INSERT INTO pt_role (admin_id, role_name, role_value) value (#{role.userId}, #{role.roleName}, #{role.rovalue})
     </insert>
     <select id="listRole" resultType="com.rufeng.healthman.pojo.DO.PtRole">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pt_role WHERE user_id = #{userId}
+        FROM pt_role WHERE admin_id = #{userId}
     </select>
+
 </mapper>

@@ -1,65 +1,58 @@
 package com.rufeng.healthman.pojo.DO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
+import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * 单项评分标准（国网）
+ * </p>
  *
  * @author rufeng
- * @TableName pt_score_sheet
+ * @since 2022-03-19
  */
 @Data
+@Alias("PtScoreSheet")
 public class PtScoreSheet implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     /**
      * 科目
      */
     private Long subjectId;
+
+    private Integer grade;
+
     /**
      * 性别
      */
-    private GenderEnum gender;
-    /**
-     * 年级
-     */
-    private Integer grade;
+    private String gender;
+
     /**
      * 上区间
      */
     private BigDecimal upper;
+
     /**
      * 下区间
      */
     private BigDecimal lower;
-    /**
-     *
-     */
+
     private Integer score;
-    /**
-     *
-     */
+
     private LocalDateTime createdTime;
-    /**
-     *
-     */
+
     private LocalDateTime lastModifyTime;
-    /**
-     *
-     */
-    @JsonIgnore
-    private String deleted;
+
     /**
      * 级别
      */
     private String level;
-    /**
-     *
-     */
+
     private Long id;
 }

@@ -17,7 +17,8 @@ public interface PtRoleService {
      * @param userId userid
      * @return page
      */
-    List<PtRole> listRole(Long userId);
+    List<PtRole> listRole(String userId);
+
 
     Integer insertRole(PtRole ptRole);
 }

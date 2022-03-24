@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.healthman.mapper.PtAdminMapper">
+
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtAdmin">
+        <id property="adminId" column="admin_id" jdbcType="VARCHAR"/>
+        <result property="adminName" column="admin_name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="adminDesp" column="admin_desp" jdbcType="VARCHAR"/>
+        <result property="adminCreated" column="admin_created" jdbcType="TIMESTAMP"/>
+        <result property="adminModified" column="admin_modified" jdbcType="TIMESTAMP"/>
+        <result property="adminLastLogin" column="admin_last_login" jdbcType="TIMESTAMP"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="AdminInfoMap" type="com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo">
+        <id property="userId" column="admin_id"/>
+        <result property="desp" column="admin_desp"/>
+        <result property="createdTime" column="admin_created"/>
+        <result property="phone" column="phone"/>
+        <result property="avatar" column="avatar"/>
+        <result property="username" column="admin_name"/>
+        <result property="email" column="email"/>
+        <result property="lastLoginTime" column="admin_last_login"/>
+        <collection property="roles" autoMapping="true" foreignColumn="admin_id" ofType="PtRole">
+            <id property="roleId" column="role_id"/>
+        </collection>
+    </resultMap>
+
+    <sql id="AdminColumns">
+        admin_id,
+        admin_name,
+        password,
+        avatar,
+        email,
+        admin_desp,
+        admin_created,
+        admin_modified,
+        admin_last_login,
+        phone
+    </sql>
+
+    <sql id="Admin_Query">
+        <if test="query.adminName != null">
+            <bind name="adminName" value="'%' + query.adminName + '%'"/>
+            AND ${table}.admin_name like #{adminName}
+        </if>
+        <if test="query.adminId != null">
+            AND ${table}.admin_id = #{query.adminId}
+        </if>
+    </sql>
+
+    <insert id="insertAdmin" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pt_admin (admin_name, password, email, phone, admin_desp) value (#{user.username}, #{user.password},
+                                                                                     #{user.email}, #{user.phone},
+                                                                                     #{user.desp})
+    </insert>
+
+    <update id="updateAdminByKey">
+        UPDATE pt_admin
+        <set>
+            <if test="admin.adminName != null">admin_name=#{admin.adminName},</if>
+            <if test="admin.password != null">password=#{admin.password},</if>
+            <if test="admin.avatar != null">avatar=#{admin.avatar},</if>
+            <if test="admin.adminLastLogin != null">admin_last_login=#{admin.adminLastLogin},</if>
+            <if test="admin.adminModified != null">admin_modified=#{admin.adminModified},</if>
+            <if test="admin.adminDesp != null">admin_desp=#{admin.adminDesp},</if>
+        </set>
+        where admin_id = #{admin.adminId}
+    </update>
+
+    <select id="getAdmin" resultType="com.rufeng.healthman.pojo.DO.PtAdmin">
+        SELECT
+        <include refid="AdminColumns"/>
+        FROM pt_admin
+        WHERE admin_id = #{adminId}
+    </select>
+    <select id="pageAdminInfo" resultMap="AdminInfoMap">
+        SELECT
+        admin_name, password, avatar, email, admin_desp, admin_created, admin_modified, admin_last_login, phone, aid,
+        admin_id, role_name, role_value, role_created, role_modified, role_id
+        FROM pt_admin NATURAL JOIN pt_role
+        <where>
+            <include refid="Admin_Query">
+                <property name="table" value="pt_admin"/>
+            </include>
+        </where>
+    </select>
+</mapper>

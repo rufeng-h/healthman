@@ -3,61 +3,49 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtStudentMapper">
-
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtStudent">
-        <id property="number" column="number" jdbcType="BIGINT"/>
-        <result property="id" column="id" jdbcType="BIGINT"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="birthday" column="birthday" jdbcType="DATE"/>
-        <result property="gender" column="gender" jdbcType="CHAR"/>
+        <id property="stuId" column="stu_id" jdbcType="VARCHAR"/>
+        <result property="sid" column="sid" jdbcType="BIGINT"/>
+        <result property="stuName" column="stu_name" jdbcType="VARCHAR"/>
+        <result property="stuBirth" column="stu_birth" jdbcType="DATE"/>
+        <result property="stuGender" column="stu_gender" jdbcType="CHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
-        <result property="collegeId" column="college_id" jdbcType="BIGINT"/>
-        <result property="majorCode" column="major_code" jdbcType="VARCHAR"/>
-        <result property="classCode" column="class_code" jdbcType="VARCHAR"/>
-        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
-        <result property="deleted" column="deleted" jdbcType="CHAR"/>
-        <result property="email" column="email" jdbcType="VARCHAR"/>
-        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="clsCode" column="cls_code" jdbcType="VARCHAR"/>
+        <result property="stuCreated" column="stu_created" jdbcType="TIMESTAMP"/>
+        <result property="stuModified" column="stu_modified" jdbcType="TIMESTAMP"/>
+        <result property="stuLastLogin" column="stu_last_login" jdbcType="TIMESTAMP"/>
+        <result property="stuDesp" column="stu_desp" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        number,name,phone,email,
-        birthday,gender,password,
-        avatar,college_id,major_code,
-        class_code,created_time,last_modify_time,
-        last_login_time,desp
+        stu_id,
+        sid,
+        stu_name,
+        stu_birth,
+        stu_gender,
+        password,
+        avatar,
+        cls_code,
+        stu_created,
+        stu_modified,
+        stu_last_login,
+        stu_desp
     </sql>
-    <sql id="Query_Number">
-        <if test="query.number != null">
-            AND number = #{query.number}
+    <sql id="Query">
+        <if test="query.stuId != null">
+            AND pt_student.stu_id = #{query.stuId}
         </if>
-    </sql>
-    <sql id="Query_CollegeId">
-        <if test="query.collegeId != null">
-            AND college_id = #{query.collegeId}
+
+        <if test="query.clsCode != null">
+            AND pt_student.cls_code = #{query.clsCode}
         </if>
-    </sql>
-    <sql id="Query_Name">
-        <if test="query.name != null">
-            AND name = #{query.name}
+        <if test="query.stuName != null">
+            <bind value="'%' + query.stuName + '%'" name="stuName"/>
+            AND pt_student.stu_name like #{stuName}
         </if>
-    </sql>
-    <sql id="Query_Gender">
-        <if test="query.gender != null">
-            AND gender = #{query.gender}
-        </if>
-    </sql>
-    <sql id="Query_ClassCode">
-        <if test="query.classCode != null">
-            AND class_code = #{query.classCode}
-        </if>
-    </sql>
-    <sql id="Query_MajorCode">
-        <if test="query.majorCode != null">
-            AND major_code = #{query.majorCode}
+        <if test="query.stuGender != null">
+            AND pt_student.stu_gender = #{query.stuGender}
         </if>
     </sql>
 
@@ -66,42 +54,64 @@
             ORDER BY ${query.field} ${query.order}
         </if>
     </sql>
-
-    <sql id="Query_All">
-        <include refid="Query_Number"/>
-        <include refid="Query_Name"/>
-        <include refid="Query_Gender"/>
-        <include refid="Query_CollegeId"/>
-        <include refid="Query_MajorCode"/>
-        <include refid="Query_ClassCode"/>
-    </sql>
-
-
+    <insert id="insertBatch">
+        INSERT INTO pt_student (stu_id, stu_name, stu_birth, stu_gender, cls_code) VALUES
+        <foreach collection="items" item="item" separator=",">
+            (#{item.stuId}, #{item.stuName}, #{item.stuBirth}, #{item.stuGender}, #{item.clsCode})
+        </foreach>
+    </insert>
     <update id="updateStudentByKey">
         UPDATE pt_student
         <set>
-            <if test="stu.name != null">username=#{stu.name},</if>
-            <if test="stu.password != null">password=#{stu.password},</if>
-            <if test="stu.avatar != null">avatar=#{stu.avatar},</if>
-            <if test="stu.lastLoginTime != null">last_login_time=#{stu.lastLoginTime},</if>
-            <if test="stu.lastModifyTime != null">last_modify_time=#{stu.lastModifyTime},</if>
-            <if test="stu.desp != null">desp=#{stu.desp},</if>
-            <if test="stu.gender != null">gender=#{stu.gender},</if>
-            <if test="stu.birthday != null">birthday=#{stu.birthday},</if>
+            <if test="stu.stuName != null">
+                stu_name=#{stu.stuName},
+            </if>
+            <if test="stu.password != null">
+                password=#{stu.password},
+            </if>
+            <if test="stu.avatar != null">
+                avatar=#{stu.avatar},
+            </if>
+            <if test="stu.stuLastLogin != null">
+                stu_last_login=#{stu.stuLastLogin},
+            </if>
+            <if test="stu.stuModified != null">
+                stu_modified=#{stu.stuModified},
+            </if>
+            <if test="stu.stuDesp != null">
+                stu_desp=#{stu.stuDesp},
+            </if>
+            <if test="stu.stuGender != null">
+                stu_gender=#{stu.stuGender},
+            </if>
+            <if test="stu.stuBirth != null">
+                stu_birth=#{stu.stuBirth},
+            </if>
         </set>
-        where number=#{stu.number}
+        where stu_id = #{stu.stuId}
     </update>
     <select id="getStudent" resultType="com.rufeng.healthman.pojo.DO.PtStudent">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pt_student WHERE number = #{number}
-    </select>
-    <select id="pageStudent" resultType="com.rufeng.healthman.pojo.DO.PtStudent">
-        SELECT
-        <include refid="Base_Column_List"/>
         FROM pt_student
+        WHERE stu_id = #{stuId}
+    </select>
+    <select id="pageStudentInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo">
+        SELECT sid,
+               stu_id,
+               stu_name,
+               stu_birth,
+               stu_gender,
+               avatar,
+               pt_class.cls_code AS cls_code,
+               stu_created,
+               stu_last_login,
+               cls_name,
+               stu_desp
+        FROM pt_student
+                     LEFT JOIN pt_class ON pt_student.cls_code = pt_class.cls_code
         <where>
-            <include refid="Query_All"/>
+            <include refid="Query"/>
         </where>
         <include refid="OrderBy"/>
     </select>

@@ -17,9 +17,9 @@ public enum RoleTypeEnum {
     COLLEGE("学院管理员"),
     CLASS("班级管理员"),
     STUDENT("学生");
-    private final String name;
+    private final String value;
 
-    RoleTypeEnum(String name) {
-        this.name = name;
+    RoleTypeEnum(String value) {
+        this.value = value;
     }
 }

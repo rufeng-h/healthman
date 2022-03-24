@@ -13,7 +13,6 @@
         <result property="score" column="score" jdbcType="INTEGER"/>
         <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
         <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-        <result property="deleted" column="deleted" jdbcType="CHAR"/>
         <result property="level" column="level" jdbcType="VARCHAR"/>
         <result property="id" column="id" jdbcType="BIGINT"/>
     </resultMap>

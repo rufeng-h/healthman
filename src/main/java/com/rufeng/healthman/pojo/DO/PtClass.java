@@ -7,57 +7,44 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * 班级表
+ * </p>
  *
  * @author rufeng
- * @TableName pt_class
+ * @since 2022-03-19
  */
 @Data
 @Alias("PtClass")
 public class PtClass implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    /**
-     *
-     */
-    private String code;
-    /**
-     *
-     */
-    private Long id;
+
+    private Long clsId;
+
+    private String clsCode;
+
     /**
      * 班级名称
      */
-    private String name;
+    private String clsName;
+
     /**
-     * 学院id
+     * 学院代码
      */
-    private Long collegeId;
+    private String clgCode;
+
     /**
-     * 专业代码
+     * 录入系统时年级
      */
-    private String majorCode;
+    private Integer clsEntryGrade;
+
     /**
-     * 学院名称
+     * 录入系统年份
      */
-    private String collegeName;
-    /**
-     * 专业名称
-     */
-    private String majorName;
-    /**
-     *
-     */
-    private Integer grade;
-    /**
-     *
-     */
-    private LocalDateTime createdTime;
-    /**
-     *
-     */
-    private LocalDateTime lastModifyTime;
-    /**
-     *
-     */
-    private String deleted;
+    private Integer clsEntryYear;
+
+    private LocalDateTime clsCreated;
+
+    private LocalDateTime clsModified;
 }

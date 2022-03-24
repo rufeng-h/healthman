@@ -5,22 +5,29 @@
 <mapper namespace="com.rufeng.healthman.mapper.PtCollegeMapper">
 
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtCollege">
-        <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="principal" column="principal" jdbcType="VARCHAR"/>
-        <result property="office" column="office" jdbcType="VARCHAR"/>
-        <result property="tel" column="tel" jdbcType="VARCHAR"/>
-        <result property="home" column="home" jdbcType="VARCHAR"/>
-        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-        <result property="deleted" column="deleted" jdbcType="CHAR"/>
+        <id property="clgCode" column="clg_code" jdbcType="VARCHAR"/>
+        <result property="clgId" column="clg_id" jdbcType="BIGINT"/>
+        <result property="clgName" column="clg_name" jdbcType="VARCHAR"/>
+        <result property="clgPrincipal" column="clg_principal" jdbcType="VARCHAR"/>
+        <result property="clgOffice" column="clg_office" jdbcType="VARCHAR"/>
+        <result property="clgTel" column="clg_tel" jdbcType="VARCHAR"/>
+        <result property="clgHome" column="clg_home" jdbcType="VARCHAR"/>
+        <result property="clgCreated" column="clg_created" jdbcType="TIMESTAMP"/>
+        <result property="clgModified" column="clg_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,principal,
-        office,tel,created_time,
-        last_modify_time,home
+        clg_code,clg_id,clg_name,
+        clg_principal,clg_office,clg_tel,
+        clg_home,clg_created,clg_modified
     </sql>
+    <insert id="insertBatch">
+        INSERT INTO pt_college (clg_code, clg_name, clg_principal, clg_office, clg_tel, clg_home) VALUES
+        <foreach collection="items" separator="," item="item">
+            (#{item.clgCode}, #{item.clgName}, #{item.clgPrincipal}, #{item.clgOffice}, #{item.clgTel}, #{item.clgHome})
+        </foreach>
+    </insert>
+
     <select id="listCollege" resultType="com.rufeng.healthman.pojo.DO.PtCollege">
         SELECT
         <include refid="Base_Column_List"/>
@@ -29,6 +36,6 @@
     <select id="getCollege" resultType="com.rufeng.healthman.pojo.DO.PtCollege">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pt_college WHERE id = #{collegeId}
+        FROM pt_college WHERE clg_code = #{clgCode}
     </select>
 </mapper>

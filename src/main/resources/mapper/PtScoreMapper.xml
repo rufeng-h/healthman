@@ -5,20 +5,19 @@
 <mapper namespace="com.rufeng.healthman.mapper.PtScoreMapper">
 
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtScore">
-            <id property="stuNo" column="stu_no" jdbcType="BIGINT"/>
-            <id property="subjectId" column="subject_id" jdbcType="BIGINT"/>
-            <id property="year" column="year" jdbcType="OTHER"/>
-            <result property="id" column="id" jdbcType="BIGINT"/>
-            <result property="data" column="data" jdbcType="DECIMAL"/>
+            <id property="stuId" column="stu_id" jdbcType="BIGINT"/>
+            <id property="subId" column="sub_id" jdbcType="BIGINT"/>
+            <id property="scoYear" column="sco_year" jdbcType="INTEGER"/>
+            <result property="scoId" column="sco_id" jdbcType="BIGINT"/>
+            <result property="scoData" column="sco_data" jdbcType="DECIMAL"/>
             <result property="score" column="score" jdbcType="INTEGER"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-            <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-            <result property="deleted" column="deleted" jdbcType="CHAR"/>
+            <result property="scoCreated" column="sco_created" jdbcType="TIMESTAMP"/>
+            <result property="scoModified" column="sco_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        stu_no,subject_id,year,
-        data,score,
-        created_time,last_modify_time,deleted
+        stu_id,sub_id,sco_year,
+        sco_id,sco_data,score,
+        sco_created,sco_modified
     </sql>
 </mapper>

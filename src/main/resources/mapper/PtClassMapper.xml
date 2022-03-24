@@ -3,79 +3,77 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtClassMapper">
-
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtClass">
-        <id property="code" column="code" jdbcType="VARCHAR"/>
-        <result property="id" column="id" jdbcType="BIGINT"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="collegeId" column="college_id" jdbcType="BIGINT"/>
-        <result property="majorCode" column="major_code" jdbcType="VARCHAR"/>
-        <result property="collegeName" column="college_name" jdbcType="VARCHAR"/>
-        <result property="majorName" column="major_name" jdbcType="VARCHAR"/>
-        <result property="grade" column="grade" jdbcType="INTEGER"/>
-        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-        <result property="deleted" column="deleted" jdbcType="CHAR"/>
+        <id property="clsCode" column="cls_code" jdbcType="VARCHAR"/>
+        <result property="clsId" column="cls_id" jdbcType="BIGINT"/>
+        <result property="clsName" column="cls_name" jdbcType="VARCHAR"/>
+        <result property="clgCode" column="clg_code" jdbcType="VARCHAR"/>
+        <result property="clsEntryGrade" column="cls_entry_grade" jdbcType="INTEGER"/>
+        <result property="clsEntryYear" column="cls_entry_year" jdbcType="INTEGER"/>
+        <result property="clsCreated" column="cls_created" jdbcType="TIMESTAMP"/>
+        <result property="clsModified" column="cls_modified" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="ClassInfo" type="com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo">
+        <id property="clsCode" column="cls_code"/>
+        <result property="clsId" column="cls_id"/>
+        <result property="clgCode" column="clg_code"/>
+        <result property="clgName" column="clg_name"/>
+        <result property="clsName" column="cls_name"/>
+        <result property="clsEntryYear" column="cls_entry_year"/>
+        <result property="clsCreated" column="cls_created"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        code,name,
-        college_id,major_code,college_name,
-        major_name,grade,created_time,
-        last_modify_time
+        cls_code,
+        cls_id,
+        cls_name,
+        clg_code,
+        cls_entry_grade,
+        cls_entry_year,
+        cls_created,
+        cls_modified
     </sql>
 
-    <sql id="Query_Code">
-        <if test="query.code != null">
-            AND code = #{query.code}
+    <sql id="Query">
+        <if test="query.clsCode != null">
+            AND pt_class.cls_code = #{query.clsCode}
         </if>
-    </sql>
-
-    <sql id="Query_name">
-        <if test="query.name != null">
-            AND name like concat('%', #{query.name}, '%')
+        <if test="query.clgCode != null">
+            AND pt_class.clg_code = #{query.clgCode}
         </if>
-    </sql>
-
-    <sql id="Query_grade">
+        <if test="query.clsName != null">
+            <bind name="clsName" value="'%' + query.clsName + '%'"/>
+            AND pt_class.cls_name like #{clsName}
+        </if>
         <if test="query.grade != null">
-            AND grade = #{query.grade}
+            AND cls_entry_year = #{query.grade}
         </if>
     </sql>
 
-    <sql id="Query_CollegeId">
-        <if test="query.collegeId != null">
-            AND college_id = #{query.collegeId}
-        </if>
-    </sql>
 
-    <sql id="Query_CollegeName">
-        <if test="query.collegeName != null">
-            AND college_name = #{query.collegeName}
-        </if>
-    </sql>
+    <insert id="insertBatch">
+        INSERT INTO pt_class (cls_code, cls_name, clg_code, cls_entry_grade, cls_entry_year) VALUES
+        <foreach item="item" collection="items" separator=",">
+            (#{item.clsCode}, #{item.clsName}, #{item.clgCode}, #{item.clsEntryGrade}, #{item.clsEntryYear})
+        </foreach>
+    </insert>
 
-    <sql id="Query_MajorCode">
-        <if test="query.majorCode != null">
-            AND major_code = #{query.majorCode}
-        </if>
-    </sql>
-
-    <sql id="Query_All">
-        <include refid="Query_Code"/>
-        <include refid="Query_name"/>
-        <include refid="Query_grade"/>
-        <include refid="Query_CollegeId"/>
-        <include refid="Query_CollegeName"/>
-        <include refid="Query_MajorCode"/>
-    </sql>
-
-    <select id="pageClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
-        SELECT
-        <include refid="Base_Column_List"/>
+    <select id="pageClassInfo" resultType="com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo">
+        SELECT cls_id,
+               cls_code,
+               cls_name,
+               pt_class.clg_code AS clg_code,
+               cls_entry_year,
+               cls_created,
+               cls_modified,
+               clg_name
         FROM pt_class
+                     LEFT JOIN pt_college on pt_class.clg_code = pt_college.clg_code
         <where>
-            <include refid="Query_All"/>
+            <include refid="Query">
+                <property name="table" value="pt_class"/>
+            </include>
         </where>
     </select>
     <select id="listClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
@@ -83,18 +81,32 @@
         <include refid="Base_Column_List"/>
         FROM pt_class
         <where>
-            <include refid="Query_All"/>
+            <include refid="Query"/>
         </where>
     </select>
     <select id="listGrade" resultType="java.lang.Integer">
-        SELECT DISTINCT grade FROM pt_class
+        SELECT DISTINCT cls_entry_year
+        FROM pt_class
         <where>
-            <include refid="Query_All"/>
+            <include refid="Query"/>
         </where>
     </select>
     <select id="getPtClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pt_class WHERE code = #{code}
+        FROM pt_class
+        WHERE cls_code = #{code}
+    </select>
+
+    <select id="countStudent" resultType="map">
+        SELECT pt_class.cls_code, COUNT(pt_student.stu_gender)
+        FROM pt_class
+                     LEFT JOIN pt_student on pt_class.cls_code = pt_student.cls_code
+        <where>
+            <foreach collection="clsCodes" item="item" separator="," open="pt_class.cls_code IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
+        GROUP BY pt_class.cls_code
     </select>
 </mapper>

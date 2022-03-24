@@ -8,49 +8,41 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * 成绩表
+ * </p>
  *
  * @author rufeng
- * @TableName pt_score
+ * @since 2022-03-19
  */
 @Data
 @Alias("PtScore")
 public class PtScore implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
+    private Long scoId;
+
     /**
      * 学生学号
      */
-    private Long stuNo;
+    private Long stuId;
+
     /**
-     * 科目
+     * 科目id
      */
-    private Long subjectId;
-    /**
-     * 年度
-     */
-    private Object year;
-    /**
-     *
-     */
-    private Long id;
+    private Long subId;
+
+    private Integer scoYear;
+
     /**
      * 测试数据
      */
-    private BigDecimal data;
-    /**
-     *
-     */
+    private BigDecimal scoData;
+
     private Integer score;
-    /**
-     *
-     */
-    private LocalDateTime createdTime;
-    /**
-     *
-     */
-    private LocalDateTime lastModifyTime;
-    /**
-     *
-     */
-    private String deleted;
+
+    private LocalDateTime scoCreated;
+
+    private LocalDateTime scoModified;
 }

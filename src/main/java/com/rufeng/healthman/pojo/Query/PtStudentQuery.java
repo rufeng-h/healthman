@@ -2,9 +2,9 @@ package com.rufeng.healthman.pojo.Query;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
+import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.enums.QueryOrderEnum;
-import com.rufeng.healthman.pojo.DO.PtStudent;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * @author rufeng
@@ -12,11 +12,15 @@ import lombok.Setter;
  * @package com.rufeng.healthman.pojo.Query
  * @description TODO
  */
-@Setter
-public class PtStudentQuery extends PtStudent implements QueryOrder {
-    private final Converter<String, String> converter = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE);
+@Data
+public class PtStudentQuery implements QueryOrder {
+    private static final Converter<String, String> CONVERTER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE);
     private QueryOrderEnum order;
     private String field;
+    private String stuName;
+    private String stuId;
+    private String clsCode;
+    private GenderEnum stuGender;
 
     @Override
     public QueryOrderEnum getOrder() {
@@ -25,6 +29,6 @@ public class PtStudentQuery extends PtStudent implements QueryOrder {
 
     @Override
     public String getField() {
-        return converter.convert(this.field);
+        return CONVERTER.convert(this.field);
     }
 }

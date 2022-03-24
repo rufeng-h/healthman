@@ -2,10 +2,14 @@ package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.pojo.DO.PtStudent;
+import com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.Query.PtStudentQuery;
+import com.rufeng.healthman.pojo.file.PtStudentExcel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.NonNull;
+
+import java.util.List;
 
 /**
  * @author rufeng
@@ -19,7 +23,7 @@ public interface PtStudentMapper {
      * @param number 学号
      * @return stu
      */
-    PtStudent getStudent(@Param("number") @NonNull Long number);
+    PtStudent getStudent(@Param("stuId") @NonNull String number);
 
     /**
      * 按主键更新
@@ -35,7 +39,15 @@ public interface PtStudentMapper {
      * @param query 条件
      * @return page
      */
-    Page<PtStudent> pageStudent(@Param("query") PtStudentQuery query);
+    Page<StudentInfo> pageStudentInfo(@Param("query") PtStudentQuery query);
+
+    /**
+     * excel插入数据
+     *
+     * @param cachedDataList list
+     * @return updated count
+     */
+    Integer insertBatch(@Param("items") List<PtStudentExcel> cachedDataList);
 }
 
 

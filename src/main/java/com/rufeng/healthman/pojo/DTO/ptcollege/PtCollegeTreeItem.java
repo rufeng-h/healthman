@@ -13,11 +13,11 @@ import java.io.Serializable;
  */
 public class PtCollegeTreeItem implements TreeItem {
     private final String title;
-    private final Long key;
+    private final String key;
 
     public PtCollegeTreeItem(PtCollege college) {
-        this.title = college.getName();
-        this.key = college.getId();
+        this.title = college.getClgName();
+        this.key = college.getClgCode();
     }
 
     @Override

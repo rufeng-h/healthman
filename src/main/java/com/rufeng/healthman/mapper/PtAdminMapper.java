@@ -1,8 +1,9 @@
 package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
-import com.rufeng.healthman.pojo.DO.PtUser;
-import com.rufeng.healthman.pojo.Query.PtUserQuery;
+import com.rufeng.healthman.pojo.DO.PtAdmin;
+import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;
+import com.rufeng.healthman.pojo.Query.PtAdminQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.NonNull;
@@ -12,30 +13,30 @@ import org.springframework.lang.NonNull;
  * @description 针对表【pt_user(用户表)】的数据库操作Mapper
  */
 @Mapper
-public interface PtUserMapper {
+public interface PtAdminMapper {
     /**
      * 主键查
      *
      * @param id id
      * @return user or null
      */
-    PtUser getUser(@NonNull @Param("id") Long id);
+    PtAdmin getAdmin(@NonNull @Param("adminId") String id);
 
     /**
      * 按主键更新
      *
-     * @param user user
+     * @param admin admin
      * @return 受影响的行数
      */
-    Integer updateUserByKey(@NonNull @Param("user") PtUser user);
+    Integer updateAdminByKey(@NonNull @Param("admin") PtAdmin admin);
 
     /**
-     * 分页查询用户信息
+     * 分页查询管理员信息
      *
      * @param query 查询参数
      * @return page
      */
-    Page<PtUser> pageUser(@NonNull @Param("query") PtUserQuery query);
+    Page<AdminInfo> pageAdminInfo(@NonNull @Param("query") PtAdminQuery query);
 
 
     /**
@@ -44,9 +45,8 @@ public interface PtUserMapper {
      * @param user user obj
      * @return cnt
      */
-    Integer insertUser(@NonNull @Param("user") PtUser user);
+    Integer insertAdmin(@NonNull @Param("admin") PtAdmin user);
 }
-
 
 
 

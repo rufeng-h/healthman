@@ -19,7 +19,7 @@ public interface PtRoleMapper {
      * @param userId 用户id
      * @return page
      */
-    List<PtRole> listRole(Long userId);
+    List<PtRole> listRole(String userId);
 
     /**
      * 插入一条
@@ -29,7 +29,6 @@ public interface PtRoleMapper {
      */
     Integer insertRole(@Param("role") PtRole ptRole);
 }
-
 
 
 

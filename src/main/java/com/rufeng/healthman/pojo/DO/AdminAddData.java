@@ -10,13 +10,13 @@ import lombok.Data;
  * @description TODO
  */
 @Data
-public class UserAddData {
+public class AdminAddData {
     private String username;
     private String password;
     private String email;
     private String phone;
     private RoleTypeEnum roleType;
-    private Long collegeId;
+    private String clgCode;
     private String classCode;
     private String desp;
 }

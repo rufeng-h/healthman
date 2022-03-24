@@ -4,7 +4,7 @@ import com.rufeng.healthman.pojo.DO.PtClass;
 import com.rufeng.healthman.pojo.DTO.support.TreeItem;
 
 import java.io.Serializable;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * @author rufeng
@@ -19,10 +19,11 @@ public class PtClassTreeItem implements TreeItem {
     private final Integer grade;
 
     public PtClassTreeItem(PtClass ptClass) {
-        this.key = ptClass.getCode();
-        this.title = ptClass.getName();
-        this.collegeName = ptClass.getCollegeName();
-        this.grade = ptClass.getGrade();
+        this.key = ptClass.getClsCode();
+        this.title = ptClass.getClsName();
+        this.collegeName = ptClass.getClsName();
+        int year = LocalDateTime.now().getYear();
+        this.grade = ptClass.getClsEntryGrade() + ptClass.getClsEntryYear() - year;
     }
 
     public Integer getGrade() {

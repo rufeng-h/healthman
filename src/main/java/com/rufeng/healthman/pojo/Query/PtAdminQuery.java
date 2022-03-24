@@ -1,6 +1,6 @@
 package com.rufeng.healthman.pojo.Query;
 
-import com.rufeng.healthman.pojo.DO.PtUser;
+import com.rufeng.healthman.pojo.DO.PtAdmin;
 
 /**
  * @author rufeng
@@ -8,5 +8,5 @@ import com.rufeng.healthman.pojo.DO.PtUser;
  * @package com.rufeng.healthman.pojo.Query
  * @description TODO
  */
-public class PtUserQuery extends PtUser {
+public class PtAdminQuery extends PtAdmin {
 }

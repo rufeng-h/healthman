@@ -1,6 +1,5 @@
 package com.rufeng.healthman.pojo.DO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
@@ -10,79 +9,73 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * 学生表
+ * </p>
  *
  * @author rufeng
- * @TableName pt_student
+ * @since 2022-03-19
  */
 @Data
 @Alias("PtStudent")
 public class PtStudent implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    private String email;
-    private String phone;
-    /**
-     * 学号
-     */
-    private Long number;
+
     /**
      * id
      */
-    private Long id;
+    private Long sid;
+
+    /**
+     * 学号
+     */
+    private String stuId;
+
     /**
      * 姓名
      */
-    private String name;
+    private String stuName;
+
     /**
      * 出生日期
      */
-    private LocalDate birthday;
+    private LocalDate stuBirth;
+
     /**
      * 性别
      */
-    private GenderEnum gender;
+    private GenderEnum stuGender;
+
     /**
      * 登陆密码
      */
-    @JsonIgnore
     private String password;
+
     /**
      * 头像
      */
     private String avatar;
-    /**
-     * 学院id
-     */
-    private Long collegeId;
-    /**
-     * 专业代码
-     */
-    private String majorCode;
+
     /**
      * 班级代码
      */
-    private String classCode;
-
-    /**
-     * desp
-     */
-    private String desp;
+    private String clsCode;
 
     /**
      * 创建时间
      */
-    private LocalDateTime createdTime;
+    private LocalDateTime stuCreated;
+
     /**
      * 上次修改时间
      */
-    private LocalDateTime lastModifyTime;
+    private LocalDateTime stuModified;
+
     /**
      * 上次登录
      */
-    private LocalDateTime lastLoginTime;
-    /**
-     *
-     */
-    @JsonIgnore
-    private String deleted;
+    private LocalDateTime stuLastLogin;
+
+    private String stuDesp;
 }

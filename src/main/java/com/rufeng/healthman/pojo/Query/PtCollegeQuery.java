@@ -1,6 +1,6 @@
 package com.rufeng.healthman.pojo.Query;
 
-import com.rufeng.healthman.pojo.DO.PtCollege;
+import lombok.Data;
 
 /**
  * @author rufeng
@@ -8,5 +8,8 @@ import com.rufeng.healthman.pojo.DO.PtCollege;
  * @package com.rufeng.healthman.pojo.Query
  * @description TODO
  */
-public class PtCollegeQuery extends PtCollege {
+@Data
+public class PtCollegeQuery {
+    private String clgName;
+    private String clgCode;
 }

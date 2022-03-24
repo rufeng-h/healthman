@@ -1,6 +1,6 @@
 package com.rufeng.healthman.pojo.Query;
 
-import com.rufeng.healthman.pojo.DO.PtClass;
+import lombok.Data;
 
 /**
  * @author rufeng
@@ -8,5 +8,10 @@ import com.rufeng.healthman.pojo.DO.PtClass;
  * @package com.rufeng.healthman.pojo.Query
  * @description .
  */
-public class PtClassQuery extends PtClass {
+@Data
+public class PtClassQuery {
+    private String clsCode;
+    private String clsName;
+    private String clgCode;
+    private Integer grade;
 }

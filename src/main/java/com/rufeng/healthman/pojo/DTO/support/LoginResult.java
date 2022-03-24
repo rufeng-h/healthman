@@ -1,4 +1,4 @@
-package com.rufeng.healthman.pojo.DTO.ptuser;
+package com.rufeng.healthman.pojo.DTO.support;
 
 import lombok.Data;
 

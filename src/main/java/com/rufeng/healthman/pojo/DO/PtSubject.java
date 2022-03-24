@@ -1,6 +1,5 @@
 package com.rufeng.healthman.pojo.DO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -8,38 +7,32 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * 科目
+ * </p>
  *
  * @author rufeng
- * @TableName pt_subject
+ * @since 2022-03-19
  */
 @Data
 @Alias("PtSubject")
 public class PtSubject implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    /**
-     *
-     */
-    private Long id;
+
+    private Long subId;
+
     /**
      * 科目名称
      */
-    private String name;
+    private String subName;
+
     /**
      * 备注信息
      */
-    private String desp;
-    /**
-     *
-     */
-    private LocalDateTime createdTime;
-    /**
-     *
-     */
-    private LocalDateTime lastModifyTime;
-    /**
-     *
-     */
-    @JsonIgnore
-    private String deleted;
+    private String subDesp;
+
+    private LocalDateTime subCreated;
+
+    private LocalDateTime subModified;
 }

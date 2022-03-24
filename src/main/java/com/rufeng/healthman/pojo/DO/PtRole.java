@@ -1,55 +1,37 @@
 package com.rufeng.healthman.pojo.DO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
+import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * 角色表
+ * </p>
  *
  * @author rufeng
- * @TableName pt_role
+ * @since 2022-03-19
  */
 @Data
-public class PtRole implements Serializable, GrantedAuthority {
-    private static final long serialVersionUID = 1L;
-    /**
-     *
-     */
-    @JsonIgnore
-    private Long id;
-    /**
-     *
-     */
-    private String roleName;
-    /**
-     *
-     */
-    private String value;
-    /**
-     *
-     */
-    private LocalDateTime createdTime;
-    /**
-     *
-     */
-    private LocalDateTime lastModifyTime;
-    /**
-     *
-     */
-    @JsonIgnore
-    private String deleted;
-    /**
-     *
-     */
-    private Long userId;
+@Alias("PtRole")
+public class PtRole implements Serializable {
 
-    @Override
-    @JsonIgnore
-    public String getAuthority() {
-        return this.value;
-    }
+    private static final long serialVersionUID = 1L;
+
+    private String adminId;
+
+    private String roleName;
+
+    /**
+     * delete select update insert
+     */
+    private String roleValue;
+
+    private LocalDateTime roleCreated;
+
+    private LocalDateTime roleModified;
+
+    private Long roleId;
 }

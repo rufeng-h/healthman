@@ -2,8 +2,12 @@ package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.pojo.DO.PtClass;
+import com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo;
 import com.rufeng.healthman.pojo.Query.PtClassQuery;
+import com.rufeng.healthman.pojo.file.PtClassExcel;
+import org.springframework.core.io.Resource;
 import org.springframework.lang.NonNull;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,7 +26,7 @@ public interface PtClassService {
      * @param ptClassQuery 查询条件
      * @return page
      */
-    ApiPage<PtClass> pageClass(Integer page, Integer pageSize, @NonNull PtClassQuery ptClassQuery);
+    ApiPage<ClassInfo> pageClassInfo(Integer page, Integer pageSize, @NonNull PtClassQuery ptClassQuery);
 
     /**
      * 查询所有
@@ -48,4 +52,27 @@ public interface PtClassService {
      * @return class
      */
     PtClass getPtClass(String classCode);
+
+    /**
+     * 文件上传班级信息
+     *
+     * @param file excel
+     * @return 成功添加条数
+     */
+    Integer uploadClass(MultipartFile file);
+
+    /**
+     * 从excel添加
+     *
+     * @param cachedDataList data
+     * @return 添加条数
+     */
+    Integer addClass(List<PtClassExcel> cachedDataList);
+
+    /**
+     * 文件模板
+     *
+     * @return 文件资源
+     */
+    Resource fileTemplate();
 }

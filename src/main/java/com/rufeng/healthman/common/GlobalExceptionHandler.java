@@ -1,6 +1,7 @@
 package com.rufeng.healthman.common;
 
 import com.rufeng.healthman.common.api.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @description 全局异常处理
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
     /**
      * 未知异常

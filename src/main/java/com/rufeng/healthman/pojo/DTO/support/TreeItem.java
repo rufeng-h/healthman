@@ -1,7 +1,6 @@
 package com.rufeng.healthman.pojo.DTO.support;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public interface TreeItem {
      * @return chidren
      */
     default List<TreeItem> getChildren() {
-        return getIsLeaf() ? null : Collections.emptyList();
+        return null;
     }
 
     /**

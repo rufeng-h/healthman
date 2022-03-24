@@ -56,8 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint);
         httpSecurity.authorizeRequests()
-                .antMatchers("/api/**", "/test/api/**").authenticated()
+//                .antMatchers("/api/**", "/test/api/**").authenticated()
                 .antMatchers(HttpMethod.OPTIONS).permitAll();
+
     }
 
     @Bean

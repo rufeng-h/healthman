@@ -22,7 +22,7 @@ public class PtRoleServiceImpl implements PtRoleService {
     }
 
     @Override
-    public List<PtRole> listRole(Long userId) {
+    public List<PtRole> listRole(String userId) {
         return ptRoleMapper.listRole(userId);
     }
 
