@@ -1,30 +1,34 @@
 package com.rufeng.healthman.service;
 
+import com.rufeng.healthman.mapper.PtScoreSheetMapper;
 import com.rufeng.healthman.pojo.DO.PtScoreSheet;
 import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author rufeng
- * @time 2022-03-17 17:18
- * @package com.rufeng.healthman.service
+ * @time 2022-03-17 17:19
+ * @package com.rufeng.healthman.service.impl
  * @description TODO
  */
-public interface PtScoreSheetService {
-    /**
-     * 评分表
-     *
-     * @param query 查询参数
-     * @return list
-     */
-    List<PtScoreSheet> listScoreSheet(@NonNull PtScoreSheetQuery query);
+@Service
+public class PtScoreSheetService {
+    private final PtScoreSheetMapper ptScoreSheetMapper;
 
-    /**
-     *
-     * @param sheets
-     * @return
-     */
-    Integer addScoreSheet(List<PtScoreSheet> sheets);
+    public PtScoreSheetService(PtScoreSheetMapper ptScoreSheetMapper) {
+        this.ptScoreSheetMapper = ptScoreSheetMapper;
+    }
+
+    
+    public List<PtScoreSheet> listScoreSheet(@NonNull PtScoreSheetQuery query) {
+        return ptScoreSheetMapper.listScoreSheet(query);
+    }
+
+    
+    public Integer addScoreSheet(List<PtScoreSheet> sheets) {
+        return ptScoreSheetMapper.insertBatch(sheets);
+    }
 }

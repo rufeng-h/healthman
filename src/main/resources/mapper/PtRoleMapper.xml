@@ -1,30 +1,304 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtRoleMapper">
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtRole">
+    <!--@mbg.generated-->
+    <!--@Table pt_role-->
+    <id column="role_id" property="roleId" />
+    <result column="admin_id" property="adminId" />
+    <result column="role_name" property="roleName" />
+    <result column="role_value" property="roleValue" />
+    <result column="role_created" property="roleCreated" />
+    <result column="role_modified" property="roleModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    role_id, admin_id, role_name, role_value, role_created, role_modified
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pt_role
+    where role_id = #{roleId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from pt_role
+    where role_id = #{roleId}
+  </delete>
+  <insert id="insert" keyColumn="role_id" keyProperty="roleId" parameterType="com.rufeng.healthman.pojo.DO.PtRole" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_role (admin_id, role_name, role_value, role_created, role_modified)
+    values (#{adminId}, #{roleName}, #{roleValue}, #{roleCreated}, #{roleModified})
+  </insert>
+  <insert id="insertSelective" keyColumn="role_id" keyProperty="roleId" parameterType="com.rufeng.healthman.pojo.DO.PtRole" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="roleValue != null">
+        role_value,
+      </if>
+      <if test="roleCreated != null">
+        role_created,
+      </if>
+      <if test="roleModified != null">
+        role_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        #{adminId},
+      </if>
+      <if test="roleName != null">
+        #{roleName},
+      </if>
+      <if test="roleValue != null">
+        #{roleValue},
+      </if>
+      <if test="roleCreated != null">
+        #{roleCreated},
+      </if>
+      <if test="roleModified != null">
+        #{roleModified},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtRole">
+    <!--@mbg.generated-->
+    update pt_role
+    <set>
+      <if test="adminId != null">
+        admin_id = #{adminId},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName},
+      </if>
+      <if test="roleValue != null">
+        role_value = #{roleValue},
+      </if>
+      <if test="roleCreated != null">
+        role_created = #{roleCreated},
+      </if>
+      <if test="roleModified != null">
+        role_modified = #{roleModified},
+      </if>
+    </set>
+    where role_id = #{roleId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtRole">
+    <!--@mbg.generated-->
+    update pt_role
+    set admin_id = #{adminId},
+      role_name = #{roleName},
+      role_value = #{roleValue},
+      role_created = #{roleCreated},
+      role_modified = #{roleModified}
+    where role_id = #{roleId}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_role
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="admin_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when role_id = #{item.roleId} then #{item.adminId}
+        </foreach>
+      </trim>
+      <trim prefix="role_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when role_id = #{item.roleId} then #{item.roleName}
+        </foreach>
+      </trim>
+      <trim prefix="role_value = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when role_id = #{item.roleId} then #{item.roleValue}
+        </foreach>
+      </trim>
+      <trim prefix="role_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when role_id = #{item.roleId} then #{item.roleCreated}
+        </foreach>
+      </trim>
+      <trim prefix="role_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when role_id = #{item.roleId} then #{item.roleModified}
+        </foreach>
+      </trim>
+    </trim>
+    where role_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.roleId}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_role
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="admin_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.adminId != null">
+            when role_id = #{item.roleId} then #{item.adminId}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="role_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.roleName != null">
+            when role_id = #{item.roleId} then #{item.roleName}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="role_value = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.roleValue != null">
+            when role_id = #{item.roleId} then #{item.roleValue}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="role_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.roleCreated != null">
+            when role_id = #{item.roleId} then #{item.roleCreated}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="role_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.roleModified != null">
+            when role_id = #{item.roleId} then #{item.roleModified}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where role_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.roleId}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="role_id" keyProperty="roleId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_role
+    (admin_id, role_name, role_value, role_created, role_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.adminId}, #{item.roleName}, #{item.roleValue}, #{item.roleCreated}, #{item.roleModified}
+        )
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="role_id" keyProperty="roleId" parameterType="com.rufeng.healthman.pojo.DO.PtRole" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      admin_id,
+      role_name,
+      role_value,
+      role_created,
+      role_modified,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId},
+      </if>
+      #{adminId},
+      #{roleName},
+      #{roleValue},
+      #{roleCreated},
+      #{roleModified},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="roleId != null">
+        role_id = #{roleId},
+      </if>
+      admin_id = #{adminId},
+      role_name = #{roleName},
+      role_value = #{roleValue},
+      role_created = #{roleCreated},
+      role_modified = #{roleModified},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="role_id" keyProperty="roleId" parameterType="com.rufeng.healthman.pojo.DO.PtRole" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="roleValue != null">
+        role_value,
+      </if>
+      <if test="roleCreated != null">
+        role_created,
+      </if>
+      <if test="roleModified != null">
+        role_modified,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId},
+      </if>
+      <if test="adminId != null">
+        #{adminId},
+      </if>
+      <if test="roleName != null">
+        #{roleName},
+      </if>
+      <if test="roleValue != null">
+        #{roleValue},
+      </if>
+      <if test="roleCreated != null">
+        #{roleCreated},
+      </if>
+      <if test="roleModified != null">
+        #{roleModified},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="roleId != null">
+        role_id = #{roleId},
+      </if>
+      <if test="adminId != null">
+        admin_id = #{adminId},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName},
+      </if>
+      <if test="roleValue != null">
+        role_value = #{roleValue},
+      </if>
+      <if test="roleCreated != null">
+        role_created = #{roleCreated},
+      </if>
+      <if test="roleModified != null">
+        role_modified = #{roleModified},
+      </if>
+    </trim>
+  </insert>
 
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtRole">
-        <id property="roleId" column="rid" jdbcType="BIGINT"/>
-        <result property="adminId" column="admin_id" jdbcType="BIGINT"/>
-        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
-        <result property="roleValue" column="role_value" jdbcType="VARCHAR"/>
-        <result property="roleCreated" column="role_created" jdbcType="TIMESTAMP"/>
-        <result property="roleModified" column="role_modified" jdbcType="TIMESTAMP"/>
-    </resultMap>
-
-    <sql id="Base_Column_List">
-        role_id,admin_id,role_name,
-        role_value,role_created,role_modified
-    </sql>
-
-    <insert id="insertRole">
-        INSERT INTO pt_role (admin_id, role_name, role_value) value (#{role.userId}, #{role.roleName}, #{role.rovalue})
-    </insert>
     <select id="listRole" resultType="com.rufeng.healthman.pojo.DO.PtRole">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM pt_role WHERE admin_id = #{userId}
+        <include refid="Base_Column_List" />
+        FROM pt_role
+        WHERE admin_id = #{userId}
     </select>
-
 </mapper>

@@ -1,37 +1,77 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;
-import com.rufeng.healthman.pojo.DO.PtStudent;
-import com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo;
-import com.rufeng.healthman.pojo.Query.PtStudentQuery;
-import com.rufeng.healthman.pojo.file.PtStudentExcel;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.lang.NonNull;
-
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.DO.PtStudent;
 import java.util.List;
+import com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo;import com.rufeng.healthman.pojo.Query.PtStudentQuery;import com.rufeng.healthman.pojo.file.PtStudentExcel;import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 
 /**
  * @author rufeng
- * @description 针对表【pt_student(学生表)】的数据库操作Mapper
+ * @time 2022-03-27 20:23
+ * @package com.rufeng.healthman.mapper
+ * @description TODO
  */
+
 @Mapper
 public interface PtStudentMapper {
     /**
-     * 主键查
+     * delete by primary key
      *
-     * @param number 学号
-     * @return stu
+     * @param stuId primaryKey
+     * @return deleteCount
      */
-    PtStudent getStudent(@Param("stuId") @NonNull String number);
+    int deleteByPrimaryKey(String stuId);
 
     /**
-     * 按主键更新
+     * insert record to table
      *
-     * @param stu student
-     * @return 受影响的行数
+     * @param record the record
+     * @return insert count
      */
-    Integer updateStudentByKey(@Param("stu") @NonNull PtStudent stu);
+    int insert(PtStudent record);
+
+    int insertOrUpdate(PtStudent record);
+
+    int insertOrUpdateSelective(PtStudent record);
+
+    /**
+     * insert record to table selective
+     *
+     * @param record the record
+     * @return insert count
+     */
+    int insertSelective(PtStudent record);
+
+    /**
+     * select by primary key
+     *
+     * @param stuId primary key
+     * @return object by primary key
+     */
+    PtStudent selectByPrimaryKey(String stuId);
+
+    /**
+     * update record selective
+     *
+     * @param record the updated record
+     * @return update count
+     */
+    int updateByPrimaryKeySelective(PtStudent record);
+
+    /**
+     * update record
+     *
+     * @param record the updated record
+     * @return update count
+     */
+    int updateByPrimaryKey(PtStudent record);
+
+    int updateBatch(List<PtStudent> list);
+
+    int updateBatchSelective(List<PtStudent> list);
+
+    int batchInsert(@Param("list") List<PtStudent> list);
 
     /**
      * 条件查询
@@ -49,7 +89,3 @@ public interface PtStudentMapper {
      */
     Integer insertBatch(@Param("items") List<PtStudentExcel> cachedDataList);
 }
-
-
-
-

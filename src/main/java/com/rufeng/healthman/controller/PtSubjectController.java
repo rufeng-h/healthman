@@ -31,7 +31,7 @@ public class PtSubjectController {
     }
 
     @PostMapping
-    public ApiResponse<PtSubject> addSubject(@RequestBody PtScoreSheetFormdata data){
+    public ApiResponse<PtSubject> addSubject(@RequestBody PtScoreSheetFormdata data) {
         return ApiResponse.success(ptSubjectService.addSubject(data));
     }
 }

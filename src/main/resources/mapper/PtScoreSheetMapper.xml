@@ -1,34 +1,374 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtScoreSheetMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtScoreSheet">
-        <id property="subjectId" column="subject_id" jdbcType="BIGINT"/>
-        <id property="gender" column="gender" jdbcType="CHAR"/>
-        <id property="grade" column="grade" jdbcType="OTHER"/>
-        <id property="upper" column="upper" jdbcType="DECIMAL"/>
-        <id property="lower" column="lower" jdbcType="DECIMAL"/>
-        <result property="score" column="score" jdbcType="INTEGER"/>
-        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-        <result property="lastModifyTime" column="last_modify_time" jdbcType="TIMESTAMP"/>
-        <result property="level" column="level" jdbcType="VARCHAR"/>
-        <result property="id" column="id" jdbcType="BIGINT"/>
-    </resultMap>
-
-    <sql id="Base_Column_List">
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <!--@mbg.generated-->
+    <!--@Table pt_score_sheet-->
+    <id column="subject_id" property="subjectId" />
+    <id column="gender" property="gender" />
+    <id column="grade" property="grade" />
+    <id column="upper" property="upper" />
+    <id column="lower" property="lower" />
+    <result column="score" property="score" />
+    <result column="created_time" property="createdTime" />
+    <result column="last_modify_time" property="lastModifyTime" />
+    <result column="level" property="level" />
+    <result column="id" property="id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time, 
+    `level`, id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pt_score_sheet
+    where subject_id = #{subjectId}
+      and gender = #{gender}
+      and grade = #{grade}
+      and `upper` = #{upper}
+      and `lower` = #{lower}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    <!--@mbg.generated-->
+    delete from pt_score_sheet
+    where subject_id = #{subjectId}
+      and gender = #{gender}
+      and grade = #{grade}
+      and `upper` = #{upper}
+      and `lower` = #{lower}
+  </delete>
+  <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <!--@mbg.generated-->
+    insert into pt_score_sheet (subject_id, gender, grade, `upper`, `lower`, score, created_time, 
+      last_modify_time, `level`, id)
+    values (#{subjectId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime}, 
+      #{lastModifyTime}, #{level}, #{id})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <!--@mbg.generated-->
+    insert into pt_score_sheet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="subjectId != null">
         subject_id,
+      </if>
+      <if test="gender != null">
         gender,
+      </if>
+      <if test="grade != null">
         grade,
-        upper,
-        lower,
+      </if>
+      <if test="upper != null">
+        `upper`,
+      </if>
+      <if test="lower != null">
+        `lower`,
+      </if>
+      <if test="score != null">
         score,
+      </if>
+      <if test="createdTime != null">
         created_time,
+      </if>
+      <if test="lastModifyTime != null">
         last_modify_time,
-        level,
-        id
-    </sql>
-
+      </if>
+      <if test="level != null">
+        `level`,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="subjectId != null">
+        #{subjectId},
+      </if>
+      <if test="gender != null">
+        #{gender},
+      </if>
+      <if test="grade != null">
+        #{grade},
+      </if>
+      <if test="upper != null">
+        #{upper},
+      </if>
+      <if test="lower != null">
+        #{lower},
+      </if>
+      <if test="score != null">
+        #{score},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime},
+      </if>
+      <if test="lastModifyTime != null">
+        #{lastModifyTime},
+      </if>
+      <if test="level != null">
+        #{level},
+      </if>
+      <if test="id != null">
+        #{id},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <!--@mbg.generated-->
+    update pt_score_sheet
+    <set>
+      <if test="score != null">
+        score = #{score},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime},
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time = #{lastModifyTime},
+      </if>
+      <if test="level != null">
+        `level` = #{level},
+      </if>
+      <if test="id != null">
+        id = #{id},
+      </if>
+    </set>
+    where subject_id = #{subjectId}
+      and gender = #{gender}
+      and grade = #{grade}
+      and `upper` = #{upper}
+      and `lower` = #{lower}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <!--@mbg.generated-->
+    update pt_score_sheet
+    set score = #{score},
+      created_time = #{createdTime},
+      last_modify_time = #{lastModifyTime},
+      `level` = #{level},
+      id = #{id}
+    where subject_id = #{subjectId}
+      and gender = #{gender}
+      and grade = #{grade}
+      and `upper` = #{upper}
+      and `lower` = #{lower}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_score_sheet
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="score = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when subject_id = #{item.subjectId} then #{item.score}
+        </foreach>
+      </trim>
+      <trim prefix="created_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when subject_id = #{item.subjectId} then #{item.createdTime}
+        </foreach>
+      </trim>
+      <trim prefix="last_modify_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when subject_id = #{item.subjectId} then #{item.lastModifyTime}
+        </foreach>
+      </trim>
+      <trim prefix="`level` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when subject_id = #{item.subjectId} then #{item.level}
+        </foreach>
+      </trim>
+      <trim prefix="id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when subject_id = #{item.subjectId} then #{item.id}
+        </foreach>
+      </trim>
+    </trim>
+    where subject_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.subjectId}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_score_sheet
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="score = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.score != null">
+            when subject_id = #{item.subjectId} then #{item.score}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="created_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.createdTime != null">
+            when subject_id = #{item.subjectId} then #{item.createdTime}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="last_modify_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.lastModifyTime != null">
+            when subject_id = #{item.subjectId} then #{item.lastModifyTime}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`level` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.level != null">
+            when subject_id = #{item.subjectId} then #{item.level}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.id != null">
+            when subject_id = #{item.subjectId} then #{item.id}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where subject_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.subjectId}
+    </foreach>
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into pt_score_sheet
+    (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time, 
+      `level`, id)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.subjectId}, #{item.gender}, #{item.grade}, #{item.upper}, #{item.lower}, 
+        #{item.score}, #{item.createdTime}, #{item.lastModifyTime}, #{item.level}, #{item.id}
+        )
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <!--@mbg.generated-->
+    insert into pt_score_sheet
+    (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time, 
+      `level`, id)
+    values
+    (#{subjectId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime}, 
+      #{lastModifyTime}, #{level}, #{id})
+    on duplicate key update 
+    subject_id = #{subjectId}, 
+    gender = #{gender}, 
+    grade = #{grade}, 
+    `upper` = #{upper}, 
+    `lower` = #{lower}, 
+    score = #{score}, 
+    created_time = #{createdTime}, 
+    last_modify_time = #{lastModifyTime}, 
+    `level` = #{level}, 
+    id = #{id}
+  </insert>
+  <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <!--@mbg.generated-->
+    insert into pt_score_sheet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="subjectId != null">
+        subject_id,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="upper != null">
+        `upper`,
+      </if>
+      <if test="lower != null">
+        `lower`,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time,
+      </if>
+      <if test="level != null">
+        `level`,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="subjectId != null">
+        #{subjectId},
+      </if>
+      <if test="gender != null">
+        #{gender},
+      </if>
+      <if test="grade != null">
+        #{grade},
+      </if>
+      <if test="upper != null">
+        #{upper},
+      </if>
+      <if test="lower != null">
+        #{lower},
+      </if>
+      <if test="score != null">
+        #{score},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime},
+      </if>
+      <if test="lastModifyTime != null">
+        #{lastModifyTime},
+      </if>
+      <if test="level != null">
+        #{level},
+      </if>
+      <if test="id != null">
+        #{id},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="subjectId != null">
+        subject_id = #{subjectId},
+      </if>
+      <if test="gender != null">
+        gender = #{gender},
+      </if>
+      <if test="grade != null">
+        grade = #{grade},
+      </if>
+      <if test="upper != null">
+        `upper` = #{upper},
+      </if>
+      <if test="lower != null">
+        `lower` = #{lower},
+      </if>
+      <if test="score != null">
+        score = #{score},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime},
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time = #{lastModifyTime},
+      </if>
+      <if test="level != null">
+        `level` = #{level},
+      </if>
+      <if test="id != null">
+        id = #{id},
+      </if>
+    </trim>
+  </insert>
     <sql id="Query_SubjectId">
         <if test="query.subjectId != null">
             AND subject_id = #{query.subjectId}
@@ -56,7 +396,7 @@
 
     <select id="listScoreSheet" resultType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_score_sheet
         WHERE grade = #{query.grade}
           AND subject_id = #{query.subjectId}
@@ -66,8 +406,8 @@
     <insert id="insertBatch">
         INSERT INTO pt_score_sheet (subject_id, grade, gender, upper, lower, score, level)
                 VALUES
-        <foreach collection="items" separator="," item="item">
-            (#{item.subjectId}, #{item.grade.value}, #{item.gender}, #{item.upper}, #{item.lower}, #{item.score},
+        <foreach collection="items" item="item" separator=",">
+            (#{item.subjectId}, #{item.grade}, #{item.gender}, #{item.upper}, #{item.lower}, #{item.score},
              #{item.level})
         </foreach>
     </insert>

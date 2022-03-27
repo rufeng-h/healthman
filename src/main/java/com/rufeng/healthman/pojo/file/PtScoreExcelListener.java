@@ -86,7 +86,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
             } else {
                 PtScore ptScore = new PtScore();
                 ptScore.setStuId(stuId);
-                ptScore.setScoYear(year);
+//                ptScore.setMsId(year);
                 ptScore.setScoData(new BigDecimal(value));
                 ptScore.setSubId(colSubIdMap.get(key));
                 dataList.add(ptScore);

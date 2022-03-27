@@ -2,7 +2,6 @@ package com.rufeng.healthman.config.support;
 
 import com.rufeng.healthman.common.JwtTokenUtil;
 import com.rufeng.healthman.service.RedisService;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -4,7 +4,7 @@ import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DTO.support.LoginResult;
 import com.rufeng.healthman.pojo.DTO.support.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
-import com.rufeng.healthman.service.CommonService;
+import com.rufeng.healthman.service.PtCommonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,26 +22,26 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @Tag(name = "common", description = "common")
 public class CommonController {
-    private final CommonService commonService;
+    private final PtCommonService ptCommonService;
 
-    public CommonController(CommonService commonService) {
-        this.commonService = commonService;
+    public CommonController(PtCommonService ptCommonService) {
+        this.ptCommonService = ptCommonService;
     }
 
     @GetMapping("/api/logout")
     public ApiResponse<Void> logout() {
-        commonService.logout();
+        ptCommonService.logout();
         return ApiResponse.success();
     }
 
     @PostMapping("/login")
     public ApiResponse<LoginResult> login(
             @RequestBody @Validated LoginQuery loginQuery) {
-        return ApiResponse.success(commonService.login(loginQuery));
+        return ApiResponse.success(ptCommonService.login(loginQuery));
     }
 
     @GetMapping("/api/userInfo")
     public ApiResponse<UserInfo> userInfo() {
-        return ApiResponse.success(commonService.userInfo());
+        return ApiResponse.success(ptCommonService.userInfo());
     }
 }

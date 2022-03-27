@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author rufeng
@@ -23,8 +24,8 @@ public class PtStudentExcel {
     private String stuId;
     @ExcelProperty("姓名")
     private String stuName;
-    @ExcelProperty(value = "出生日期", converter = StringToLocalDateConverter.class)
-    private LocalDate stuBirth;
+    @ExcelProperty(value = "出生日期")
+    private Date stuBirth;
     @ExcelProperty(value = "性别", converter = StringToGenderConverter.class)
     private GenderEnum stuGender;
     @ExcelProperty("班级代码")

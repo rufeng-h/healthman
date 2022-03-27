@@ -1,18 +1,78 @@
 package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.pojo.DO.PtCollege;
-import com.rufeng.healthman.pojo.file.PtCollegeExcel;
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
+import com.rufeng.healthman.pojo.file.PtCollegeExcel;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 
 /**
  * @author rufeng
- * @description 针对表【pt_college(学院表)】的数据库操作Mapper
+ * @time 2022-03-27 20:23
+ * @package com.rufeng.healthman.mapper
+ * @description TODO
  */
+
 @Mapper
 public interface PtCollegeMapper {
+    /**
+     * delete by primary key
+     *
+     * @param clgCode primaryKey
+     * @return deleteCount
+     */
+    int deleteByPrimaryKey(String clgCode);
+
+    /**
+     * insert record to table
+     *
+     * @param record the record
+     * @return insert count
+     */
+    int insert(PtCollege record);
+
+    int insertOrUpdate(PtCollege record);
+
+    int insertOrUpdateSelective(PtCollege record);
+
+    /**
+     * insert record to table selective
+     *
+     * @param record the record
+     * @return insert count
+     */
+    int insertSelective(PtCollege record);
+
+    /**
+     * select by primary key
+     *
+     * @param clgCode primary key
+     * @return object by primary key
+     */
+    PtCollege selectByPrimaryKey(String clgCode);
+
+    /**
+     * update record selective
+     *
+     * @param record the updated record
+     * @return update count
+     */
+    int updateByPrimaryKeySelective(PtCollege record);
+
+    /**
+     * update record
+     *
+     * @param record the updated record
+     * @return update count
+     */
+    int updateByPrimaryKey(PtCollege record);
+
+    int updateBatch(List<PtCollege> list);
+
+    int updateBatchSelective(List<PtCollege> list);
+
+    int batchInsert(@Param("list") List<PtCollege> list);
+
     /**
      * 查询所有
      *
@@ -36,8 +96,3 @@ public interface PtCollegeMapper {
      */
     Integer insertBatch(@Param("items") List<PtCollegeExcel> cachedDataList);
 }
-
-
-
-
-
