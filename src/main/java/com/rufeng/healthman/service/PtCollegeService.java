@@ -24,44 +24,20 @@ import java.util.List;
 @Service
 public class PtCollegeService {
     private final PtCollegeMapper ptCollegeMapper;
-    private final PtClassService ptClassService;
 
-    public PtCollegeService(PtCollegeMapper ptCollegeMapper, PtClassService ptClassService) {
+    public PtCollegeService(PtCollegeMapper ptCollegeMapper) {
         this.ptCollegeMapper = ptCollegeMapper;
-        this.ptClassService = ptClassService;
     }
 
-    
+
     public List<PtCollege> listCollege() {
         return ptCollegeMapper.listCollege();
     }
 
-//    
-//    public PtCollegeInfo getCollegeInfo(String clgCode) {
-//        /* 查询所有年级 */
-//        PtClassQuery classQuery = new PtClassQuery();
-//        classQuery.setClgCode(collegeId);
-//        List<Integer> grades = ptClassService.listGrade(classQuery);
-//
-//        /* 查询所有专业 */
-//        PtMajorQuery majorQuery = new PtMajorQuery();
-//        majorQuery.setCollegeId(collegeId);
-//        List<PtMajor> majors = ptMajorService.listMajor(majorQuery);
-//
-//        PtCollegeInfo collegeInfo = new PtCollegeInfo();
-//        collegeInfo.setGrades(grades);
-//        collegeInfo.setMajors(majors);
-//        collegeInfo.setId(collegeId);
-//        return collegeInfo;
-//        return null;
-//    }
-
-    
     public PtCollege getCollege(String clgCode) {
         return ptCollegeMapper.getCollege(clgCode);
     }
 
-    
     public Integer uploadCollege(MultipartFile file) {
         PtCollegeExcelListener listener = new PtCollegeExcelListener(this);
         try {
@@ -72,15 +48,15 @@ public class PtCollegeService {
         return listener.getHandledCount();
     }
 
-    
-    public Integer addCollege(List<PtCollegeExcel> cachedDataList) {
+
+    public Integer addCollegeSelective(List<PtCollegeExcel> cachedDataList) {
         if (cachedDataList.size() == 0) {
             return 0;
         }
-        return ptCollegeMapper.insertBatch(cachedDataList);
+        return ptCollegeMapper.batchInsertSelective(cachedDataList);
     }
 
-    
+
     public Resource fileTemplate() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcel.write(outputStream, PtCollegeExcel.class).sheet()

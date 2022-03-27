@@ -25,8 +25,10 @@ public class PtRoleService {
         return ptRoleMapper.listRole(userId);
     }
 
-
-    public Integer insertRole(PtRole ptRole) {
-        return ptRoleMapper.insertSelective(ptRole);
+    public int addRoleSelective(List<PtRole> roles) {
+        if (roles.size() == 0) {
+            return 0;
+        }
+        return ptRoleMapper.batchInsertSelective(roles);
     }
 }

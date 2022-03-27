@@ -53,7 +53,7 @@ public class PtSubjectService {
                     sheet.setGender(gender.getGender());
                     sheet.setGrade(grade.getValue());
                 }
-                ptScoreSheetService.addScoreSheet(sheets);
+                ptScoreSheetService.addScoreSheetSelective(sheets);
             }
         }
         return subject;

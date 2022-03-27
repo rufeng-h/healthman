@@ -1,15 +1,15 @@
 package com.rufeng.healthman.service;
 
+import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.AuthorityUtil;
 import com.rufeng.healthman.common.JwtTokenUtil;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtAdminMapper;
 import com.rufeng.healthman.pojo.DO.PtAdmin;
-import com.rufeng.healthman.pojo.DO.PtClass;
-import com.rufeng.healthman.pojo.DO.PtCollege;
 import com.rufeng.healthman.pojo.DO.PtRole;
 import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.DTO.ptadmin.UserIdRoleTypeAuthentication;
@@ -17,21 +17,25 @@ import com.rufeng.healthman.pojo.DTO.support.LoginResult;
 import com.rufeng.healthman.pojo.DTO.support.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
 import com.rufeng.healthman.pojo.Query.PtAdminQuery;
-import com.rufeng.healthman.pojo.data.PtAdminFormdata;
+import com.rufeng.healthman.pojo.file.PtAdminExcel;
+import com.rufeng.healthman.pojo.file.PtAdminExcelListener;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
+
+import static com.rufeng.healthman.common.AuthorityUtil.ALL_AUTHORITY;
 
 /**
  * @author rufeng
@@ -52,8 +56,7 @@ public class PtAdminService {
                           PasswordEncoder passwordEncoder,
                           RedisService redisService,
                           PtRoleService ptRoleService,
-                          PtCollegeService ptCollegeService,
-                          PtClassService ptClassService) {
+                          PtCollegeService ptCollegeService, PtClassService ptClassService) {
         this.ptAdminMapper = ptAdminMapper;
         this.passwordEncoder = passwordEncoder;
         this.redisService = redisService;
@@ -69,47 +72,6 @@ public class PtAdminService {
         return ApiPage.convert(infos);
     }
 
-
-    @Transactional(rollbackFor = Exception.class)
-    public UserInfo addAdmin(PtAdminFormdata data) {
-        RoleTypeEnum roleType = data.getRoleType();
-        PtAdmin user = new PtAdmin();
-        user.setAdminName(data.getUsername());
-        user.setPassword(passwordEncoder.encode(data.getPassword()));
-        user.setAdminDesp(data.getDesp());
-        user.setEmail(data.getEmail());
-        user.setPhone(data.getPhone());
-        ptAdminMapper.insertSelective(user);
-
-        PtRole ptRole = new PtRole();
-        ptRole.setAdminId(user.getAdminId());
-        PtCollege college;
-        PtClass ptClass;
-        switch (roleType) {
-            case SYSTEM:
-                ptRole.setRoleName(roleType.getValue());
-//                ptRole.setValue("0");
-                break;
-            case COLLEGE:
-                college = ptCollegeService.getCollege(data.getClgCode());
-                ptRole.setRoleName(college.getClgName());
-//                ptRole.setValue(college.getId().toString());
-                break;
-            case CLASS:
-                ptClass = ptClassService.getPtClass(data.getClassCode());
-                assert ptClass.getClgCode().equals(data.getClgCode());
-//                ptRole.setRoleName(ptClass.getCollegeName() + " " + ptClass.getClsName());
-//                ptRole.setValue(ptClass.getClgCode() + ":" + ptClass.getClsCode());
-                break;
-            default:
-                throw new IllegalArgumentException("参数错误");
-        }
-        ptRoleService.insertRole(ptRole);
-
-        user.setAdminCreated(new Date());
-        return new AdminInfo(user, Collections.singletonList(ptRole));
-    }
-
     @Transactional(rollbackFor = Exception.class)
     public LoginResult login(LoginQuery loginQuery) {
         PtAdmin admin = ptAdminMapper.selectByPrimaryKey(loginQuery.getUserId());
@@ -122,8 +84,7 @@ public class PtAdminService {
 
         /* 查询角色权限 */
         List<PtRole> roles = ptRoleService.listRole(admin.getAdminId());
-        List<GrantedAuthority> authorities = roles.stream().map(PtRole::getRoleValue)
-                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtil.fromPtRoles(roles);
 
         /* 认证信息 */
         Authentication authentication = new UserIdRoleTypeAuthentication(admin.getAdminId(),
@@ -149,5 +110,52 @@ public class PtAdminService {
         PtAdmin user = ptAdminMapper.selectByPrimaryKey(adminId);
         List<PtRole> roles = ptRoleService.listRole(user.getAdminId());
         return new AdminInfo(user, roles);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Integer addAdmin(List<PtAdminExcel> list) {
+        if (list.size() == 0) {
+            return 0;
+        }
+        List<PtRole> roles = new ArrayList<>();
+        List<PtAdmin> admins = new ArrayList<>();
+        for (PtAdminExcel admin : list) {
+            String adminId = admin.getAdminId();
+            admins.add(PtAdmin.builder().adminId(adminId)
+                    .adminDesp(admin.getAdminDesp())
+                    .adminName(admin.getAdminName())
+                    .email(admin.getEmail())
+                    .phone(admin.getPhone()).build());
+            admin.getClgCodes().forEach(code -> roles.add(PtRole.builder()
+                    .roleType(RoleTypeEnum.COLLEGE)
+                    .roleValue(ALL_AUTHORITY)
+                    .adminId(adminId)
+                    .target(code).build()));
+            admin.getClsCodes().forEach(code -> roles.add(PtRole.builder()
+                    .roleValue(ALL_AUTHORITY)
+                    .adminId(adminId)
+                    .roleType(RoleTypeEnum.CLASS)
+                    .target(code).build()));
+
+        }
+        int count = ptAdminMapper.batchInsertSelective(admins);
+        ptRoleService.addRoleSelective(roles);
+        return count;
+    }
+
+    public Integer uploadAdmin(MultipartFile file) {
+        PtAdminExcelListener listener = new PtAdminExcelListener(this, ptCollegeService, ptClassService);
+        try {
+            EasyExcel.read(file.getInputStream(), PtAdminExcel.class, listener).sheet().doRead();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return listener.getHandledCount();
+    }
+
+    public Resource excelTemplate() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        EasyExcel.write(outputStream, PtAdminExcel.class).sheet().doWrite(Collections.emptyList());
+        return new ByteArrayResource(outputStream.toByteArray());
     }
 }

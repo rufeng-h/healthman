@@ -1,363 +1,362 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtClassMapper">
-  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtClass">
-    <!--@mbg.generated-->
-    <!--@Table pt_class-->
-    <id column="cls_code" property="clsCode" />
-    <result column="cls_id" property="clsId" />
-    <result column="cls_name" property="clsName" />
-    <result column="clg_code" property="clgCode" />
-    <result column="cls_entry_grade" property="clsEntryGrade" />
-    <result column="cls_entry_year" property="clsEntryYear" />
-    <result column="cls_created" property="clsCreated" />
-    <result column="cls_modified" property="clsModified" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created, 
-    cls_modified
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from pt_class
-    where cls_code = #{clsCode}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    <!--@mbg.generated-->
-    delete from pt_class
-    where cls_code = #{clsCode}
-  </delete>
-  <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
-    <!--@mbg.generated-->
-    insert into pt_class (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, 
-      cls_created, cls_modified)
-    values (#{clsCode}, #{clsId}, #{clsName}, #{clgCode}, #{clsEntryGrade}, #{clsEntryYear}, 
-      #{clsCreated}, #{clsModified})
-  </insert>
-  <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
-    <!--@mbg.generated-->
-    insert into pt_class
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="clsCode != null">
-        cls_code,
-      </if>
-      <if test="clsId != null">
-        cls_id,
-      </if>
-      <if test="clsName != null">
-        cls_name,
-      </if>
-      <if test="clgCode != null">
-        clg_code,
-      </if>
-      <if test="clsEntryGrade != null">
-        cls_entry_grade,
-      </if>
-      <if test="clsEntryYear != null">
-        cls_entry_year,
-      </if>
-      <if test="clsCreated != null">
-        cls_created,
-      </if>
-      <if test="clsModified != null">
-        cls_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="clsCode != null">
-        #{clsCode},
-      </if>
-      <if test="clsId != null">
-        #{clsId},
-      </if>
-      <if test="clsName != null">
-        #{clsName},
-      </if>
-      <if test="clgCode != null">
-        #{clgCode},
-      </if>
-      <if test="clsEntryGrade != null">
-        #{clsEntryGrade},
-      </if>
-      <if test="clsEntryYear != null">
-        #{clsEntryYear},
-      </if>
-      <if test="clsCreated != null">
-        #{clsCreated},
-      </if>
-      <if test="clsModified != null">
-        #{clsModified},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
-    <!--@mbg.generated-->
-    update pt_class
-    <set>
-      <if test="clsId != null">
-        cls_id = #{clsId},
-      </if>
-      <if test="clsName != null">
-        cls_name = #{clsName},
-      </if>
-      <if test="clgCode != null">
-        clg_code = #{clgCode},
-      </if>
-      <if test="clsEntryGrade != null">
-        cls_entry_grade = #{clsEntryGrade},
-      </if>
-      <if test="clsEntryYear != null">
-        cls_entry_year = #{clsEntryYear},
-      </if>
-      <if test="clsCreated != null">
-        cls_created = #{clsCreated},
-      </if>
-      <if test="clsModified != null">
-        cls_modified = #{clsModified},
-      </if>
-    </set>
-    where cls_code = #{clsCode}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
-    <!--@mbg.generated-->
-    update pt_class
-    set cls_id = #{clsId},
-      cls_name = #{clsName},
-      clg_code = #{clgCode},
-      cls_entry_grade = #{clsEntryGrade},
-      cls_entry_year = #{clsEntryYear},
-      cls_created = #{clsCreated},
-      cls_modified = #{clsModified}
-    where cls_code = #{clsCode}
-  </update>
-  <update id="updateBatch" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_class
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="cls_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when cls_code = #{item.clsCode} then #{item.clsId}
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtClass">
+        <!--@mbg.generated-->
+        <!--@Table pt_class-->
+        <id column="cls_code" property="clsCode"/>
+        <result column="cls_id" property="clsId"/>
+        <result column="cls_name" property="clsName"/>
+        <result column="clg_code" property="clgCode"/>
+        <result column="cls_entry_grade" property="clsEntryGrade"/>
+        <result column="cls_entry_year" property="clsEntryYear"/>
+        <result column="cls_created" property="clsCreated"/>
+        <result column="cls_modified" property="clsModified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
+        cls_modified
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_class
+        where cls_code = #{clsCode}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete
+        from pt_class
+        where cls_code = #{clsCode}
+    </delete>
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+        <!--@mbg.generated-->
+        insert into pt_class (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year,
+                              cls_created, cls_modified)
+        values (#{clsCode}, #{clsId}, #{clsName}, #{clgCode}, #{clsEntryGrade}, #{clsEntryYear},
+                #{clsCreated}, #{clsModified})
+    </insert>
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+        <!--@mbg.generated-->
+        insert into pt_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clsCode != null">
+                cls_code,
+            </if>
+            <if test="clsId != null">
+                cls_id,
+            </if>
+            <if test="clsName != null">
+                cls_name,
+            </if>
+            <if test="clgCode != null">
+                clg_code,
+            </if>
+            <if test="clsEntryGrade != null">
+                cls_entry_grade,
+            </if>
+            <if test="clsEntryYear != null">
+                cls_entry_year,
+            </if>
+            <if test="clsCreated != null">
+                cls_created,
+            </if>
+            <if test="clsModified != null">
+                cls_modified,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clsCode != null">
+                #{clsCode},
+            </if>
+            <if test="clsId != null">
+                #{clsId},
+            </if>
+            <if test="clsName != null">
+                #{clsName},
+            </if>
+            <if test="clgCode != null">
+                #{clgCode},
+            </if>
+            <if test="clsEntryGrade != null">
+                #{clsEntryGrade},
+            </if>
+            <if test="clsEntryYear != null">
+                #{clsEntryYear},
+            </if>
+            <if test="clsCreated != null">
+                #{clsCreated},
+            </if>
+            <if test="clsModified != null">
+                #{clsModified},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+        <!--@mbg.generated-->
+        update pt_class
+        <set>
+            <if test="clsId != null">
+                cls_id = #{clsId},
+            </if>
+            <if test="clsName != null">
+                cls_name = #{clsName},
+            </if>
+            <if test="clgCode != null">
+                clg_code = #{clgCode},
+            </if>
+            <if test="clsEntryGrade != null">
+                cls_entry_grade = #{clsEntryGrade},
+            </if>
+            <if test="clsEntryYear != null">
+                cls_entry_year = #{clsEntryYear},
+            </if>
+            <if test="clsCreated != null">
+                cls_created = #{clsCreated},
+            </if>
+            <if test="clsModified != null">
+                cls_modified = #{clsModified},
+            </if>
+        </set>
+        where cls_code = #{clsCode}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+        <!--@mbg.generated-->
+        update pt_class
+        set cls_id          = #{clsId},
+            cls_name        = #{clsName},
+            clg_code        = #{clgCode},
+            cls_entry_grade = #{clsEntryGrade},
+            cls_entry_year  = #{clsEntryYear},
+            cls_created     = #{clsCreated},
+            cls_modified    = #{clsModified}
+        where cls_code = #{clsCode}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_class
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="cls_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when cls_code = #{item.clsCode} then #{item.clsId}
+                </foreach>
+            </trim>
+            <trim prefix="cls_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when cls_code = #{item.clsCode} then #{item.clsName}
+                </foreach>
+            </trim>
+            <trim prefix="clg_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when cls_code = #{item.clsCode} then #{item.clgCode}
+                </foreach>
+            </trim>
+            <trim prefix="cls_entry_grade = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when cls_code = #{item.clsCode} then #{item.clsEntryGrade}
+                </foreach>
+            </trim>
+            <trim prefix="cls_entry_year = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when cls_code = #{item.clsCode} then #{item.clsEntryYear}
+                </foreach>
+            </trim>
+            <trim prefix="cls_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when cls_code = #{item.clsCode} then #{item.clsCreated}
+                </foreach>
+            </trim>
+            <trim prefix="cls_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when cls_code = #{item.clsCode} then #{item.clsModified}
+                </foreach>
+            </trim>
+        </trim>
+        where cls_code in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.clsCode}
         </foreach>
-      </trim>
-      <trim prefix="cls_name = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when cls_code = #{item.clsCode} then #{item.clsName}
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_class
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="cls_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clsId != null">
+                        when cls_code = #{item.clsCode} then #{item.clsId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="cls_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clsName != null">
+                        when cls_code = #{item.clsCode} then #{item.clsName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="clg_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clgCode != null">
+                        when cls_code = #{item.clsCode} then #{item.clgCode}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="cls_entry_grade = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clsEntryGrade != null">
+                        when cls_code = #{item.clsCode} then #{item.clsEntryGrade}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="cls_entry_year = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clsEntryYear != null">
+                        when cls_code = #{item.clsCode} then #{item.clsEntryYear}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="cls_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clsCreated != null">
+                        when cls_code = #{item.clsCode} then #{item.clsCreated}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="cls_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clsModified != null">
+                        when cls_code = #{item.clsCode} then #{item.clsModified}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where cls_code in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.clsCode}
         </foreach>
-      </trim>
-      <trim prefix="clg_code = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when cls_code = #{item.clsCode} then #{item.clgCode}
+    </update>
+    <insert id="batchInsert" parameterType="map">
+        <!--@mbg.generated-->
+        insert into pt_class
+                (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
+                 cls_modified)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.clsCode}, #{item.clsId}, #{item.clsName}, #{item.clgCode}, #{item.clsEntryGrade},
+             #{item.clsEntryYear}, #{item.clsCreated}, #{item.clsModified})
         </foreach>
-      </trim>
-      <trim prefix="cls_entry_grade = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when cls_code = #{item.clsCode} then #{item.clsEntryGrade}
-        </foreach>
-      </trim>
-      <trim prefix="cls_entry_year = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when cls_code = #{item.clsCode} then #{item.clsEntryYear}
-        </foreach>
-      </trim>
-      <trim prefix="cls_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when cls_code = #{item.clsCode} then #{item.clsCreated}
-        </foreach>
-      </trim>
-      <trim prefix="cls_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when cls_code = #{item.clsCode} then #{item.clsModified}
-        </foreach>
-      </trim>
-    </trim>
-    where cls_code in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.clsCode}
-    </foreach>
-  </update>
-  <update id="updateBatchSelective" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_class
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="cls_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clsId != null">
-            when cls_code = #{item.clsCode} then #{item.clsId}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="cls_name = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clsName != null">
-            when cls_code = #{item.clsCode} then #{item.clsName}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="clg_code = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clgCode != null">
-            when cls_code = #{item.clsCode} then #{item.clgCode}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="cls_entry_grade = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clsEntryGrade != null">
-            when cls_code = #{item.clsCode} then #{item.clsEntryGrade}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="cls_entry_year = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clsEntryYear != null">
-            when cls_code = #{item.clsCode} then #{item.clsEntryYear}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="cls_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clsCreated != null">
-            when cls_code = #{item.clsCode} then #{item.clsCreated}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="cls_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clsModified != null">
-            when cls_code = #{item.clsCode} then #{item.clsModified}
-          </if>
-        </foreach>
-      </trim>
-    </trim>
-    where cls_code in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.clsCode}
-    </foreach>
-  </update>
-  <insert id="batchInsert" parameterType="map">
-    <!--@mbg.generated-->
-    insert into pt_class
-    (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created, 
-      cls_modified)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.clsCode}, #{item.clsId}, #{item.clsName}, #{item.clgCode}, #{item.clsEntryGrade}, 
-        #{item.clsEntryYear}, #{item.clsCreated}, #{item.clsModified})
-    </foreach>
-  </insert>
-  <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
-    <!--@mbg.generated-->
-    insert into pt_class
-    (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created, 
-      cls_modified)
-    values
-    (#{clsCode}, #{clsId}, #{clsName}, #{clgCode}, #{clsEntryGrade}, #{clsEntryYear}, 
-      #{clsCreated}, #{clsModified})
-    on duplicate key update 
-    cls_code = #{clsCode}, 
-    cls_id = #{clsId}, 
-    cls_name = #{clsName}, 
-    clg_code = #{clgCode}, 
-    cls_entry_grade = #{clsEntryGrade}, 
-    cls_entry_year = #{clsEntryYear}, 
-    cls_created = #{clsCreated}, 
-    cls_modified = #{clsModified}
-  </insert>
-  <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
-    <!--@mbg.generated-->
-    insert into pt_class
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="clsCode != null">
-        cls_code,
-      </if>
-      <if test="clsId != null">
-        cls_id,
-      </if>
-      <if test="clsName != null">
-        cls_name,
-      </if>
-      <if test="clgCode != null">
-        clg_code,
-      </if>
-      <if test="clsEntryGrade != null">
-        cls_entry_grade,
-      </if>
-      <if test="clsEntryYear != null">
-        cls_entry_year,
-      </if>
-      <if test="clsCreated != null">
-        cls_created,
-      </if>
-      <if test="clsModified != null">
-        cls_modified,
-      </if>
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="clsCode != null">
-        #{clsCode},
-      </if>
-      <if test="clsId != null">
-        #{clsId},
-      </if>
-      <if test="clsName != null">
-        #{clsName},
-      </if>
-      <if test="clgCode != null">
-        #{clgCode},
-      </if>
-      <if test="clsEntryGrade != null">
-        #{clsEntryGrade},
-      </if>
-      <if test="clsEntryYear != null">
-        #{clsEntryYear},
-      </if>
-      <if test="clsCreated != null">
-        #{clsCreated},
-      </if>
-      <if test="clsModified != null">
-        #{clsModified},
-      </if>
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="clsCode != null">
-        cls_code = #{clsCode},
-      </if>
-      <if test="clsId != null">
-        cls_id = #{clsId},
-      </if>
-      <if test="clsName != null">
-        cls_name = #{clsName},
-      </if>
-      <if test="clgCode != null">
-        clg_code = #{clgCode},
-      </if>
-      <if test="clsEntryGrade != null">
-        cls_entry_grade = #{clsEntryGrade},
-      </if>
-      <if test="clsEntryYear != null">
-        cls_entry_year = #{clsEntryYear},
-      </if>
-      <if test="clsCreated != null">
-        cls_created = #{clsCreated},
-      </if>
-      <if test="clsModified != null">
-        cls_modified = #{clsModified},
-      </if>
-    </trim>
-  </insert>
+    </insert>
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+        <!--@mbg.generated-->
+        insert into pt_class
+                (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
+                 cls_modified)
+        values (#{clsCode}, #{clsId}, #{clsName}, #{clgCode}, #{clsEntryGrade}, #{clsEntryYear},
+                #{clsCreated}, #{clsModified})
+        on duplicate key update cls_code        = #{clsCode},
+                                cls_id          = #{clsId},
+                                cls_name        = #{clsName},
+                                clg_code        = #{clgCode},
+                                cls_entry_grade = #{clsEntryGrade},
+                                cls_entry_year  = #{clsEntryYear},
+                                cls_created     = #{clsCreated},
+                                cls_modified    = #{clsModified}
+    </insert>
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+        <!--@mbg.generated-->
+        insert into pt_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clsCode != null">
+                cls_code,
+            </if>
+            <if test="clsId != null">
+                cls_id,
+            </if>
+            <if test="clsName != null">
+                cls_name,
+            </if>
+            <if test="clgCode != null">
+                clg_code,
+            </if>
+            <if test="clsEntryGrade != null">
+                cls_entry_grade,
+            </if>
+            <if test="clsEntryYear != null">
+                cls_entry_year,
+            </if>
+            <if test="clsCreated != null">
+                cls_created,
+            </if>
+            <if test="clsModified != null">
+                cls_modified,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clsCode != null">
+                #{clsCode},
+            </if>
+            <if test="clsId != null">
+                #{clsId},
+            </if>
+            <if test="clsName != null">
+                #{clsName},
+            </if>
+            <if test="clgCode != null">
+                #{clgCode},
+            </if>
+            <if test="clsEntryGrade != null">
+                #{clsEntryGrade},
+            </if>
+            <if test="clsEntryYear != null">
+                #{clsEntryYear},
+            </if>
+            <if test="clsCreated != null">
+                #{clsCreated},
+            </if>
+            <if test="clsModified != null">
+                #{clsModified},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="clsCode != null">
+                cls_code = #{clsCode},
+            </if>
+            <if test="clsId != null">
+                cls_id = #{clsId},
+            </if>
+            <if test="clsName != null">
+                cls_name = #{clsName},
+            </if>
+            <if test="clgCode != null">
+                clg_code = #{clgCode},
+            </if>
+            <if test="clsEntryGrade != null">
+                cls_entry_grade = #{clsEntryGrade},
+            </if>
+            <if test="clsEntryYear != null">
+                cls_entry_year = #{clsEntryYear},
+            </if>
+            <if test="clsCreated != null">
+                cls_created = #{clsCreated},
+            </if>
+            <if test="clsModified != null">
+                cls_modified = #{clsModified},
+            </if>
+        </trim>
+    </insert>
     <resultMap id="ClassInfo" type="com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo">
-        <id column="cls_code" property="clsCode" />
-        <result column="cls_id" property="clsId" />
-        <result column="clg_code" property="clgCode" />
-        <result column="clg_name" property="clgName" />
-        <result column="cls_name" property="clsName" />
-        <result column="cls_entry_year" property="clsEntryYear" />
-        <result column="cls_created" property="clsCreated" />
+        <id column="cls_code" property="clsCode"/>
+        <result column="cls_id" property="clsId"/>
+        <result column="clg_code" property="clgCode"/>
+        <result column="clg_name" property="clgName"/>
+        <result column="cls_name" property="clsName"/>
+        <result column="cls_entry_year" property="clsEntryYear"/>
+        <result column="cls_created" property="clsCreated"/>
     </resultMap>
 
     <sql id="Query">
@@ -368,7 +367,7 @@
             AND pt_class.clg_code = #{query.clgCode}
         </if>
         <if test="query.clsName != null">
-            <bind name="clsName" value="'%' + query.clsName + '%'" />
+            <bind name="clsName" value="'%' + query.clsName + '%'"/>
             AND pt_class.cls_name like #{clsName}
         </if>
         <if test="query.grade != null">
@@ -377,7 +376,7 @@
     </sql>
 
 
-    <insert id="insertBatch">
+    <insert id="batchInsertSelective">
         INSERT INTO pt_class (cls_code, cls_name, clg_code, cls_entry_grade, cls_entry_year) VALUES
         <foreach collection="items" item="item" separator=",">
             (#{item.clsCode}, #{item.clsName}, #{item.clgCode}, #{item.clsEntryGrade}, #{item.clsEntryYear})
@@ -397,23 +396,23 @@
                      LEFT JOIN pt_college on pt_class.clg_code = pt_college.clg_code
         <where>
             <include refid="Query">
-                <property name="table" value="pt_class" />
+                <property name="table" value="pt_class"/>
             </include>
         </where>
     </select>
     <select id="listClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM pt_class
         <where>
-            <include refid="Query" />
+            <include refid="Query"/>
         </where>
     </select>
     <select id="listGrade" resultType="java.lang.Integer">
         SELECT DISTINCT cls_entry_year
         FROM pt_class
         <where>
-            <include refid="Query" />
+            <include refid="Query"/>
         </where>
     </select>
 

@@ -19,7 +19,7 @@ import java.util.List;
  * @description TODO
  */
 @Service
-public class PtScoreService{
+public class PtScoreService {
     private final PtScoreMapper ptScoreMapper;
     private final PtSubjectService ptSubjectService;
 
@@ -28,17 +28,15 @@ public class PtScoreService{
         this.ptSubjectService = ptSubjectService;
     }
 
-    
-    public List<StuScoreInfo> listScore(StuScoreQuery query) {
-        return null;
+
+    public Integer addScoreSelective(List<PtScore> dataList) {
+        if (dataList.size() == 0){
+            return 0;
+        }
+        return ptScoreMapper.batchInsertSelective(dataList);
     }
 
-    
-    public Integer addScore(List<PtScore> dataList) {
-        return ptScoreMapper.insertBatch(dataList);
-    }
 
-    
     public Integer uploadScore(MultipartFile file) {
         PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectService, this);
         try {
@@ -47,5 +45,9 @@ public class PtScoreService{
             e.printStackTrace();
         }
         return listener.getHandledCount();
+    }
+
+    public List<StuScoreInfo>  listScore(StuScoreQuery query) {
+        return null;
     }
 }

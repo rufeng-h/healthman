@@ -34,7 +34,6 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
 
     @Override
     public void invoke(PtClassExcel row, AnalysisContext context) {
-        log.info("解析到一条数据:{}", row);
         if (row.getClsEntryYear() == null) {
             row.setClsEntryYear(LocalDateTime.now().getYear());
         }
@@ -47,7 +46,7 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
 
     private void saveData() {
         if (cachedDataList.size() != 0) {
-            Integer cnt = ptClassService.addClass(cachedDataList);
+            Integer cnt = ptClassService.addClassSelective(cachedDataList);
             handledCount += cnt;
         }
     }

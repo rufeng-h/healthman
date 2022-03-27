@@ -87,5 +87,5 @@ public interface PtStudentMapper {
      * @param cachedDataList list
      * @return updated count
      */
-    Integer insertBatch(@Param("items") List<PtStudentExcel> cachedDataList);
+    Integer batchInsertSelective(@Param("items") List<PtStudentExcel> cachedDataList);
 }

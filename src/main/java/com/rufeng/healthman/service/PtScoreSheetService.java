@@ -22,13 +22,16 @@ public class PtScoreSheetService {
         this.ptScoreSheetMapper = ptScoreSheetMapper;
     }
 
-    
+
     public List<PtScoreSheet> listScoreSheet(@NonNull PtScoreSheetQuery query) {
         return ptScoreSheetMapper.listScoreSheet(query);
     }
 
-    
-    public Integer addScoreSheet(List<PtScoreSheet> sheets) {
-        return ptScoreSheetMapper.insertBatch(sheets);
+
+    public int addScoreSheetSelective(List<PtScoreSheet> sheets) {
+        if (sheets.size() == 0) {
+            return 0;
+        }
+        return ptScoreSheetMapper.batchInsertSelective(sheets);
     }
 }

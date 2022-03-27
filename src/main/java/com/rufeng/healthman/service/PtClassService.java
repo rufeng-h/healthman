@@ -36,7 +36,7 @@ public class PtClassService {
         this.ptClassMapper = ptClassMapper;
     }
 
-    
+
     public ApiPage<ClassInfo> pageClassInfo(Integer page, Integer pageSize, @NonNull PtClassQuery ptClassQuery) {
         PageHelper.startPage(page, pageSize);
         Page<ClassInfo> infos = ptClassMapper.pageClassInfo(ptClassQuery);
@@ -46,22 +46,22 @@ public class PtClassService {
         return ApiPage.convert(infos);
     }
 
-    
+
     public List<PtClass> listClass(@NonNull PtClassQuery query) {
         return ptClassMapper.listClass(query);
     }
 
-    
+
     public List<Integer> listGrade(@NonNull PtClassQuery query) {
         return ptClassMapper.listGrade(query);
     }
 
-    
+
     public PtClass getPtClass(String classCode) {
         return ptClassMapper.selectByPrimaryKey(classCode);
     }
 
-    
+
     public Integer uploadClass(MultipartFile file) {
         PtClassExcelListener excelListener = new PtClassExcelListener(this);
         try {
@@ -72,19 +72,16 @@ public class PtClassService {
         return excelListener.getHandledCount();
     }
 
-    
-    public Integer addClass(List<PtClassExcel> cachedDataList) {
+
+    public Integer addClassSelective(List<PtClassExcel> cachedDataList) {
         if (cachedDataList.size() == 0) {
             return 0;
         }
-        return ptClassMapper.insertBatch(cachedDataList);
+        return ptClassMapper.batchInsertSelective(cachedDataList);
     }
 
-    
+
     public Resource fileTemplate() {
-        PageHelper.startPage(1, 10);
-//        List<PtClass> list = ptClassMapper.pageClassInfo(new PtClassQuery());
-//        List<PtClassExcel> data = list.stream().map(PtClassExcel::new).collect(Collectors.toList());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcel.write(outputStream, PtClassExcel.class).sheet().doWrite(Collections.emptyList());
         return new ByteArrayResource(outputStream.toByteArray());

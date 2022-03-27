@@ -88,5 +88,5 @@ public interface PtScoreSheetMapper {
      * @param sheets records
      * @return count
      */
-    Integer insertBatch(@Param("items") List<PtScoreSheet> sheets);
+    Integer batchInsertSelective(@Param("items") List<PtScoreSheet> sheets);
 }

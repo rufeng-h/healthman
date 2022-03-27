@@ -106,7 +106,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
 
     private void saveData() {
         if (dataList.size() != 0) {
-            ptScoreService.addScore(dataList);
+            ptScoreService.addScoreSelective(dataList);
         }
     }
 

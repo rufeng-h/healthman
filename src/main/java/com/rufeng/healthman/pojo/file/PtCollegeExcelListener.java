@@ -48,7 +48,7 @@ public class PtCollegeExcelListener extends AnalysisEventListener<PtCollegeExcel
 
     private void saveData() {
         if (cachedDataList.size() != 0) {
-            handledCount += ptCollegeService.addCollege(cachedDataList);
+            handledCount += ptCollegeService.addCollegeSelective(cachedDataList);
         }
     }
 

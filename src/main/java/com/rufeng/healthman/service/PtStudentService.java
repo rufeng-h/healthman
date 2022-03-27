@@ -83,7 +83,6 @@ public class PtStudentService {
 
 
     public Resource fileTemplate() {
-        PageHelper.startPage(1, 10);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcel.write(outputStream, PtStudentExcel.class).sheet().doWrite(Collections.emptyList());
         return new ByteArrayResource(outputStream.toByteArray());
@@ -101,11 +100,11 @@ public class PtStudentService {
     }
 
 
-    public Integer addStudent(List<PtStudentExcel> cachedDataList) {
+    public int addStudentSelective(List<PtStudentExcel> cachedDataList) {
         if (cachedDataList.size() == 0) {
             return 0;
         }
-        return ptStudentMapper.insertBatch(cachedDataList);
+        return ptStudentMapper.batchInsertSelective(cachedDataList);
     }
 
 

@@ -95,5 +95,5 @@ public interface PtScoreMapper {
      * @param dataList score
      * @return count
      */
-    Integer insertBatch(@Param("items") List<PtScore> dataList);
+    int batchInsertSelective(@Param("items") List<PtScore> dataList);
 }

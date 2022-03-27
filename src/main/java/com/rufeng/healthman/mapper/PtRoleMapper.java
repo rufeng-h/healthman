@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:23
+ * @time 2022-03-28 0:33
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -80,4 +80,6 @@ public interface PtRoleMapper {
      * @return page
      */
     List<PtRole> listRole(String userId);
+
+    int batchInsertSelective(@Param("list") List<PtRole> list);
 }

@@ -1,5 +1,6 @@
 package com.rufeng.healthman.pojo.DTO.support;
 
+import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.pojo.DO.PtAdmin;
 import com.rufeng.healthman.pojo.DO.PtRole;
 import com.rufeng.healthman.pojo.DO.PtStudent;
@@ -46,9 +47,9 @@ public abstract class UserInfo {
         this.desp = student.getStuDesp();
 
         PtRole role = new PtRole();
-        role.setRoleName("学生");
         role.setAdminId(userId);
-        role.setRoleCreated(createdTime);
+        role.setRoleType(RoleTypeEnum.STUDENT);
+        role.setRoleValue((byte) 0);
 
         this.roles = Collections.singletonList(role);
     }

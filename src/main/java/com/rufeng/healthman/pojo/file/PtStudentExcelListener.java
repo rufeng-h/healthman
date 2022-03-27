@@ -43,7 +43,7 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
 
     private void saveData() {
         if (cachedDataList.size() != 0) {
-            Integer cnt = ptStudentService.addStudent(cachedDataList);
+            Integer cnt = ptStudentService.addStudentSelective(cachedDataList);
             handledCount += cnt;
         }
     }

@@ -1,6 +1,6 @@
 package com.rufeng.healthman.pojo.Query;
 
-import com.rufeng.healthman.pojo.DO.PtAdmin;
+import lombok.Data;
 
 /**
  * @author rufeng
@@ -8,5 +8,8 @@ import com.rufeng.healthman.pojo.DO.PtAdmin;
  * @package com.rufeng.healthman.pojo.Query
  * @description TODO
  */
-public class PtAdminQuery extends PtAdmin {
+@Data
+public class PtAdminQuery {
+    private String adminName;
+    private String adminId;
 }
