@@ -27,4 +27,9 @@ public class PtScoreSheetServiceImpl implements PtScoreSheetService {
     public List<PtScoreSheet> listScoreSheet(@NonNull PtScoreSheetQuery query) {
         return ptScoreSheetMapper.listScoreSheet(query);
     }
+
+    @Override
+    public Integer addScoreSheet(List<PtScoreSheet> sheets) {
+        return ptScoreSheetMapper.insertBatch(sheets);
+    }
 }

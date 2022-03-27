@@ -20,4 +20,11 @@ public interface PtScoreSheetService {
      * @return list
      */
     List<PtScoreSheet> listScoreSheet(@NonNull PtScoreSheetQuery query);
+
+    /**
+     *
+     * @param sheets
+     * @return
+     */
+    Integer addScoreSheet(List<PtScoreSheet> sheets);
 }

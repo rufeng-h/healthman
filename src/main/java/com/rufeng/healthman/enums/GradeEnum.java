@@ -29,6 +29,8 @@ public enum GradeEnum {
     COLLEGE_TWO("大二", 14),
     COLLEGE_THREE("大三", 15),
     COLLEGE_FOUR("大四", 16);
+    public static final int MAX_GRADE = 16;
+    public static final int MIN_GRADE = 1;
     private final String grade;
     private final Integer value;
 
@@ -36,6 +38,4 @@ public enum GradeEnum {
         this.grade = grade;
         this.value = value;
     }
-
-
 }

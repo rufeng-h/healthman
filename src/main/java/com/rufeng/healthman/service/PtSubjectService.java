@@ -1,6 +1,7 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.pojo.DO.PtSubject;
+import com.rufeng.healthman.pojo.data.PtScoreSheetFormdata;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface PtSubjectService {
      * @return list
      */
     List<PtSubject> listSubject();
+
+    PtSubject addSubject(PtScoreSheetFormdata data);
 }

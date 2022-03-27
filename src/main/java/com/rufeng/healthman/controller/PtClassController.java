@@ -37,8 +37,8 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @SecurityRequirement(name = JWT_SCHEME_NAME)
 @Tag(name = "PtClass Operation", description = "PtClass")
 public class PtClassController {
-    private final PtClassService ptClassService;
     private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("班级模板文件.xlsx", StandardCharsets.UTF_8);
+    private final PtClassService ptClassService;
 
     public PtClassController(PtClassService ptClassService) {
         this.ptClassService = ptClassService;
@@ -70,18 +70,24 @@ public class PtClassController {
         return ApiResponse.success(count);
     }
 
-    @PreAuthorize("authentication.authorities.size() != 0")
+//    @PreAuthorize("authentication.authorities.size() != 0")
     @GetMapping(value = "/template")
     public ResponseEntity<Resource> downloadTemplate() {
         Resource resource = ptClassService.fileTemplate();
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + TEMPLATE_FILE_NAME + "\"")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_ATOM_XML.toString())
                 .body(resource);
     }
 
     @GetMapping("/grade/list")
-    public ApiResponse<List<Integer>> listGrade(@Validated PtClassQuery query){
+    public ApiResponse<List<Integer>> listGrade(@Validated PtClassQuery query) {
         return ApiResponse.success(ptClassService.listGrade(query));
+    }
+
+    @GetMapping("/{clsCode}")
+    public ApiResponse<PtClass> getPtClass(@PathVariable String clsCode) {
+        return ApiResponse.success(ptClassService.getPtClass(clsCode));
     }
 }

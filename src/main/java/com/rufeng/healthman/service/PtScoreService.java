@@ -1,7 +1,9 @@
 package com.rufeng.healthman.service;
 
+import com.rufeng.healthman.pojo.DO.PtScore;
 import com.rufeng.healthman.pojo.DTO.ptscore.StuScoreInfo;
 import com.rufeng.healthman.pojo.Query.StuScoreQuery;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,4 +21,8 @@ public interface PtScoreService {
      * @return list
      */
     List<StuScoreInfo> listScore(StuScoreQuery query);
+
+    Integer addScore(List<PtScore> dataList);
+
+    Integer uploadScore(MultipartFile file);
 }

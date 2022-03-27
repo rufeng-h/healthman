@@ -2,6 +2,7 @@ package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.pojo.DO.PtSubject;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface PtSubjectMapper {
      * @return list
      */
     List<PtSubject> listSubject();
+
+    Integer insert(@Param("subject") PtSubject subject);
 }
 
 

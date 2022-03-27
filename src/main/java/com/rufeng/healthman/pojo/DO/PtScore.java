@@ -26,7 +26,7 @@ public class PtScore implements Serializable {
     /**
      * 学生学号
      */
-    private Long stuId;
+    private String stuId;
 
     /**
      * 科目id
@@ -39,8 +39,6 @@ public class PtScore implements Serializable {
      * 测试数据
      */
     private BigDecimal scoData;
-
-    private Integer score;
 
     private LocalDateTime scoCreated;
 

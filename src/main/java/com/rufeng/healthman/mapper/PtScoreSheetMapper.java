@@ -21,6 +21,8 @@ public interface PtScoreSheetMapper {
      * @return list
      */
     List<PtScoreSheet> listScoreSheet(@NonNull @Param("query") PtScoreSheetQuery query);
+
+    Integer insertBatch(@Param("items") List<PtScoreSheet> sheets);
 }
 
 

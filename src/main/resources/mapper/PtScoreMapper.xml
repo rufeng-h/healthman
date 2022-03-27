@@ -3,21 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtScoreMapper">
-
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtScore">
-            <id property="stuId" column="stu_id" jdbcType="BIGINT"/>
-            <id property="subId" column="sub_id" jdbcType="BIGINT"/>
-            <id property="scoYear" column="sco_year" jdbcType="INTEGER"/>
-            <result property="scoId" column="sco_id" jdbcType="BIGINT"/>
-            <result property="scoData" column="sco_data" jdbcType="DECIMAL"/>
-            <result property="score" column="score" jdbcType="INTEGER"/>
-            <result property="scoCreated" column="sco_created" jdbcType="TIMESTAMP"/>
-            <result property="scoModified" column="sco_modified" jdbcType="TIMESTAMP"/>
+        <id property="stuId" column="stu_id" jdbcType="BIGINT"/>
+        <id property="subId" column="sub_id" jdbcType="BIGINT"/>
+        <id property="scoYear" column="sco_year" jdbcType="INTEGER"/>
+        <result property="scoId" column="sco_id" jdbcType="BIGINT"/>
+        <result property="scoData" column="sco_data" jdbcType="DECIMAL"/>
+        <result property="scoCreated" column="sco_created" jdbcType="TIMESTAMP"/>
+        <result property="scoModified" column="sco_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        stu_id,sub_id,sco_year,
-        sco_id,sco_data,score,
-        sco_created,sco_modified
-    </sql>
+    <insert id="insertBatch">
+        INSERT INTO pt_score (stu_id, sub_id, sco_year, sco_data)
+                VALUES
+        <foreach collection="items" item="item" separator=",">
+            (#{item.stuId}, #{item.subId}, #{item.scoYear}, #{item.scoData})
+        </foreach>
+    </insert>
 </mapper>

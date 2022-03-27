@@ -14,6 +14,7 @@ import com.rufeng.healthman.pojo.DTO.support.LoginResult;
 import com.rufeng.healthman.pojo.DTO.support.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
 import com.rufeng.healthman.pojo.Query.PtAdminQuery;
+import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.service.*;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.lang.NonNull;
@@ -84,7 +85,7 @@ public class PtAdminServiceImpl implements PtAdminService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserInfo addAdmin(AdminAddData data) {
+    public UserInfo addAdmin(PtAdminFormdata data) {
         RoleTypeEnum roleType = data.getRoleType();
         PtAdmin user = new PtAdmin();
         user.setAdminName(data.getUsername());

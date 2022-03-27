@@ -3,22 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtSubjectMapper">
-
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtSubject">
-            <id property="subId" column="sub_id" jdbcType="BIGINT"/>
-            <result property="subName" column="sub_name" jdbcType="VARCHAR"/>
-            <result property="subDesp" column="sub_desp" jdbcType="VARCHAR"/>
-            <result property="subCreated" column="sub_created" jdbcType="TIMESTAMP"/>
-            <result property="subModified" column="sub_modified" jdbcType="TIMESTAMP"/>
+        <id property="subId" column="sub_id" jdbcType="BIGINT"/>
+        <result property="subName" column="sub_name" jdbcType="VARCHAR"/>
+        <result property="subDesp" column="sub_desp" jdbcType="VARCHAR"/>
+        <result property="subCreated" column="sub_created" jdbcType="TIMESTAMP"/>
+        <result property="subModified" column="sub_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        sub_id,sub_name,sub_desp,
-        sub_created,sub_modified
-    </sql>
     <select id="listSubject" resultType="com.rufeng.healthman.pojo.DO.PtSubject">
-        SELECT
-        <include refid="Base_Column_List"/>
+        SELECT sub_id, sub_name, sub_desp, sub_created, sub_modified
         FROM pt_subject
     </select>
+
+    <insert id="insert" keyProperty="subId" keyColumn="sub_id">
+        INSERT INTO pt_subject (sub_name, sub_desp) VALUE (#{subject.subName}, #{subject.subDesp})
+    </insert>
 </mapper>

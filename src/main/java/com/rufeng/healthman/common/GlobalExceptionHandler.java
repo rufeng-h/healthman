@@ -2,6 +2,7 @@ package com.rufeng.healthman.common;
 
 import com.rufeng.healthman.common.api.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,5 +41,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({BindException.class})
     public ApiResponse<Void> validateFailed() {
         return ApiResponse.validateFailed();
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ApiResponse<Void> accessDenied() {
+        return ApiResponse.accessDenied();
     }
 }

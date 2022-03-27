@@ -1,8 +1,10 @@
 package com.rufeng.healthman.pojo.DO;
 
+import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,18 +33,21 @@ public class PtScoreSheet implements Serializable {
     /**
      * 性别
      */
-    private String gender;
+    private GenderEnum gender;
 
     /**
      * 上区间
      */
+    @NotNull
     private BigDecimal upper;
 
     /**
      * 下区间
      */
+    @NotNull
     private BigDecimal lower;
 
+    @NotNull
     private Integer score;
 
     private LocalDateTime createdTime;
@@ -52,6 +57,7 @@ public class PtScoreSheet implements Serializable {
     /**
      * 级别
      */
+    @NotNull
     private String level;
 
     private Long id;

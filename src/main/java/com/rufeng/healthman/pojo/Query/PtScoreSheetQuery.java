@@ -1,6 +1,6 @@
 package com.rufeng.healthman.pojo.Query;
 
-import com.rufeng.healthman.pojo.DO.PtScoreSheet;
+import lombok.Data;
 
 /**
  * @author rufeng
@@ -8,5 +8,8 @@ import com.rufeng.healthman.pojo.DO.PtScoreSheet;
  * @package com.rufeng.healthman.pojo.Query
  * @description TODO
  */
-public class PtScoreSheetQuery extends PtScoreSheet {
+@Data
+public class PtScoreSheetQuery {
+    private Integer grade;
+    private Long subjectId;
 }

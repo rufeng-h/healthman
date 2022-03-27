@@ -2,7 +2,7 @@ package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.pojo.DO.PtAdmin;
-import com.rufeng.healthman.pojo.DO.AdminAddData;
+import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.DTO.support.UserInfo;
 import com.rufeng.healthman.pojo.DTO.support.LoginResult;
@@ -48,7 +48,7 @@ public interface PtAdminService {
      * @param data 用户信息
      * @return userinfo
      */
-    UserInfo addAdmin(AdminAddData data);
+    UserInfo addAdmin(PtAdminFormdata data);
 
     /**
      * 登录

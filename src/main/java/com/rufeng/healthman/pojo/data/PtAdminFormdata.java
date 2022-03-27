@@ -1,4 +1,4 @@
-package com.rufeng.healthman.pojo.DO;
+package com.rufeng.healthman.pojo.data;
 
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.Data;
  * @description TODO
  */
 @Data
-public class AdminAddData {
+public class PtAdminFormdata {
     private String username;
     private String password;
     private String email;
