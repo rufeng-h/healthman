@@ -84,4 +84,6 @@ public interface PtAdminMapper {
     int batchInsertSelective(@Param("list") List<PtAdmin> list);
 
     Page<PtAdmin> pageByQuery(@Param("query") PtAdminQuery query);
+
+    List<PtAdmin> listAdminByIds(List<String> adminIds);
 }

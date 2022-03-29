@@ -1,9 +1,13 @@
 package com.rufeng.healthman.mapper;
 
+import com.github.pagehelper.Page;
 import com.rufeng.healthman.pojo.DO.PtSubgroup;
-import java.util.List;
+import com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo;
+import com.rufeng.healthman.pojo.Query.PtSubgroupQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -79,4 +83,8 @@ public interface PtSubgroupMapper {
      * @return list of group
      */
     List<PtSubgroup> listSubGroup();
+
+    Page<SubGroupInfo> pageSubGroupInfo(List<Long> list);
+
+    Page<PtSubgroup> pageSubGroup(@Param("query") PtSubgroupQuery query);
 }

@@ -287,4 +287,11 @@ public class PtAdminService {
         EasyExcel.write(outputStream, PtAdminExcel.class).sheet().doWrite(Collections.emptyList());
         return new ByteArrayResource(outputStream.toByteArray());
     }
+
+    public List<PtAdmin> listAdminByIds(List<String> adminIds) {
+        if (adminIds.size() == 0){
+            return Collections.emptyList();
+        }
+        return ptAdminMapper.listAdminByIds(adminIds);
+    }
 }

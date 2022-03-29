@@ -56,7 +56,7 @@ public class PtSubjectService {
         for (GenderEnum gender : genders) {
             for (GradeEnum grade : grades) {
                 for (PtScoreSheet sheet : sheets) {
-                    sheet.setGender(gender.getGender());
+                    sheet.setGender(gender);
                     sheet.setGrade(grade.getValue());
                 }
                 ptScoreSheetService.addScoreSheetSelective(sheets);

@@ -11,35 +11,34 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-03-30 0:18
+ * @time 2022-03-30 0:19
  * @package com.rufeng.healthman.pojo.DO
  * @description TODO
  */
 
 /**
- * 测量记录表
+    * 班级、测量中间表
+ * @author rufeng
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PtMeasurement implements Serializable {
+public class PtClassMesurement implements Serializable {
+    private Long cmsId;
+
     private Long msId;
 
-    private String msName;
+    private String clsCode;
 
-    private String msDesp;
+    private Date cmsCreated;
 
-    private Date msCreated;
-
-    private Integer msModified;
+    private Date cmsModified;
 
     /**
-     * 科目组id
-     */
-    private Long grpId;
-
-    private String msCreatedAdmin;
+    * admin_id
+    */
+    private String cmsCreatedAdmin;
 
     private static final long serialVersionUID = 1L;
 }

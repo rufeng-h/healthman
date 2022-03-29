@@ -76,7 +76,6 @@ public class PtClassController {
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + TEMPLATE_FILE_NAME + "\"")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_ATOM_XML.toString())
                 .body(resource);
     }
 

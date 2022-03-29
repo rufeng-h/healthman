@@ -282,7 +282,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_subject
-                     INNER JOIN pt_score_sheet
+                     LEFT JOIN pt_score_sheet
                 ON pt_score_sheet.subject_id = pt_subject.sub_id
         <where>
             <if test="query.subName != null">

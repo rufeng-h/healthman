@@ -1,6 +1,6 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.pojo.DO.PtMeasurement;
+import com.rufeng.healthman.pojo.DO.PtClassMesurement;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,68 +8,64 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author rufeng
- * @time 2022-03-30 0:18
+ * @time 2022-03-30 0:19
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
 
 @Mapper
-public interface PtMeasurementMapper {
+public interface PtClassMesurementMapper {
     /**
      * delete by primary key
-     *
-     * @param msId primaryKey
+     * @param cmsId primaryKey
      * @return deleteCount
      */
-    int deleteByPrimaryKey(Long msId);
+    int deleteByPrimaryKey(Long cmsId);
 
     /**
      * insert record to table
-     *
      * @param record the record
      * @return insert count
      */
-    int insert(PtMeasurement record);
+    int insert(PtClassMesurement record);
 
-    int insertOrUpdate(PtMeasurement record);
+    int insertOrUpdate(PtClassMesurement record);
 
-    int insertOrUpdateSelective(PtMeasurement record);
+    int insertOrUpdateSelective(PtClassMesurement record);
 
     /**
      * insert record to table selective
-     *
      * @param record the record
      * @return insert count
      */
-    int insertSelective(PtMeasurement record);
+    int insertSelective(PtClassMesurement record);
 
     /**
      * select by primary key
-     *
-     * @param msId primary key
+     * @param cmsId primary key
      * @return object by primary key
      */
-    PtMeasurement selectByPrimaryKey(Long msId);
+    PtClassMesurement selectByPrimaryKey(Long cmsId);
 
     /**
      * update record selective
-     *
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(PtMeasurement record);
+    int updateByPrimaryKeySelective(PtClassMesurement record);
 
     /**
      * update record
-     *
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKey(PtMeasurement record);
+    int updateByPrimaryKey(PtClassMesurement record);
 
-    int updateBatch(List<PtMeasurement> list);
+    int updateBatch(List<PtClassMesurement> list);
 
-    int updateBatchSelective(List<PtMeasurement> list);
+    int updateBatchSelective(List<PtClassMesurement> list);
 
-    int batchInsert(@Param("list") List<PtMeasurement> list);
+    int batchInsert(@Param("list") List<PtClassMesurement> list);
+
+    int batchInsertSelective(List<PtClassMesurement> list);
 }

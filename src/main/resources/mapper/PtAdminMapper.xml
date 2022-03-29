@@ -564,4 +564,15 @@
              #{item.phone}, #{item.clgCode})
         </foreach>
     </insert>
+
+    <select id="listAdminByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_admin
+        <where>
+            <foreach collection="list" separator="," item="item" open="admin_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>

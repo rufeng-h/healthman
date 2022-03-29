@@ -1,9 +1,13 @@
 package com.rufeng.healthman.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtSubgroupMapper;
-import com.rufeng.healthman.mapper.PtSubjectSubgroupMapper;
 import com.rufeng.healthman.pojo.DO.PtSubgroup;
 import com.rufeng.healthman.pojo.DO.PtSubjectSubgroup;
+import com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo;
+import com.rufeng.healthman.pojo.Query.PtSubgroupQuery;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +27,14 @@ public class PtSubgroupService {
 
     private final PtSubgroupMapper ptSubgroupMapper;
     private final PtCommonService ptCommonService;
-    private final PtSubjectSubgroupMapper ptSubjectSubgroupMapper;
+    private final PtSubjectSubGroupService ptSubjectSubGroupService;
 
-    public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper, PtCommonService ptCommonService, PtSubjectSubgroupMapper ptSubjectSubgroupMapper) {
+    public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper,
+                             PtCommonService ptCommonService,
+                             PtSubjectSubGroupService ptSubjectSubGroupService) {
         this.ptSubgroupMapper = ptSubgroupMapper;
         this.ptCommonService = ptCommonService;
-        this.ptSubjectSubgroupMapper = ptSubjectSubgroupMapper;
+        this.ptSubjectSubGroupService = ptSubjectSubGroupService;
     }
 
 
@@ -81,7 +87,14 @@ public class PtSubgroupService {
                                 .subId(subId).subGrpAdmin(userId)
                                 .grpId(grpId).build())
                 .collect(Collectors.toList());
-        ptSubjectSubgroupMapper.batchInsertSelective(subjectSubgroups);
+        ptSubjectSubGroupService.batchInsertSelective(subjectSubgroups);
         return subgroup;
+    }
+
+    public ApiPage<SubGroupInfo> pageSubGroupInfo(Integer page, Integer pageSize, PtSubgroupQuery query) {
+        PageHelper.startPage(page, pageSize);
+        Page<PtSubgroup> subgroups = ptSubgroupMapper.pageSubGroup(query);
+        List<Long> list = subgroups.stream().map(PtSubgroup::getGrpId).collect(Collectors.toList());
+        return ApiPage.convert(subgroups, ptSubgroupMapper.pageSubGroupInfo(list));
     }
 }

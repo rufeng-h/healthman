@@ -9,11 +9,12 @@
     <result column="ms_desp" property="msDesp" />
     <result column="ms_created" property="msCreated" />
     <result column="ms_modified" property="msModified" />
-    <result column="sgp_id" property="sgpId" />
+    <result column="grp_id" property="grpId" />
+    <result column="ms_created_admin" property="msCreatedAdmin" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    ms_id, ms_name, ms_desp, ms_created, ms_modified, sgp_id
+    ms_id, ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -29,8 +30,10 @@
   </delete>
   <insert id="insert" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into pt_measurement (ms_name, ms_desp, ms_created, ms_modified, sgp_id)
-    values (#{msName}, #{msDesp}, #{msCreated}, #{msModified}, #{sgpId})
+    insert into pt_measurement (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
+      )
+    values (#{msName}, #{msDesp}, #{msCreated}, #{msModified}, #{grpId}, #{msCreatedAdmin}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -48,8 +51,11 @@
       <if test="msModified != null">
         ms_modified,
       </if>
-      <if test="sgpId != null">
-        sgp_id,
+      <if test="grpId != null">
+        grp_id,
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -65,8 +71,11 @@
       <if test="msModified != null">
         #{msModified},
       </if>
-      <if test="sgpId != null">
-        #{sgpId},
+      <if test="grpId != null">
+        #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        #{msCreatedAdmin},
       </if>
     </trim>
   </insert>
@@ -86,8 +95,11 @@
       <if test="msModified != null">
         ms_modified = #{msModified},
       </if>
-      <if test="sgpId != null">
-        sgp_id = #{sgpId},
+      <if test="grpId != null">
+        grp_id = #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin = #{msCreatedAdmin},
       </if>
     </set>
     where ms_id = #{msId}
@@ -99,7 +111,8 @@
       ms_desp = #{msDesp},
       ms_created = #{msCreated},
       ms_modified = #{msModified},
-      sgp_id = #{sgpId}
+      grp_id = #{grpId},
+      ms_created_admin = #{msCreatedAdmin}
     where ms_id = #{msId}
   </update>
   <update id="updateBatch" parameterType="java.util.List">
@@ -126,9 +139,14 @@
           when ms_id = #{item.msId} then #{item.msModified}
         </foreach>
       </trim>
-      <trim prefix="sgp_id = case" suffix="end,">
+      <trim prefix="grp_id = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          when ms_id = #{item.msId} then #{item.sgpId}
+          when ms_id = #{item.msId} then #{item.grpId}
+        </foreach>
+      </trim>
+      <trim prefix="ms_created_admin = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ms_id = #{item.msId} then #{item.msCreatedAdmin}
         </foreach>
       </trim>
     </trim>
@@ -169,10 +187,17 @@
           </if>
         </foreach>
       </trim>
-      <trim prefix="sgp_id = case" suffix="end,">
+      <trim prefix="grp_id = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          <if test="item.sgpId != null">
-            when ms_id = #{item.msId} then #{item.sgpId}
+          <if test="item.grpId != null">
+            when ms_id = #{item.msId} then #{item.grpId}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="ms_created_admin = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.msCreatedAdmin != null">
+            when ms_id = #{item.msId} then #{item.msCreatedAdmin}
           </if>
         </foreach>
       </trim>
@@ -185,11 +210,11 @@
   <insert id="batchInsert" keyColumn="ms_id" keyProperty="msId" parameterType="map" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into pt_measurement
-    (ms_name, ms_desp, ms_created, ms_modified, sgp_id)
+    (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.msName}, #{item.msDesp}, #{item.msCreated}, #{item.msModified}, #{item.sgpId}
-        )
+      (#{item.msName}, #{item.msDesp}, #{item.msCreated}, #{item.msModified}, #{item.grpId}, 
+        #{item.msCreatedAdmin})
     </foreach>
   </insert>
   <insert id="insertOrUpdate" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement" useGeneratedKeys="true">
@@ -203,7 +228,8 @@
       ms_desp,
       ms_created,
       ms_modified,
-      sgp_id,
+      grp_id,
+      ms_created_admin,
     </trim>
     values
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -214,7 +240,8 @@
       #{msDesp},
       #{msCreated},
       #{msModified},
-      #{sgpId},
+      #{grpId},
+      #{msCreatedAdmin},
     </trim>
     on duplicate key update 
     <trim suffixOverrides=",">
@@ -225,7 +252,8 @@
       ms_desp = #{msDesp},
       ms_created = #{msCreated},
       ms_modified = #{msModified},
-      sgp_id = #{sgpId},
+      grp_id = #{grpId},
+      ms_created_admin = #{msCreatedAdmin},
     </trim>
   </insert>
   <insert id="insertOrUpdateSelective" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement" useGeneratedKeys="true">
@@ -247,8 +275,11 @@
       <if test="msModified != null">
         ms_modified,
       </if>
-      <if test="sgpId != null">
-        sgp_id,
+      <if test="grpId != null">
+        grp_id,
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin,
       </if>
     </trim>
     values
@@ -268,8 +299,11 @@
       <if test="msModified != null">
         #{msModified},
       </if>
-      <if test="sgpId != null">
-        #{sgpId},
+      <if test="grpId != null">
+        #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        #{msCreatedAdmin},
       </if>
     </trim>
     on duplicate key update 
@@ -289,8 +323,11 @@
       <if test="msModified != null">
         ms_modified = #{msModified},
       </if>
-      <if test="sgpId != null">
-        sgp_id = #{sgpId},
+      <if test="grpId != null">
+        grp_id = #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin = #{msCreatedAdmin},
       </if>
     </trim>
   </insert>

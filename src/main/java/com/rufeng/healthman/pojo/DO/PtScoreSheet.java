@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.rufeng.healthman.enums.GenderEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +34,7 @@ public class PtScoreSheet implements Serializable {
     /**
     * 性别
     */
-    private String gender;
+    private GenderEnum gender;
 
     private Integer grade;
 
