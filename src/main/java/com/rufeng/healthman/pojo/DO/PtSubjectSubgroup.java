@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:30
+ * @time 2022-03-29 18:02
  * @package com.rufeng.healthman.pojo.DO
  * @description TODO
  */
 
 /**
-    * 科目与科目组关联
-    */
+ * 科目与科目组关联
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -35,8 +35,8 @@ public class PtSubjectSubgroup implements Serializable {
     private Date subGrpCreated;
 
     /**
-    * 操作人id
-    */
+     * 操作人id
+     */
     private String subGrpAdmin;
 
     private static final long serialVersionUID = 1L;

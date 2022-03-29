@@ -427,4 +427,15 @@
         </where>
         GROUP BY pt_class.cls_code
     </select>
+
+    <select id="mapClsNameByIds" resultType="map">
+        SELECT cls_code,
+               cls_name
+        FROM pt_class
+        <where>
+            <foreach collection="items" item="item" open="cls_code IN (" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>

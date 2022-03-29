@@ -1,19 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;
-import com.rufeng.healthman.pojo.DO.PtAdmin;
-import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;
-import com.rufeng.healthman.pojo.Query.PtAdminQuery;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.lang.NonNull;
-
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.DO.PtAdmin;
 import java.util.List;
+import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;import com.rufeng.healthman.pojo.Query.PtAdminQuery;import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;import org.springframework.lang.NonNull;
 
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:23
+ * @time 2022-03-28 15:01
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -87,4 +82,6 @@ public interface PtAdminMapper {
     Page<AdminInfo> pageAdminInfo(@NonNull @Param("query") PtAdminQuery query);
 
     int batchInsertSelective(@Param("list") List<PtAdmin> list);
+
+    Page<PtAdmin> pageByQuery(@Param("query") PtAdminQuery query);
 }

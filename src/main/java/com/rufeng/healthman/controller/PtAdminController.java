@@ -4,6 +4,7 @@ import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.Query.PtAdminQuery;
+import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.service.PtAdminService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.hibernate.validator.constraints.Range;
@@ -49,10 +50,10 @@ public class PtAdminController {
         return ApiResponse.success(ptAdminService.pageAdminInfo(page, pageSize, query));
     }
 
-//    @PostMapping
-//    public ApiResponse<UserInfo> addAdmin(@Validated @RequestBody PtAdminFormdata data) {
-//        return ApiResponse.success(ptAdminService.addAdmin(data));
-//    }
+    @PostMapping
+    public ApiResponse<Boolean> addAdmin(@Validated @RequestBody PtAdminFormdata data) {
+        return ApiResponse.success(ptAdminService.addAdmin(data));
+    }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadAdmin(@RequestPart MultipartFile file) {

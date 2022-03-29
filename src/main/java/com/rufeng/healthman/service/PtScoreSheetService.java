@@ -2,10 +2,12 @@ package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtScoreSheetMapper;
 import com.rufeng.healthman.pojo.DO.PtScoreSheet;
+import com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,5 +35,13 @@ public class PtScoreSheetService {
             return 0;
         }
         return ptScoreSheetMapper.batchInsertSelective(sheets);
+    }
+
+    public List<SheetInfo> listSheetInfoBySubIds(List<Long> subIds) {
+        if (subIds.size() == 0){
+            return Collections.emptyList();
+        }
+
+        return ptScoreSheetMapper.listSheetInfoBySubIds(subIds);
     }
 }

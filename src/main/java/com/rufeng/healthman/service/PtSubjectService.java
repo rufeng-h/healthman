@@ -1,17 +1,24 @@
 package com.rufeng.healthman.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.enums.GradeEnum;
 import com.rufeng.healthman.mapper.PtSubjectMapper;
 import com.rufeng.healthman.pojo.DO.PtScoreSheet;
 import com.rufeng.healthman.pojo.DO.PtSubject;
+import com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.DTO.ptsubject.SubjectInfo;
+import com.rufeng.healthman.pojo.Query.PtSubjectQuery;
 import com.rufeng.healthman.pojo.data.PtScoreSheetFormdata;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author rufeng
@@ -34,8 +41,7 @@ public class PtSubjectService {
         return ptSubjectMapper.listSubject();
     }
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-
+    @Transactional(rollbackFor = Exception.class)
     public PtSubject addSubject(PtScoreSheetFormdata data) {
         PtSubject subject = new PtSubject();
         subject.setSubDesp(data.getSubDesp());
@@ -57,5 +63,15 @@ public class PtSubjectService {
             }
         }
         return subject;
+    }
+
+    public ApiPage<SubjectInfo> pageSubjectInfo(Integer page, Integer pageSize, PtSubjectQuery query) {
+        PageHelper.startPage(page, pageSize);
+        Page<PtSubject> subjects = ptSubjectMapper.pageSubject(query);
+        List<Long> subIds = subjects.stream().map(PtSubject::getSubId).collect(Collectors.toList());
+        List<SheetInfo> sheetInfos = ptScoreSheetService.listSheetInfoBySubIds(subIds);
+        Map<Long, SubjectInfo> infoMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubId, SubjectInfo::new));
+        sheetInfos.forEach(s -> infoMap.get(s.getSubId()).getSheetInfos().add(s));
+        return ApiPage.convert(subjects, infoMap.values());
     }
 }

@@ -1,10 +1,15 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtSubgroupMapper;
+import com.rufeng.healthman.mapper.PtSubjectSubgroupMapper;
 import com.rufeng.healthman.pojo.DO.PtSubgroup;
+import com.rufeng.healthman.pojo.DO.PtSubjectSubgroup;
+import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author rufeng
@@ -17,9 +22,13 @@ import java.util.List;
 public class PtSubgroupService {
 
     private final PtSubgroupMapper ptSubgroupMapper;
+    private final PtCommonService ptCommonService;
+    private final PtSubjectSubgroupMapper ptSubjectSubgroupMapper;
 
-    public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper) {
+    public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper, PtCommonService ptCommonService, PtSubjectSubgroupMapper ptSubjectSubgroupMapper) {
         this.ptSubgroupMapper = ptSubgroupMapper;
+        this.ptCommonService = ptCommonService;
+        this.ptSubjectSubgroupMapper = ptSubjectSubgroupMapper;
     }
 
 
@@ -54,5 +63,25 @@ public class PtSubgroupService {
 
     public List<PtSubgroup> listSubGroup() {
         return ptSubgroupMapper.listSubGroup();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public PtSubgroup addSubGroup(PtSubGroupFormdata formdata) {
+        List<Long> subIds = formdata.getSubIds();
+        String userId = ptCommonService.getCurrentUserId();
+        PtSubgroup subgroup = PtSubgroup.builder()
+                .grpDesp(formdata.getGrpDesp())
+                .grpName(formdata.getGrpName())
+                .grpCreatedAdmin(userId)
+                .build();
+        ptSubgroupMapper.insertSelective(subgroup);
+        Long grpId = subgroup.getGrpId();
+        List<PtSubjectSubgroup> subjectSubgroups = subIds.stream().map(
+                        subId -> PtSubjectSubgroup.builder()
+                                .subId(subId).subGrpAdmin(userId)
+                                .grpId(grpId).build())
+                .collect(Collectors.toList());
+        ptSubjectSubgroupMapper.batchInsertSelective(subjectSubgroups);
+        return subgroup;
     }
 }

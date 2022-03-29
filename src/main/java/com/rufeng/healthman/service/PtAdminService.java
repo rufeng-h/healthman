@@ -14,9 +14,11 @@ import com.rufeng.healthman.pojo.DO.PtRole;
 import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.DTO.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.DTO.support.LoginResult;
+import com.rufeng.healthman.pojo.DTO.support.RoleInfo;
 import com.rufeng.healthman.pojo.DTO.support.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
 import com.rufeng.healthman.pojo.Query.PtAdminQuery;
+import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.pojo.file.PtAdminExcel;
 import com.rufeng.healthman.pojo.file.PtAdminExcelListener;
 import org.springframework.core.io.ByteArrayResource;
@@ -34,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.rufeng.healthman.common.AuthorityUtil.ALL_AUTHORITY;
 
@@ -49,27 +52,79 @@ public class PtAdminService {
     private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
     private final PtRoleService ptRoleService;
-    private final PtCollegeService ptCollegeService;
     private final PtClassService ptClassService;
+    private final PtCollegeService ptCollegeService;
 
     public PtAdminService(PtAdminMapper ptAdminMapper,
                           PasswordEncoder passwordEncoder,
                           RedisService redisService,
                           PtRoleService ptRoleService,
-                          PtCollegeService ptCollegeService, PtClassService ptClassService) {
+                          PtClassService ptClassService, PtCollegeService ptCollegeService) {
         this.ptAdminMapper = ptAdminMapper;
         this.passwordEncoder = passwordEncoder;
         this.redisService = redisService;
         this.ptRoleService = ptRoleService;
-        this.ptCollegeService = ptCollegeService;
         this.ptClassService = ptClassService;
+        this.ptCollegeService = ptCollegeService;
     }
 
 
     public ApiPage<AdminInfo> pageAdminInfo(Integer page, Integer pageSize, PtAdminQuery query) {
         PageHelper.startPage(page, pageSize);
-        Page<AdminInfo> infos = ptAdminMapper.pageAdminInfo(query);
-        return ApiPage.convert(infos);
+        /* 管理员 */
+        Page<PtAdmin> admins = ptAdminMapper.pageByQuery(query);
+        /* 查学院 */
+        List<String> adminClsCodes = new ArrayList<>();
+        admins.forEach(a -> {
+            if (a.getClgCode() != null) {
+                adminClsCodes.add(a.getClgCode());
+            }
+        });
+        Map<String, String> adminClgNameMap = ptCollegeService.mapClgNameByIds(adminClsCodes);
+        /* 权限 */
+        List<PtRole> roles = ptRoleService.listRoleByIds(admins.stream()
+                .map(PtAdmin::getAdminId).collect(Collectors.toList()));
+        /* 查询权限的学院、班级名 */
+        Map<String, PtRole> clgRoles = new HashMap<>(10);
+        Map<String, PtRole> clsRoles = new HashMap<>(10);
+        Map<String, PtRole> systemRoles = new HashMap<>(10);
+        roles.forEach(r -> {
+            if (r.getRoleType() == RoleTypeEnum.CLASS) {
+                clsRoles.put(r.getAdminId(), r);
+            } else if (r.getRoleType() == RoleTypeEnum.COLLEGE) {
+                clgRoles.put(r.getAdminId(), r);
+            } else if (r.getRoleType() == RoleTypeEnum.SYSTEM) {
+                systemRoles.put(r.getAdminId(), r);
+            }
+        });
+        Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(
+                clgRoles.values().stream().map(PtRole::getTarget).collect(Collectors.toList()));
+        Map<String, String> clsNameMap = ptClassService.mapClsNameByIds(
+                clsRoles.values().stream().map(PtRole::getTarget).collect(Collectors.toList()));
+
+        Map<Long, RoleInfo> clgRolemap = clgRoles.values().stream().collect(
+                Collectors.toMap(PtRole::getRoleId, r -> new RoleInfo(r, clgNameMap.get(r.getTarget()))));
+        Map<Long, RoleInfo> clsRoleMap = clsRoles.values().stream().collect(
+                Collectors.toMap(PtRole::getRoleId, r -> new RoleInfo(r, clsNameMap.get(r.getTarget()))));
+
+        return ApiPage.convert(admins, a -> {
+            String adminId = a.getAdminId();
+            String clgName = null;
+            List<RoleInfo> roleInfos = new ArrayList<>();
+            if (clgRoles.containsKey(adminId)) {
+                roleInfos.add(clgRolemap.get(clgRoles.get(adminId).getRoleId()));
+            }
+            if (clsRoles.containsKey(adminId)) {
+                roleInfos.add(clsRoleMap.get(clsRoles.get(adminId).getRoleId()));
+            }
+            if (systemRoles.containsKey(adminId)) {
+                roleInfos.add(new RoleInfo(systemRoles.get(adminId), "系统管理员"));
+            }
+            if (a.getClgCode() != null) {
+                clgName = adminClgNameMap.get(a.getClgCode());
+            }
+            return new AdminInfo(a, clgName, roleInfos);
+        });
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -81,7 +136,11 @@ public class PtAdminService {
         if (!passwordEncoder.matches(loginQuery.getPassword(), admin.getPassword())) {
             throw new BadCredentialsException("密码错误!");
         }
-
+        /* 查询学院 */
+        String clgName = null;
+        if (admin.getClgCode() != null) {
+            clgName = ptCollegeService.getCollege(admin.getClgCode()).getClgName();
+        }
         /* 查询角色权限 */
         List<PtRole> roles = ptRoleService.listRole(admin.getAdminId());
         Collection<? extends GrantedAuthority> authorities = AuthorityUtil.fromPtRoles(roles);
@@ -96,11 +155,38 @@ public class PtAdminService {
                 .builder().adminId(admin.getAdminId())
                 .adminLastLogin(new Date())
                 .build());
-
         /* 返回结果 */
-        UserInfo info = new AdminInfo(admin, roles);
+        UserInfo info = new AdminInfo(admin, clgName, hadleRoles(roles));
         String token = JwtTokenUtil.generateToken(admin.getAdminId(), admin.getAdminName());
         return new LoginResult(token, info);
+    }
+
+    public List<RoleInfo> hadleRoles(List<PtRole> roles) {
+        List<RoleInfo> roleInfos = new ArrayList<>();
+        /* 查询班级或学院名 */
+        List<PtRole> clgRoles = new ArrayList<>();
+        List<PtRole> clsRoles = new ArrayList<>();
+        roles.forEach(r -> {
+            RoleTypeEnum roleType = r.getRoleType();
+            switch (roleType) {
+                case CLASS:
+                    clsRoles.add(r);
+                    break;
+                case COLLEGE:
+                    clgRoles.add(r);
+                    break;
+                case SYSTEM:
+                    roleInfos.add(new RoleInfo(r, "系统管理员"));
+                default:
+            }
+        });
+        Map<String, String> clsNameMap = ptClassService.mapClsNameByIds(
+                clsRoles.stream().map(PtRole::getTarget).collect(Collectors.toList()));
+        Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(
+                clgRoles.stream().map(PtRole::getTarget).collect(Collectors.toList()));
+        roleInfos.addAll(clgRoles.stream().map(r -> new RoleInfo(r, clgNameMap.get(r.getTarget()))).collect(Collectors.toList()));
+        roleInfos.addAll(clsRoles.stream().map(r -> new RoleInfo(r, clsNameMap.get(r.getTarget()))).collect(Collectors.toList()));
+        return roleInfos;
     }
 
 
@@ -109,14 +195,56 @@ public class PtAdminService {
         String adminId = (String) authentication.getPrincipal();
         PtAdmin user = ptAdminMapper.selectByPrimaryKey(adminId);
         List<PtRole> roles = ptRoleService.listRole(user.getAdminId());
-        return new AdminInfo(user, roles);
+        String clgName = null;
+        if (user.getClgCode() != null) {
+            clgName = ptCollegeService.getCollege(user.getClgCode()).getClgName();
+        }
+        return new AdminInfo(user, clgName, hadleRoles(roles));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addAdmin(PtAdminFormdata formdata) {
+        PtAdmin admin = PtAdmin.builder().adminName(formdata.getAdminName())
+                .phone(formdata.getPhone())
+                .email(formdata.getEmail())
+                .password(formdata.getPassword())
+                .adminId(formdata.getAdminId())
+                .adminDesp(formdata.getDesp()).build();
+        List<RoleTypeEnum> roleTypes = formdata.getRoleTypes();
+        ptAdminMapper.insertSelective(admin);
+        ArrayList<PtRole> roles = new ArrayList<>();
+        for (RoleTypeEnum roleType : roleTypes) {
+            switch (roleType) {
+                case CLASS:
+                    roles.addAll(formdata.getClsCodes().stream().map(code -> PtRole.builder()
+                            .adminId(admin.getAdminId())
+                            .roleType(RoleTypeEnum.CLASS)
+                            .target(code)
+                            .roleValue(ALL_AUTHORITY).build()).collect(Collectors.toList()));
+                    break;
+                case COLLEGE:
+                    roles.addAll(formdata.getClgCodes().stream().map(code -> PtRole.builder()
+                            .adminId(admin.getAdminId())
+                            .roleType(RoleTypeEnum.COLLEGE)
+                            .target(code)
+                            .roleValue(ALL_AUTHORITY).build()).collect(Collectors.toList()));
+                    break;
+                case SYSTEM:
+                    roles.add(PtRole.builder().roleType(RoleTypeEnum.SYSTEM)
+                            .roleValue(ALL_AUTHORITY)
+                            .adminId(admin.getAdminId())
+                            .build());
+                    break;
+                default:
+                    throw new IllegalArgumentException("参数错误!");
+            }
+        }
+        ptRoleService.batchInsertSelective(roles);
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public Integer addAdmin(List<PtAdminExcel> list) {
-        if (list.size() == 0) {
-            return 0;
-        }
         List<PtRole> roles = new ArrayList<>();
         List<PtAdmin> admins = new ArrayList<>();
         for (PtAdminExcel admin : list) {
@@ -125,6 +253,7 @@ public class PtAdminService {
                     .adminDesp(admin.getAdminDesp())
                     .adminName(admin.getAdminName())
                     .email(admin.getEmail())
+                    .clgCode(admin.getClgCode())
                     .phone(admin.getPhone()).build());
             admin.getClgCodes().forEach(code -> roles.add(PtRole.builder()
                     .roleType(RoleTypeEnum.COLLEGE)
@@ -139,12 +268,12 @@ public class PtAdminService {
 
         }
         int count = ptAdminMapper.batchInsertSelective(admins);
-        ptRoleService.addRoleSelective(roles);
+        ptRoleService.batchInsertSelective(roles);
         return count;
     }
 
     public Integer uploadAdmin(MultipartFile file) {
-        PtAdminExcelListener listener = new PtAdminExcelListener(this, ptCollegeService, ptClassService);
+        PtAdminExcelListener listener = new PtAdminExcelListener(this, ptClassService, ptCollegeService);
         try {
             EasyExcel.read(file.getInputStream(), PtAdminExcel.class, listener).sheet().doRead();
         } catch (IOException e) {

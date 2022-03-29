@@ -1,9 +1,12 @@
 package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.pojo.DO.PtRole;
-import java.util.List;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -82,4 +85,6 @@ public interface PtRoleMapper {
     List<PtRole> listRole(String userId);
 
     int batchInsertSelective(@Param("list") List<PtRole> list);
+
+    List<PtRole> listRoleByAdminIds(@Param("items") List<String> adminIds);
 }

@@ -15,11 +15,12 @@
         <result column="admin_last_login" property="adminLastLogin"/>
         <result column="phone" property="phone"/>
         <result column="aid" property="aid"/>
+        <result column="clg_code" property="clgCode"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-        admin_last_login, phone, aid
+        admin_last_login, phone, aid, clg_code
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -37,9 +38,9 @@
     <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtAdmin">
         <!--@mbg.generated-->
         insert into pt_admin (admin_id, admin_name, `password`, avatar, email, admin_desp,
-                              admin_created, admin_modified, admin_last_login, phone, aid)
+                              admin_created, admin_modified, admin_last_login, phone, aid, clg_code)
         values (#{adminId}, #{adminName}, #{password}, #{avatar}, #{email}, #{adminDesp},
-                #{adminCreated}, #{adminModified}, #{adminLastLogin}, #{phone}, #{aid})
+                #{adminCreated}, #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode})
     </insert>
     <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtAdmin">
         <!--@mbg.generated-->
@@ -78,6 +79,9 @@
             <if test="aid != null">
                 aid,
             </if>
+            <if test="clgCode != null">
+                clg_code,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="adminId != null">
@@ -112,6 +116,9 @@
             </if>
             <if test="aid != null">
                 #{aid},
+            </if>
+            <if test="clgCode != null">
+                #{clgCode},
             </if>
         </trim>
     </insert>
@@ -149,6 +156,9 @@
             <if test="aid != null">
                 aid = #{aid},
             </if>
+            <if test="clgCode != null">
+                clg_code = #{clgCode},
+            </if>
         </set>
         where admin_id = #{adminId}
     </update>
@@ -164,7 +174,8 @@
             admin_modified   = #{adminModified},
             admin_last_login = #{adminLastLogin},
             phone            = #{phone},
-            aid              = #{aid}
+            aid              = #{aid},
+            clg_code         = #{clgCode}
         where admin_id = #{adminId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
@@ -219,6 +230,11 @@
             <trim prefix="aid = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when admin_id = #{item.adminId} then #{item.aid}
+                </foreach>
+            </trim>
+            <trim prefix="clg_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when admin_id = #{item.adminId} then #{item.clgCode}
                 </foreach>
             </trim>
         </trim>
@@ -301,6 +317,13 @@
                     </if>
                 </foreach>
             </trim>
+            <trim prefix="clg_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clgCode != null">
+                        when admin_id = #{item.adminId} then #{item.clgCode}
+                    </if>
+                </foreach>
+            </trim>
         </trim>
         where admin_id in
         <foreach close=")" collection="list" item="item" open="(" separator=", ">
@@ -311,32 +334,21 @@
         <!--@mbg.generated-->
         insert into pt_admin
                 (admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-                 admin_last_login, phone, aid)
+                 admin_last_login, phone, aid, clg_code)
                 values
         <foreach collection="list" item="item" separator=",">
             (#{item.adminId}, #{item.adminName}, #{item.password}, #{item.avatar}, #{item.email},
              #{item.adminDesp}, #{item.adminCreated}, #{item.adminModified}, #{item.adminLastLogin},
-             #{item.phone}, #{item.aid})
-        </foreach>
-    </insert>
-    <insert id="batchInsertSelective" parameterType="map">
-        <!--@mbg.generated-->
-        insert into pt_admin
-                (admin_id, admin_name, email, admin_desp, phone)
-                values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.adminId}, #{item.adminName}, #{item.email},
-             #{item.adminDesp},
-             #{item.phone})
+             #{item.phone}, #{item.aid}, #{item.clgCode})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtAdmin">
         <!--@mbg.generated-->
         insert into pt_admin
                 (admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-                 admin_last_login, phone, aid)
+                 admin_last_login, phone, aid, clg_code)
         values (#{adminId}, #{adminName}, #{password}, #{avatar}, #{email}, #{adminDesp}, #{adminCreated},
-                #{adminModified}, #{adminLastLogin}, #{phone}, #{aid})
+                #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode})
         on duplicate key update admin_id         = #{adminId},
                                 admin_name       = #{adminName},
                                 `password`       = #{password},
@@ -347,7 +359,8 @@
                                 admin_modified   = #{adminModified},
                                 admin_last_login = #{adminLastLogin},
                                 phone            = #{phone},
-                                aid              = #{aid}
+                                aid              = #{aid},
+                                clg_code         = #{clgCode}
     </insert>
     <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtAdmin">
         <!--@mbg.generated-->
@@ -386,6 +399,9 @@
             <if test="aid != null">
                 aid,
             </if>
+            <if test="clgCode != null">
+                clg_code,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -422,6 +438,9 @@
             <if test="aid != null">
                 #{aid},
             </if>
+            <if test="clgCode != null">
+                #{clgCode},
+            </if>
         </trim>
         on duplicate key update
         <trim suffixOverrides=",">
@@ -457,6 +476,9 @@
             </if>
             <if test="aid != null">
                 aid = #{aid},
+            </if>
+            <if test="clgCode != null">
+                clg_code = #{clgCode},
             </if>
         </trim>
     </insert>
@@ -516,4 +538,30 @@
             </if>
         </where>
     </select>
+
+    <select id="pageByQuery" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_admin
+        <where>
+            <if test="query.adminName != null">
+                <bind name="adminName" value="'%' + query.adminName + '%'"/>
+                AND admin_name like #{adminName}
+            </if>
+            <if test="query.adminId != null">
+                AND admin_id = #{query.adminId}
+            </if>
+        </where>
+    </select>
+    <insert id="batchInsertSelective" parameterType="map">
+        <!--@mbg.generated-->
+        insert into pt_admin
+                (admin_id, admin_name, email, admin_desp, phone, clg_code)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.adminId}, #{item.adminName}, #{item.email},
+             #{item.adminDesp},
+             #{item.phone}, #{item.clgCode})
+        </foreach>
+    </insert>
 </mapper>

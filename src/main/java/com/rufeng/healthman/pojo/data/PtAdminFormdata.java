@@ -3,6 +3,9 @@ package com.rufeng.healthman.pojo.data;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
+
 /**
  * @author rufeng
  * @time 2022-03-16 19:23
@@ -11,12 +14,17 @@ import lombok.Data;
  */
 @Data
 public class PtAdminFormdata {
-    private String username;
+    @NotEmpty
+    private String adminId;
+    @NotEmpty
+    private String adminName;
+    @NotEmpty
     private String password;
     private String email;
     private String phone;
-    private RoleTypeEnum roleType;
-    private String clgCode;
-    private String classCode;
+    @NotEmpty
+    private List<RoleTypeEnum> roleTypes;
+    private List<@NotEmpty String> clgCodes;
+    private List<@NotEmpty String> clsCodes;
     private String desp;
 }

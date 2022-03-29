@@ -407,4 +407,18 @@
         FROM pt_college
         WHERE clg_name = #{clgName}
     </select>
+
+    <select id="mapClgNameByIds" resultType="map">
+        SELECT clg_code,
+               clg_name
+        FROM pt_college
+        <where>
+            <foreach collection="items" item="item" open="clg_code IN (" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <delete id="mapAdminIdClgNameByIds">
+    </delete>
 </mapper>

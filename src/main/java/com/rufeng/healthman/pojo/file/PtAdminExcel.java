@@ -31,7 +31,11 @@ public class PtAdminExcel {
     private String clsRole;
     @ExcelProperty("学院权限")
     private String clgRole;
+    @ExcelProperty("学院")
+    private String clgName;
 
+    @ExcelIgnore
+    private String clgCode;
     @ExcelIgnore
     private List<String> clgCodes = new ArrayList<>();
     @ExcelIgnore

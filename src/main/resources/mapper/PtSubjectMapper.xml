@@ -1,265 +1,298 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtSubjectMapper">
-  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtSubject">
-    <!--@mbg.generated-->
-    <!--@Table pt_subject-->
-    <id column="sub_id" property="subId" />
-    <result column="sub_name" property="subName" />
-    <result column="sub_desp" property="subDesp" />
-    <result column="sub_created" property="subCreated" />
-    <result column="sub_modified" property="subModified" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    sub_id, sub_name, sub_desp, sub_created, sub_modified
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from pt_subject
-    where sub_id = #{subId}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    <!--@mbg.generated-->
-    delete from pt_subject
-    where sub_id = #{subId}
-  </delete>
-  <insert id="insert" keyColumn="sub_id" keyProperty="subId" parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_subject (sub_name, sub_desp, sub_created, sub_modified)
-    values (#{subName}, #{subDesp}, #{subCreated}, #{subModified})
-  </insert>
-  <insert id="insertSelective" keyColumn="sub_id" keyProperty="subId" parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_subject
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subName != null">
-        sub_name,
-      </if>
-      <if test="subDesp != null">
-        sub_desp,
-      </if>
-      <if test="subCreated != null">
-        sub_created,
-      </if>
-      <if test="subModified != null">
-        sub_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="subName != null">
-        #{subName},
-      </if>
-      <if test="subDesp != null">
-        #{subDesp},
-      </if>
-      <if test="subCreated != null">
-        #{subCreated},
-      </if>
-      <if test="subModified != null">
-        #{subModified},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtSubject">
-    <!--@mbg.generated-->
-    update pt_subject
-    <set>
-      <if test="subName != null">
-        sub_name = #{subName},
-      </if>
-      <if test="subDesp != null">
-        sub_desp = #{subDesp},
-      </if>
-      <if test="subCreated != null">
-        sub_created = #{subCreated},
-      </if>
-      <if test="subModified != null">
-        sub_modified = #{subModified},
-      </if>
-    </set>
-    where sub_id = #{subId}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtSubject">
-    <!--@mbg.generated-->
-    update pt_subject
-    set sub_name = #{subName},
-      sub_desp = #{subDesp},
-      sub_created = #{subCreated},
-      sub_modified = #{subModified}
-    where sub_id = #{subId}
-  </update>
-  <update id="updateBatch" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_subject
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="sub_name = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sub_id = #{item.subId} then #{item.subName}
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtSubject">
+        <!--@mbg.generated-->
+        <!--@Table pt_subject-->
+        <id column="sub_id" property="subId"/>
+        <result column="sub_name" property="subName"/>
+        <result column="sub_desp" property="subDesp"/>
+        <result column="sub_created" property="subCreated"/>
+        <result column="sub_modified" property="subModified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        sub_id, sub_name, sub_desp, sub_created, sub_modified
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_subject
+        where sub_id = #{subId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete
+        from pt_subject
+        where sub_id = #{subId}
+    </delete>
+    <insert id="insert" keyColumn="sub_id" keyProperty="subId" parameterType="com.rufeng.healthman.pojo.DO.PtSubject"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_subject (sub_name, sub_desp, sub_created, sub_modified)
+        values (#{subName}, #{subDesp}, #{subCreated}, #{subModified})
+    </insert>
+    <insert id="insertSelective" keyColumn="sub_id" keyProperty="subId"
+            parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_subject
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subName != null">
+                sub_name,
+            </if>
+            <if test="subDesp != null">
+                sub_desp,
+            </if>
+            <if test="subCreated != null">
+                sub_created,
+            </if>
+            <if test="subModified != null">
+                sub_modified,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subName != null">
+                #{subName},
+            </if>
+            <if test="subDesp != null">
+                #{subDesp},
+            </if>
+            <if test="subCreated != null">
+                #{subCreated},
+            </if>
+            <if test="subModified != null">
+                #{subModified},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtSubject">
+        <!--@mbg.generated-->
+        update pt_subject
+        <set>
+            <if test="subName != null">
+                sub_name = #{subName},
+            </if>
+            <if test="subDesp != null">
+                sub_desp = #{subDesp},
+            </if>
+            <if test="subCreated != null">
+                sub_created = #{subCreated},
+            </if>
+            <if test="subModified != null">
+                sub_modified = #{subModified},
+            </if>
+        </set>
+        where sub_id = #{subId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtSubject">
+        <!--@mbg.generated-->
+        update pt_subject
+        set sub_name     = #{subName},
+            sub_desp     = #{subDesp},
+            sub_created  = #{subCreated},
+            sub_modified = #{subModified}
+        where sub_id = #{subId}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_subject
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="sub_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sub_id = #{item.subId} then #{item.subName}
+                </foreach>
+            </trim>
+            <trim prefix="sub_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sub_id = #{item.subId} then #{item.subDesp}
+                </foreach>
+            </trim>
+            <trim prefix="sub_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sub_id = #{item.subId} then #{item.subCreated}
+                </foreach>
+            </trim>
+            <trim prefix="sub_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sub_id = #{item.subId} then #{item.subModified}
+                </foreach>
+            </trim>
+        </trim>
+        where sub_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.subId}
         </foreach>
-      </trim>
-      <trim prefix="sub_desp = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sub_id = #{item.subId} then #{item.subDesp}
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_subject
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="sub_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.subName != null">
+                        when sub_id = #{item.subId} then #{item.subName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sub_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.subDesp != null">
+                        when sub_id = #{item.subId} then #{item.subDesp}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sub_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.subCreated != null">
+                        when sub_id = #{item.subId} then #{item.subCreated}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sub_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.subModified != null">
+                        when sub_id = #{item.subId} then #{item.subModified}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where sub_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.subId}
         </foreach>
-      </trim>
-      <trim prefix="sub_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sub_id = #{item.subId} then #{item.subCreated}
+    </update>
+    <insert id="batchInsert" keyColumn="sub_id" keyProperty="subId" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_subject
+                (sub_name, sub_desp, sub_created, sub_modified)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.subName}, #{item.subDesp}, #{item.subCreated}, #{item.subModified})
         </foreach>
-      </trim>
-      <trim prefix="sub_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sub_id = #{item.subId} then #{item.subModified}
-        </foreach>
-      </trim>
-    </trim>
-    where sub_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.subId}
-    </foreach>
-  </update>
-  <update id="updateBatchSelective" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_subject
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="sub_name = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.subName != null">
-            when sub_id = #{item.subId} then #{item.subName}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sub_desp = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.subDesp != null">
-            when sub_id = #{item.subId} then #{item.subDesp}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sub_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.subCreated != null">
-            when sub_id = #{item.subId} then #{item.subCreated}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sub_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.subModified != null">
-            when sub_id = #{item.subId} then #{item.subModified}
-          </if>
-        </foreach>
-      </trim>
-    </trim>
-    where sub_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.subId}
-    </foreach>
-  </update>
-  <insert id="batchInsert" keyColumn="sub_id" keyProperty="subId" parameterType="map" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_subject
-    (sub_name, sub_desp, sub_created, sub_modified)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.subName}, #{item.subDesp}, #{item.subCreated}, #{item.subModified})
-    </foreach>
-  </insert>
-  <insert id="insertOrUpdate" keyColumn="sub_id" keyProperty="subId" parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_subject
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        sub_id,
-      </if>
-      sub_name,
-      sub_desp,
-      sub_created,
-      sub_modified,
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        #{subId},
-      </if>
-      #{subName},
-      #{subDesp},
-      #{subCreated},
-      #{subModified},
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="subId != null">
-        sub_id = #{subId},
-      </if>
-      sub_name = #{subName},
-      sub_desp = #{subDesp},
-      sub_created = #{subCreated},
-      sub_modified = #{subModified},
-    </trim>
-  </insert>
-  <insert id="insertOrUpdateSelective" keyColumn="sub_id" keyProperty="subId" parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_subject
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        sub_id,
-      </if>
-      <if test="subName != null">
-        sub_name,
-      </if>
-      <if test="subDesp != null">
-        sub_desp,
-      </if>
-      <if test="subCreated != null">
-        sub_created,
-      </if>
-      <if test="subModified != null">
-        sub_modified,
-      </if>
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        #{subId},
-      </if>
-      <if test="subName != null">
-        #{subName},
-      </if>
-      <if test="subDesp != null">
-        #{subDesp},
-      </if>
-      <if test="subCreated != null">
-        #{subCreated},
-      </if>
-      <if test="subModified != null">
-        #{subModified},
-      </if>
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="subId != null">
-        sub_id = #{subId},
-      </if>
-      <if test="subName != null">
-        sub_name = #{subName},
-      </if>
-      <if test="subDesp != null">
-        sub_desp = #{subDesp},
-      </if>
-      <if test="subCreated != null">
-        sub_created = #{subCreated},
-      </if>
-      <if test="subModified != null">
-        sub_modified = #{subModified},
-      </if>
-    </trim>
-  </insert>
+    </insert>
+    <insert id="insertOrUpdate" keyColumn="sub_id" keyProperty="subId"
+            parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_subject
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                sub_id,
+            </if>
+            sub_name,
+            sub_desp,
+            sub_created,
+            sub_modified,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                #{subId},
+            </if>
+            #{subName},
+            #{subDesp},
+            #{subCreated},
+            #{subModified},
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="subId != null">
+                sub_id = #{subId},
+            </if>
+            sub_name     = #{subName},
+            sub_desp     = #{subDesp},
+            sub_created  = #{subCreated},
+            sub_modified = #{subModified},
+        </trim>
+    </insert>
+    <insert id="insertOrUpdateSelective" keyColumn="sub_id" keyProperty="subId"
+            parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_subject
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                sub_id,
+            </if>
+            <if test="subName != null">
+                sub_name,
+            </if>
+            <if test="subDesp != null">
+                sub_desp,
+            </if>
+            <if test="subCreated != null">
+                sub_created,
+            </if>
+            <if test="subModified != null">
+                sub_modified,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                #{subId},
+            </if>
+            <if test="subName != null">
+                #{subName},
+            </if>
+            <if test="subDesp != null">
+                #{subDesp},
+            </if>
+            <if test="subCreated != null">
+                #{subCreated},
+            </if>
+            <if test="subModified != null">
+                #{subModified},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="subId != null">
+                sub_id = #{subId},
+            </if>
+            <if test="subName != null">
+                sub_name = #{subName},
+            </if>
+            <if test="subDesp != null">
+                sub_desp = #{subDesp},
+            </if>
+            <if test="subCreated != null">
+                sub_created = #{subCreated},
+            </if>
+            <if test="subModified != null">
+                sub_modified = #{subModified},
+            </if>
+        </trim>
+    </insert>
     <select id="listSubject" resultType="com.rufeng.healthman.pojo.DO.PtSubject">
         SELECT sub_id, sub_name, sub_desp, sub_created, sub_modified
         FROM pt_subject
+    </select>
+    <resultMap id="SubjectInfoMap" type="com.rufeng.healthman.pojo.DTO.ptsubject.SubjectInfo">
+        <id column="sub_id" property="subId"/>
+        <result property="subCreated" column="sub_created"/>
+        <result property="subDesp" column="sub_desp"/>
+        <result property="subName" column="sub_name"/>
+        <collection property="sheetInfos" ofType="com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo">
+            <id column="sub_id" property="subId"/>
+            <id property="gender" column="gender"/>
+            <id property="grade" column="grade"/>
+        </collection>
+    </resultMap>
+    <select id="pageSubject" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_subject
+                     INNER JOIN pt_score_sheet
+                ON pt_score_sheet.subject_id = pt_subject.sub_id
+        <where>
+            <if test="query.subName != null">
+                <bind name="subName" value="'%' + query.subName + '%'"/>
+                sub_name like #{subName}
+            </if>
+            <if test="query.grade != null">
+                AND grade = #{query.grade}
+            </if>
+        </where>
+        GROUP BY sub_id
     </select>
 </mapper>

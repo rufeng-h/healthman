@@ -352,4 +352,15 @@
              #{item.target})
         </foreach>
     </insert>
+
+    <select id="listRoleByAdminIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_role
+        <where>
+            <foreach collection="items" item="item" open="admin_id IN (" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>

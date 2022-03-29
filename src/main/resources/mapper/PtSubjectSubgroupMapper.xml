@@ -7,13 +7,13 @@
     <id column="sub_grp_id" property="subGrpId" />
     <result column="sub_id" property="subId" />
     <result column="grp_id" property="grpId" />
-    <result column="sbu_grp_modified" property="sbuGrpModified" />
+    <result column="sub_grp_modified" property="sbuGrpModified" />
     <result column="sub_grp_created" property="subGrpCreated" />
     <result column="sub_grp_admin" property="subGrpAdmin" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    sub_grp_id, sub_id, grp_id, sbu_grp_modified, sub_grp_created, sub_grp_admin
+    sub_grp_id, sub_id, grp_id, sub_grp_modified, sub_grp_created, sub_grp_admin
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -29,7 +29,7 @@
   </delete>
   <insert id="insert" keyColumn="sub_grp_id" keyProperty="subGrpId" parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into pt_subject_subgroup (sub_id, grp_id, sbu_grp_modified, sub_grp_created, sub_grp_admin)
+    insert into pt_subject_subgroup (sub_id, grp_id, sub_grp_modified, sub_grp_created, sub_grp_admin)
     values (#{subId}, #{grpId}, #{sbuGrpModified}, #{subGrpCreated}, #{subGrpAdmin})
   </insert>
   <insert id="insertSelective" keyColumn="sub_grp_id" keyProperty="subGrpId" parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup" useGeneratedKeys="true">
@@ -43,7 +43,7 @@
         grp_id,
       </if>
       <if test="sbuGrpModified != null">
-        sbu_grp_modified,
+        sub_grp_modified,
       </if>
       <if test="subGrpCreated != null">
         sub_grp_created,
@@ -81,7 +81,7 @@
         grp_id = #{grpId},
       </if>
       <if test="sbuGrpModified != null">
-        sbu_grp_modified = #{sbuGrpModified},
+        sub_grp_modified = #{sbuGrpModified},
       </if>
       <if test="subGrpCreated != null">
         sub_grp_created = #{subGrpCreated},
@@ -97,7 +97,7 @@
     update pt_subject_subgroup
     set sub_id = #{subId},
       grp_id = #{grpId},
-      sbu_grp_modified = #{sbuGrpModified},
+      sub_grp_modified = #{sbuGrpModified},
       sub_grp_created = #{subGrpCreated},
       sub_grp_admin = #{subGrpAdmin}
     where sub_grp_id = #{subGrpId}
@@ -185,7 +185,7 @@
   <insert id="batchInsert" keyColumn="sub_grp_id" keyProperty="subGrpId" parameterType="map" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into pt_subject_subgroup
-    (sub_id, grp_id, sbu_grp_modified, sub_grp_created, sub_grp_admin)
+    (sub_id, grp_id, sub_grp_modified, sub_grp_created, sub_grp_admin)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.subId}, #{item.grpId}, #{item.sbuGrpModified}, #{item.subGrpCreated}, #{item.subGrpAdmin}
@@ -201,7 +201,7 @@
       </if>
       sub_id,
       grp_id,
-      sbu_grp_modified,
+      sub_grp_modified,
       sub_grp_created,
       sub_grp_admin,
     </trim>
@@ -223,7 +223,7 @@
       </if>
       sub_id = #{subId},
       grp_id = #{grpId},
-      sbu_grp_modified = #{sbuGrpModified},
+      sub_grp_modified = #{sbuGrpModified},
       sub_grp_created = #{subGrpCreated},
       sub_grp_admin = #{subGrpAdmin},
     </trim>
@@ -242,7 +242,7 @@
         grp_id,
       </if>
       <if test="sbuGrpModified != null">
-        sbu_grp_modified,
+        sub_grp_modified,
       </if>
       <if test="subGrpCreated != null">
         sub_grp_created,
@@ -284,7 +284,7 @@
         grp_id = #{grpId},
       </if>
       <if test="sbuGrpModified != null">
-        sbu_grp_modified = #{sbuGrpModified},
+        sub_grp_modified = #{sbuGrpModified},
       </if>
       <if test="subGrpCreated != null">
         sub_grp_created = #{subGrpCreated},
@@ -294,4 +294,13 @@
       </if>
     </trim>
   </insert>
+
+    <insert id="batchInsertSelective" keyColumn="sub_grp_id" keyProperty="subGrpId" useGeneratedKeys="true">
+        insert into pt_subject_subgroup
+                (sub_id, grp_id, sub_grp_admin)
+                values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.subId}, #{item.grpId}, #{item.subGrpAdmin})
+        </foreach>
+    </insert>
 </mapper>

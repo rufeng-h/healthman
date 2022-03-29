@@ -1,9 +1,13 @@
 package com.rufeng.healthman.mapper;
 
+import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtCollege;
-import java.util.List;
-import com.rufeng.healthman.pojo.file.PtCollegeExcel;import org.apache.ibatis.annotations.Mapper;
+import com.rufeng.healthman.pojo.file.PtCollegeExcel;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -97,4 +101,10 @@ public interface PtCollegeMapper {
     Integer batchInsertSelective(@Param("items") List<PtCollegeExcel> cachedDataList);
 
     PtCollege getCollegeByName(String clgName);
+
+    @ReturnMap
+    Map<String, String> mapClgNameByIds(@Param("items") List<String> clgs);
+
+    @ReturnMap
+    Map<String, String> mapAdminIdClgNameByIds(@Param("items") List<String> collect);
 }

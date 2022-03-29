@@ -11,14 +11,15 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:23
+ * @time 2022-03-28 15:01
  * @package com.rufeng.healthman.pojo.DO
  * @description TODO
  */
 
 /**
-    * 用户表
-    */
+ * 用户表
+ * @author rufeng
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -31,8 +32,8 @@ public class PtAdmin implements Serializable {
     private String password;
 
     /**
-    * 头像
-    */
+     * 头像
+     */
     private String avatar;
 
     private String email;
@@ -48,6 +49,11 @@ public class PtAdmin implements Serializable {
     private String phone;
 
     private Long aid;
+
+    /**
+     * 所属学院
+     */
+    private String clgCode;
 
     private static final long serialVersionUID = 1L;
 }

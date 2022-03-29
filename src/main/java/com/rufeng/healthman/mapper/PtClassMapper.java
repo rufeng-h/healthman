@@ -121,4 +121,7 @@ public interface PtClassMapper {
      */
     @ReturnMap
     Map<String, Integer> countStudent(@Param("clsCodes") List<String> clsCodes);
+
+    @ReturnMap
+    Map<String, String> mapClsNameByIds(@Param("items") List<String> clss);
 }

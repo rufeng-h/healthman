@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:30
+ * @time 2022-03-29 18:02
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -72,4 +72,6 @@ public interface PtSubjectSubgroupMapper {
     int updateBatchSelective(List<PtSubjectSubgroup> list);
 
     int batchInsert(@Param("list") List<PtSubjectSubgroup> list);
+
+    int batchInsertSelective(@Param("items") List<PtSubjectSubgroup> subjectSubgroups);
 }

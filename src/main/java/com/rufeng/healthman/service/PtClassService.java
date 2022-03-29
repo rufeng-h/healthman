@@ -86,4 +86,11 @@ public class PtClassService {
         EasyExcel.write(outputStream, PtClassExcel.class).sheet().doWrite(Collections.emptyList());
         return new ByteArrayResource(outputStream.toByteArray());
     }
+
+    public Map<String, String> mapClsNameByIds(List<String> collect) {
+        if (collect.size() == 0){
+            return Collections.emptyMap();
+        }
+        return ptClassMapper.mapClsNameByIds(collect);
+    }
 }

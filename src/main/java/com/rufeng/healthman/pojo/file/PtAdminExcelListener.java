@@ -30,10 +30,10 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
     private int handledCount = 0;
     private List<PtAdminExcel> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    public PtAdminExcelListener(PtAdminService ptAdminService, PtCollegeService collegeService, PtClassService classService) {
+    public PtAdminExcelListener(PtAdminService ptAdminService, PtClassService ptClassService, PtCollegeService ptCollegeService) {
         this.ptAdminService = ptAdminService;
-        clgMap = collegeService.listCollege().stream().collect(Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
-        clsMap = classService.listClass(new PtClassQuery()).stream().collect(Collectors.toMap(PtClass::getClsName, PtClass::getClsCode));
+        clgMap = ptCollegeService.listCollege().stream().collect(Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
+        clsMap = ptClassService.listClass(new PtClassQuery()).stream().collect(Collectors.toMap(PtClass::getClsName, PtClass::getClsCode));
     }
 
     @Override
@@ -53,6 +53,9 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
                 }
                 return clsMap.get(cls);
             }).collect(Collectors.toList()));
+        }
+        if (data.getClgName() != null) {
+            data.setClgCode(clgMap.get(data.getClgName()));
         }
         cachedDataList.add(data);
         if (cachedDataList.size() >= BATCH_COUNT) {

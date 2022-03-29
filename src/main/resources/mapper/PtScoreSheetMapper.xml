@@ -409,4 +409,14 @@
              #{item.level})
         </foreach>
     </insert>
+
+    <select id="listSheetInfoBySubIds" resultType="com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo">
+        SELECT DISTINCT subject_id AS sub_id, grade, gender
+        FROM pt_score_sheet
+        <where>
+            <foreach collection="list" item="item" open="subject_id IN (" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>

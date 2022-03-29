@@ -3,6 +3,7 @@ package com.rufeng.healthman.common.api;
 import com.github.pagehelper.Page;
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public class ApiPage<T> {
     private Long total;
     private Integer pageSize = 10;
     private Integer pages;
-    private List<T> items;
+    private Collection<T> items;
 
     public static <T> ApiPage<T> convert(Page<T> page) {
         ApiPage<T> apiPage = new ApiPage<>();
@@ -33,6 +34,11 @@ public class ApiPage<T> {
 
     public static <U, T> ApiPage<T> convert(Page<U> source, Function<U, T> trans) {
         List<T> items = source.stream().map(trans).collect(Collectors.toList());
+        return ApiPage.convert(source, items);
+    }
+
+
+    public static <T> ApiPage<T> convert(Page<?> source, Collection<T> items) {
         ApiPage<T> page = new ApiPage<>();
         page.setPages(source.getPages());
         page.setPageSize(source.getPageSize());

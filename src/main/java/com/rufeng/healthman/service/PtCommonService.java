@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @description TODO
  */
 @Service
-public class PtCommonService{
+public class PtCommonService {
     private final PtAdminService ptAdminService;
     private final PtStudentService ptStudentService;
     private final RedisService redisService;
@@ -26,7 +26,7 @@ public class PtCommonService{
         this.redisService = redisService;
     }
 
-    
+
     public void logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -35,14 +35,17 @@ public class PtCommonService{
         }
     }
 
-    
+
     public UserInfo userInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserTypeEnum userType = (UserTypeEnum) authentication.getDetails();
         return userType == UserTypeEnum.ADMIN ? ptAdminService.adminInfo() : ptStudentService.studentInfo();
     }
 
-    
+    public String getCurrentUserId() {
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     public LoginResult login(LoginQuery loginQuery) {
         UserTypeEnum userTypeEnum = loginQuery.getUserType();
         if (userTypeEnum == UserTypeEnum.ADMIN) {

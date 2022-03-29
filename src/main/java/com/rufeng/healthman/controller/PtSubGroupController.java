@@ -2,12 +2,11 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DO.PtSubgroup;
+import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
 import com.rufeng.healthman.service.PtSubgroupService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +32,10 @@ public class PtSubGroupController {
     @GetMapping("/list")
     public ApiResponse<List<PtSubgroup>> listSubGroup() {
         return ApiResponse.success(ptSubgroupService.listSubGroup());
+    }
+
+    @PostMapping
+    public ApiResponse<PtSubgroup> addSubGroup(@Validated @RequestBody PtSubGroupFormdata formdata){
+        return ApiResponse.success(ptSubgroupService.addSubGroup(formdata));
     }
 }

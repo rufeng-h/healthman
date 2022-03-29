@@ -2,7 +2,6 @@ package com.rufeng.healthman.pojo.DTO.support;
 
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.pojo.DO.PtAdmin;
-import com.rufeng.healthman.pojo.DO.PtRole;
 import com.rufeng.healthman.pojo.DO.PtStudent;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,9 +25,9 @@ public abstract class UserInfo {
     private Date createdTime;
     private Date lastLoginTime;
     private String desp;
-    private List<PtRole> roles;
+    private List<RoleInfo> roles;
 
-    public UserInfo(PtAdmin user, List<PtRole> roles) {
+    public UserInfo(PtAdmin user, List<RoleInfo> roles) {
         this.userId = user.getAdminId();
         this.username = user.getAdminName();
         this.avatar = user.getAvatar();
@@ -46,10 +45,7 @@ public abstract class UserInfo {
         this.lastLoginTime = student.getStuLastLogin();
         this.desp = student.getStuDesp();
 
-        PtRole role = new PtRole();
-        role.setAdminId(userId);
-        role.setRoleType(RoleTypeEnum.STUDENT);
-        role.setRoleValue((byte) 0);
+        RoleInfo role = new RoleInfo("学生", RoleTypeEnum.STUDENT);
 
         this.roles = Collections.singletonList(role);
     }

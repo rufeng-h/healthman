@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author rufeng
@@ -62,5 +63,12 @@ public class PtCollegeService {
         EasyExcel.write(outputStream, PtCollegeExcel.class).sheet()
                 .doWrite(Collections.emptyList());
         return new ByteArrayResource(outputStream.toByteArray());
+    }
+
+    public Map<String, String> mapClgNameByIds(List<String> collect) {
+        if (collect.size() == 0) {
+            return Collections.emptyMap();
+        }
+        return ptCollegeMapper.mapClgNameByIds(collect);
     }
 }

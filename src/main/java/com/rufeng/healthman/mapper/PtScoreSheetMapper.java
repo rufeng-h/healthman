@@ -1,10 +1,14 @@
 package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.pojo.DO.PtScoreSheet;
+import com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.lang.NonNull;
+
 import java.math.BigDecimal;
 import java.util.List;
-import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;import org.springframework.lang.NonNull;
 
 
 /**
@@ -89,4 +93,6 @@ public interface PtScoreSheetMapper {
      * @return count
      */
     Integer batchInsertSelective(@Param("items") List<PtScoreSheet> sheets);
+
+    List<SheetInfo> listSheetInfoBySubIds(List<Long> subIds);
 }

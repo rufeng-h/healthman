@@ -1,7 +1,7 @@
 package com.rufeng.healthman.pojo.DTO.ptadmin;
 
 import com.rufeng.healthman.pojo.DO.PtAdmin;
-import com.rufeng.healthman.pojo.DO.PtRole;
+import com.rufeng.healthman.pojo.DTO.support.RoleInfo;
 import com.rufeng.healthman.pojo.DTO.support.UserInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,9 +23,11 @@ import java.util.List;
 public class AdminInfo extends UserInfo {
     private String email;
     private String phone;
+    private String clgName;
 
-    public AdminInfo(PtAdmin admin, List<PtRole> roles) {
+    public AdminInfo(PtAdmin admin, String clgName, List<RoleInfo> roles) {
         super(admin, roles);
+        this.clgName = clgName;
         this.email = admin.getEmail();
         this.phone = admin.getPhone();
     }
