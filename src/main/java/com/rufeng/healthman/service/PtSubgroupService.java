@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @author rufeng
  * @time 2022-03-27 19:13
  * @package com.rufeng.healthman.service
- * @description TODO
+ * @description 科目组
  */
 
 @Service
@@ -93,7 +93,9 @@ public class PtSubgroupService {
 
     public ApiPage<SubGroupInfo> pageSubGroupInfo(Integer page, Integer pageSize, PtSubgroupQuery query) {
         PageHelper.startPage(page, pageSize);
+        /* 为分页 */
         Page<PtSubgroup> subgroups = ptSubgroupMapper.pageSubGroup(query);
+        /* 查询 */
         List<Long> list = subgroups.stream().map(PtSubgroup::getGrpId).collect(Collectors.toList());
         return ApiPage.convert(subgroups, ptSubgroupMapper.pageSubGroupInfo(list));
     }

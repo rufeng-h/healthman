@@ -305,4 +305,34 @@
             (#{item.msId}, #{item.clsCode}, #{item.cmsCreatedAdmin})
         </foreach>
     </insert>
+
+    <select id="countClsByMsIds" resultType="map">
+        SELECT ms_id, COUNT(cls_code)
+        FROM pt_class_measurement
+        <where>
+            <foreach collection="list" item="item" close=")" separator="," open="ms_id IN (">
+                #{item}
+            </foreach>
+        </where>
+        GROUP BY ms_id
+    </select>
+
+    <select id="countStuByMsIds" resultType="map">
+        SELECT ms_id, COUNT(stu_id)
+        FROM pt_class_measurement
+                     LEFT JOIN pt_class ON pt_class_measurement.cls_code = pt_class.cls_code
+                     LEFT JOIN pt_student ps on pt_class.cls_code = ps.cls_code
+        <where>
+            <foreach collection="list" open="ms_id IN (" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </where>
+        GROUP BY ms_id;
+    </select>
+
+    <delete id="deleteByMsId">
+        DELETE
+        FROM pt_class_measurement
+        WHERE ms_id = #{msId}
+    </delete>
 </mapper>

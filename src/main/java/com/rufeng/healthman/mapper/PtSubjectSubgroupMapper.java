@@ -1,9 +1,12 @@
 package com.rufeng.healthman.mapper;
 
+import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtSubjectSubgroup;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -74,4 +77,7 @@ public interface PtSubjectSubgroupMapper {
     int batchInsert(@Param("list") List<PtSubjectSubgroup> list);
 
     int batchInsertSelective(@Param("items") List<PtSubjectSubgroup> subjectSubgroups);
+
+    @ReturnMap
+    Map<Long, Integer> countSubByGrpIds(List<Long> grpIds);
 }

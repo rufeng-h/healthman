@@ -1,7 +1,10 @@
 package com.rufeng.healthman.mapper;
 
+import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtClassMesurement;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -68,4 +71,12 @@ public interface PtClassMesurementMapper {
     int batchInsert(@Param("list") List<PtClassMesurement> list);
 
     int batchInsertSelective(List<PtClassMesurement> list);
+
+    @ReturnMap
+    Map<Long, Integer> countClsByMsIds(List<Long> msIds);
+
+    @ReturnMap
+    Map<Long, Integer> countStuByMsIds(List<Long> msIds);
+
+    int deleteByMsId(Long msId);
 }

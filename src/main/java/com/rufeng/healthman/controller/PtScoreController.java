@@ -35,7 +35,7 @@ public class PtScoreController {
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file){
-        return ApiResponse.success(ptScoreService.uploadScore(file));
+    public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file, @RequestParam(required = false) Long msId) {
+        return ApiResponse.success(ptScoreService.uploadScore(file, msId));
     }
 }

@@ -8,6 +8,7 @@ import com.rufeng.healthman.pojo.DO.PtScore;
 import com.rufeng.healthman.pojo.DO.PtSubject;
 import com.rufeng.healthman.service.PtScoreService;
 import com.rufeng.healthman.service.PtSubjectService;
+import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -24,18 +25,25 @@ import java.util.stream.Collectors;
 public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, String>> {
 
     private static final String STUDENT_ID_HEADER = "学号";
-    private static final String YEAR_HEADER = "年份";
+    private static final String MEASUREMENT_ID_HEADER = "测试编号";
     private static final int BATCH_COUNT = 100;
     private final PtScoreService ptScoreService;
+    /**
+     * 科目名查Id
+     */
     private final Map<String, Long> subjectMap;
+    /**
+     * 列索引映射科目Id
+     */
     private final Map<Integer, Long> colSubIdMap;
-    private int handledCount = 0;
-
     List<PtScore> dataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+    private Long msId;
+    private int handledCount = 0;
     private int stuIdColumnIndex = -1;
-    private int yearColumnIndex = -1;
+    private int msIdColumnIndex = -1;
 
-    public PtScoreExcelListener(PtSubjectService ptSubjectService, PtScoreService ptScoreService) {
+    public PtScoreExcelListener(PtSubjectService ptSubjectService, PtScoreService ptScoreService, @Nullable Long msId) {
+        this.msId = msId;
         this.ptScoreService = ptScoreService;
         List<PtSubject> subjectList = ptSubjectService.listSubject();
         subjectMap = subjectList.stream().collect(Collectors.toMap(PtSubject::getSubName, PtSubject::getSubId));
@@ -53,8 +61,8 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
                 case STUDENT_ID_HEADER:
                     stuIdColumnIndex = key;
                     break;
-                case YEAR_HEADER:
-                    yearColumnIndex = key;
+                case MEASUREMENT_ID_HEADER:
+                    msIdColumnIndex = key;
                     break;
                 default:
                     if (!subjectMap.containsKey(value)) {
@@ -66,27 +74,23 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
         if (stuIdColumnIndex == -1) {
             throw new ExcelHeaderException("缺少" + STUDENT_ID_HEADER + "列!");
         }
-        if (yearColumnIndex == -1) {
-            throw new ExcelHeaderException("缺少" + YEAR_HEADER + "列！");
+        if (msIdColumnIndex == -1 && this.msId == null) {
+            throw new ExcelHeaderException("缺少" + MEASUREMENT_ID_HEADER + "列！");
         }
     }
 
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
+        String curStuId = data.get(stuIdColumnIndex);
+        Long curMsId = msIdColumnIndex == -1 ? this.msId : Long.parseLong(data.get(msIdColumnIndex));
         Set<Map.Entry<Integer, String>> entrySet = data.entrySet();
-        Integer year = null;
-        String stuId = null;
         for (Map.Entry<Integer, String> entry : entrySet) {
             String value = entry.getValue();
             Integer key = entry.getKey();
-            if (key == stuIdColumnIndex) {
-                stuId = value;
-            } else if (key == yearColumnIndex) {
-                year = Integer.parseInt(value);
-            } else {
+            if (key != stuIdColumnIndex && key != msIdColumnIndex) {
                 PtScore ptScore = new PtScore();
-                ptScore.setStuId(stuId);
-//                ptScore.setMsId(year);
+                ptScore.setStuId(curStuId);
+                ptScore.setMsId(curMsId);
                 ptScore.setScoData(new BigDecimal(value));
                 ptScore.setSubId(colSubIdMap.get(key));
                 dataList.add(ptScore);

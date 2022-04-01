@@ -1,7 +1,13 @@
 package com.rufeng.healthman.mapper;
 
+import com.github.pagehelper.Page;
+import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtMeasurement;
 import java.util.List;
+import java.util.Map;
+
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementInfo;
+import com.rufeng.healthman.pojo.Query.PtMeasurementQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -72,4 +78,11 @@ public interface PtMeasurementMapper {
     int updateBatchSelective(List<PtMeasurement> list);
 
     int batchInsert(@Param("list") List<PtMeasurement> list);
+
+    Page<PtMeasurement> pageMeasurement(@Param("query") PtMeasurementQuery query);
+
+    List<MeasurementInfo> pageMesurementInfo(List<Long> msIds);
+
+    @ReturnMap
+    Map<Long, Integer> countCompStuByMsIds(List<Long> msIds);
 }

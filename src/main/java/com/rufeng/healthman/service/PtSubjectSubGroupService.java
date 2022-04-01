@@ -4,7 +4,9 @@ import com.rufeng.healthman.mapper.PtSubjectSubgroupMapper;
 import com.rufeng.healthman.pojo.DO.PtSubjectSubgroup;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author rufeng
@@ -25,5 +27,12 @@ public class PtSubjectSubGroupService {
             return 0;
         }
         return ptSubjectSubgroupMapper.batchInsertSelective(list);
+    }
+
+    public Map<Long, Integer> countSubByGrpIds(List<Long> grpIds) {
+        if (grpIds.size() == 0) {
+            return Collections.emptyMap();
+        }
+        return ptSubjectSubgroupMapper.countSubByGrpIds(grpIds);
     }
 }

@@ -18,7 +18,8 @@ import lombok.NoArgsConstructor;
 
 /**
     * 班级表
-    */
+ * @author rufeng
+ */
 @Data
 @Builder
 @NoArgsConstructor

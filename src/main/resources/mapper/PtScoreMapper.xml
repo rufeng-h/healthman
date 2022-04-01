@@ -8,14 +8,13 @@
     <result column="stu_id" property="stuId" />
     <result column="sub_id" property="subId" />
     <result column="sco_data" property="scoData" />
-    <result column="score" property="score" />
     <result column="sco_created" property="scoCreated" />
     <result column="sco_modified" property="scoModified" />
     <result column="ms_id" property="msId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    sco_id, stu_id, sub_id, sco_data, score, sco_created, sco_modified, ms_id
+    sco_id, stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -31,10 +30,8 @@
   </delete>
   <insert id="insert" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.DO.PtScore" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into pt_score (stu_id, sub_id, sco_data, score, sco_created, sco_modified, 
-      ms_id)
-    values (#{stuId}, #{subId}, #{scoData}, #{score}, #{scoCreated}, #{scoModified}, 
-      #{msId})
+    insert into pt_score (stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id)
+    values (#{stuId}, #{subId}, #{scoData}, #{scoCreated}, #{scoModified}, #{msId})
   </insert>
   <insert id="insertSelective" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.DO.PtScore" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -48,9 +45,6 @@
       </if>
       <if test="scoData != null">
         sco_data,
-      </if>
-      <if test="score != null">
-        score,
       </if>
       <if test="scoCreated != null">
         sco_created,
@@ -71,9 +65,6 @@
       </if>
       <if test="scoData != null">
         #{scoData},
-      </if>
-      <if test="score != null">
-        #{score},
       </if>
       <if test="scoCreated != null">
         #{scoCreated},
@@ -99,9 +90,6 @@
       <if test="scoData != null">
         sco_data = #{scoData},
       </if>
-      <if test="score != null">
-        score = #{score},
-      </if>
       <if test="scoCreated != null">
         sco_created = #{scoCreated},
       </if>
@@ -120,7 +108,6 @@
     set stu_id = #{stuId},
       sub_id = #{subId},
       sco_data = #{scoData},
-      score = #{score},
       sco_created = #{scoCreated},
       sco_modified = #{scoModified},
       ms_id = #{msId}
@@ -143,11 +130,6 @@
       <trim prefix="sco_data = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
           when sco_id = #{item.scoId} then #{item.scoData}
-        </foreach>
-      </trim>
-      <trim prefix="score = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.score}
         </foreach>
       </trim>
       <trim prefix="sco_created = case" suffix="end,">
@@ -196,13 +178,6 @@
           </if>
         </foreach>
       </trim>
-      <trim prefix="score = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.score != null">
-            when sco_id = #{item.scoId} then #{item.score}
-          </if>
-        </foreach>
-      </trim>
       <trim prefix="sco_created = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
           <if test="item.scoCreated != null">
@@ -233,11 +208,11 @@
   <insert id="batchInsert" keyColumn="sco_id" keyProperty="scoId" parameterType="map" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into pt_score
-    (stu_id, sub_id, sco_data, score, sco_created, sco_modified, ms_id)
+    (stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.stuId}, #{item.subId}, #{item.scoData}, #{item.score}, #{item.scoCreated}, 
-        #{item.scoModified}, #{item.msId})
+      (#{item.stuId}, #{item.subId}, #{item.scoData}, #{item.scoCreated}, #{item.scoModified}, 
+        #{item.msId})
     </foreach>
   </insert>
   <insert id="insertOrUpdate" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.DO.PtScore" useGeneratedKeys="true">
@@ -250,7 +225,6 @@
       stu_id,
       sub_id,
       sco_data,
-      score,
       sco_created,
       sco_modified,
       ms_id,
@@ -263,7 +237,6 @@
       #{stuId},
       #{subId},
       #{scoData},
-      #{score},
       #{scoCreated},
       #{scoModified},
       #{msId},
@@ -276,7 +249,6 @@
       stu_id = #{stuId},
       sub_id = #{subId},
       sco_data = #{scoData},
-      score = #{score},
       sco_created = #{scoCreated},
       sco_modified = #{scoModified},
       ms_id = #{msId},
@@ -297,9 +269,6 @@
       </if>
       <if test="scoData != null">
         sco_data,
-      </if>
-      <if test="score != null">
-        score,
       </if>
       <if test="scoCreated != null">
         sco_created,
@@ -325,9 +294,6 @@
       <if test="scoData != null">
         #{scoData},
       </if>
-      <if test="score != null">
-        #{score},
-      </if>
       <if test="scoCreated != null">
         #{scoCreated},
       </if>
@@ -352,9 +318,6 @@
       <if test="scoData != null">
         sco_data = #{scoData},
       </if>
-      <if test="score != null">
-        score = #{score},
-      </if>
       <if test="scoCreated != null">
         sco_created = #{scoCreated},
       </if>
@@ -366,4 +329,12 @@
       </if>
     </trim>
   </insert>
+
+    <insert id="batchInsertSelective" keyColumn="sco_id" keyProperty="scoId" useGeneratedKeys="true">
+        INSERT INTO pt_score (stu_id, sub_id, sco_data, ms_id)
+                VALUES
+        <foreach collection="items" item="item" separator=",">
+            (#{item.stuId}, #{item.subId}, #{item.scoData}, #{item.msId})
+        </foreach>
+    </insert>
 </mapper>

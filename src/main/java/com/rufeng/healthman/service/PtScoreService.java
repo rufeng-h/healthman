@@ -37,8 +37,8 @@ public class PtScoreService {
     }
 
 
-    public Integer uploadScore(MultipartFile file) {
-        PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectService, this);
+    public Integer uploadScore(MultipartFile file, Long msId) {
+        PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectService, this, msId);
         try {
             EasyExcel.read(file.getInputStream(), listener).sheet().doRead();
         } catch (IOException e) {
