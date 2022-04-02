@@ -333,9 +333,9 @@
     <insert id="batchInsert" parameterType="map">
         <!--@mbg.generated-->
         insert into pt_student
-                (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
-                 stu_modified, stu_last_login, stu_desp)
-                values
+        (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
+         stu_modified, stu_last_login, stu_desp)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.stuId}, #{item.sid}, #{item.stuName}, #{item.stuBirth}, #{item.stuGender},
              #{item.password}, #{item.avatar}, #{item.clsCode}, #{item.stuCreated}, #{item.stuModified},
@@ -345,8 +345,8 @@
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtStudent">
         <!--@mbg.generated-->
         insert into pt_student
-                (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
-                 stu_modified, stu_last_login, stu_desp)
+        (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
+         stu_modified, stu_last_login, stu_desp)
         values (#{stuId}, #{sid}, #{stuName}, #{stuBirth}, #{stuGender}, #{password}, #{avatar},
                 #{clsCode}, #{stuCreated}, #{stuModified}, #{stuLastLogin}, #{stuDesp})
         on duplicate key update stu_id         = #{stuId},
@@ -524,10 +524,29 @@
                cls_name,
                stu_desp
         FROM pt_student
-                     LEFT JOIN pt_class ON pt_student.cls_code = pt_class.cls_code
+                 LEFT JOIN pt_class ON pt_student.cls_code = pt_class.cls_code
         <where>
             <include refid="Query"/>
         </where>
         <include refid="OrderBy"/>
+    </select>
+
+    <select id="getStuBaseInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo">
+        SELECT pt_student.stu_id,
+               pt_student.stu_gender                                                        as gender,
+               YEAR(CURRENT_TIMESTAMP) - pt_class.cls_entry_year + pt_class.cls_entry_grade as grade
+        FROM pt_class
+                 INNER JOIN pt_student ON pt_class.cls_code = pt_student.cls_code
+        WHERE stu_id = #{stuId}
+    </select>
+
+    <select id="listStuScoreInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo">
+        SELECT stu_id, stu_gender, stu_name
+        FROM pt_student
+        <where>
+            <foreach collection="list" separator="," item="item" open="stu_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
     </select>
 </mapper>

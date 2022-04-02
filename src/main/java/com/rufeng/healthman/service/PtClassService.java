@@ -13,6 +13,7 @@ import com.rufeng.healthman.pojo.file.PtClassExcelListener;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,9 +32,11 @@ import java.util.stream.Collectors;
 @Service
 public class PtClassService {
     private final PtClassMapper ptClassMapper;
+    private final PtCollegeService ptCollegeService;
 
-    public PtClassService(PtClassMapper ptClassMapper) {
+    public PtClassService(PtClassMapper ptClassMapper, PtCollegeService ptCollegeService) {
         this.ptClassMapper = ptClassMapper;
+        this.ptCollegeService = ptCollegeService;
     }
 
 
@@ -51,6 +54,12 @@ public class PtClassService {
         return ptClassMapper.listClass(query);
     }
 
+    public List<PtClass> listClass(List<String> clsCodes) {
+        if (clsCodes.size() == 0) {
+            return Collections.emptyList();
+        }
+        return ptClassMapper.listClassByClsCodes(clsCodes);
+    }
 
     public List<Integer> listGrade(@NonNull PtClassQuery query) {
         return ptClassMapper.listGrade(query);
@@ -62,8 +71,8 @@ public class PtClassService {
     }
 
 
-    public Integer uploadClass(MultipartFile file) {
-        PtClassExcelListener excelListener = new PtClassExcelListener(this);
+    public Integer uploadClass(MultipartFile file, @Nullable String clgCode) {
+        PtClassExcelListener excelListener = new PtClassExcelListener(this, ptCollegeService, clgCode);
         try {
             EasyExcel.read(file.getInputStream(), PtClassExcel.class, excelListener).sheet().doRead();
         } catch (IOException e) {
@@ -88,9 +97,16 @@ public class PtClassService {
     }
 
     public Map<String, String> mapClsNameByIds(List<String> collect) {
-        if (collect.size() == 0){
+        if (collect.size() == 0) {
             return Collections.emptyMap();
         }
         return ptClassMapper.mapClsNameByIds(collect);
+    }
+
+    public Map<String, Integer> countStudent(List<String> clsCodes) {
+        if (clsCodes.size() == 0) {
+            return Collections.emptyMap();
+        }
+        return ptClassMapper.countStudent(clsCodes);
     }
 }

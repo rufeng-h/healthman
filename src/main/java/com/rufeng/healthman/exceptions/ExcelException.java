@@ -6,8 +6,12 @@ package com.rufeng.healthman.exceptions;
  * @package com.rufeng
  * @description TODO
  */
-public abstract class ExcelException extends RuntimeException {
+public class ExcelException extends PtException {
     public ExcelException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public ExcelException(String message){
+        this(message, null);
     }
 }

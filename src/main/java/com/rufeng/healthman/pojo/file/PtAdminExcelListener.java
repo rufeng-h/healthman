@@ -3,7 +3,7 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
-import com.rufeng.healthman.exceptions.ExcelValueException;
+import com.rufeng.healthman.exceptions.ExcelException;
 import com.rufeng.healthman.pojo.DO.PtClass;
 import com.rufeng.healthman.pojo.DO.PtCollege;
 import com.rufeng.healthman.pojo.Query.PtClassQuery;
@@ -41,7 +41,7 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
         if (data.getClgRole() != null) {
             data.setClgCodes(Arrays.stream(data.getClgRole().split(",")).map((clg) -> {
                 if (!clgMap.containsKey(clg)) {
-                    throw new ExcelValueException("不存在学院:" + clg);
+                    throw new ExcelException("不存在学院:" + clg);
                 }
                 return clgMap.get(clg);
             }).collect(Collectors.toList()));
@@ -49,7 +49,7 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
         if (data.getClsRole() != null) {
             data.setClsCodes(Arrays.stream(data.getClsRole().split(",")).map((cls) -> {
                 if (!clsMap.containsKey(cls)) {
-                    throw new ExcelValueException("不存在班级:" + cls);
+                    throw new ExcelException("不存在班级:" + cls);
                 }
                 return clsMap.get(cls);
             }).collect(Collectors.toList()));

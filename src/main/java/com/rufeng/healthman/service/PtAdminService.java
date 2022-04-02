@@ -294,4 +294,8 @@ public class PtAdminService {
         }
         return ptAdminMapper.listAdminByIds(adminIds);
     }
+
+    public PtAdmin getAdmin(String adminId) {
+        return ptAdminMapper.selectByPrimaryKey(adminId);
+    }
 }

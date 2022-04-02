@@ -2,13 +2,15 @@ package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.pojo.DO.PtScore;
 import java.util.List;
+
+import com.rufeng.healthman.pojo.Query.PtScoreQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 
 /**
  * @author rufeng
- * @time 2022-03-31 19:57
+ * @time 2022-04-02 21:52
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -69,9 +71,9 @@ public interface PtScoreMapper {
 
     int updateBatch(List<PtScore> list);
 
-    int updateBatchSelective(List<PtScore> list);
-
     int batchInsert(@Param("list") List<PtScore> list);
+
+    int updateBatchSelective(List<PtScore> list);
 
     /**
      * delete by primary key
@@ -96,4 +98,8 @@ public interface PtScoreMapper {
      * @return count
      */
     int batchInsertSelective(@Param("items") List<PtScore> dataList);
+
+    int deleteByMsId(Long msId);
+
+    List<PtScore> listScore(PtScoreQuery query);
 }

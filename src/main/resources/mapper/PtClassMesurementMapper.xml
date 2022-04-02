@@ -188,8 +188,8 @@
     <insert id="batchInsert" keyColumn="cms_id" keyProperty="cmsId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_class_measurement
-                (ms_id, cls_code, cms_created, cms_modified, cms_created_admin)
-                values
+            (ms_id, cls_code, cms_created, cms_modified, cms_created_admin)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.msId}, #{item.clsCode}, #{item.cmsCreated}, #{item.cmsModified}, #{item.cmsCreatedAdmin})
         </foreach>
@@ -320,8 +320,8 @@
     <select id="countStuByMsIds" resultType="map">
         SELECT ms_id, COUNT(stu_id)
         FROM pt_class_measurement
-                     LEFT JOIN pt_class ON pt_class_measurement.cls_code = pt_class.cls_code
-                     LEFT JOIN pt_student ps on pt_class.cls_code = ps.cls_code
+                 LEFT JOIN pt_class ON pt_class_measurement.cls_code = pt_class.cls_code
+                 LEFT JOIN pt_student ps on pt_class.cls_code = ps.cls_code
         <where>
             <foreach collection="list" open="ms_id IN (" close=")" separator="," item="item">
                 #{item}
@@ -335,4 +335,43 @@
         FROM pt_class_measurement
         WHERE ms_id = #{msId}
     </delete>
+
+    <resultMap id="ClassMeasurementMap" type="com.rufeng.healthman.pojo.m2m.PtMeasurementClass">
+        <id property="msId" column="ms_id"/>
+        <collection property="classes" ofType="com.rufeng.healthman.pojo.DO.PtClass" autoMapping="true">
+            <id property="clsCode" column="cls_code"/>
+        </collection>
+    </resultMap>
+    <select id="listClsMeasurementByMsIds" resultMap="ClassMeasurementMap">
+        SELECT cls_id,
+               pt_class.cls_code,
+               cls_name,
+               clg_code,
+               cls_entry_grade,
+               cls_entry_year,
+               cls_created,
+               cls_modified,
+               ms_id
+        FROM pt_class
+                 LEFT JOIN pt_class_measurement pcm on pt_class.cls_code = pcm.cls_code
+        <where>
+            <foreach collection="list" item="item" close=")" open="ms_id IN (" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="listClsMeasurementByMsId" resultType="com.rufeng.healthman.pojo.DO.PtClass">
+        SELECT cls_id,
+               pt_class.cls_code,
+               cls_name,
+               clg_code,
+               cls_entry_grade,
+               cls_entry_year,
+               cls_created,
+               cls_modified
+        FROM pt_class
+                 LEFT JOIN pt_class_measurement pcm on pt_class.cls_code = pcm.cls_code
+        WHERE ms_id = #{msId}
+    </select>
 </mapper>

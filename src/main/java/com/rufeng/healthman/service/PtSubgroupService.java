@@ -99,4 +99,8 @@ public class PtSubgroupService {
         List<Long> list = subgroups.stream().map(PtSubgroup::getGrpId).collect(Collectors.toList());
         return ApiPage.convert(subgroups, ptSubgroupMapper.pageSubGroupInfo(list));
     }
+
+    public PtSubgroup getSubGrp(Long grpId) {
+        return ptSubgroupMapper.selectByPrimaryKey(grpId);
+    }
 }

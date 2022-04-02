@@ -124,4 +124,6 @@ public interface PtClassMapper {
 
     @ReturnMap
     Map<String, String> mapClsNameByIds(@Param("items") List<String> clss);
+
+    List<PtClass> listClassByClsCodes(List<String> clsCodes);
 }

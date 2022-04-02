@@ -40,4 +40,6 @@ public class PtScore implements Serializable {
      * 测量id
      */
     private Long msId;
+    private String scoLevel;
+    private Integer score;
 }

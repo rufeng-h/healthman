@@ -15,6 +15,7 @@ import com.rufeng.healthman.pojo.data.PtScoreSheetFormdata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,5 +74,12 @@ public class PtSubjectService {
         Map<Long, SubjectInfo> infoMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubId, SubjectInfo::new));
         sheetInfos.forEach(s -> infoMap.get(s.getSubId()).getSheetInfos().add(s));
         return ApiPage.convert(subjects, infoMap.values());
+    }
+
+    public List<PtSubject> listSubject(List<Long> subIds) {
+        if (subIds.size() == 0){
+            return Collections.emptyList();
+        }
+        return ptSubjectMapper.listSubjectByIds(subIds);
     }
 }

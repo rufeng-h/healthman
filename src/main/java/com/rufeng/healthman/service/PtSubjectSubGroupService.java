@@ -35,4 +35,8 @@ public class PtSubjectSubGroupService {
         }
         return ptSubjectSubgroupMapper.countSubByGrpIds(grpIds);
     }
+
+    public List<Long> listSubIdByGrpId(Long grpId) {
+        return ptSubjectSubgroupMapper.listSubIdByGrpId(grpId);
+    }
 }

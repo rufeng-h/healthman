@@ -3,10 +3,13 @@ package com.rufeng.healthman.controller;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DO.PtMeasurement;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementDetail;
 import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementInfo;
 import com.rufeng.healthman.pojo.Query.PtMeasurementQuery;
-import com.rufeng.healthman.pojo.data.PtMesurementFormdata;
+import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.service.PtMesurementService;
+import com.rufeng.healthman.validation.group.Insert;
+import com.rufeng.healthman.validation.group.Update;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +37,7 @@ public class PtMesurementController {
     }
 
     @PostMapping
-    public ApiResponse<PtMeasurement> addMesurement(@Validated @RequestBody PtMesurementFormdata formdata) {
+    public ApiResponse<PtMeasurement> addMesurement(@Validated(Insert.class) @RequestBody PtMeasurementFormdata formdata) {
         return ApiResponse.success(ptMesurementService.addMesurement(formdata));
     }
 
@@ -49,5 +52,16 @@ public class PtMesurementController {
     @RequestMapping(method = RequestMethod.DELETE)
     public ApiResponse<Boolean> deleteMeasurement(@RequestParam Long msId) {
         return ApiResponse.success(ptMesurementService.deleteById(msId));
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public ApiResponse<Boolean> updateMeasurement(
+            @RequestBody @Validated(Update.class) PtMeasurementFormdata formdata) {
+        return ApiResponse.success(ptMesurementService.updateMeasurement(formdata));
+    }
+
+    @GetMapping("/{msId}")
+    public ApiResponse<MeasurementDetail> getMeasurementDetail(@PathVariable Long msId) {
+        return ApiResponse.success(ptMesurementService.getMeasurementDetail(msId));
     }
 }

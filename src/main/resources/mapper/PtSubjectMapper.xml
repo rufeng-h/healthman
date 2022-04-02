@@ -165,8 +165,8 @@
     <insert id="batchInsert" keyColumn="sub_id" keyProperty="subId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject
-                (sub_name, sub_desp, sub_created, sub_modified)
-                values
+            (sub_name, sub_desp, sub_created, sub_modified)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.subName}, #{item.subDesp}, #{item.subCreated}, #{item.subModified})
         </foreach>
@@ -282,8 +282,8 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_subject
-                     LEFT JOIN pt_score_sheet
-                ON pt_score_sheet.subject_id = pt_subject.sub_id
+                 LEFT JOIN pt_score_sheet
+                           ON pt_score_sheet.subject_id = pt_subject.sub_id
         <where>
             <if test="query.subName != null">
                 <bind name="subName" value="'%' + query.subName + '%'"/>
@@ -294,5 +294,16 @@
             </if>
         </where>
         GROUP BY sub_id
+    </select>
+
+    <select id="listSubjectByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_subject
+        <where>
+            <foreach collection="list" item="item" close=")" open="sub_id IN (" separator=",">
+                #{item}
+            </foreach>
+        </where>
     </select>
 </mapper>

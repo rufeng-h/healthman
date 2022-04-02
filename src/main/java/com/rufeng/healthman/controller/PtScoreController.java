@@ -1,8 +1,8 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DTO.ptscore.StuScoreInfo;
-import com.rufeng.healthman.pojo.Query.StuScoreQuery;
+import com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo;
+import com.rufeng.healthman.pojo.Query.PtScoreQuery;
 import com.rufeng.healthman.service.PtScoreService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
@@ -30,12 +30,12 @@ public class PtScoreController {
     }
 
     @GetMapping
-    public ApiResponse<List<StuScoreInfo>> listScore(@Validated StuScoreQuery query) {
+    public ApiResponse<List<StuScoreInfo>> listScore(@Validated PtScoreQuery query) {
         return ApiResponse.success(ptScoreService.listScore(query));
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file, @RequestParam(required = false) Long msId) {
+    public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file, @RequestParam Long msId) {
         return ApiResponse.success(ptScoreService.uploadScore(file, msId));
     }
 }

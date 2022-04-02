@@ -1,6 +1,7 @@
 package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.pojo.DO.PtScoreSheet;
+import com.rufeng.healthman.pojo.DTO.ptscoresheet.ScoreSheetKey;
 import com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;
 import org.apache.ibatis.annotations.Mapper;
@@ -95,4 +96,6 @@ public interface PtScoreSheetMapper {
     Integer batchInsertSelective(@Param("items") List<PtScoreSheet> sheets);
 
     List<SheetInfo> listSheetInfoBySubIds(List<Long> subIds);
+
+    List<PtScoreSheet> listScoreSheetBySheetKey(ScoreSheetKey sheetKey);
 }

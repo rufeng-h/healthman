@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * @author rufeng
  * @time 2022-03-21 10:04
  * @package com.rufeng.healthman.pojo.file
- * @description TODO
+ * @description 学院excel
  */
 @Data
 @NoArgsConstructor

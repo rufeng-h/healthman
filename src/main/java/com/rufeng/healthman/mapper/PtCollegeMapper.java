@@ -98,7 +98,7 @@ public interface PtCollegeMapper {
      * @param cachedDataList data
      * @return count
      */
-    Integer batchInsertSelective(@Param("items") List<PtCollegeExcel> cachedDataList);
+    int batchInsertSelective(@Param("items") List<PtCollegeExcel> cachedDataList);
 
     PtCollege getCollegeByName(String clgName);
 

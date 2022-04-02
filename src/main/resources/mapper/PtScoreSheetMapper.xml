@@ -239,9 +239,9 @@
     <insert id="batchInsert" parameterType="map">
         <!--@mbg.generated-->
         insert into pt_score_sheet
-                (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
-                 `level`, id)
-                values
+        (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
+         `level`, id)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.subjectId}, #{item.gender}, #{item.grade}, #{item.upper}, #{item.lower},
              #{item.score}, #{item.createdTime}, #{item.lastModifyTime}, #{item.level}, #{item.id})
@@ -250,8 +250,8 @@
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
         <!--@mbg.generated-->
         insert into pt_score_sheet
-                (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
-                 `level`, id)
+        (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
+         `level`, id)
         values (#{subjectId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime},
                 #{lastModifyTime}, #{level}, #{id})
         on duplicate key update subject_id       = #{subjectId},
@@ -403,7 +403,7 @@
 
     <insert id="batchInsertSelective">
         INSERT INTO pt_score_sheet (subject_id, grade, gender, upper, lower, score, level)
-                VALUES
+        VALUES
         <foreach collection="items" item="item" separator=",">
             (#{item.subjectId}, #{item.grade}, #{item.gender}, #{item.upper}, #{item.lower}, #{item.score},
              #{item.level})
@@ -418,5 +418,14 @@
                 #{item}
             </foreach>
         </where>
+    </select>
+
+    <select id="listScoreSheetBySheetKey" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_score_sheet
+        WHERE subject_id = #{subId,jdbcType=BIGINT}
+          AND grade = #{grade}
+          AND gender = #{gender}
     </select>
 </mapper>

@@ -211,8 +211,8 @@
     <insert id="batchInsert" keyColumn="ms_id" keyProperty="msId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_measurement
-                (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
-                values
+            (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.msName}, #{item.msDesp}, #{item.msCreated}, #{item.msModified}, #{item.grpId},
              #{item.msCreatedAdmin})
@@ -357,80 +357,102 @@
         <result column="grp_id" property="grpId"/>
         <result column="ms_created_admin" property="msCreatedAdminId"/>
         <result column="admin_name" property="msCreatedAdminName"/>
-        <collection property="classes" ofType="com.rufeng.healthman.pojo.DO.PtClass">
-            <id column="cls_code" property="clsCode"/>
-            <result column="cls_name" property="clsName"/>
-        </collection>
     </resultMap>
 
-    <select id="pageMesurementInfo" resultMap="MesurementInfoMap">
-        SELECT grp_name,
-               pt_measurement.*,
-               admin_name,
-               pt_class.cls_name,
-               pt_class.cls_code
-        FROM pt_measurement
-                     LEFT JOIN pt_subgroup ON pt_subgroup.grp_id = pt_measurement.grp_id
-                     LEFT JOIN pt_admin ON pt_measurement.ms_created_admin = pt_admin.admin_id
-                     LEFT JOIN pt_class_measurement ON pt_class_measurement.ms_id = pt_measurement.ms_id
-                     LEFT JOIN pt_class ON pt_class_measurement.cls_code = pt_class.cls_code
+    <select id="countCompStuByMsIds" resultType="java.util.Map">
+        # 测验中学生基本信息
+        WITH stus AS (SELECT ms_id,
+                             stu_id,
+                             stu_gender,
+                             YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
+                      FROM pt_class_measurement
+                               LEFT JOIN pt_class pc
+                                         on pt_class_measurement.cls_code = pc.cls_code
+                               LEFT JOIN pt_student ps on pc.cls_code = ps.cls_code
+        <where>
+            <foreach collection="list" item="item" separator="," open="ms_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
+        ),
+#      测验科目信息
+        subs AS (SELECT sub_id, ms_id
+                 from pt_subject_subgroup
+                          left join pt_measurement on pt_measurement.grp_id = pt_subject_subgroup.grp_id
+                          LEFT JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id
         <where>
             <foreach collection="list" item="item" separator="," open="pt_measurement.ms_id IN (" close=")">
                 #{item}
             </foreach>
         </where>
+        ),
+#      各科目评分标准，无评分标准则认为无需测试
+pss AS (
+    SELECT DISTINCT gender, grade, subject_id
+    FROM pt_score_sheet),
+#      测验中学生需要测验的科目
+stusubs AS (
+    SELECT stu_id, stus.ms_id, sub_id
+    FROM subs
+             INNER JOIN stus
+                        ON stus.ms_id = subs.ms_id
+             INNER JOIN pss
+                        ON pss.grade = stus.grade AND
+                           stu_gender = pss.gender AND
+                           subs.sub_id = pss.subject_id)
+        select t1.ms_id, count(t1.stu_id)
+        from (select stu_id, ms_id, count(sub_id) as cnt
+              from stusubs
+              where exists(select stu_id
+                           from pt_score
+                           where stusubs.stu_id = pt_score.stu_id
+                             and pt_score.sub_id = stusubs.sub_id
+                             and stusubs.ms_id = pt_score.ms_id)
+              group by stu_id, ms_id) t1
+                 INNER JOIN (select stu_id, ms_id, count(sub_id) as cnt from stusubs group by ms_id, stu_id) t2
+                            ON t1.ms_id = t2.ms_id AND t1.stu_id = t2.stu_id AND t1.cnt = t2.cnt
+        group by t1.ms_id;
     </select>
 
-    <select id="countCompStuByMsIds" resultType="java.util.Map">
+    <select id="countCompStuByMsId" resultType="int">
         # 测验中学生基本信息
-                WITH stus AS (SELECT ms_id,
-                                     stu_id,
-                                     stu_gender,
-                                     YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
-                              FROM pt_class_measurement
-                                           LEFT JOIN pt_class pc
-                                      on pt_class_measurement.cls_code = pc.cls_code
-                                           LEFT JOIN pt_student ps on pc.cls_code = ps.cls_code
-        <where>
-            <foreach collection="list" item="item" separator="," open="ms_id IN (" close=")">
-                #{item}
-            </foreach>
-        </where>),
+        WITH stus AS (SELECT stu_id,
+                             stu_gender,
+                             YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
+                      FROM pt_class_measurement
+                               LEFT JOIN pt_class pc
+                                         on pt_class_measurement.cls_code = pc.cls_code
+                               LEFT JOIN pt_student ps on pc.cls_code = ps.cls_code
+                      WHERE ms_id = #{msId}),
 #      测验科目信息
-                     subs AS (SELECT sub_id, ms_id
-                              from pt_subject_subgroup
-                                           left join pt_measurement on pt_measurement.grp_id = pt_subject_subgroup.grp_id
-                                           LEFT JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id
-        <where>
-            <foreach collection="list" item="item" separator="," open="pt_measurement.ms_id IN (" close=")">
-                #{item}
-            </foreach>
-        </where>),
+             subs AS (SELECT sub_id
+                      from pt_subject_subgroup
+                               left join pt_measurement on pt_measurement.grp_id = pt_subject_subgroup.grp_id
+                               LEFT JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id
+                      WHERE pt_measurement.ms_id = #{msId}),
 #      各科目评分标准，无评分标准则认为无需测试
-                     pss AS (
-                             SELECT DISTINCT gender, grade, subject_id
-                             FROM pt_score_sheet),
+             pss AS (
+                 SELECT DISTINCT gender, grade, subject_id
+                 FROM pt_score_sheet),
 #      测验中学生需要测验的科目
-                     stusubs AS (
-                             SELECT stu_id, stus.ms_id, sub_id
-                             FROM subs
-                                          INNER JOIN stus
-                                     ON stus.ms_id = subs.ms_id
-                                          INNER JOIN pss
+             stusubs AS (
+                 SELECT stu_id, sub_id
+                 FROM subs
+                          JOIN stus
+                          INNER JOIN pss
                                      ON pss.grade = stus.grade AND
                                         stu_gender = pss.gender AND
                                         subs.sub_id = pss.subject_id)
-                select t1.ms_id, count(t1.stu_id)
-                from (select stu_id, ms_id, count(sub_id) as cnt
-                      from stusubs
-                      where exists(select stu_id
-                                   from pt_score
-                                   where stusubs.stu_id = pt_score.stu_id
-                                     and pt_score.sub_id = stusubs.sub_id
-                                     and stusubs.ms_id = pt_score.ms_id)
-                      group by stu_id, ms_id) t1
-                             INNER JOIN (select stu_id, ms_id, count(sub_id) as cnt from stusubs group by ms_id, stu_id) t2
-                        ON t1.ms_id = t2.ms_id AND t1.stu_id = t2.stu_id AND t1.cnt = t2.cnt
-                group by t1.ms_id;
+        select count(t1.stu_id)
+        from (select stu_id, count(sub_id) as cnt
+              from stusubs
+              where exists(select stu_id
+                           from pt_score
+                           where stusubs.stu_id = pt_score.stu_id
+                             and pt_score.sub_id = stusubs.sub_id
+                             AND pt_score.ms_id = #{msId})
+              group by stu_id) t1
+                 INNER JOIN (select stu_id, count(sub_id) as cnt from stusubs group by stu_id) t2
+                            ON t1.stu_id = t2.stu_id AND t1.cnt >= t2.cnt;
     </select>
 </mapper>

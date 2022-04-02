@@ -10,14 +10,8 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * @author rufeng
- * @time 2022-03-30 0:18
- * @package com.rufeng.healthman.pojo.DO
- * @description TODO
- */
-
-/**
  * 测量记录表
+ * @author rufeng
  */
 @Data
 @Builder
@@ -32,7 +26,7 @@ public class PtMeasurement implements Serializable {
 
     private Date msCreated;
 
-    private Integer msModified;
+    private Date msModified;
 
     /**
      * 科目组id

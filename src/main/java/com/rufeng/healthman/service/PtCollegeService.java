@@ -20,7 +20,7 @@ import java.util.Map;
  * @author rufeng
  * @time 2022-03-12 10:18
  * @package com.rufeng.healthman.service.impl
- * @description TODO
+ * @description 学院
  */
 @Service
 public class PtCollegeService {
@@ -50,7 +50,7 @@ public class PtCollegeService {
     }
 
 
-    public Integer addCollegeSelective(List<PtCollegeExcel> cachedDataList) {
+    public int addCollegeSelective(List<PtCollegeExcel> cachedDataList) {
         if (cachedDataList.size() == 0) {
             return 0;
         }

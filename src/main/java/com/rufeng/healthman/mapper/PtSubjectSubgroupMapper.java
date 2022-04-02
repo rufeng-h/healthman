@@ -80,4 +80,6 @@ public interface PtSubjectSubgroupMapper {
 
     @ReturnMap
     Map<Long, Integer> countSubByGrpIds(List<Long> grpIds);
+
+    List<Long> listSubIdByGrpId(Long grpId);
 }

@@ -1,7 +1,7 @@
 package com.rufeng.healthman.pojo.file;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.rufeng.healthman.pojo.DO.PtClass;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,8 +18,6 @@ public class PtClassExcel {
     private String clsCode;
     @ExcelProperty("班级名称")
     private String clsName;
-    @ExcelProperty("学院代码")
-    private String clgCode;
     @ExcelProperty("年级")
     private Integer clsEntryGrade;
     @ExcelProperty("学院")
@@ -30,11 +28,6 @@ public class PtClassExcel {
     @ExcelProperty("录入年份")
     private Integer clsEntryYear;
 
-    public PtClassExcel(PtClass ptClass) {
-        this.clgCode = ptClass.getClgCode();
-        this.clsCode = ptClass.getClsCode();
-        this.clsEntryGrade = ptClass.getClsEntryGrade();
-        this.clsEntryYear = ptClass.getClsEntryYear();
-        this.clsName = ptClass.getClsName();
-    }
+    @ExcelIgnore
+    private String clgCode;
 }

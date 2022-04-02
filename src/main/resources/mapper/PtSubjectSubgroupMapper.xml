@@ -188,8 +188,8 @@
     <insert id="batchInsert" keyColumn="sub_grp_id" keyProperty="subGrpId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject_subgroup
-                (sub_id, grp_id, sub_grp_modified, sub_grp_created, sub_grp_admin)
-                values
+            (sub_id, grp_id, sub_grp_modified, sub_grp_created, sub_grp_admin)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.subId}, #{item.grpId}, #{item.sbuGrpModified}, #{item.subGrpCreated}, #{item.subGrpAdmin})
         </foreach>
@@ -301,8 +301,8 @@
 
     <insert id="batchInsertSelective" keyColumn="sub_grp_id" keyProperty="subGrpId" useGeneratedKeys="true">
         insert into pt_subject_subgroup
-                (sub_id, grp_id, sub_grp_admin)
-                values
+            (sub_id, grp_id, sub_grp_admin)
+        values
         <foreach collection="items" item="item" separator=",">
             (#{item.subId}, #{item.grpId}, #{item.subGrpAdmin})
         </foreach>
@@ -318,5 +318,11 @@
         </where>
 
         GROUP BY grp_id
+    </select>
+
+    <select id="listSubIdByGrpId" resultType="java.lang.Long">
+        SELECT sub_id
+        FROM pt_subject_subgroup
+        WHERE grp_id = #{grpId}
     </select>
 </mapper>

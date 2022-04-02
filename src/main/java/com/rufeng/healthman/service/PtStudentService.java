@@ -8,6 +8,8 @@ import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtStudentMapper;
 import com.rufeng.healthman.pojo.DO.PtStudent;
 import com.rufeng.healthman.pojo.DTO.ptadmin.UserIdRoleTypeAuthentication;
+import com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo;
+import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentUserInfo;
 import com.rufeng.healthman.pojo.DTO.support.LoginResult;
@@ -21,6 +23,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -117,5 +120,16 @@ public class PtStudentService {
 
     public PtStudent getStudent(String stuId) {
         return ptStudentMapper.selectByPrimaryKey(stuId);
+    }
+
+    public StudentBaseInfo getStuBaseInfo(String stuId){
+        return ptStudentMapper.getStuBaseInfo(stuId);
+    }
+
+    public List<StuScoreInfo> listStuScoreInfo(List<String> stuIds) {
+        if (stuIds .size() == 0) {
+            return Collections.emptyList();
+        }
+        return ptStudentMapper.listStuScoreInfo(stuIds);
     }
 }

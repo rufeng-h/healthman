@@ -14,7 +14,6 @@ import java.util.List;
  * @package com.rufeng.healthman.pojo.file
  * @description TODO
  */
-@Slf4j
 public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel> {
     /**
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
@@ -33,7 +32,6 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
 
     @Override
     public void invoke(PtStudentExcel data, AnalysisContext context) {
-        log.info("解析到一条数据:{}", data);
         cachedDataList.add(data);
         if (cachedDataList.size() >= BATCH_COUNT) {
             saveData();
@@ -43,7 +41,7 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
 
     private void saveData() {
         if (cachedDataList.size() != 0) {
-            Integer cnt = ptStudentService.addStudentSelective(cachedDataList);
+            int cnt = ptStudentService.addStudentSelective(cachedDataList);
             handledCount += cnt;
         }
     }

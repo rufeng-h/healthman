@@ -81,8 +81,8 @@ public interface PtMeasurementMapper {
 
     Page<PtMeasurement> pageMeasurement(@Param("query") PtMeasurementQuery query);
 
-    List<MeasurementInfo> pageMesurementInfo(List<Long> msIds);
-
     @ReturnMap
     Map<Long, Integer> countCompStuByMsIds(List<Long> msIds);
+
+    int countCompStuByMsId(Long msId);
 }

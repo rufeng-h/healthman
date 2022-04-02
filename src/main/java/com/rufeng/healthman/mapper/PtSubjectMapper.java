@@ -84,7 +84,7 @@ public interface PtSubjectMapper {
      */
     List<PtSubject> listSubject();
 
-    Page<SubjectInfo> pageSubjectInfo(@Param("query") PtSubjectQuery query);
-
     Page<PtSubject> pageSubject(@Param("query") PtSubjectQuery query);
+
+    List<PtSubject> listSubjectByIds(List<Long> subIds);
 }

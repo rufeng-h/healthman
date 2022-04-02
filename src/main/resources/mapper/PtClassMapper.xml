@@ -241,9 +241,9 @@
     <insert id="batchInsert" parameterType="map">
         <!--@mbg.generated-->
         insert into pt_class
-                (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
-                 cls_modified)
-                values
+        (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
+         cls_modified)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.clsCode}, #{item.clsId}, #{item.clsName}, #{item.clgCode}, #{item.clsEntryGrade},
              #{item.clsEntryYear}, #{item.clsCreated}, #{item.clsModified})
@@ -252,8 +252,8 @@
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
         <!--@mbg.generated-->
         insert into pt_class
-                (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
-                 cls_modified)
+        (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
+         cls_modified)
         values (#{clsCode}, #{clsId}, #{clsName}, #{clgCode}, #{clsEntryGrade}, #{clsEntryYear},
                 #{clsCreated}, #{clsModified})
         on duplicate key update cls_code        = #{clsCode},
@@ -393,7 +393,7 @@
                cls_modified,
                clg_name
         FROM pt_class
-                     LEFT JOIN pt_college on pt_class.clg_code = pt_college.clg_code
+                 LEFT JOIN pt_college on pt_class.clg_code = pt_college.clg_code
         <where>
             <include refid="Query">
                 <property name="table" value="pt_class"/>
@@ -419,7 +419,7 @@
     <select id="countStudent" resultType="map">
         SELECT pt_class.cls_code, COUNT(pt_student.stu_gender)
         FROM pt_class
-                     LEFT JOIN pt_student on pt_class.cls_code = pt_student.cls_code
+                 LEFT JOIN pt_student on pt_class.cls_code = pt_student.cls_code
         <where>
             <foreach close=")" collection="clsCodes" item="item" open="pt_class.cls_code IN (" separator=",">
                 #{item}
@@ -434,6 +434,18 @@
         FROM pt_class
         <where>
             <foreach collection="items" item="item" open="cls_code IN (" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="listClassByClsCodes" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List">
+        </include>
+        FROM pt_class
+        <where>
+            <foreach collection="list" item="item" separator="," open="cls_code IN (" close=")">
                 #{item}
             </foreach>
         </where>

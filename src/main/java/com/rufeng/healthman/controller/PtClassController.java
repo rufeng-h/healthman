@@ -64,8 +64,9 @@ public class PtClassController {
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<Integer> uploadClass(@RequestPart MultipartFile file) {
-        int count = ptClassService.uploadClass(file);
+    public ApiResponse<Integer> uploadClass(@RequestPart MultipartFile file,
+                                            @RequestParam(required = false) String clgCode) {
+        int count = ptClassService.uploadClass(file, clgCode);
         return ApiResponse.success(count);
     }
 

@@ -2,6 +2,7 @@ package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtScoreSheetMapper;
 import com.rufeng.healthman.pojo.DO.PtScoreSheet;
+import com.rufeng.healthman.pojo.DTO.ptscoresheet.ScoreSheetKey;
 import com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;
 import org.springframework.lang.NonNull;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author rufeng
  * @time 2022-03-17 17:19
  * @package com.rufeng.healthman.service.impl
- * @description TODO
+ * @description 评分记录
  */
 @Service
 public class PtScoreSheetService {
@@ -38,10 +39,13 @@ public class PtScoreSheetService {
     }
 
     public List<SheetInfo> listSheetInfoBySubIds(List<Long> subIds) {
-        if (subIds.size() == 0){
+        if (subIds.size() == 0) {
             return Collections.emptyList();
         }
-
         return ptScoreSheetMapper.listSheetInfoBySubIds(subIds);
+    }
+
+    public List<PtScoreSheet> listScoreSheet(ScoreSheetKey sheetKey) {
+        return ptScoreSheetMapper.listScoreSheetBySheetKey(sheetKey);
     }
 }

@@ -1,8 +1,10 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtClassMesurementMapper;
+import com.rufeng.healthman.pojo.DO.PtClass;
+import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import com.rufeng.healthman.pojo.DO.PtClassMesurement;
-import org.springframework.security.core.parameters.P;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -38,7 +40,7 @@ public class PtClassMeasurementService {
     }
 
     public Map<Long, Integer> countStuByMsIds(List<Long> msIds) {
-        if (msIds.size() == 0){
+        if (msIds.size() == 0) {
             return Collections.emptyMap();
         }
         return ptClassMesurementMapper.countStuByMsIds(msIds);
@@ -46,5 +48,16 @@ public class PtClassMeasurementService {
 
     public int delByMsId(Long msId) {
         return ptClassMesurementMapper.deleteByMsId(msId);
+    }
+
+    public List<PtMeasurementClass> listClsMeasurementByMsIds(@NonNull List<Long> msIds) {
+        if (msIds.size() == 0){
+            return Collections.emptyList();
+        }
+        return ptClassMesurementMapper.listClsMeasurementByMsIds(msIds);
+    }
+
+    public List<PtClass> listClassByMsId(Long msId) {
+        return ptClassMesurementMapper.listClsMeasurementByMsId(msId);
     }
 }

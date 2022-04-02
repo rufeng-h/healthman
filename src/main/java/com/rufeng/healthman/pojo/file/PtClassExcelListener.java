@@ -3,11 +3,16 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
+import com.rufeng.healthman.exceptions.ExcelException;
+import com.rufeng.healthman.pojo.DO.PtCollege;
 import com.rufeng.healthman.service.PtClassService;
+import com.rufeng.healthman.service.PtCollegeService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author rufeng
@@ -22,14 +27,20 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
      */
     private static final int BATCH_COUNT = 100;
     private final PtClassService ptClassService;
+    private final String clgCode;
+    private final Map<String, String> clgNameMap;
     private int handledCount = 0;
     /**
      * 缓存的数据
      */
     private List<PtClassExcel> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    public PtClassExcelListener(PtClassService ptClassService) {
+    public PtClassExcelListener(PtClassService ptClassService,
+                                PtCollegeService ptCollegeService,
+                                String clgCode) {
         this.ptClassService = ptClassService;
+        this.clgCode = clgCode;
+        clgNameMap = ptCollegeService.listCollege().stream().collect(Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
     }
 
     @Override
@@ -37,6 +48,14 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
         if (row.getClsEntryYear() == null) {
             row.setClsEntryYear(LocalDateTime.now().getYear());
         }
+        String curClgCode = clgNameMap.get(row.getClgName());
+        if (curClgCode == null) {
+            curClgCode = this.clgCode;
+        }
+        if (this.clgCode != null && !this.clgCode.equals(curClgCode)) {
+            throw new ExcelException("学院代码与文件内容不符!");
+        }
+        row.setClgCode(curClgCode);
         cachedDataList.add(row);
         if (cachedDataList.size() >= BATCH_COUNT) {
             saveData();
