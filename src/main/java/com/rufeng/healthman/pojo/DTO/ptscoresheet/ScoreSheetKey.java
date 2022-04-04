@@ -12,11 +12,11 @@ import java.util.Objects;
 @Data
 public class ScoreSheetKey {
     private Integer grade;
-    private GenderEnum gender;
+    private GenderEnum stuGender;
     private Long subId;
 
     public ScoreSheetKey(StudentBaseInfo info, Long subId) {
-        this.gender = info.getGender();
+        this.stuGender = info.getStuGender();
         this.grade = info.getGrade();
         this.subId = subId;
     }
@@ -30,11 +30,11 @@ public class ScoreSheetKey {
             return false;
         }
         ScoreSheetKey that = (ScoreSheetKey) o;
-        return grade.equals(that.grade) && gender == that.gender && subId.equals(that.subId);
+        return grade.equals(that.grade) && stuGender == that.stuGender && subId.equals(that.subId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(grade, gender, subId);
+        return Objects.hash(grade, stuGender, subId);
     }
 }

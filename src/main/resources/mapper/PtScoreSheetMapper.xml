@@ -424,8 +424,8 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_score_sheet
-        WHERE subject_id = #{subId,jdbcType=BIGINT}
+        WHERE subject_id = #{subId}
           AND grade = #{grade}
-          AND gender = #{gender}
+          AND gender = #{stuGender}
     </select>
 </mapper>

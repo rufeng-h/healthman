@@ -1,11 +1,14 @@
 package com.rufeng.healthman.mapper;
 
+import com.github.pagehelper.Page;
 import com.rufeng.healthman.pojo.DO.PtScore;
-import java.util.List;
-
+import com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo;
+import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -101,5 +104,9 @@ public interface PtScoreMapper {
 
     int deleteByMsId(Long msId);
 
-    List<PtScore> listScore(PtScoreQuery query);
+    List<PtScore> listScoreByStuIds(@Param("list") List<String> stuIds, @Param("query") PtScoreQuery query);
+
+    Page<StuScoreInfo> pageStuScoreInfo(PtScoreQuery query);
+
+    List<StudentBaseInfo> listStuBaseInfo(PtScoreQuery query);
 }

@@ -533,20 +533,10 @@
 
     <select id="getStuBaseInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo">
         SELECT pt_student.stu_id,
-               pt_student.stu_gender                                                        as gender,
+               pt_student.stu_gender,
                YEAR(CURRENT_TIMESTAMP) - pt_class.cls_entry_year + pt_class.cls_entry_grade as grade
         FROM pt_class
                  INNER JOIN pt_student ON pt_class.cls_code = pt_student.cls_code
         WHERE stu_id = #{stuId}
-    </select>
-
-    <select id="listStuScoreInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo">
-        SELECT stu_id, stu_gender, stu_name
-        FROM pt_student
-        <where>
-            <foreach collection="list" separator="," item="item" open="stu_id IN (" close=")">
-                #{item}
-            </foreach>
-        </where>
     </select>
 </mapper>

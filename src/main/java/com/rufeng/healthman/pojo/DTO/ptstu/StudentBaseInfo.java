@@ -2,6 +2,7 @@ package com.rufeng.healthman.pojo.DTO.ptstu;
 
 import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
@@ -10,8 +11,10 @@ import lombok.Data;
  * @description 基本信息
  */
 @Data
+@NoArgsConstructor
 public class StudentBaseInfo {
     private String stuId;
-    private GenderEnum gender;
+    private GenderEnum stuGender;
     private Integer grade;
+    private String stuName;
 }

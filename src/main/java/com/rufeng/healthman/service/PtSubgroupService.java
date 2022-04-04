@@ -12,7 +12,9 @@ import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -102,5 +104,12 @@ public class PtSubgroupService {
 
     public PtSubgroup getSubGrp(Long grpId) {
         return ptSubgroupMapper.selectByPrimaryKey(grpId);
+    }
+
+    public Map<Long, String> mapGrpIdGrpNameByIds(List<Long> grpIds) {
+        if (grpIds.size() == 0){
+            return Collections.emptyMap();
+        }
+        return ptSubgroupMapper.mapGrpIdGrpNameByIds(grpIds);
     }
 }

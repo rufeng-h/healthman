@@ -20,7 +20,7 @@ public class StringToGenderConverter implements Converter<GenderEnum> {
     }
 
     @Override
-    public WriteCellData<?> convertToExcelData(GenderEnum value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        return new WriteCellData<>(value.name());
+    public WriteCellData<?> convertToExcelData(GenderEnum value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
+        return new WriteCellData<>(value.getGender());
     }
 }

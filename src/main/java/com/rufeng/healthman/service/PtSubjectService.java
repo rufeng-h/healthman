@@ -77,9 +77,16 @@ public class PtSubjectService {
     }
 
     public List<PtSubject> listSubject(List<Long> subIds) {
-        if (subIds.size() == 0){
+        if (subIds.size() == 0) {
             return Collections.emptyList();
         }
         return ptSubjectMapper.listSubjectByIds(subIds);
+    }
+
+    public Map<Long, String> mapSubIdSubNameByIds(List<Long> subIds) {
+        if (subIds.size() == 0){
+            return Collections.emptyMap();
+        }
+        return ptSubjectMapper.mapSubIdSubNameByIds(subIds);
     }
 }

@@ -16,7 +16,8 @@ spring:
       max-request-size: 1000MB
       max-file-size: 1000MB
       resolve-lazily: true
-
+#  main:
+#    allow-circular-references: true
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

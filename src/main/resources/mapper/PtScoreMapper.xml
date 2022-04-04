@@ -355,19 +355,61 @@
         WHERE ms_id = #{msId}
     </delete>
 
-    <select id="listScore" resultMap="BaseResultMap">
+    <select id="listScoreByStuIds" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_score
+        <where>
+            <if test="query.msId != null">
+                AND ms_id = #{query.msId}
+            </if>
+            <if test="query.subId != null">
+                AND sub_id = #{query.subId}
+            </if>
+            <foreach collection="list" item="item" open="AND stu_id IN (" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="pageStuScoreInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo">
+        SELECT DISTINCT pt_student.stu_id, pt_student.stu_name, pt_student.stu_gender
+        FROM pt_student
+                 INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id
         <where>
             <if test="msId != null">
                 AND ms_id = #{msId}
             </if>
             <if test="stuId != null">
-                AND stu_id = #{stuId}
+                AND pt_student.stu_id = #{stuId}
             </if>
             <if test="subId != null">
                 AND sub_id = #{subId}
+            </if>
+            <if test="stuName != null">
+                <bind name="name" value="'%' + stuName + '%'"/>
+                AND stu_name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="listStuBaseInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo">
+        SELECT DISTINCT pt_student.stu_id, pt_student.stu_name, pt_student.stu_gender
+        FROM pt_student
+        INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id
+        <where>
+            <if test="msId != null">
+                AND ms_id = #{msId}
+            </if>
+            <if test="stuId != null">
+                AND pt_student.stu_id = #{stuId}
+            </if>
+            <if test="subId != null">
+                AND sub_id = #{subId}
+            </if>
+            <if test="stuName != null">
+                <bind name="name" value="'%' + stuName + '%'"/>
+                AND stu_name like #{name}
             </if>
         </where>
     </select>

@@ -15,4 +15,5 @@ public class PtScoreQuery {
     private Long msId;
     private String stuId;
     private Long subId;
+    private String stuName;
 }

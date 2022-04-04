@@ -1,13 +1,16 @@
 package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
+import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtSubject;
 import java.util.List;
+import java.util.Map;
 
 import com.rufeng.healthman.pojo.DTO.ptsubject.SubjectInfo;
 import com.rufeng.healthman.pojo.Query.PtSubjectQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
@@ -87,4 +90,7 @@ public interface PtSubjectMapper {
     Page<PtSubject> pageSubject(@Param("query") PtSubjectQuery query);
 
     List<PtSubject> listSubjectByIds(List<Long> subIds);
+
+    @ReturnMap
+    Map<Long, String> mapSubIdSubNameByIds(List<Long> subIds);
 }

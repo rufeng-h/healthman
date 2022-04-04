@@ -306,4 +306,14 @@
             </foreach>
         </where>
     </select>
+
+    <select id="mapSubIdSubNameByIds" resultType="java.util.Map">
+        SELECT sub_id, sub_name
+        FROM pt_subject
+        <where>
+            <foreach collection="list" item="item" close=")" open="sub_id IN (" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>

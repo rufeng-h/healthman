@@ -9,10 +9,10 @@ import com.rufeng.healthman.pojo.DO.PtScoreSheet;
 import com.rufeng.healthman.pojo.DO.PtSubject;
 import com.rufeng.healthman.pojo.DTO.ptscoresheet.ScoreSheetKey;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
+import com.rufeng.healthman.service.PtMesurementService;
 import com.rufeng.healthman.service.PtScoreService;
 import com.rufeng.healthman.service.PtScoreSheetService;
 import com.rufeng.healthman.service.PtStudentService;
-import com.rufeng.healthman.service.PtSubjectService;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -48,17 +48,16 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
     private int handledCount = 0;
     private int stuIdColumnIndex = -1;
 
-    public PtScoreExcelListener(PtSubjectService ptSubjectService,
+    public PtScoreExcelListener(PtMesurementService ptMesurementService,
                                 PtScoreService ptScoreService,
                                 PtStudentService ptStudentService,
-                                PtScoreSheetService ptScoreSheetService,
-                                long msId) {
+                                PtScoreSheetService ptScoreSheetService, long msId) {
         this.ptStudentService = ptStudentService;
         this.ptScoreSheetService = ptScoreSheetService;
         this.msId = msId;
         this.ptScoreService = ptScoreService;
-        List<PtSubject> subjectList = ptSubjectService.listSubject();
-        subjectMap = subjectList.stream().collect(Collectors.toMap(PtSubject::getSubName, PtSubject::getSubId));
+        List<PtSubject> subjects = ptMesurementService.listSubject(msId);
+        subjectMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubName, PtSubject::getSubId));
         colSubIdMap = new HashMap<>(subjectMap.size());
     }
 
@@ -150,6 +149,6 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
                         .scoLevel(sheet.getLevel()).build();
             }
         }
-        return null;
+        throw new ExcelException("未找到评分标准！请检查数据");
     }
 }

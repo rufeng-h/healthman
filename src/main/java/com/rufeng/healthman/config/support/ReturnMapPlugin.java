@@ -1,6 +1,5 @@
 package com.rufeng.healthman.config.support;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
@@ -28,7 +27,6 @@ import java.util.Map;
 @Component
 @Intercepts(@Signature(type = ResultSetHandler.class,
         method = "handleResultSets", args = Statement.class))
-@Slf4j
 public class ReturnMapPlugin implements Interceptor {
     private final Map<String, Method> methodCache = new HashMap<>(10);
 
@@ -50,7 +48,7 @@ public class ReturnMapPlugin implements Interceptor {
         TypeHandler<?> keyTypeHandler = registry.getTypeHandler(keyType);
         TypeHandler<?> valueTypeHandler = registry.getTypeHandler(valueType);
         List<Object> list = new ArrayList<>();
-        HashMap<Object, Object> map = new HashMap<>(10);
+        Map<Object, Object> map = new HashMap<>(10);
         while (resultSet.next()) {
             Object key = keyTypeHandler.getResult(resultSet, 1);
             Object value = valueTypeHandler.getResult(resultSet, 2);

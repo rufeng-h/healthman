@@ -188,8 +188,8 @@
     <insert id="batchInsert" keyColumn="grp_id" keyProperty="grpId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subgroup
-                (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified)
-                values
+            (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.grpName}, #{item.grpDesp}, #{item.grpCreated}, #{item.grpCreatedAdmin}, #{item.grpModified})
         </foreach>
@@ -326,26 +326,37 @@
                pt_subject.sub_name,
                admin_id   AS created_admin_id
         FROM pt_subgroup
-                     LEFT JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = pt_subgroup.grp_id
-                     LEFT JOIN pt_subject ON pt_subject.sub_id = pt_subject_subgroup.sub_id
-                     LEFT JOIN pt_admin ON pt_admin.admin_id = pt_subgroup.grp_created_admin
+                 LEFT JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = pt_subgroup.grp_id
+                 LEFT JOIN pt_subject ON pt_subject.sub_id = pt_subject_subgroup.sub_id
+                 LEFT JOIN pt_admin ON pt_admin.admin_id = pt_subgroup.grp_created_admin
         <where>
-           <foreach collection="list" item="item" separator="," open="pt_subgroup.grp_id IN (" close=")">
-               #{item}
-           </foreach>
+            <foreach collection="list" item="item" separator="," open="pt_subgroup.grp_id IN (" close=")">
+                #{item}
+            </foreach>
         </where>
     </select>
 
 
     <select id="pageSubGroup" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM pt_subgroup
         <where>
             <if test="query.grpName != null">
                 <bind name="grpName" value="'%' + query.grpName + '%'"/>
-                grp_name like
-                #{grpName}
+                    grp_name like
+                    #{grpName}
             </if>
+        </where>
+    </select>
+
+    <select id="mapGrpIdGrpNameByIds" resultType="java.util.Map">
+        SELECT grp_id, grp_name
+        FROM pt_subgroup
+        <where>
+            <foreach collection="list" item="item" separator="," open="grp_id IN (" close=")">
+                #{item}
+            </foreach>
         </where>
     </select>
 </mapper>

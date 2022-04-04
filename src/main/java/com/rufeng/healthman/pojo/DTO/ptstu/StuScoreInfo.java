@@ -1,7 +1,7 @@
 package com.rufeng.healthman.pojo.DTO.ptstu;
 
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.pojo.DO.PtScore;
+import com.rufeng.healthman.pojo.DTO.ptscore.ScoreInfo;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -18,5 +18,5 @@ public class StuScoreInfo {
     private String stuName;
     private String stuId;
     private GenderEnum stuGender;
-    private List<PtScore> scores = new ArrayList<>();
+    private List<ScoreInfo> scores = new ArrayList<>();
 }
