@@ -2,7 +2,7 @@ package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.pojo.DO.PtScore;
-import com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementScoreInfo;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreQuery;
 import org.apache.ibatis.annotations.Mapper;
@@ -106,7 +106,15 @@ public interface PtScoreMapper {
 
     List<PtScore> listScoreByStuIds(@Param("list") List<String> stuIds, @Param("query") PtScoreQuery query);
 
-    Page<StuScoreInfo> pageStuScoreInfo(PtScoreQuery query);
+    Page<MeasurementScoreInfo> pageStuScoreInfo(PtScoreQuery query);
 
     List<StudentBaseInfo> listStuBaseInfo(PtScoreQuery query);
+
+    /**
+     * 条件查询成绩
+     *
+     * @param query 姓名不作为查询条件
+     * @return page
+     */
+    Page<PtScore> pageScore(PtScoreQuery query);
 }

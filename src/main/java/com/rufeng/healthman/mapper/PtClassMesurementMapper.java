@@ -1,14 +1,12 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtClass;
 import com.rufeng.healthman.pojo.DO.PtClassMesurement;
-import java.util.List;
-import java.util.Map;
-
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -22,6 +20,7 @@ import org.apache.ibatis.annotations.Param;
 public interface PtClassMesurementMapper {
     /**
      * delete by primary key
+     *
      * @param cmsId primaryKey
      * @return deleteCount
      */
@@ -29,6 +28,7 @@ public interface PtClassMesurementMapper {
 
     /**
      * insert record to table
+     *
      * @param record the record
      * @return insert count
      */
@@ -40,6 +40,7 @@ public interface PtClassMesurementMapper {
 
     /**
      * insert record to table selective
+     *
      * @param record the record
      * @return insert count
      */
@@ -47,6 +48,7 @@ public interface PtClassMesurementMapper {
 
     /**
      * select by primary key
+     *
      * @param cmsId primary key
      * @return object by primary key
      */
@@ -54,6 +56,7 @@ public interface PtClassMesurementMapper {
 
     /**
      * update record selective
+     *
      * @param record the updated record
      * @return update count
      */
@@ -61,6 +64,7 @@ public interface PtClassMesurementMapper {
 
     /**
      * update record
+     *
      * @param record the updated record
      * @return update count
      */
@@ -73,12 +77,6 @@ public interface PtClassMesurementMapper {
     int batchInsert(@Param("list") List<PtClassMesurement> list);
 
     int batchInsertSelective(List<PtClassMesurement> list);
-
-    @ReturnMap
-    Map<Long, Integer> countClsByMsIds(List<Long> msIds);
-
-    @ReturnMap
-    Map<Long, Integer> countStuByMsIds(List<Long> msIds);
 
     int deleteByMsId(Long msId);
 

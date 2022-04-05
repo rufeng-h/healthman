@@ -482,54 +482,12 @@
             </if>
         </trim>
     </insert>
-    <sql id="Query">
-        <if test="query.stuId != null">
-            AND pt_student.stu_id = #{query.stuId}
-        </if>
-
-        <if test="query.clsCode != null">
-            AND pt_student.cls_code = #{query.clsCode}
-        </if>
-        <if test="query.stuName != null">
-            <bind name="stuName" value="'%' + query.stuName + '%'"/>
-            AND pt_student.stu_name like #{stuName}
-        </if>
-        <if test="query.stuGender != null">
-            AND pt_student.stu_gender = #{query.stuGender}
-        </if>
-    </sql>
-
-    <sql id="OrderBy">
-        <if test="query.order != null and query.field != null">
-            ORDER BY ${query.field} ${query.order}
-        </if>
-    </sql>
     <insert id="batchInsertSelective">
         INSERT INTO pt_student (stu_id, stu_name, stu_birth, stu_gender, cls_code) VALUES
         <foreach collection="items" item="item" separator=",">
             (#{item.stuId}, #{item.stuName}, #{item.stuBirth}, #{item.stuGender}, #{item.clsCode})
         </foreach>
     </insert>
-
-    <select id="pageStudentInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo">
-        SELECT sid,
-               stu_id,
-               stu_name,
-               stu_birth,
-               stu_gender,
-               avatar,
-               pt_class.cls_code AS cls_code,
-               stu_created,
-               stu_last_login,
-               cls_name,
-               stu_desp
-        FROM pt_student
-                 LEFT JOIN pt_class ON pt_student.cls_code = pt_class.cls_code
-        <where>
-            <include refid="Query"/>
-        </where>
-        <include refid="OrderBy"/>
-    </select>
 
     <select id="getStuBaseInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo">
         SELECT pt_student.stu_id,
@@ -538,5 +496,105 @@
         FROM pt_class
                  INNER JOIN pt_student ON pt_class.cls_code = pt_student.cls_code
         WHERE stu_id = #{stuId}
+    </select>
+
+    <select id="pageStudent" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_student
+        <where>
+            <if test="query.stuId != null">
+                AND pt_student.stu_id = #{query.stuId}
+            </if>
+
+            <if test="query.clsCode != null">
+                AND pt_student.cls_code = #{query.clsCode}
+            </if>
+            <if test="query.stuName != null">
+                <bind name="stuName" value="'%' + query.stuName + '%'"/>
+                AND pt_student.stu_name like #{stuName}
+            </if>
+            <if test="query.stuGender != null">
+                AND pt_student.stu_gender = #{query.stuGender}
+            </if>
+        </where>
+        <if test="query.order != null">
+            <if test="query.field == 'stuBirth'">
+                ORDER BY stu_birth ${query.order}
+            </if>
+            <if test="query.field == 'stuId'">
+                <!--@ignoreSql-->
+                ORDER BY stu_id ${query.order}
+            </if>
+        </if>
+    </select>
+
+    <select id="countStuMs" resultType="int">
+        WITH stu AS (SELECT stu_gender,
+                            cls_code
+                     FROM pt_student
+                     WHERE stu_id = #{stuId})
+           , ms AS (SELECT ms_id,
+                           # 体测创建时学生年级
+                           YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade,
+                           stu_gender                                                 AS gender
+                    FROM pt_class_measurement
+                             INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
+                             INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code)
+           , grps AS (SELECT grp_id, grade, gender
+                      FROM ms
+                               INNER JOIN pt_measurement ON ms.ms_id = pt_measurement.ms_id)
+        SELECT COUNT(0)
+        FROM grps
+        WHERE EXISTS(SELECT sub_id
+                     FROM (SELECT sub_id
+                           FROM pt_subject_subgroup
+                           WHERE grps.grp_id = pt_subject_subgroup.grp_id) AS gsubs
+                              INNER JOIN pt_score_sheet
+                                         ON sub_id = pt_score_sheet.subject_id
+                     WHERE grps.grade = pt_score_sheet.grade
+                       AND pt_score_sheet.gender = grps.gender);
+    </select>
+
+    <select id="listStuMsStatus" resultType="map">
+        WITH stu AS (SELECT stu_gender,
+                            cls_code
+                     FROM pt_student
+                     WHERE stu_id = #{stuId})
+           , ms AS (SELECT ms_id,
+                           YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade,
+                           stu_gender                                                 AS gender
+                    FROM pt_class_measurement
+                             INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
+                             INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code)
+           , grps AS (SELECT ms.ms_id, grp_id, grade, gender
+                      FROM ms
+                               INNER JOIN pt_measurement ON ms.ms_id = pt_measurement.ms_id)
+           , ms_stu_info AS (SELECT ms_id, ps.sub_id, grps.gender, grps.grade
+                             FROM grps
+                                      INNER JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = grps.grp_id
+                                      INNER JOIN pt_subject ps on pt_subject_subgroup.sub_id = ps.sub_id)
+           ,
+#     需要参加的测试及科目数
+            ms_sub_cnt AS (SELECT ms_id, COUNT(sub_id) as count
+                           FROM ms_stu_info
+                           WHERE EXISTS(SELECT sub_id
+                                        FROM pt_score_sheet
+                                        WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
+                                          AND ms_stu_info.gender = pt_score_sheet.gender
+                                          AND pt_score_sheet.grade = ms_stu_info.grade)
+                           GROUP BY ms_id)
+           ,
+# 当前完成情况
+            ms_comp_sub_cnt AS (SELECT ms_id, count(sub_id) as count
+                                FROM pt_score
+                                WHERE stu_id = #{stuId}
+                                GROUP BY ms_id)
+# 是否完成所有科目
+        SELECT ms_sub_cnt.ms_id, COUNT(ms_comp_sub_cnt.ms_id)
+        FROM ms_sub_cnt
+                 LEFT JOIN ms_comp_sub_cnt
+                           ON ms_sub_cnt.count = ms_comp_sub_cnt.count AND ms_comp_sub_cnt.ms_id = ms_sub_cnt.ms_id
+        group by ms_sub_cnt.ms_id;
     </select>
 </mapper>

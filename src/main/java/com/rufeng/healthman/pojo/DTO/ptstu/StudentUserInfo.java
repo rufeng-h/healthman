@@ -7,7 +7,7 @@ import com.rufeng.healthman.pojo.DTO.support.UserInfo;
  * @author rufeng
  * @time 2022-03-21 17:56
  * @package com.rufeng.healthman.pojo.DTO.ptstu
- * @description TODO
+ * @description 登录返回信息
  */
 public class StudentUserInfo extends UserInfo {
     public StudentUserInfo(PtStudent student) {

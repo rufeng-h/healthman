@@ -74,12 +74,7 @@ public class PtAdminService {
         /* 管理员 */
         Page<PtAdmin> admins = ptAdminMapper.pageByQuery(query);
         /* 查学院 */
-        List<String> adminClsCodes = new ArrayList<>();
-        admins.forEach(a -> {
-            if (a.getClgCode() != null) {
-                adminClsCodes.add(a.getClgCode());
-            }
-        });
+        List<String> adminClsCodes = ptCollegeService.getClsCodeFromAdmins(admins);
         Map<String, String> adminClgNameMap = ptCollegeService.mapClgNameByIds(adminClsCodes);
         /* 权限 */
         List<PtRole> roles = ptRoleService.listRoleByIds(admins.stream()
@@ -289,7 +284,7 @@ public class PtAdminService {
     }
 
     public List<PtAdmin> listAdminByIds(List<String> adminIds) {
-        if (adminIds.size() == 0){
+        if (adminIds.size() == 0) {
             return Collections.emptyList();
         }
         return ptAdminMapper.listAdminByIds(adminIds);

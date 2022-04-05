@@ -85,4 +85,9 @@ public interface PtMeasurementMapper {
     Map<Long, Integer> countCompStuByMsIds(List<Long> msIds);
 
     int countCompStuByMsId(Long msId);
+
+    List<PtMeasurement> listMeasurement(List<Long> msIds);
+
+    @ReturnMap
+    Map<Long, Integer> countStuByMsIds(List<Long> msIds);
 }

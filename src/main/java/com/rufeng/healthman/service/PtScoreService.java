@@ -9,8 +9,8 @@ import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtScoreMapper;
 import com.rufeng.healthman.pojo.DO.PtScore;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementScoreInfo;
 import com.rufeng.healthman.pojo.DTO.ptscore.ScoreInfo;
-import com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreQuery;
 import com.rufeng.healthman.pojo.file.PtScoreExcelListener;
@@ -48,8 +48,8 @@ public class PtScoreService {
 
     public PtScoreService(PtScoreMapper ptScoreMapper,
                           PtStudentService ptStudentService,
-
-                          PtScoreSheetService ptScoreSheetService, PtSubjectService ptSubjectService) {
+                          PtScoreSheetService ptScoreSheetService,
+                          PtSubjectService ptSubjectService) {
         this.ptScoreMapper = ptScoreMapper;
         this.ptStudentService = ptStudentService;
         this.ptScoreSheetService = ptScoreSheetService;
@@ -82,21 +82,21 @@ public class PtScoreService {
         return listener.getHandledCount();
     }
 
-    public ApiPage<StuScoreInfo> pageScore(Integer page, Integer pageSize, PtScoreQuery query) {
+    public ApiPage<MeasurementScoreInfo> pageMsScore(Integer page, Integer pageSize, PtScoreQuery query) {
         /* 查分数 */
         PageHelper.startPage(page, pageSize);
         /* 为分页 */
-        Page<StuScoreInfo> stuScoreInfos = ptScoreMapper.pageStuScoreInfo(query);
-        List<String> stuIds = stuScoreInfos.stream().map(StuScoreInfo::getStuId).collect(Collectors.toList());
+        Page<MeasurementScoreInfo> measurementScoreInfos = ptScoreMapper.pageStuScoreInfo(query);
+        List<String> stuIds = measurementScoreInfos.stream().map(MeasurementScoreInfo::getStuId).collect(Collectors.toList());
         List<PtScore> scores = this.listScoreByStuIds(stuIds, query);
         /* 学生基本信息 */
-        Map<String, StuScoreInfo> infoMap = stuScoreInfos.stream()
-                .collect(Collectors.toMap(StuScoreInfo::getStuId, s -> s));
+        Map<String, MeasurementScoreInfo> infoMap = measurementScoreInfos.stream()
+                .collect(Collectors.toMap(MeasurementScoreInfo::getStuId, s -> s));
         /* 查科目 */
         List<Long> subIds = scores.stream().map(PtScore::getSubId).distinct().collect(Collectors.toList());
         Map<Long, String> sMap = ptSubjectService.mapSubIdSubNameByIds(subIds);
         scores.forEach(s -> infoMap.get(s.getStuId()).getScores().add(new ScoreInfo(s, sMap.get(s.getSubId()))));
-        return ApiPage.convert(stuScoreInfos);
+        return ApiPage.convert(measurementScoreInfos);
     }
 
     public List<PtScore> listScoreByStuIds(List<String> stuIds, PtScoreQuery query) {
@@ -154,5 +154,15 @@ public class PtScoreService {
                 })
                 .sheet().doWrite(excels);
         return new ByteArrayResource(outputStream.toByteArray());
+    }
+
+    public ApiPage<ScoreInfo> pageStuScore(Integer page, Integer pageSize, PtScoreQuery query) {
+        PageHelper.startPage(page, pageSize);
+        Page<PtScore> scores = ptScoreMapper.pageScore(query);
+        /* 查科目 */
+        List<Long> subIds = scores.stream().map(PtScore::getSubId).distinct().collect(Collectors.toList());
+        Map<Long, String> subNameMap = ptSubjectService.mapSubIdSubNameByIds(subIds);
+        List<ScoreInfo> infos = scores.stream().map(s -> new ScoreInfo(s, subNameMap.get(s.getSubId()))).collect(Collectors.toList());
+        return ApiPage.convert(scores, infos);
     }
 }

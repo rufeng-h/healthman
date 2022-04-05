@@ -2,6 +2,8 @@ package com.rufeng.healthman.service;
 
 import com.alibaba.excel.EasyExcel;
 import com.rufeng.healthman.mapper.PtCollegeMapper;
+import com.rufeng.healthman.pojo.DO.PtAdmin;
+import com.rufeng.healthman.pojo.DO.PtClass;
 import com.rufeng.healthman.pojo.DO.PtCollege;
 import com.rufeng.healthman.pojo.file.PtCollegeExcel;
 import com.rufeng.healthman.pojo.file.PtCollegeExcelListener;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +73,25 @@ public class PtCollegeService {
             return Collections.emptyMap();
         }
         return ptCollegeMapper.mapClgNameByIds(collect);
+    }
+
+    public List<String> getClsCodeFromAdmins(List<PtAdmin> admins) {
+        List<String> adminClsCodes = new ArrayList<>();
+        admins.stream().map(PtAdmin::getClgCode).forEach(clgCode -> {
+            if (clgCode != null) {
+                adminClsCodes.add(clgCode);
+            }
+        });
+        return adminClsCodes;
+    }
+
+    public List<String> getClsCodeFromClasses(List<PtClass> classes) {
+        List<String> clgCodes = new ArrayList<>();
+        classes.stream().map(PtClass::getClgCode).forEach(clgCode -> {
+            if (clgCode != null) {
+                clgCodes.add(clgCode);
+            }
+        });
+        return clgCodes;
     }
 }

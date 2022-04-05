@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -98,9 +96,9 @@ public class PtMesurementService {
         List<PtMeasurementClass> classes = ptClassMeasurementService.listClsMeasurementByMsIds(msIds);
         Map<Long, MeasurementInfo> cMap = infoList.stream().collect(Collectors.toMap(MeasurementInfo::getMsId, s -> s));
         /* 查询学生数 */
-        Map<Long, Integer> msStuCount = ptClassMeasurementService.countStuByMsIds(msIds);
+        Map<Long, Integer> msStuCount = this.countStuByMsIds(msIds);
         /* 已完成测试的学生数 TODO */
-        Map<Long, Integer> msCompStuCount = ptMeasurementMapper.countCompStuByMsIds(msIds);
+        Map<Long, Integer> msCompStuCount = this.countCompStuByMsIds(msIds);
         classes.forEach(c -> cMap.get(c.getMsId()).setClasses(c.getClasses()));
         infoList.forEach(info -> {
             info.setGrpName(grpNameMap.get(info.getGrpId()));
@@ -110,6 +108,20 @@ public class PtMesurementService {
             info.setStuCnt(msStuCount.get(info.getMsId()));
         });
         return ApiPage.convert(measurements, infoList);
+    }
+
+    private Map<Long, Integer> countCompStuByMsIds(List<Long> msIds) {
+        if (msIds.size() == 0){
+            return Collections.emptyMap();
+        }
+        return ptMeasurementMapper.countCompStuByMsIds(msIds);
+    }
+
+    private Map<Long, Integer> countStuByMsIds(List<Long> msIds) {
+        if (msIds.size() == 0){
+            return Collections.emptyMap();
+        }
+        return ptMeasurementMapper.countStuByMsIds(msIds);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -155,7 +167,8 @@ public class PtMesurementService {
         /* 查班级 */
         List<PtClass> classes = ptClassMeasurementService.listClassByMsId(msId);
         /* 查学生总人数 */
-        Map<String, Integer> stuCntMap = ptClassService.countStudent(classes.stream().map(PtClass::getClsCode).collect(Collectors.toList()));
+        Map<String, Integer> stuCntMap = ptClassService.countStudent(classes.stream()
+                .map(PtClass::getClsCode).collect(Collectors.toList()));
         int totalStuCnt = stuCntMap.values().stream().reduce(0, Integer::sum);
         /* 查已完成人数 */
         int compStuCnt = ptMeasurementMapper.countCompStuByMsId(msId);
@@ -166,5 +179,12 @@ public class PtMesurementService {
         PtMeasurement measurement = ptMeasurementMapper.selectByPrimaryKey(msId);
         List<Long> subIds = ptSubjectSubGroupService.listSubIdByGrpId(measurement.getGrpId());
         return ptSubjectService.listSubject(subIds);
+    }
+
+    public List<PtMeasurement> listMeasurement(List<Long> msIds) {
+        if (msIds.size() == 0){
+            return Collections.emptyList();
+        }
+        return ptMeasurementMapper.listMeasurement(msIds);
     }
 }

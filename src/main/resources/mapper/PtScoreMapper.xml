@@ -372,7 +372,7 @@
         </where>
     </select>
 
-    <select id="pageStuScoreInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo">
+    <select id="pageStuScoreInfo" resultType="com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementScoreInfo">
         SELECT DISTINCT pt_student.stu_id, pt_student.stu_name, pt_student.stu_gender
         FROM pt_student
                  INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id
@@ -396,7 +396,7 @@
     <select id="listStuBaseInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo">
         SELECT DISTINCT pt_student.stu_id, pt_student.stu_name, pt_student.stu_gender
         FROM pt_student
-        INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id
+                 INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id
         <where>
             <if test="msId != null">
                 AND ms_id = #{msId}
@@ -410,6 +410,23 @@
             <if test="stuName != null">
                 <bind name="name" value="'%' + stuName + '%'"/>
                 AND stu_name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="pageScore" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_score
+        <where>
+            <if test="msId != null">
+                AND ms_id = #{msId}
+            </if>
+            <if test="subId != null">
+                AND sub_id = #{subId}
+            </if>
+            <if test="stuId != null">
+                AND stu_id = #{stuId}
             </if>
         </where>
     </select>

@@ -347,18 +347,6 @@
         </where>
     </select>
 
-    <resultMap id="MesurementInfoMap" type="com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementInfo">
-        <id property="msId" column="ms_id"/>
-        <result column="ms_modified" property="msModified"/>
-        <result column="ms_name" property="msName"/>
-        <result column="ms_desp" property="msDesp"/>
-        <result column="ms_created" property="msCreated"/>
-        <result column="grp_name" property="grpName"/>
-        <result column="grp_id" property="grpId"/>
-        <result column="ms_created_admin" property="msCreatedAdminId"/>
-        <result column="admin_name" property="msCreatedAdminName"/>
-    </resultMap>
-
     <select id="countCompStuByMsIds" resultType="java.util.Map">
         # 测验中学生基本信息
         WITH stus AS (SELECT ms_id,
@@ -454,5 +442,49 @@ stusubs AS (
               group by stu_id) t1
                  INNER JOIN (select stu_id, count(sub_id) as cnt from stusubs group by stu_id) t2
                             ON t1.stu_id = t2.stu_id AND t1.cnt >= t2.cnt;
+    </select>
+
+    <select id="listMeasurement" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_measurement
+        <where>
+            <foreach collection="list" item="item" open="ms_id IN (" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="countStuByMsIds" resultType="map">
+        WITH stus AS (
+        SELECT ms_id, stu_id, stu_gender AS gender, YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
+        FROM pt_class_measurement
+                 INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code
+                 INNER JOIN pt_student ps on pc.cls_code = ps.cls_code
+        <where>
+            <foreach collection="list" item="item" separator="," open="ms_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
+        ),
+            #      测验科目信息
+            subs AS (SELECT sub_id, ms_id
+                     from pt_subject_subgroup
+                              INNER JOIN pt_measurement on pt_measurement.grp_id = pt_subject_subgroup.grp_id
+                              INNER JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id),
+            stusubs AS (SELECT stus.ms_id, gender, grade, sub_id, stus.stu_id
+                        FROM subs
+                                 INNER JOIN stus ON subs.ms_id = stus.ms_id
+                        ORDER BY stu_id)
+        SELECT ms_id, COUNT(stu_id)
+        FROM (SELECT ms_id, stu_id
+              FROM stusubs
+              WHERE EXISTS(SELECT sub_id
+                           FROM pt_score_sheet pss
+                           WHERE pss.grade = stusubs.grade
+                             AND pss.gender = stusubs.gender
+                             AND pss.subject_id = stusubs.sub_id)
+              GROUP BY ms_id, stu_id) t
+        GROUP BY ms_id;
     </select>
 </mapper>

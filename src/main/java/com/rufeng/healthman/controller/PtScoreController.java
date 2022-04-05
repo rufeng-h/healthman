@@ -2,7 +2,8 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DTO.ptstu.StuScoreInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementScoreInfo;
+import com.rufeng.healthman.pojo.DTO.ptscore.ScoreInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreQuery;
 import com.rufeng.healthman.service.PtScoreService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,12 +38,19 @@ public class PtScoreController {
         this.ptScoreService = ptScoreService;
     }
 
-    @GetMapping
-    public ApiResponse<ApiPage<StuScoreInfo>> listScore(
+    @GetMapping("/ms")
+    public ApiResponse<ApiPage<MeasurementScoreInfo>> pageScore(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
             @RequestParam(defaultValue = "10") @Min(1) @Max(100) Integer pageSize,
-            @Validated PtScoreQuery query) {
-        return ApiResponse.success(ptScoreService.pageScore(page, pageSize, query));
+            @Validated(PtScoreQuery.MsQuery.class) PtScoreQuery query) {
+        return ApiResponse.success(ptScoreService.pageMsScore(page, pageSize, query));
+    }
+
+    @GetMapping("/stu")
+    public ApiResponse<ApiPage<ScoreInfo>> pageStuScore(@RequestParam(defaultValue = "1") @Min(1) Integer page,
+                                                        @RequestParam(defaultValue = "10") @Min(1) @Max(100) Integer pageSize,
+                                                        @Validated(PtScoreQuery.StuQuery.class) PtScoreQuery query) {
+        return ApiResponse.success(ptScoreService.pageStuScore(page, pageSize, query));
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

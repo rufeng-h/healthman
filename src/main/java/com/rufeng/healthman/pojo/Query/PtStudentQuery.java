@@ -1,10 +1,10 @@
 package com.rufeng.healthman.pojo.Query;
 
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Converter;
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.enums.QueryOrderEnum;
 import lombok.Data;
+
+import javax.validation.constraints.Size;
 
 /**
  * @author rufeng
@@ -14,11 +14,14 @@ import lombok.Data;
  */
 @Data
 public class PtStudentQuery implements QueryOrder {
-    private static final Converter<String, String> CONVERTER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE);
     private QueryOrderEnum order;
+    @Size(min = 1)
     private String field;
+    @Size(min = 1)
     private String stuName;
+    @Size(min = 1)
     private String stuId;
+    @Size(min = 1)
     private String clsCode;
     private GenderEnum stuGender;
 
@@ -29,6 +32,6 @@ public class PtStudentQuery implements QueryOrder {
 
     @Override
     public String getField() {
-        return CONVERTER.convert(this.field);
+        return this.field;
     }
 }

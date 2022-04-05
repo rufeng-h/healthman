@@ -4,6 +4,7 @@ import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.pojo.DTO.support.LoginResult;
 import com.rufeng.healthman.pojo.DTO.support.UserInfo;
 import com.rufeng.healthman.pojo.Query.LoginQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,24 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PtCommonService {
-    private final PtAdminService ptAdminService;
-    private final PtStudentService ptStudentService;
+    private  PtAdminService ptAdminService;
+    private PtStudentService ptStudentService;
     private final RedisService redisService;
 
-    public PtCommonService(PtAdminService ptAdminService, PtStudentService ptStudentService, RedisService redisService) {
-        this.ptAdminService = ptAdminService;
-        this.ptStudentService = ptStudentService;
+    public PtCommonService(RedisService redisService) {
+
         this.redisService = redisService;
     }
 
+    @Autowired
+    public void setPtAdminService(PtAdminService ptAdminService) {
+        this.ptAdminService = ptAdminService;
+    }
+
+    @Autowired
+    public void setPtStudentService(PtStudentService ptStudentService) {
+        this.ptStudentService = ptStudentService;
+    }
 
     public void logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

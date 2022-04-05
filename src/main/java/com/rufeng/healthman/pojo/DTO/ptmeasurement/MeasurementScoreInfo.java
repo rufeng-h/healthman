@@ -1,4 +1,4 @@
-package com.rufeng.healthman.pojo.DTO.ptstu;
+package com.rufeng.healthman.pojo.DTO.ptmeasurement;
 
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.pojo.DTO.ptscore.ScoreInfo;
@@ -14,7 +14,7 @@ import java.util.List;
  * @description TODO
  */
 @Data
-public class StuScoreInfo {
+public class MeasurementScoreInfo {
     private String stuName;
     private String stuId;
     private GenderEnum stuGender;
