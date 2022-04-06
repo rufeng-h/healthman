@@ -1,9 +1,6 @@
 package com.rufeng.healthman.service;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.write.handler.RowWriteHandler;
-import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
-import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
@@ -15,9 +12,7 @@ import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.Query.PtScoreQuery;
 import com.rufeng.healthman.pojo.file.PtScoreExcelListener;
 import com.rufeng.healthman.pojo.file.StuScoreExcel;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
+import com.rufeng.healthman.pojo.file.handler.ScoreExcelWriteHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -126,32 +121,7 @@ public class PtScoreService {
                 .sorted(StuScoreExcel::compareTo).collect(Collectors.toList());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcel.write(outputStream, StuScoreExcel.class)
-                .registerWriteHandler(new RowWriteHandler() {
-                    private int prevIdx = -1;
-                    private String prevStuId = null;
-
-                    @Override
-                    public void afterRowDispose(WriteSheetHolder writeSheetHolder, WriteTableHolder writeTableHolder, Row row, Integer relativeRowIndex, Boolean isHead) {
-                        if (isHead) {
-                            return;
-                        }
-                        if (prevIdx == -1) {
-                            prevStuId = row.getCell(0).getStringCellValue();
-                            prevIdx = row.getRowNum();
-                        } else {
-                            String stuId = row.getCell(0).getStringCellValue();
-                            if (!stuId.equals(prevStuId)) {
-                                Sheet sheet = writeSheetHolder.getSheet();
-                                int mergedCols = 3;
-                                for (int i = mergedCols - 1; i >= 0; i--) {
-                                    sheet.addMergedRegion(new CellRangeAddress(prevIdx, row.getRowNum() - 1, i, i));
-                                }
-                                prevIdx = row.getRowNum();
-                                prevStuId = stuId;
-                            }
-                        }
-                    }
-                })
+                .registerWriteHandler(new ScoreExcelWriteHandler())
                 .sheet().doWrite(excels);
         return new ByteArrayResource(outputStream.toByteArray());
     }
@@ -164,5 +134,12 @@ public class PtScoreService {
         Map<Long, String> subNameMap = ptSubjectService.mapSubIdSubNameByIds(subIds);
         List<ScoreInfo> infos = scores.stream().map(s -> new ScoreInfo(s, subNameMap.get(s.getSubId()))).collect(Collectors.toList());
         return ApiPage.convert(scores, infos);
+    }
+
+    public List<PtScore> listScoreByStuIdAndMsIds(String stuId, List<Long> msIds) {
+        if (stuId == null || msIds.size() == 0){
+            return Collections.emptyList();
+        }
+        return ptScoreMapper.listScoreByStuIdAndMsIds(stuId, msIds);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
  * @author rufeng
  * @time 2022-03-30 12:07
  * @package com.rufeng.healthman.pojo.DTO.ptmeasurement
- * @description TODO
+ * @description 体测概要，列表页
  */
 @Data
 public class MeasurementInfo {

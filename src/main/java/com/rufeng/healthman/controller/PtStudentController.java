@@ -2,7 +2,7 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DTO.ptstu.StuMsInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.StuMeasurementInfo;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.Query.PtStudentQuery;
 import com.rufeng.healthman.service.PtStudentService;
@@ -41,7 +41,7 @@ public class PtStudentController {
     }
 
     @GetMapping("/{stuId}")
-    public ApiResponse<StuMsInfo> getPtStuByNo(@PathVariable String stuId) {
+    public ApiResponse<StuMeasurementInfo> getPtStuByNo(@PathVariable String stuId) {
         return ApiResponse.success(ptStudentService.getStuMsInfo(stuId));
     }
 

@@ -430,4 +430,18 @@
             </if>
         </where>
     </select>
+
+    <select id="listScoreByStuIdAndMsIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_score
+        <where>
+            <if test="stuId != null">
+                stu_id = #{stuId}
+            </if>
+            <foreach collection="list" item="item" separator="," open="AND ms_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>

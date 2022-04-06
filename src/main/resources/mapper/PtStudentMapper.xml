@@ -555,46 +555,4 @@
                      WHERE grps.grade = pt_score_sheet.grade
                        AND pt_score_sheet.gender = grps.gender);
     </select>
-
-    <select id="listStuMsStatus" resultType="map">
-        WITH stu AS (SELECT stu_gender,
-                            cls_code
-                     FROM pt_student
-                     WHERE stu_id = #{stuId})
-           , ms AS (SELECT ms_id,
-                           YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade,
-                           stu_gender                                                 AS gender
-                    FROM pt_class_measurement
-                             INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
-                             INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code)
-           , grps AS (SELECT ms.ms_id, grp_id, grade, gender
-                      FROM ms
-                               INNER JOIN pt_measurement ON ms.ms_id = pt_measurement.ms_id)
-           , ms_stu_info AS (SELECT ms_id, ps.sub_id, grps.gender, grps.grade
-                             FROM grps
-                                      INNER JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = grps.grp_id
-                                      INNER JOIN pt_subject ps on pt_subject_subgroup.sub_id = ps.sub_id)
-           ,
-#     需要参加的测试及科目数
-            ms_sub_cnt AS (SELECT ms_id, COUNT(sub_id) as count
-                           FROM ms_stu_info
-                           WHERE EXISTS(SELECT sub_id
-                                        FROM pt_score_sheet
-                                        WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
-                                          AND ms_stu_info.gender = pt_score_sheet.gender
-                                          AND pt_score_sheet.grade = ms_stu_info.grade)
-                           GROUP BY ms_id)
-           ,
-# 当前完成情况
-            ms_comp_sub_cnt AS (SELECT ms_id, count(sub_id) as count
-                                FROM pt_score
-                                WHERE stu_id = #{stuId}
-                                GROUP BY ms_id)
-# 是否完成所有科目
-        SELECT ms_sub_cnt.ms_id, COUNT(ms_comp_sub_cnt.ms_id)
-        FROM ms_sub_cnt
-                 LEFT JOIN ms_comp_sub_cnt
-                           ON ms_sub_cnt.count = ms_comp_sub_cnt.count AND ms_comp_sub_cnt.ms_id = ms_sub_cnt.ms_id
-        group by ms_sub_cnt.ms_id;
-    </select>
 </mapper>

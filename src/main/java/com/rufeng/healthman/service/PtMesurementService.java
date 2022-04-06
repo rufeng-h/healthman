@@ -7,6 +7,10 @@ import com.rufeng.healthman.mapper.PtMeasurementMapper;
 import com.rufeng.healthman.pojo.DO.*;
 import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementDetail;
 import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementSubStatus;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.StuMeasurementDetail;
+import com.rufeng.healthman.pojo.DTO.ptscore.ScoreInfo;
+import com.rufeng.healthman.pojo.DTO.ptsubject.SubjectStatus;
 import com.rufeng.healthman.pojo.Query.PtMeasurementQuery;
 import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
@@ -31,7 +35,6 @@ public class PtMesurementService {
     private final PtSubjectSubGroupService ptSubjectSubGroupService;
     private final PtAdminService ptAdminService;
     private final PtSubgroupService ptSubgroupService;
-    private final PtClassService ptClassService;
     private final PtSubjectService ptSubjectService;
     private PtScoreService ptScoreService;
 
@@ -40,7 +43,7 @@ public class PtMesurementService {
                                PtClassMeasurementService ptClassMeasurementService,
                                PtSubjectSubGroupService ptSubjectSubGroupService,
                                PtAdminService ptAdminService,
-                               PtSubgroupService ptSubgroupService, PtClassService ptClassService,
+                               PtSubgroupService ptSubgroupService,
                                PtSubjectService ptSubjectService) {
         this.ptCommonService = ptCommonService;
         this.ptMeasurementMapper = ptMeasurementMapper;
@@ -48,7 +51,6 @@ public class PtMesurementService {
         this.ptSubjectSubGroupService = ptSubjectSubGroupService;
         this.ptAdminService = ptAdminService;
         this.ptSubgroupService = ptSubgroupService;
-        this.ptClassService = ptClassService;
         this.ptSubjectService = ptSubjectService;
     }
 
@@ -111,14 +113,14 @@ public class PtMesurementService {
     }
 
     private Map<Long, Integer> countCompStuByMsIds(List<Long> msIds) {
-        if (msIds.size() == 0){
+        if (msIds.size() == 0) {
             return Collections.emptyMap();
         }
         return ptMeasurementMapper.countCompStuByMsIds(msIds);
     }
 
     private Map<Long, Integer> countStuByMsIds(List<Long> msIds) {
-        if (msIds.size() == 0){
+        if (msIds.size() == 0) {
             return Collections.emptyMap();
         }
         return ptMeasurementMapper.countStuByMsIds(msIds);
@@ -167,9 +169,7 @@ public class PtMesurementService {
         /* 查班级 */
         List<PtClass> classes = ptClassMeasurementService.listClassByMsId(msId);
         /* 查学生总人数 */
-        Map<String, Integer> stuCntMap = ptClassService.countStudent(classes.stream()
-                .map(PtClass::getClsCode).collect(Collectors.toList()));
-        int totalStuCnt = stuCntMap.values().stream().reduce(0, Integer::sum);
+        int totalStuCnt = ptMeasurementMapper.countStuByMsId(msId);
         /* 查已完成人数 */
         int compStuCnt = ptMeasurementMapper.countCompStuByMsId(msId);
         return new MeasurementDetail(measurement, admin, subgroup, subjects, classes, totalStuCnt, compStuCnt);
@@ -182,9 +182,47 @@ public class PtMesurementService {
     }
 
     public List<PtMeasurement> listMeasurement(List<Long> msIds) {
-        if (msIds.size() == 0){
+        if (msIds.size() == 0) {
             return Collections.emptyList();
         }
         return ptMeasurementMapper.listMeasurement(msIds);
+    }
+
+    public ApiPage<StuMeasurementDetail> pageStuMsDetail(Integer page, Integer pageSize, String stuId) {
+        PageHelper.startPage(page, pageSize);
+        Page<PtMeasurement> measurements = ptMeasurementMapper.pageStuMs(stuId);
+        List<Long> msIds = measurements.stream().map(PtMeasurement::getMsId).collect(Collectors.toList());
+        /* 查询体测各科目完成情况 */
+        List<MeasurementSubStatus> subStatuses = ptMeasurementMapper.listMsSubStatus(stuId, msIds);
+        List<Long> subIds = subStatuses.stream().map(MeasurementSubStatus::getSubId).collect(Collectors.toList());
+        List<PtSubject> subjects = ptSubjectService.listSubject(subIds);
+        Map<Long, PtSubject> subMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubId, s -> s));
+        /* 查分数 */
+        List<PtScore> scores = ptScoreService.listScoreByStuIdAndMsIds(stuId, msIds);
+        /* 查admin */
+        List<String> adminIds = measurements.stream().map(PtMeasurement::getMsCreatedAdmin).distinct().collect(Collectors.toList());
+        List<PtAdmin> admins = ptAdminService.listAdminByIds(adminIds);
+        Map<String, PtAdmin> adminMap = admins.stream().collect(Collectors.toMap(PtAdmin::getAdminId, a -> a));
+        /* 组装科目 */
+        Map<Long, List<SubjectStatus>> resSubMap = new HashMap<>(10);
+        subStatuses.forEach(status -> {
+            List<SubjectStatus> subjectStatuses = resSubMap.computeIfAbsent(status.getMsId(), k -> new ArrayList<>());
+            subjectStatuses.add(new SubjectStatus(subMap.get(status.getSubId()), status.getStatus()));
+        });
+        /* 组装分数 */
+        Map<Long, List<ScoreInfo>> resScoreMap = new HashMap<>(10);
+        scores.forEach(s -> {
+            List<ScoreInfo> scoreInfos = resScoreMap.computeIfAbsent(s.getMsId(), k -> new ArrayList<>());
+            scoreInfos.add(new ScoreInfo(s, subMap.get(s.getSubId()).getSubName()));
+        });
+        List<StuMeasurementDetail> res = measurements.stream().map(m -> new StuMeasurementDetail(m,
+                adminMap.get(m.getMsCreatedAdmin()).getAdminName(),
+                resSubMap.get(m.getMsId()),
+                resScoreMap.get(m.getMsId()))).collect(Collectors.toList());
+        return ApiPage.convert(measurements, res);
+    }
+
+    public Map<Long, Boolean> listStuMsStatus(String stuId) {
+        return ptMeasurementMapper.listStuMsStatus(stuId);
     }
 }

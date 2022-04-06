@@ -3,6 +3,7 @@ package com.rufeng.healthman.mapper;
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtStudent;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementSubStatus;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.Query.PtStudentQuery;
 import com.rufeng.healthman.pojo.file.PtStudentExcel;
@@ -94,11 +95,5 @@ public interface PtStudentMapper {
 
     int countStuMs(String stuId);
 
-    /**
-     * 参加的所有体测，包括完成与未完成
-     *
-     * @return 1完成 0未完成
-     */
-    @ReturnMap
-    Map<Long, Boolean> listStuMsStatus(String stuId);
+
 }

@@ -342,7 +342,7 @@
         <where>
             <if test="query.msName != null">
                 <bind name="msName" value="'%' + query.msName + '%'"/>
-                ms_name like #{msName}
+                AND ms_name like #{msName}
             </if>
         </where>
     </select>
@@ -474,8 +474,7 @@ stusubs AS (
                               INNER JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id),
             stusubs AS (SELECT stus.ms_id, gender, grade, sub_id, stus.stu_id
                         FROM subs
-                                 INNER JOIN stus ON subs.ms_id = stus.ms_id
-                        ORDER BY stu_id)
+                                 INNER JOIN stus ON subs.ms_id = stus.ms_id)
         SELECT ms_id, COUNT(stu_id)
         FROM (SELECT ms_id, stu_id
               FROM stusubs
@@ -486,5 +485,154 @@ stusubs AS (
                              AND pss.subject_id = stusubs.sub_id)
               GROUP BY ms_id, stu_id) t
         GROUP BY ms_id;
+    </select>
+
+    <select id="countStuByMsId" resultType="int">
+        WITH stus AS (
+            SELECT ms_id,
+                   stu_id,
+                   stu_gender                                                 AS gender,
+                   YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
+            FROM pt_class_measurement
+                     INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code
+                     INNER JOIN pt_student ps on pc.cls_code = ps.cls_code
+            WHERE ms_id = #{msId}),
+             #      测验科目信息
+             subs AS (SELECT sub_id
+                      from pt_subject_subgroup
+                               INNER JOIN pt_measurement on pt_measurement.grp_id = pt_subject_subgroup.grp_id
+                               INNER JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id
+                      WHERE ms_id = #{msId}),
+             stusubs AS (SELECT gender, grade, sub_id, stus.stu_id
+                         FROM subs
+                                  JOIN stus)
+        SELECT COUNT(0)
+        FROM (SELECT stu_id
+              FROM stusubs
+              WHERE EXISTS(SELECT sub_id
+                           FROM pt_score_sheet pss
+                           WHERE pss.grade = stusubs.grade
+                             AND pss.gender = stusubs.gender
+                             AND pss.subject_id = stusubs.sub_id)
+              GROUP BY stu_id) t;
+    </select>
+
+    <select id="listMsSubStatus" resultType="com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementSubStatus">
+        WITH stu AS (SELECT stu_gender,
+                            cls_code
+                     FROM pt_student
+                     WHERE stu_id = #{stuId})
+           , ms AS (SELECT ms_id,
+                           YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade,
+                           stu_gender                                                 AS gender
+                    FROM pt_class_measurement
+                             INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
+                             INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code
+        <where>
+            <foreach collection="list" open="ms_id IN (" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </where>
+        )
+           , grps AS (SELECT ms.ms_id, grp_id, grade, gender
+                      FROM ms
+                               INNER JOIN pt_measurement ON ms.ms_id = pt_measurement.ms_id)
+           , ms_stu_info AS (SELECT ms_id, ps.sub_id, grps.gender, grps.grade
+                             FROM grps
+                                      INNER JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = grps.grp_id
+                                      INNER JOIN pt_subject ps on pt_subject_subgroup.sub_id = ps.sub_id)
+           ,
+           #     需要参加的测试及科目数
+            ms_sub AS (SELECT ms_id, sub_id
+                       FROM ms_stu_info
+                       WHERE EXISTS(SELECT sub_id
+                                    FROM pt_score_sheet
+                                    WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
+                                      AND ms_stu_info.gender = pt_score_sheet.gender
+                                      AND pt_score_sheet.grade = ms_stu_info.grade)
+                       GROUP BY ms_id, sub_id)
+           ,
+           # 当前完成情况
+            ms_comp_sub AS (SELECT ms_id, sub_id
+                            FROM pt_score
+                            WHERE stu_id = #{stuId}
+                            GROUP BY ms_id, sub_id)
+
+        SELECT ms_sub.ms_id, ms_sub.sub_id, IF(ms_comp_sub.ms_id IS NULL, 0, 1) AS status
+        FROM ms_sub
+                 LEFT JOIN ms_comp_sub ON ms_sub.ms_id = ms_comp_sub.ms_id AND ms_sub.sub_id = ms_comp_sub.sub_id;
+    </select>
+    <select id="listStuMsStatus" resultType="map">
+        WITH stu AS (SELECT stu_gender,
+                            cls_code
+                     FROM pt_student
+                     WHERE stu_id = #{stuId})
+           , ms AS (SELECT ms_id,
+                           YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade,
+                           stu_gender                                                 AS gender
+                    FROM pt_class_measurement
+                             INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
+                             INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code)
+           , grps AS (SELECT ms.ms_id, grp_id, grade, gender
+                      FROM ms
+                               INNER JOIN pt_measurement ON ms.ms_id = pt_measurement.ms_id)
+           , ms_stu_info AS (SELECT ms_id, ps.sub_id, grps.gender, grps.grade
+                             FROM grps
+                                      INNER JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = grps.grp_id
+                                      INNER JOIN pt_subject ps on pt_subject_subgroup.sub_id = ps.sub_id)
+           ,
+           #     需要参加的测试及科目数
+            ms_sub_cnt AS (SELECT ms_id, COUNT(sub_id) as count
+                           FROM ms_stu_info
+                           WHERE EXISTS(SELECT sub_id
+                                        FROM pt_score_sheet
+                                        WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
+                                          AND ms_stu_info.gender = pt_score_sheet.gender
+                                          AND pt_score_sheet.grade = ms_stu_info.grade)
+                           GROUP BY ms_id)
+           ,
+           # 当前完成情况
+            ms_comp_sub_cnt AS (SELECT ms_id, count(sub_id) as count
+                                FROM pt_score
+                                WHERE stu_id = #{stuId}
+                                GROUP BY ms_id)
+           # 是否完成所有科目
+        SELECT ms_sub_cnt.ms_id, COUNT(ms_comp_sub_cnt.ms_id)
+        FROM ms_sub_cnt
+                 LEFT JOIN ms_comp_sub_cnt
+                           ON ms_sub_cnt.count = ms_comp_sub_cnt.count AND ms_comp_sub_cnt.ms_id = ms_sub_cnt.ms_id
+        group by ms_sub_cnt.ms_id;
+    </select>
+
+    <select id="pageStuMs" resultType="com.rufeng.healthman.pojo.DO.PtMeasurement">
+        WITH stu AS (SELECT stu_gender,
+                            cls_code
+                     FROM pt_student
+                     WHERE stu_id = #{stuId})
+           , ms AS (SELECT ms_id,
+                           YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade,
+                           stu_gender                                                 AS gender
+                    FROM pt_class_measurement
+                             INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
+                             INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code)
+           , grps AS (SELECT ms.ms_id, grp_id, grade, gender
+                      FROM ms
+                               INNER JOIN pt_measurement ON ms.ms_id = pt_measurement.ms_id)
+           , ms_stu_info AS (SELECT ms_id, ps.sub_id, grps.gender, grps.grade
+                             FROM grps
+                                      INNER JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = grps.grp_id
+                                      INNER JOIN pt_subject ps on pt_subject_subgroup.sub_id = ps.sub_id)
+           ,
+           #     需要参加的测试
+            ms_ids AS (SELECT DISTINCT ms_id
+                       FROM ms_stu_info
+                       WHERE EXISTS(SELECT sub_id
+                                    FROM pt_score_sheet
+                                    WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
+                                      AND ms_stu_info.gender = pt_score_sheet.gender
+                                      AND pt_score_sheet.grade = ms_stu_info.grade))
+        SELECT pt_measurement.ms_id, ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
+        FROM ms_ids
+                 INNER JOIN pt_measurement ON ms_ids.ms_id = pt_measurement.ms_id
     </select>
 </mapper>

@@ -20,6 +20,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class StuScoreExcel implements Comparable<StuScoreExcel> {
+    public static final short MERGE_COLS = 3;
     @ExcelProperty("学号")
     private String stuId;
     @ExcelProperty("姓名")

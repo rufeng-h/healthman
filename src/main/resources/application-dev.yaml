@@ -13,8 +13,8 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://localhost:3306/healthman?serverTimezone=Asia/Shanghai
-  main:
-    allow-circular-references: true
+#  main:
+#    allow-circular-references: true
 springdoc:
   swagger-ui:
     enabled: true

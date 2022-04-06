@@ -3,13 +3,13 @@ package com.rufeng.healthman.mapper;
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtMeasurement;
-import java.util.List;
-import java.util.Map;
-
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementSubStatus;
 import com.rufeng.healthman.pojo.Query.PtMeasurementQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -86,8 +86,26 @@ public interface PtMeasurementMapper {
 
     int countCompStuByMsId(Long msId);
 
+    int countStuByMsId(Long msId);
+
     List<PtMeasurement> listMeasurement(List<Long> msIds);
 
     @ReturnMap
     Map<Long, Integer> countStuByMsIds(List<Long> msIds);
+
+    /**
+     * 查询每个体测对应科目的完成状态
+     */
+    List<MeasurementSubStatus> listMsSubStatus(@Param("stuId") String stuId, @Param("list") List<Long> msIds);
+
+    /**
+     * 参加的所有体测，包括完成与未完成
+     *
+     * @return 1完成 0未完成
+     */
+    @ReturnMap
+    Map<Long, Boolean> listStuMsStatus(String stuId);
+
+
+    Page<PtMeasurement> pageStuMs(String stuId);
 }

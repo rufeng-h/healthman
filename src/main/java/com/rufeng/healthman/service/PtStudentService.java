@@ -12,8 +12,8 @@ import com.rufeng.healthman.pojo.DO.PtCollege;
 import com.rufeng.healthman.pojo.DO.PtMeasurement;
 import com.rufeng.healthman.pojo.DO.PtStudent;
 import com.rufeng.healthman.pojo.DTO.ptadmin.UserIdRoleTypeAuthentication;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementStatus;
-import com.rufeng.healthman.pojo.DTO.ptstu.StuMsInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.StuMeasurementInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.StuMeasurementStatus;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.DTO.ptstu.StudentUserInfo;
@@ -154,7 +154,7 @@ public class PtStudentService {
         return new StudentUserInfo(student);
     }
 
-    public StuMsInfo getStuMsInfo(String stuId) {
+    public StuMeasurementInfo getStuMsInfo(String stuId) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
         /* 查班级 */
         PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
@@ -165,15 +165,16 @@ public class PtStudentService {
             college = ptCollegeService.getCollege(clgCode);
         }
         /* 查体测完成状态 */
-        Map<Long, Boolean> msStatusMap = ptStudentMapper.listStuMsStatus(stuId);
+        Map<Long, Boolean> msStatusMap = ptMesurementService.listStuMsStatus(stuId);
         List<PtMeasurement> measurements = ptMesurementService.listMeasurement(new ArrayList<>(msStatusMap.keySet()));
-        List<MeasurementStatus> msStatus = measurements.stream().map(m -> new MeasurementStatus(m, msStatusMap.get(m.getMsId()))).collect(Collectors.toList());
+        List<StuMeasurementStatus> msStatus = measurements.stream().map(m -> new StuMeasurementStatus(m, msStatusMap.get(m.getMsId()))).collect(Collectors.toList());
         /* 查分数 */
         if (college == null) {
-            return new StuMsInfo(student, ptClass.getClsName(), msStatus);
+            return new StuMeasurementInfo(student, ptClass.getClsName(), msStatus);
         }
-        return new StuMsInfo(student, ptClass.getClsName(), college.getClgCode(), college.getClgName(), msStatus);
+        return new StuMeasurementInfo(student, ptClass.getClsName(), college.getClgCode(), college.getClgName(), msStatus);
     }
+
 
     public StudentBaseInfo getStuBaseInfo(String stuId) {
         return ptStudentMapper.getStuBaseInfo(stuId);

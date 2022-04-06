@@ -5,6 +5,7 @@ import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DO.PtMeasurement;
 import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementDetail;
 import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementInfo;
+import com.rufeng.healthman.pojo.DTO.ptmeasurement.StuMeasurementDetail;
 import com.rufeng.healthman.pojo.Query.PtMeasurementQuery;
 import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.service.PtMesurementService;
@@ -63,5 +64,13 @@ public class PtMesurementController {
     @GetMapping("/{msId}")
     public ApiResponse<MeasurementDetail> getMeasurementDetail(@PathVariable Long msId) {
         return ApiResponse.success(ptMesurementService.getMeasurementDetail(msId));
+    }
+
+    @GetMapping("/stu/{stuId}")
+    public ApiResponse<ApiPage<StuMeasurementDetail>> pageStuMsDetail(
+            @RequestParam(defaultValue = "1") @Min(1) Integer page,
+            @RequestParam(defaultValue = "6") @Min(1) @Max(100) Integer pageSize,
+            @PathVariable String stuId) {
+        return ApiResponse.success(ptMesurementService.pageStuMsDetail(page, pageSize, stuId));
     }
 }

@@ -108,6 +108,9 @@ public interface PtScoreMapper {
 
     Page<MeasurementScoreInfo> pageStuScoreInfo(PtScoreQuery query);
 
+    /**
+     * 按姓名查，需要连表，所以有此查询
+     */
     List<StudentBaseInfo> listStuBaseInfo(PtScoreQuery query);
 
     /**
@@ -117,4 +120,6 @@ public interface PtScoreMapper {
      * @return page
      */
     Page<PtScore> pageScore(PtScoreQuery query);
+
+    List<PtScore> listScoreByStuIdAndMsIds(@Param("stuId") String stuId, @Param("list") List<Long> msIds);
 }
