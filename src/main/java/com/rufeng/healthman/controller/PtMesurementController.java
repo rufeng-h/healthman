@@ -50,8 +50,8 @@ public class PtMesurementController {
         return ApiResponse.success(ptMesurementService.pageMeasurementInfo(page, pageSize, query));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
-    public ApiResponse<Boolean> deleteMeasurement(@RequestParam Long msId) {
+    @RequestMapping(value = "/{msId}", method = RequestMethod.DELETE)
+    public ApiResponse<Boolean> deleteMeasurement(@PathVariable Long msId) {
         return ApiResponse.success(ptMesurementService.deleteById(msId));
     }
 

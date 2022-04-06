@@ -3,9 +3,9 @@ package com.rufeng.healthman.controller;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.DO.PtSubgroup;
+import com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo;
 import com.rufeng.healthman.pojo.Query.PtSubgroupQuery;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
-import com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo;
 import com.rufeng.healthman.service.PtSubgroupService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.validation.annotation.Validated;
@@ -40,14 +40,19 @@ public class PtSubGroupController {
     }
 
     @PostMapping
-    public ApiResponse<PtSubgroup> addSubGroup(@Validated @RequestBody PtSubGroupFormdata formdata){
+    public ApiResponse<PtSubgroup> addSubGroup(@Validated @RequestBody PtSubGroupFormdata formdata) {
         return ApiResponse.success(ptSubgroupService.addSubGroup(formdata));
     }
 
     @GetMapping
     public ApiResponse<ApiPage<SubGroupInfo>> pageSubGroupInfo(@RequestParam(defaultValue = "1") @Min(1) Integer page,
                                                                @RequestParam(defaultValue = "3") @Min(1) @Max(100) Integer pageSize,
-                                                               @Validated PtSubgroupQuery query){
+                                                               @Validated PtSubgroupQuery query) {
         return ApiResponse.success(ptSubgroupService.pageSubGroupInfo(page, pageSize, query));
+    }
+
+    @RequestMapping(value = "/{grpId}", method = RequestMethod.DELETE)
+    public ApiResponse<Boolean> deleteSubGrp(@PathVariable Long grpId) {
+        return ApiResponse.success(ptSubgroupService.deleteGrp(grpId));
     }
 }

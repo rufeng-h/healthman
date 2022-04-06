@@ -2,6 +2,7 @@ package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.DO.PtSubjectSubgroup;
+import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -82,4 +83,8 @@ public interface PtSubjectSubgroupMapper {
     Map<Long, Integer> countSubByGrpIds(List<Long> grpIds);
 
     List<Long> listSubIdByGrpId(Long grpId);
+
+    List<PtSubGrpSubject> listSubGrpSubject(List<Long> grpIds);
+
+    int deleteByGrpId(Long grpId);
 }

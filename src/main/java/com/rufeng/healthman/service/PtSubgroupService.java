@@ -4,11 +4,14 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtSubgroupMapper;
+import com.rufeng.healthman.pojo.DO.PtAdmin;
 import com.rufeng.healthman.pojo.DO.PtSubgroup;
+import com.rufeng.healthman.pojo.DO.PtSubject;
 import com.rufeng.healthman.pojo.DO.PtSubjectSubgroup;
 import com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo;
 import com.rufeng.healthman.pojo.Query.PtSubgroupQuery;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
+import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,43 +33,15 @@ public class PtSubgroupService {
     private final PtSubgroupMapper ptSubgroupMapper;
     private final PtCommonService ptCommonService;
     private final PtSubjectSubGroupService ptSubjectSubGroupService;
+    private final PtAdminService ptAdminService;
 
     public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper,
                              PtCommonService ptCommonService,
-                             PtSubjectSubGroupService ptSubjectSubGroupService) {
+                             PtSubjectSubGroupService ptSubjectSubGroupService, PtAdminService ptAdminService) {
         this.ptSubgroupMapper = ptSubgroupMapper;
         this.ptCommonService = ptCommonService;
         this.ptSubjectSubGroupService = ptSubjectSubGroupService;
-    }
-
-
-    public int deleteByPrimaryKey(Long grpId) {
-        return ptSubgroupMapper.deleteByPrimaryKey(grpId);
-    }
-
-
-    public int insert(PtSubgroup record) {
-        return ptSubgroupMapper.insert(record);
-    }
-
-
-    public int insertSelective(PtSubgroup record) {
-        return ptSubgroupMapper.insertSelective(record);
-    }
-
-
-    public PtSubgroup selectByPrimaryKey(Long grpId) {
-        return ptSubgroupMapper.selectByPrimaryKey(grpId);
-    }
-
-
-    public int updateByPrimaryKeySelective(PtSubgroup record) {
-        return ptSubgroupMapper.updateByPrimaryKeySelective(record);
-    }
-
-
-    public int updateByPrimaryKey(PtSubgroup record) {
-        return ptSubgroupMapper.updateByPrimaryKey(record);
+        this.ptAdminService = ptAdminService;
     }
 
     public List<PtSubgroup> listSubGroup() {
@@ -98,8 +73,18 @@ public class PtSubgroupService {
         /* 为分页 */
         Page<PtSubgroup> subgroups = ptSubgroupMapper.pageSubGroup(query);
         /* 查询 */
-        List<Long> list = subgroups.stream().map(PtSubgroup::getGrpId).collect(Collectors.toList());
-        return ApiPage.convert(subgroups, ptSubgroupMapper.pageSubGroupInfo(list));
+        List<Long> grpIds = subgroups.stream().map(PtSubgroup::getGrpId).collect(Collectors.toList());
+        List<PtSubGrpSubject> subGrpSubjects = ptSubjectSubGroupService.listSubGrpSubject(grpIds);
+        Map<Long, List<PtSubject>> map = subGrpSubjects.stream().collect(
+                Collectors.toMap(PtSubGrpSubject::getGrpId, PtSubGrpSubject::getSubjects));
+        List<String> adminIds = subgroups.stream().map(PtSubgroup::getGrpCreatedAdmin)
+                .collect(Collectors.toList());
+        List<PtAdmin> admins = ptAdminService.listAdminByIds(adminIds);
+        Map<String, String> aMap = admins.stream().collect(
+                Collectors.toMap(PtAdmin::getAdminId, PtAdmin::getAdminName));
+        List<SubGroupInfo> groupInfos = subgroups.stream()
+                .map(s -> new SubGroupInfo(s, aMap.get(s.getGrpCreatedAdmin()), map.get(s.getGrpId()))).collect(Collectors.toList());
+        return ApiPage.convert(subgroups, groupInfos);
     }
 
     public PtSubgroup getSubGrp(Long grpId) {
@@ -107,9 +92,15 @@ public class PtSubgroupService {
     }
 
     public Map<Long, String> mapGrpIdGrpNameByIds(List<Long> grpIds) {
-        if (grpIds.size() == 0){
+        if (grpIds.size() == 0) {
             return Collections.emptyMap();
         }
         return ptSubgroupMapper.mapGrpIdGrpNameByIds(grpIds);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteGrp(Long grpId) {
+        ptSubjectSubGroupService.deleteByGrpId(grpId);
+        return ptSubgroupMapper.deleteByPrimaryKey(grpId) == 1;
     }
 }

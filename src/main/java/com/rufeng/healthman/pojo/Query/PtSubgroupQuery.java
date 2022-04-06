@@ -3,6 +3,8 @@ package com.rufeng.healthman.pojo.Query;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
+
 /**
  * @author rufeng
  * @time 2022-03-29 18:46
@@ -12,5 +14,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PtSubgroupQuery {
+    @Size(min = 1)
     private String grpName;
 }

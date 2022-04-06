@@ -98,11 +98,11 @@
     <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtSubgroup">
         <!--@mbg.generated-->
         update pt_subgroup
-        set grp_name          = #{grpName},
-            grp_desp          = #{grpDesp},
-            grp_created       = #{grpCreated},
-            grp_created_admin = #{grpCreatedAdmin},
-            grp_modified      = #{grpModified}
+        set grp_name = #{grpName},
+        grp_desp = #{grpDesp},
+        grp_created = #{grpCreated},
+        grp_created_admin = #{grpCreatedAdmin},
+        grp_modified = #{grpModified}
         where grp_id = #{grpId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
@@ -188,7 +188,7 @@
     <insert id="batchInsert" keyColumn="grp_id" keyProperty="grpId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subgroup
-            (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified)
+        (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.grpName}, #{item.grpDesp}, #{item.grpCreated}, #{item.grpCreatedAdmin}, #{item.grpModified})
@@ -224,11 +224,11 @@
             <if test="grpId != null">
                 grp_id = #{grpId},
             </if>
-            grp_name          = #{grpName},
-            grp_desp          = #{grpDesp},
-            grp_created       = #{grpCreated},
+            grp_name = #{grpName},
+            grp_desp = #{grpDesp},
+            grp_created = #{grpCreated},
             grp_created_admin = #{grpCreatedAdmin},
-            grp_modified      = #{grpModified},
+            grp_modified = #{grpModified},
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="grp_id" keyProperty="grpId"
@@ -304,39 +304,6 @@
         <include refid="Base_Column_List"/>
         from pt_subgroup
     </select>
-
-    <resultMap id="SubGroupInfo" type="com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo">
-        <id property="grpId" column="grp_id"/>
-        <result property="createdAdminId" column="created_admin_id"/>
-        <result property="createdAdminName" column="created_admin_name"/>
-        <result property="grpName" column="grp_name"/>
-        <result property="grpCreated" column="grp_created"/>
-        <result property="grpModified" column="grp_modified"/>
-        <result property="grpDesp" column="grp_desp"/>
-        <collection property="subjects" ofType="com.rufeng.healthman.pojo.DO.PtSubject">
-            <id property="subId" column="sub_id"/>
-            <result property="subName" column="sub_name"/>
-        </collection>
-    </resultMap>
-
-    <select id="pageSubGroupInfo" resultMap="SubGroupInfo">
-        SELECT admin_name AS created_admin_name,
-               pt_subgroup.*,
-               pt_subject.sub_id,
-               pt_subject.sub_name,
-               admin_id   AS created_admin_id
-        FROM pt_subgroup
-                 LEFT JOIN pt_subject_subgroup ON pt_subject_subgroup.grp_id = pt_subgroup.grp_id
-                 LEFT JOIN pt_subject ON pt_subject.sub_id = pt_subject_subgroup.sub_id
-                 LEFT JOIN pt_admin ON pt_admin.admin_id = pt_subgroup.grp_created_admin
-        <where>
-            <foreach collection="list" item="item" separator="," open="pt_subgroup.grp_id IN (" close=")">
-                #{item}
-            </foreach>
-        </where>
-    </select>
-
-
     <select id="pageSubGroup" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
@@ -344,8 +311,7 @@
         <where>
             <if test="query.grpName != null">
                 <bind name="grpName" value="'%' + query.grpName + '%'"/>
-                    grp_name like
-                    #{grpName}
+                grp_name like #{grpName}
             </if>
         </where>
     </select>

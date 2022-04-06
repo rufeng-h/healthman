@@ -86,7 +86,6 @@ public interface PtSubgroupMapper {
      */
     List<PtSubgroup> listSubGroup();
 
-    Page<SubGroupInfo> pageSubGroupInfo(List<Long> list);
 
     Page<PtSubgroup> pageSubGroup(@Param("query") PtSubgroupQuery query);
 
