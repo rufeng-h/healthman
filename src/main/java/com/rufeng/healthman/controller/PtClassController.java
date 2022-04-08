@@ -70,7 +70,6 @@ public class PtClassController {
         return ApiResponse.success(count);
     }
 
-//    @PreAuthorize("authentication.authorities.size() != 0")
     @GetMapping(value = "/template")
     public ResponseEntity<Resource> downloadTemplate() {
         Resource resource = ptClassService.fileTemplate();
