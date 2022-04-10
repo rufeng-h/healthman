@@ -1,10 +1,10 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtScoreSheetMapper;
-import com.rufeng.healthman.pojo.DO.PtScoreSheet;
-import com.rufeng.healthman.pojo.DTO.ptscoresheet.ScoreSheetKey;
-import com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo;
-import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;
+import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.ScoreSheetKey;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

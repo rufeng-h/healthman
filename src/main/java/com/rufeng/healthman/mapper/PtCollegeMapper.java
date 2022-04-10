@@ -1,7 +1,7 @@
 package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.DO.PtCollege;
+import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.pojo.file.PtCollegeExcel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

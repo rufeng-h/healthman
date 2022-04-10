@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtStudentMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtStudent">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtStudent">
         <!--@mbg.generated-->
         <!--@Table pt_student-->
         <id column="stu_id" property="stuId"/>
@@ -35,14 +35,14 @@
         from pt_student
         where stu_id = #{stuId}
     </delete>
-    <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtStudent">
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
         <!--@mbg.generated-->
         insert into pt_student (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar,
                                 cls_code, stu_created, stu_modified, stu_last_login, stu_desp)
         values (#{stuId}, #{sid}, #{stuName}, #{stuBirth}, #{stuGender}, #{password}, #{avatar},
                 #{clsCode}, #{stuCreated}, #{stuModified}, #{stuLastLogin}, #{stuDesp})
     </insert>
-    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtStudent">
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
         <!--@mbg.generated-->
         insert into pt_student
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -122,7 +122,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtStudent">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
         <!--@mbg.generated-->
         update pt_student
         <set>
@@ -162,7 +162,7 @@
         </set>
         where stu_id = #{stuId}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtStudent">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
         <!--@mbg.generated-->
         update pt_student
         set sid            = #{sid},
@@ -342,7 +342,7 @@
              #{item.stuLastLogin}, #{item.stuDesp})
         </foreach>
     </insert>
-    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtStudent">
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
         <!--@mbg.generated-->
         insert into pt_student
         (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
@@ -362,7 +362,7 @@
                                 stu_last_login = #{stuLastLogin},
                                 stu_desp       = #{stuDesp}
     </insert>
-    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtStudent">
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
         <!--@mbg.generated-->
         insert into pt_student
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -489,7 +489,7 @@
         </foreach>
     </insert>
 
-    <select id="getStuBaseInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo">
+    <select id="getStuBaseInfo" resultType="com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo">
         SELECT pt_student.stu_id,
                pt_student.stu_gender,
                YEAR(CURRENT_TIMESTAMP) - pt_class.cls_entry_year + pt_class.cls_entry_grade as grade

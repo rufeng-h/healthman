@@ -2,10 +2,10 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DO.PtClass;
-import com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo;
-import com.rufeng.healthman.pojo.DTO.ptclass.PtClassTreeItem;
-import com.rufeng.healthman.pojo.Query.PtClassQuery;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.dto.ptclass.ClassInfo;
+import com.rufeng.healthman.pojo.dto.ptclass.PtClassTreeItem;
+import com.rufeng.healthman.pojo.query.PtClassQuery;
 import com.rufeng.healthman.service.PtClassService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

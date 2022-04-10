@@ -1,6 +1,6 @@
 package com.rufeng.healthman.common;
 
-import com.rufeng.healthman.pojo.DO.PtRole;
+import com.rufeng.healthman.pojo.ptdo.PtRole;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.HashSet;

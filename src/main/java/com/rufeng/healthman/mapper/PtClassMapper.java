@@ -2,9 +2,9 @@ package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.DO.PtClass;
-import com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo;
-import com.rufeng.healthman.pojo.Query.PtClassQuery;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.dto.ptclass.ClassInfo;
+import com.rufeng.healthman.pojo.query.PtClassQuery;
 import com.rufeng.healthman.pojo.file.PtClassExcel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

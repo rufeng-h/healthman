@@ -2,9 +2,8 @@ package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.DO.PtSubgroup;
-import com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo;
-import com.rufeng.healthman.pojo.Query.PtSubgroupQuery;
+import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
+import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

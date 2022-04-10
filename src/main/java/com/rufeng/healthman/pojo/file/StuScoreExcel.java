@@ -2,8 +2,8 @@ package com.rufeng.healthman.pojo.file;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.pojo.DO.PtScore;
-import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
+import com.rufeng.healthman.pojo.ptdo.PtScore;
+import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.file.converter.StringToGenderConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtClassMesurementMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtClassMesurement">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtClassMesurement">
         <!--@mbg.generated-->
         <!--@Table pt_class_measurement-->
         <id column="cms_id" property="cmsId"/>
@@ -29,13 +29,13 @@
         where cms_id = #{cmsId}
     </delete>
     <insert id="insert" keyColumn="cms_id" keyProperty="cmsId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtClassMesurement" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtClassMesurement" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_class_measurement (ms_id, cls_code, cms_created, cms_modified, cms_created_admin)
         values (#{msId}, #{clsCode}, #{cmsCreated}, #{cmsModified}, #{cmsCreatedAdmin})
     </insert>
     <insert id="insertSelective" keyColumn="cms_id" keyProperty="cmsId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtClassMesurement" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtClassMesurement" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_class_measurement
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,7 +73,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtClassMesurement">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtClassMesurement">
         <!--@mbg.generated-->
         update pt_class_measurement
         <set>
@@ -95,7 +95,7 @@
         </set>
         where cms_id = #{cmsId}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtClassMesurement">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtClassMesurement">
         <!--@mbg.generated-->
         update pt_class_measurement
         set ms_id             = #{msId},
@@ -195,7 +195,7 @@
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="cms_id" keyProperty="cmsId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtClassMesurement" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtClassMesurement" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_class_measurement
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -232,7 +232,7 @@
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="cms_id" keyProperty="cmsId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtClassMesurement" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtClassMesurement" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_class_measurement
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -314,7 +314,7 @@
 
     <resultMap id="ClassMeasurementMap" type="com.rufeng.healthman.pojo.m2m.PtMeasurementClass">
         <id property="msId" column="ms_id"/>
-        <collection property="classes" ofType="com.rufeng.healthman.pojo.DO.PtClass" autoMapping="true">
+        <collection property="classes" ofType="com.rufeng.healthman.pojo.ptdo.PtClass" autoMapping="true">
             <id property="clsCode" column="cls_code"/>
         </collection>
     </resultMap>
@@ -337,7 +337,7 @@
         </where>
     </select>
 
-    <select id="listClsMeasurementByMsId" resultType="com.rufeng.healthman.pojo.DO.PtClass">
+    <select id="listClsMeasurementByMsId" resultType="com.rufeng.healthman.pojo.ptdo.PtClass">
         SELECT cls_id,
                pt_class.cls_code,
                cls_name,

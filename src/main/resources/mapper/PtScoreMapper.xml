@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtScoreMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtScore">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtScore">
         <!--@mbg.generated-->
         <!--@Table pt_score-->
         <id column="sco_id" property="scoId"/>
@@ -31,7 +31,7 @@
         from pt_score
         where sco_id = #{scoId}
     </delete>
-    <insert id="insert" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.DO.PtScore"
+    <insert id="insert" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_score (stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id, sco_level,
@@ -40,7 +40,7 @@
                 #{score})
     </insert>
     <insert id="insertSelective" keyColumn="sco_id" keyProperty="scoId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtScore" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_score
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -96,7 +96,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtScore">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore">
         <!--@mbg.generated-->
         update pt_score
         <set>
@@ -127,7 +127,7 @@
         </set>
         where sco_id = #{scoId}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtScore">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore">
         <!--@mbg.generated-->
         update pt_score
         set stu_id       = #{stuId},
@@ -201,7 +201,7 @@
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="sco_id" keyProperty="scoId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtScore" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_score
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -247,7 +247,7 @@
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="sco_id" keyProperty="scoId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtScore" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_score
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -372,7 +372,7 @@
         </where>
     </select>
 
-    <select id="pageStuScoreInfo" resultType="com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementScoreInfo">
+    <select id="pageStuScoreInfo" resultType="com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo">
         SELECT DISTINCT pt_student.stu_id, pt_student.stu_name, pt_student.stu_gender
         FROM pt_student
                  INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id
@@ -393,7 +393,7 @@
         </where>
     </select>
 
-    <select id="listStuBaseInfo" resultType="com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo">
+    <select id="listStuBaseInfo" resultType="com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo">
         SELECT DISTINCT pt_student.stu_id, pt_student.stu_name, pt_student.stu_gender
         FROM pt_student
                  INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id

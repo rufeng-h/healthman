@@ -2,13 +2,11 @@ package com.rufeng.healthman.pojo.file;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.pojo.DO.PtStudent;
+import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import com.rufeng.healthman.pojo.file.converter.StringToGenderConverter;
-import com.rufeng.healthman.pojo.file.converter.StringToLocalDateConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 /**

@@ -2,9 +2,9 @@ package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.DO.PtMeasurement;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementSubStatus;
-import com.rufeng.healthman.pojo.Query.PtMeasurementQuery;
+import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementSubStatus;
+import com.rufeng.healthman.pojo.query.PtMeasurementQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

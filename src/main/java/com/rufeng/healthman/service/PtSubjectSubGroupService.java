@@ -1,7 +1,7 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtSubjectSubgroupMapper;
-import com.rufeng.healthman.pojo.DO.PtSubjectSubgroup;
+import com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup;
 import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
 import org.springframework.stereotype.Service;
 

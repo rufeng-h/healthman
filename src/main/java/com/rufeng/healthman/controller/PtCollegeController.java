@@ -1,8 +1,8 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DO.PtCollege;
-import com.rufeng.healthman.pojo.DTO.ptcollege.PtCollegeTreeItem;
+import com.rufeng.healthman.pojo.ptdo.PtCollege;
+import com.rufeng.healthman.pojo.dto.ptcollege.PtCollegeTreeItem;
 import com.rufeng.healthman.service.PtCollegeService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

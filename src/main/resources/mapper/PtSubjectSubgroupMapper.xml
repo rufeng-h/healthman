@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtSubjectSubgroupMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup">
         <!--@mbg.generated-->
         <!--@Table pt_subject_subgroup-->
         <id column="sub_grp_id" property="subGrpId"/>
@@ -28,13 +28,13 @@
         where sub_grp_id = #{subGrpId}
     </delete>
     <insert id="insert" keyColumn="sub_grp_id" keyProperty="subGrpId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject_subgroup (sub_id, grp_id, sub_grp_modified, sub_grp_created, sub_grp_admin)
         values (#{subId}, #{grpId}, #{subGrpModified}, #{subGrpCreated}, #{subGrpAdmin})
     </insert>
     <insert id="insertSelective" keyColumn="sub_grp_id" keyProperty="subGrpId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject_subgroup
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -72,7 +72,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup">
         <!--@mbg.generated-->
         update pt_subject_subgroup
         <set>
@@ -94,7 +94,7 @@
         </set>
         where sub_grp_id = #{subGrpId}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup">
         <!--@mbg.generated-->
         update pt_subject_subgroup
         set sub_id = #{subId},
@@ -195,7 +195,7 @@
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="sub_grp_id" keyProperty="subGrpId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject_subgroup
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -232,7 +232,7 @@
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="sub_grp_id" keyProperty="subGrpId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtSubjectSubgroup" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject_subgroup
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -327,7 +327,7 @@
     </select>
     <resultMap id="SubGrpSubjectMap" type="com.rufeng.healthman.pojo.m2m.PtSubGrpSubject">
         <id property="grpId" column="grp_id"/>
-        <collection property="subjects" ofType="com.rufeng.healthman.pojo.DO.PtSubject" autoMapping="true">
+        <collection property="subjects" ofType="com.rufeng.healthman.pojo.ptdo.PtSubject" autoMapping="true">
             <id property="subId" column="sub_id"/>
         </collection>
     </resultMap>

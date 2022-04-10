@@ -1,9 +1,9 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DTO.support.LoginResult;
-import com.rufeng.healthman.pojo.DTO.support.UserInfo;
-import com.rufeng.healthman.pojo.Query.LoginQuery;
+import com.rufeng.healthman.pojo.dto.support.LoginResult;
+import com.rufeng.healthman.pojo.dto.support.UserInfo;
+import com.rufeng.healthman.pojo.query.LoginQuery;
 import com.rufeng.healthman.service.PtCommonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtCollegeMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtCollege">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtCollege">
         <!--@mbg.generated-->
         <!--@Table pt_college-->
         <id column="clg_code" property="clgCode"/>
@@ -32,14 +32,14 @@
         from pt_college
         where clg_code = #{clgCode}
     </delete>
-    <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         <!--@mbg.generated-->
         insert into pt_college (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel,
                                 clg_home, clg_created, clg_modified)
         values (#{clgCode}, #{clgId}, #{clgName}, #{clgPrincipal}, #{clgOffice}, #{clgTel},
                 #{clgHome}, #{clgCreated}, #{clgModified})
     </insert>
-    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         <!--@mbg.generated-->
         insert into pt_college
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -101,7 +101,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         <!--@mbg.generated-->
         update pt_college
         <set>
@@ -132,7 +132,7 @@
         </set>
         where clg_code = #{clgCode}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         <!--@mbg.generated-->
         update pt_college
         set clg_id        = #{clgId},
@@ -272,7 +272,7 @@
              #{item.clgTel}, #{item.clgHome}, #{item.clgCreated}, #{item.clgModified})
         </foreach>
     </insert>
-    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         <!--@mbg.generated-->
         insert into pt_college
                 (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, clg_home, clg_created,
@@ -289,7 +289,7 @@
                                 clg_created   = #{clgCreated},
                                 clg_modified  = #{clgModified}
     </insert>
-    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         <!--@mbg.generated-->
         insert into pt_college
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -389,12 +389,12 @@
         </foreach>
     </insert>
 
-    <select id="listCollege" resultType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <select id="listCollege" resultType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_college;
     </select>
-    <select id="getCollege" resultType="com.rufeng.healthman.pojo.DO.PtCollege">
+    <select id="getCollege" resultType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_college

@@ -1,7 +1,7 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.pojo.DO.PtClass;
-import com.rufeng.healthman.pojo.DO.PtClassMesurement;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.ptdo.PtClassMesurement;
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

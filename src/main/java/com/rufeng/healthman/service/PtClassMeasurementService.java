@@ -1,8 +1,8 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtClassMesurementMapper;
-import com.rufeng.healthman.pojo.DO.PtClass;
-import com.rufeng.healthman.pojo.DO.PtClassMesurement;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.ptdo.PtClassMesurement;
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;

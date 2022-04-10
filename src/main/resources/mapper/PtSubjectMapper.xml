@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtSubjectMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtSubject">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtSubject">
         <!--@mbg.generated-->
         <!--@Table pt_subject-->
         <id column="sub_id" property="subId"/>
@@ -9,10 +9,11 @@
         <result column="sub_desp" property="subDesp"/>
         <result column="sub_created" property="subCreated"/>
         <result column="sub_modified" property="subModified"/>
+        <result column="comp_id" property="compId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        sub_id, sub_name, sub_desp, sub_created, sub_modified
+        sub_id, sub_name, sub_desp, sub_created, sub_modified, comp_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -27,14 +28,14 @@
         from pt_subject
         where sub_id = #{subId}
     </delete>
-    <insert id="insert" keyColumn="sub_id" keyProperty="subId" parameterType="com.rufeng.healthman.pojo.DO.PtSubject"
+    <insert id="insert" keyColumn="sub_id" keyProperty="subId" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubject"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_subject (sub_name, sub_desp, sub_created, sub_modified)
-        values (#{subName}, #{subDesp}, #{subCreated}, #{subModified})
+        insert into pt_subject (sub_name, sub_desp, sub_created, sub_modified, comp_id)
+        values (#{subName}, #{subDesp}, #{subCreated}, #{subModified}, #{compId})
     </insert>
     <insert id="insertSelective" keyColumn="sub_id" keyProperty="subId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubject" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -50,6 +51,9 @@
             <if test="subModified != null">
                 sub_modified,
             </if>
+            <if test="compId != null">
+                comp_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="subName != null">
@@ -64,9 +68,12 @@
             <if test="subModified != null">
                 #{subModified},
             </if>
+            <if test="compId != null">
+                #{compId},
+            </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtSubject">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubject">
         <!--@mbg.generated-->
         update pt_subject
         <set>
@@ -82,16 +89,20 @@
             <if test="subModified != null">
                 sub_modified = #{subModified},
             </if>
+            <if test="compId != null">
+                comp_id = #{compId},
+            </if>
         </set>
         where sub_id = #{subId}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtSubject">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubject">
         <!--@mbg.generated-->
         update pt_subject
         set sub_name     = #{subName},
             sub_desp     = #{subDesp},
             sub_created  = #{subCreated},
-            sub_modified = #{subModified}
+            sub_modified = #{subModified},
+            comp_id      = #{compId}
         where sub_id = #{subId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
@@ -116,6 +127,11 @@
             <trim prefix="sub_modified = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when sub_id = #{item.subId} then #{item.subModified}
+                </foreach>
+            </trim>
+            <trim prefix="comp_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sub_id = #{item.subId} then #{item.compId}
                 </foreach>
             </trim>
         </trim>
@@ -156,6 +172,13 @@
                     </if>
                 </foreach>
             </trim>
+            <trim prefix="comp_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.compId != null">
+                        when sub_id = #{item.subId} then #{item.compId}
+                    </if>
+                </foreach>
+            </trim>
         </trim>
         where sub_id in
         <foreach close=")" collection="list" item="item" open="(" separator=", ">
@@ -165,14 +188,14 @@
     <insert id="batchInsert" keyColumn="sub_id" keyProperty="subId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject
-            (sub_name, sub_desp, sub_created, sub_modified)
+            (sub_name, sub_desp, sub_created, sub_modified, comp_id)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.subName}, #{item.subDesp}, #{item.subCreated}, #{item.subModified})
+            (#{item.subName}, #{item.subDesp}, #{item.subCreated}, #{item.subModified}, #{item.compId})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="sub_id" keyProperty="subId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubject" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -183,6 +206,7 @@
             sub_desp,
             sub_created,
             sub_modified,
+            comp_id,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -193,6 +217,7 @@
             #{subDesp},
             #{subCreated},
             #{subModified},
+            #{compId},
         </trim>
         on duplicate key update
         <trim suffixOverrides=",">
@@ -203,10 +228,11 @@
             sub_desp     = #{subDesp},
             sub_created  = #{subCreated},
             sub_modified = #{subModified},
+            comp_id      = #{compId},
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="sub_id" keyProperty="subId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtSubject" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubject" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -224,6 +250,9 @@
             </if>
             <if test="subModified != null">
                 sub_modified,
+            </if>
+            <if test="compId != null">
+                comp_id,
             </if>
         </trim>
         values
@@ -243,6 +272,9 @@
             <if test="subModified != null">
                 #{subModified},
             </if>
+            <if test="compId != null">
+                #{compId},
+            </if>
         </trim>
         on duplicate key update
         <trim suffixOverrides=",">
@@ -261,39 +293,36 @@
             <if test="subModified != null">
                 sub_modified = #{subModified},
             </if>
+            <if test="compId != null">
+                comp_id = #{compId},
+            </if>
         </trim>
     </insert>
-    <select id="listSubject" resultType="com.rufeng.healthman.pojo.DO.PtSubject">
+    <select id="listSubject" resultType="com.rufeng.healthman.pojo.ptdo.PtSubject">
         SELECT sub_id, sub_name, sub_desp, sub_created, sub_modified
         FROM pt_subject
     </select>
-    <resultMap id="SubjectInfoMap" type="com.rufeng.healthman.pojo.DTO.ptsubject.SubjectInfo">
+    <resultMap id="SubjectInfoMap" type="com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail">
         <id column="sub_id" property="subId"/>
-        <result property="subCreated" column="sub_created"/>
-        <result property="subDesp" column="sub_desp"/>
-        <result property="subName" column="sub_name"/>
-        <collection property="sheetInfos" ofType="com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo">
+        <result column="sub_created" property="subCreated"/>
+        <result column="sub_desp" property="subDesp"/>
+        <result column="sub_name" property="subName"/>
+        <collection ofType="com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo" property="sheetInfos">
             <id column="sub_id" property="subId"/>
-            <id property="gender" column="gender"/>
-            <id property="grade" column="grade"/>
+            <id column="gender" property="gender"/>
+            <id column="grade" property="grade"/>
         </collection>
     </resultMap>
     <select id="pageSubject" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_subject
-                 LEFT JOIN pt_score_sheet
-                           ON pt_score_sheet.subject_id = pt_subject.sub_id
         <where>
             <if test="query.subName != null">
                 <bind name="subName" value="'%' + query.subName + '%'"/>
                 sub_name like #{subName}
             </if>
-            <if test="query.grade != null">
-                AND grade = #{query.grade}
-            </if>
         </where>
-        GROUP BY sub_id
     </select>
 
     <select id="listSubjectByIds" resultMap="BaseResultMap">
@@ -301,7 +330,7 @@
         <include refid="Base_Column_List"/>
         FROM pt_subject
         <where>
-            <foreach collection="list" item="item" close=")" open="sub_id IN (" separator=",">
+            <foreach close=")" collection="list" item="item" open="sub_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
@@ -311,7 +340,7 @@
         SELECT sub_id, sub_name
         FROM pt_subject
         <where>
-            <foreach collection="list" item="item" close=")" open="sub_id IN (" separator=",">
+            <foreach close=")" collection="list" item="item" open="sub_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
