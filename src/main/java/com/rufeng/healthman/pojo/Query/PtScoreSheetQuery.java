@@ -1,6 +1,10 @@
-package com.rufeng.healthman.pojo.Query;
+package com.rufeng.healthman.pojo.query;
 
+import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author rufeng
@@ -10,6 +14,11 @@ import lombok.Data;
  */
 @Data
 public class PtScoreSheetQuery {
+    @Min(1)
+    @NotNull
     private Integer grade;
+    @Min(1)
+    @NotNull
     private Long subjectId;
+    private GenderEnum gender;
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtScoreSheetMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         <!--@Table pt_score_sheet-->
         <id column="subject_id" property="subjectId"/>
@@ -41,14 +41,14 @@
           and `upper` = #{upper}
           and `lower` = #{lower}
     </delete>
-    <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         insert into pt_score_sheet (subject_id, gender, grade, `upper`, `lower`, score, created_time,
                                     last_modify_time, `level`, id)
         values (#{subjectId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime},
                 #{lastModifyTime}, #{level}, #{id})
     </insert>
-    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         insert into pt_score_sheet
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -116,7 +116,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         update pt_score_sheet
         <set>
@@ -142,7 +142,7 @@
           and `upper` = #{upper}
           and `lower` = #{lower}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         update pt_score_sheet
         set score            = #{score},
@@ -247,7 +247,7 @@
              #{item.score}, #{item.createdTime}, #{item.lastModifyTime}, #{item.level}, #{item.id})
         </foreach>
     </insert>
-    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         insert into pt_score_sheet
         (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
@@ -265,7 +265,7 @@
                                 `level`          = #{level},
                                 id               = #{id}
     </insert>
-    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         insert into pt_score_sheet
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -367,37 +367,13 @@
             </if>
         </trim>
     </insert>
-    <sql id="Query_SubjectId">
-        <if test="query.subjectId != null">
-            AND subject_id = #{query.subjectId}
-        </if>
-    </sql>
-
-    <sql id="Query_Gender">
-        <if test="query.gender != null">
-            AND gender = #{query.gender}
-        </if>
-    </sql>
-
-    <sql id="Query_Grade">
-        <if test="query.grade != null">
-            AND grade = #{query.grade}
-        </if>
-    </sql>
-
-    <sql id="Query_Interval">
-        <if test="query.upper != null and query.lower != null">
-            AND upper &gt; #{query.upper} AND lower &lt;= #{query.lower}
-        </if>
-    </sql>
-
-
-    <select id="listScoreSheet" resultType="com.rufeng.healthman.pojo.DO.PtScoreSheet">
+    <select id="listScoreSheet" resultType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_score_sheet
         WHERE grade = #{query.grade}
           AND subject_id = #{query.subjectId}
+          AND gender = #{query.gender}
         ORDER BY score DESC
     </select>
 
@@ -410,7 +386,7 @@
         </foreach>
     </insert>
 
-    <select id="listSheetInfoBySubIds" resultType="com.rufeng.healthman.pojo.DTO.ptscoresheet.SheetInfo">
+    <select id="listSheetInfoBySubIds" resultType="com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo">
         SELECT DISTINCT subject_id AS sub_id, grade, gender
         FROM pt_score_sheet
         <where>

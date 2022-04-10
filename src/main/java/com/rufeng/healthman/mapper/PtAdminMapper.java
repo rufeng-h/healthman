@@ -1,8 +1,8 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.DO.PtAdmin;
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import java.util.List;
-import com.rufeng.healthman.pojo.DTO.ptadmin.AdminInfo;import com.rufeng.healthman.pojo.Query.PtAdminQuery;import org.apache.ibatis.annotations.Mapper;
+import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;import com.rufeng.healthman.pojo.query.PtAdminQuery;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;import org.springframework.lang.NonNull;
 
 

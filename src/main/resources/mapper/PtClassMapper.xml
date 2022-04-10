@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtClassMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtClass">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtClass">
         <!--@mbg.generated-->
         <!--@Table pt_class-->
         <id column="cls_code" property="clsCode"/>
@@ -31,14 +31,14 @@
         from pt_class
         where cls_code = #{clsCode}
     </delete>
-    <insert id="insert" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtClass">
         <!--@mbg.generated-->
         insert into pt_class (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year,
                               cls_created, cls_modified)
         values (#{clsCode}, #{clsId}, #{clsName}, #{clgCode}, #{clsEntryGrade}, #{clsEntryYear},
                 #{clsCreated}, #{clsModified})
     </insert>
-    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtClass">
         <!--@mbg.generated-->
         insert into pt_class
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -94,7 +94,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtClass">
         <!--@mbg.generated-->
         update pt_class
         <set>
@@ -122,7 +122,7 @@
         </set>
         where cls_code = #{clsCode}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtClass">
         <!--@mbg.generated-->
         update pt_class
         set cls_id          = #{clsId},
@@ -249,7 +249,7 @@
              #{item.clsEntryYear}, #{item.clsCreated}, #{item.clsModified})
         </foreach>
     </insert>
-    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtClass">
         <!--@mbg.generated-->
         insert into pt_class
         (cls_code, cls_id, cls_name, clg_code, cls_entry_grade, cls_entry_year, cls_created,
@@ -265,7 +265,7 @@
                                 cls_created     = #{clsCreated},
                                 cls_modified    = #{clsModified}
     </insert>
-    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.DO.PtClass">
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtClass">
         <!--@mbg.generated-->
         insert into pt_class
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -349,7 +349,7 @@
             </if>
         </trim>
     </insert>
-    <resultMap id="ClassInfo" type="com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo">
+    <resultMap id="ClassInfo" type="com.rufeng.healthman.pojo.dto.ptclass.ClassInfo">
         <id column="cls_code" property="clsCode"/>
         <result column="cls_id" property="clsId"/>
         <result column="clg_code" property="clgCode"/>
@@ -383,7 +383,7 @@
         </foreach>
     </insert>
 
-    <select id="pageClassInfo" resultType="com.rufeng.healthman.pojo.DTO.ptclass.ClassInfo">
+    <select id="pageClassInfo" resultType="com.rufeng.healthman.pojo.dto.ptclass.ClassInfo">
         SELECT cls_id,
                cls_code,
                cls_name,
@@ -400,7 +400,7 @@
             </include>
         </where>
     </select>
-    <select id="listClass" resultType="com.rufeng.healthman.pojo.DO.PtClass">
+    <select id="listClass" resultType="com.rufeng.healthman.pojo.ptdo.PtClass">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_class

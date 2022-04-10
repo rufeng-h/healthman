@@ -1,7 +1,7 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.mapper.PtRoleMapper;
-import com.rufeng.healthman.pojo.DO.PtRole;
+import com.rufeng.healthman.pojo.ptdo.PtRole;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

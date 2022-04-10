@@ -1,8 +1,8 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DO.PtScoreSheet;
-import com.rufeng.healthman.pojo.Query.PtScoreSheetQuery;
+import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
+import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
 import com.rufeng.healthman.service.PtScoreSheetService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;

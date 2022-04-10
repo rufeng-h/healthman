@@ -2,9 +2,9 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.StuMeasurementInfo;
-import com.rufeng.healthman.pojo.DTO.ptstu.StudentInfo;
-import com.rufeng.healthman.pojo.Query.PtStudentQuery;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.StudentInfo;
+import com.rufeng.healthman.pojo.query.PtStudentQuery;
 import com.rufeng.healthman.service.PtStudentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.core.io.Resource;

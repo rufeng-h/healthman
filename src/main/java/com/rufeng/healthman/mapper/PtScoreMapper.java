@@ -1,10 +1,10 @@
 package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
-import com.rufeng.healthman.pojo.DO.PtScore;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementScoreInfo;
-import com.rufeng.healthman.pojo.DTO.ptstu.StudentBaseInfo;
-import com.rufeng.healthman.pojo.Query.PtScoreQuery;
+import com.rufeng.healthman.pojo.ptdo.PtScore;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
+import com.rufeng.healthman.pojo.query.PtScoreQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

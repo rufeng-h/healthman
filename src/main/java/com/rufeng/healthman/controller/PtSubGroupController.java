@@ -2,9 +2,9 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DO.PtSubgroup;
-import com.rufeng.healthman.pojo.DTO.subgroup.SubGroupInfo;
-import com.rufeng.healthman.pojo.Query.PtSubgroupQuery;
+import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
+import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
+import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
 import com.rufeng.healthman.service.PtSubgroupService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

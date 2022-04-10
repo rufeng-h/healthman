@@ -4,7 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
-import com.rufeng.healthman.pojo.DO.PtCollege;
+import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.service.PtClassService;
 import com.rufeng.healthman.service.PtCollegeService;
 import lombok.extern.slf4j.Slf4j;

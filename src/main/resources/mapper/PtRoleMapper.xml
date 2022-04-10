@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtRoleMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtRole">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtRole">
         <!--@mbg.generated-->
         <!--@Table pt_role-->
         <id column="role_id" property="roleId"/>
@@ -29,14 +29,14 @@
         from pt_role
         where role_id = #{roleId}
     </delete>
-    <insert id="insert" keyColumn="role_id" keyProperty="roleId" parameterType="com.rufeng.healthman.pojo.DO.PtRole"
+    <insert id="insert" keyColumn="role_id" keyProperty="roleId" parameterType="com.rufeng.healthman.pojo.ptdo.PtRole"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_role (admin_id, role_value, role_created, role_modified, role_type, target)
         values (#{adminId}, #{roleValue}, #{roleCreated}, #{roleModified}, #{roleType}, #{target})
     </insert>
     <insert id="insertSelective" keyColumn="role_id" keyProperty="roleId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtRole" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtRole" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -80,7 +80,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtRole">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtRole">
         <!--@mbg.generated-->
         update pt_role
         <set>
@@ -105,7 +105,7 @@
         </set>
         where role_id = #{roleId}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtRole">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtRole">
         <!--@mbg.generated-->
         update pt_role
         set admin_id      = #{adminId},
@@ -219,7 +219,7 @@
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="role_id" keyProperty="roleId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtRole" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtRole" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -259,7 +259,7 @@
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="role_id" keyProperty="roleId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtRole" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtRole" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -335,7 +335,7 @@
         </trim>
     </insert>
 
-    <select id="listRole" resultType="com.rufeng.healthman.pojo.DO.PtRole">
+    <select id="listRole" resultType="com.rufeng.healthman.pojo.ptdo.PtRole">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_role

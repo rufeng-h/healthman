@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtMeasurementMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.DO.PtMeasurement">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
         <!--@mbg.generated-->
         <!--@Table pt_measurement-->
         <id column="ms_id" property="msId"/>
@@ -29,14 +29,14 @@
         from pt_measurement
         where ms_id = #{msId}
     </delete>
-    <insert id="insert" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement"
+    <insert id="insert" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_measurement (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
         values (#{msName}, #{msDesp}, #{msCreated}, #{msModified}, #{grpId}, #{msCreatedAdmin})
     </insert>
     <insert id="insertSelective" keyColumn="ms_id" keyProperty="msId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_measurement
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -80,7 +80,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
         <!--@mbg.generated-->
         update pt_measurement
         <set>
@@ -105,7 +105,7 @@
         </set>
         where ms_id = #{msId}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
         <!--@mbg.generated-->
         update pt_measurement
         set ms_name          = #{msName},
@@ -219,7 +219,7 @@
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="ms_id" keyProperty="msId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_measurement
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -259,7 +259,7 @@
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="ms_id" keyProperty="msId"
-            parameterType="com.rufeng.healthman.pojo.DO.PtMeasurement" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_measurement
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -517,7 +517,7 @@ stusubs AS (
               GROUP BY stu_id) t;
     </select>
 
-    <select id="listMsSubStatus" resultType="com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementSubStatus">
+    <select id="listMsSubStatus" resultType="com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementSubStatus">
         WITH stu AS (SELECT stu_gender,
                             cls_code
                      FROM pt_student
@@ -604,7 +604,7 @@ stusubs AS (
         group by ms_sub_cnt.ms_id;
     </select>
 
-    <select id="pageStuMs" resultType="com.rufeng.healthman.pojo.DO.PtMeasurement">
+    <select id="pageStuMs" resultType="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
         WITH stu AS (SELECT stu_gender,
                             cls_code
                      FROM pt_student

@@ -2,9 +2,9 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementScoreInfo;
-import com.rufeng.healthman.pojo.DTO.ptscore.ScoreInfo;
-import com.rufeng.healthman.pojo.Query.PtScoreQuery;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
+import com.rufeng.healthman.pojo.dto.ptscore.ScoreInfo;
+import com.rufeng.healthman.pojo.query.PtScoreQuery;
 import com.rufeng.healthman.service.PtScoreService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;

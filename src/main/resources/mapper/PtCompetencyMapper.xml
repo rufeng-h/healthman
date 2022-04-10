@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.healthman.mapper.PtCompetencyMapper">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtCompetency">
+        <!--@mbg.generated-->
+        <!--@Table pt_competency-->
+        <id column="comp_id" property="compId"/>
+        <result column="comp_name" property="compName"/>
+        <result column="comp_desp" property="compDesp"/>
+        <result column="comp_created" property="compCreated"/>
+        <result column="comp_midified" property="compMidified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        comp_id, comp_name, comp_desp, comp_created, comp_midified
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_competency
+        where comp_id = #{compId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete
+        from pt_competency
+        where comp_id = #{compId}
+    </delete>
+    <insert id="insert" keyColumn="comp_id" keyProperty="compId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtCompetency" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_competency (comp_name, comp_desp, comp_created, comp_midified)
+        values (#{compName}, #{compDesp}, #{compCreated}, #{compMidified})
+    </insert>
+    <insert id="insertSelective" keyColumn="comp_id" keyProperty="compId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtCompetency" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_competency
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compName != null">
+                comp_name,
+            </if>
+            <if test="compDesp != null">
+                comp_desp,
+            </if>
+            <if test="compCreated != null">
+                comp_created,
+            </if>
+            <if test="compMidified != null">
+                comp_midified,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="compName != null">
+                #{compName},
+            </if>
+            <if test="compDesp != null">
+                #{compDesp},
+            </if>
+            <if test="compCreated != null">
+                #{compCreated},
+            </if>
+            <if test="compMidified != null">
+                #{compMidified},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCompetency">
+        <!--@mbg.generated-->
+        update pt_competency
+        <set>
+            <if test="compName != null">
+                comp_name = #{compName},
+            </if>
+            <if test="compDesp != null">
+                comp_desp = #{compDesp},
+            </if>
+            <if test="compCreated != null">
+                comp_created = #{compCreated},
+            </if>
+            <if test="compMidified != null">
+                comp_midified = #{compMidified},
+            </if>
+        </set>
+        where comp_id = #{compId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtCompetency">
+        <!--@mbg.generated-->
+        update pt_competency
+        set comp_name     = #{compName},
+            comp_desp     = #{compDesp},
+            comp_created  = #{compCreated},
+            comp_midified = #{compMidified}
+        where comp_id = #{compId}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_competency
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="comp_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when comp_id = #{item.compId} then #{item.compName}
+                </foreach>
+            </trim>
+            <trim prefix="comp_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when comp_id = #{item.compId} then #{item.compDesp}
+                </foreach>
+            </trim>
+            <trim prefix="comp_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when comp_id = #{item.compId} then #{item.compCreated}
+                </foreach>
+            </trim>
+            <trim prefix="comp_midified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when comp_id = #{item.compId} then #{item.compMidified}
+                </foreach>
+            </trim>
+        </trim>
+        where comp_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.compId}
+        </foreach>
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_competency
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="comp_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.compName != null">
+                        when comp_id = #{item.compId} then #{item.compName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="comp_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.compDesp != null">
+                        when comp_id = #{item.compId} then #{item.compDesp}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="comp_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.compCreated != null">
+                        when comp_id = #{item.compId} then #{item.compCreated}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="comp_midified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.compMidified != null">
+                        when comp_id = #{item.compId} then #{item.compMidified}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where comp_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.compId}
+        </foreach>
+    </update>
+    <insert id="batchInsert" keyColumn="comp_id" keyProperty="compId" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_competency
+            (comp_name, comp_desp, comp_created, comp_midified)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.compName}, #{item.compDesp}, #{item.compCreated}, #{item.compMidified})
+        </foreach>
+    </insert>
+    <insert id="insertOrUpdate" keyColumn="comp_id" keyProperty="compId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtCompetency" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_competency
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compId != null">
+                comp_id,
+            </if>
+            comp_name,
+            comp_desp,
+            comp_created,
+            comp_midified,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compId != null">
+                #{compId},
+            </if>
+            #{compName},
+            #{compDesp},
+            #{compCreated},
+            #{compMidified},
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="compId != null">
+                comp_id = #{compId},
+            </if>
+            comp_name     = #{compName},
+            comp_desp     = #{compDesp},
+            comp_created  = #{compCreated},
+            comp_midified = #{compMidified},
+        </trim>
+    </insert>
+    <insert id="insertOrUpdateSelective" keyColumn="comp_id" keyProperty="compId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtCompetency" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_competency
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compId != null">
+                comp_id,
+            </if>
+            <if test="compName != null">
+                comp_name,
+            </if>
+            <if test="compDesp != null">
+                comp_desp,
+            </if>
+            <if test="compCreated != null">
+                comp_created,
+            </if>
+            <if test="compMidified != null">
+                comp_midified,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compId != null">
+                #{compId},
+            </if>
+            <if test="compName != null">
+                #{compName},
+            </if>
+            <if test="compDesp != null">
+                #{compDesp},
+            </if>
+            <if test="compCreated != null">
+                #{compCreated},
+            </if>
+            <if test="compMidified != null">
+                #{compMidified},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="compId != null">
+                comp_id = #{compId},
+            </if>
+            <if test="compName != null">
+                comp_name = #{compName},
+            </if>
+            <if test="compDesp != null">
+                comp_desp = #{compDesp},
+            </if>
+            <if test="compCreated != null">
+                comp_created = #{compCreated},
+            </if>
+            <if test="compMidified != null">
+                comp_midified = #{compMidified},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="listCompByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_competency
+        <where>
+            <foreach collection="list" item="item" close=")" open="comp_id IN (" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+</mapper>

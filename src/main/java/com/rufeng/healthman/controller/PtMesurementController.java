@@ -2,11 +2,11 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.DO.PtMeasurement;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementDetail;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.MeasurementInfo;
-import com.rufeng.healthman.pojo.DTO.ptmeasurement.StuMeasurementDetail;
-import com.rufeng.healthman.pojo.Query.PtMeasurementQuery;
+import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementDetail;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementInfo;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementDetail;
+import com.rufeng.healthman.pojo.query.PtMeasurementQuery;
 import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.service.PtMesurementService;
 import com.rufeng.healthman.validation.group.Insert;

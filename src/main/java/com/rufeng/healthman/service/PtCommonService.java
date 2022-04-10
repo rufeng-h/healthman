@@ -1,9 +1,9 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.enums.UserTypeEnum;
-import com.rufeng.healthman.pojo.DTO.support.LoginResult;
-import com.rufeng.healthman.pojo.DTO.support.UserInfo;
-import com.rufeng.healthman.pojo.Query.LoginQuery;
+import com.rufeng.healthman.pojo.dto.support.LoginResult;
+import com.rufeng.healthman.pojo.dto.support.UserInfo;
+import com.rufeng.healthman.pojo.query.LoginQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

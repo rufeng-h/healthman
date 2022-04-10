@@ -1,12 +1,10 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.pojo.DO.PtRole;
-import org.apache.ibatis.annotations.MapKey;
+import com.rufeng.healthman.pojo.ptdo.PtRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**

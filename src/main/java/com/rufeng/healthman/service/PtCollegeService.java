@@ -2,9 +2,9 @@ package com.rufeng.healthman.service;
 
 import com.alibaba.excel.EasyExcel;
 import com.rufeng.healthman.mapper.PtCollegeMapper;
-import com.rufeng.healthman.pojo.DO.PtAdmin;
-import com.rufeng.healthman.pojo.DO.PtClass;
-import com.rufeng.healthman.pojo.DO.PtCollege;
+import com.rufeng.healthman.pojo.ptdo.PtAdmin;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.pojo.file.PtCollegeExcel;
 import com.rufeng.healthman.pojo.file.PtCollegeExcelListener;
 import org.springframework.core.io.ByteArrayResource;

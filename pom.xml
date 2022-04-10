@@ -151,18 +151,4 @@
             </plugin>
         </plugins>
     </build>
-
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>dev</id>-->
-<!--            <properties>-->
-<!--                <activedEnv>dev</activedEnv>-->
-<!--            </properties>-->
-<!--            <activation>-->
-<!--                &lt;!&ndash; 默认环境 &ndash;&gt;-->
-<!--                <activeByDefault>true</activeByDefault>-->
-<!--            </activation>-->
-<!--        </profile>-->
-<!--    </profiles>-->
-
 </project>
