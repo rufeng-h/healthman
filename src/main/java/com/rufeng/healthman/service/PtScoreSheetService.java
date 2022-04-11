@@ -65,4 +65,8 @@ public class PtScoreSheetService {
         Page<PtScoreSheet> sheets = ptScoreSheetMapper.pageScoreSheet(query);
         return ApiPage.convert(sheets);
     }
+
+    public boolean updateScoreSheet(PtScoreSheet scoreSheet){
+        return true;
+    }
 }

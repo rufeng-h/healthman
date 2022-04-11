@@ -95,6 +95,6 @@ public class PtSubjectService {
         PtSubject subject = ptSubjectMapper.selectByPrimaryKey(subId);
         List<String> levels = ptSubjectMapper.listLevels(subject.getSubId());
         PtCompetency competency = ptCompetencyService.getComp(subject.getCompId());
-        return new SubjectDetail(subject, competency.getCompName(), levels);
+        return new SubjectDetail(subject, competency == null ? null : competency.getCompName(), levels);
     }
 }
