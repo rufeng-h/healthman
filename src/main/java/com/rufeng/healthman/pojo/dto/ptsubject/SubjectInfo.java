@@ -4,7 +4,6 @@ import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

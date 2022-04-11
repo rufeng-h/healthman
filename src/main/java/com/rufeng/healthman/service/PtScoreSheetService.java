@@ -1,13 +1,20 @@
 package com.rufeng.healthman.service;
 
+import com.alibaba.excel.EasyExcel;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtScoreSheetMapper;
-import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.ScoreSheetKey;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;
+import com.rufeng.healthman.pojo.file.PtScoreSheetExcelListener;
+import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,13 +32,7 @@ public class PtScoreSheetService {
         this.ptScoreSheetMapper = ptScoreSheetMapper;
     }
 
-
-    public List<PtScoreSheet> listScoreSheet(@NonNull PtScoreSheetQuery query) {
-        return ptScoreSheetMapper.listScoreSheet(query);
-    }
-
-
-    public int addScoreSheetSelective(List<PtScoreSheet> sheets) {
+    public int addScoreSheetSelective(List<PtScoreSheetExcel> sheets) {
         if (sheets.size() == 0) {
             return 0;
         }
@@ -47,5 +48,21 @@ public class PtScoreSheetService {
 
     public List<PtScoreSheet> listScoreSheet(ScoreSheetKey sheetKey) {
         return ptScoreSheetMapper.listScoreSheetBySheetKey(sheetKey);
+    }
+
+    public int uploadScoreSheet(Long subId, MultipartFile file) {
+        PtScoreSheetExcelListener listener = new PtScoreSheetExcelListener(subId, this);
+        try {
+            EasyExcel.read(file.getInputStream(), PtScoreSheetExcel.class, listener).sheet().doRead();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public ApiPage<PtScoreSheet> pageScoreSheet(Integer page, Integer pageSize, PtScoreSheetQuery query) {
+        PageHelper.startPage(page, pageSize);
+        Page<PtScoreSheet> sheets = ptScoreSheetMapper.pageScoreSheet(query);
+        return ApiPage.convert(sheets);
     }
 }

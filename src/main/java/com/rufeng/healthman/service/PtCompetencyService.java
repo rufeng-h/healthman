@@ -27,4 +27,15 @@ public class PtCompetencyService {
         }
         return ptCompetencyMapper.listCompByIds(compIds);
     }
+
+    public List<PtCompetency> listComp() {
+        return ptCompetencyMapper.listComp();
+    }
+
+    public PtCompetency getComp(Long compId) {
+        if (compId == null) {
+            return null;
+        }
+        return ptCompetencyMapper.selectByPrimaryKey(compId);
+    }
 }

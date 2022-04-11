@@ -274,4 +274,10 @@
             </foreach>
         </where>
     </select>
+
+    <select id="listComp" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_competency
+    </select>
 </mapper>

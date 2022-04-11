@@ -20,7 +20,8 @@ import lombok.NoArgsConstructor;
 
 /**
     * 单项评分标准（国网）
-    */
+ * @author rufeng
+ */
 @Data
 @Builder
 @NoArgsConstructor

@@ -2,11 +2,14 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.ptdo.PtSubject;
-import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
 import com.rufeng.healthman.pojo.data.PtSubjectFormdata;
+import com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail;
+import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
+import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.query.PtSubjectQuery;
 import com.rufeng.healthman.service.PtSubjectService;
+import com.rufeng.healthman.validation.group.Insert;
+import com.rufeng.healthman.validation.group.Update;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +39,7 @@ public class PtSubjectController {
     }
 
     @PostMapping
-    public ApiResponse<PtSubject> addSubject(@RequestBody PtSubjectFormdata data) {
+    public ApiResponse<Boolean> addSubject(@RequestBody @Validated(Insert.class) PtSubjectFormdata data) {
         return ApiResponse.success(ptSubjectService.addSubject(data));
     }
 
@@ -45,5 +48,15 @@ public class PtSubjectController {
                                                          @RequestParam(defaultValue = "8") @Min(1) @Max(100) Integer pageSize,
                                                          @Validated PtSubjectQuery query) {
         return ApiResponse.success(ptSubjectService.pageSubjectInfo(page, pageSize, query));
+    }
+
+    @PutMapping
+    public ApiResponse<Boolean> updateSubject(@RequestBody @Validated(Update.class) PtSubjectFormdata data) {
+        return ApiResponse.success(ptSubjectService.updateSubject(data));
+    }
+
+    @GetMapping("/{subId}")
+    public ApiResponse<SubjectDetail> getSubject(@PathVariable Long subId) {
+        return ApiResponse.success(ptSubjectService.getSubjectDetail(subId));
     }
 }

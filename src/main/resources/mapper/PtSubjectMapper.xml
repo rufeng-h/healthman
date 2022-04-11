@@ -302,17 +302,6 @@
         SELECT sub_id, sub_name, sub_desp, sub_created, sub_modified
         FROM pt_subject
     </select>
-    <resultMap id="SubjectInfoMap" type="com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail">
-        <id column="sub_id" property="subId"/>
-        <result column="sub_created" property="subCreated"/>
-        <result column="sub_desp" property="subDesp"/>
-        <result column="sub_name" property="subName"/>
-        <collection ofType="com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo" property="sheetInfos">
-            <id column="sub_id" property="subId"/>
-            <id column="gender" property="gender"/>
-            <id column="grade" property="grade"/>
-        </collection>
-    </resultMap>
     <select id="pageSubject" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
@@ -344,5 +333,11 @@
                 #{item}
             </foreach>
         </where>
+    </select>
+
+    <select id="listLevels" resultType="java.lang.String">
+        SELECT DISTINCT level
+        FROM pt_score_sheet
+        WHERE subject_id = #{subId}
     </select>
 </mapper>

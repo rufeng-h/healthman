@@ -68,4 +68,6 @@ public interface PtCompetencyMapper {
     int batchInsert(@Param("list") List<PtCompetency> list);
 
     List<PtCompetency> listCompByIds(List<Long> compIds);
+
+    List<PtCompetency> listComp();
 }

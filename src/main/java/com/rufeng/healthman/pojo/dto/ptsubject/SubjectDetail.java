@@ -1,33 +1,34 @@
 package com.rufeng.healthman.pojo.dto.ptsubject;
 
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author rufeng
- * @time 2022-03-28 18:29
- * @package com.rufeng.healthman.pojo.DTO.ptsubject
+ * @time 2022-04-10 18:19
+ * @package com.rufeng.healthman.pojo.dto.ptsubject
  * @description TODO
  */
 @Data
-@NoArgsConstructor
 public class SubjectDetail {
     private String subName;
     private String subDesp;
     private Date subCreated;
     private Long subId;
-    private List<SheetInfo> sheetInfos = new ArrayList<>();
+    private Long compId;
+    private String compName;
+    private List<String> levels;
 
-    public SubjectDetail(PtSubject subject) {
+    public SubjectDetail(PtSubject subject, String compName, List<String> levels) {
+        this.subId = subject.getSubId();
+        this.subName = subject.getSubName();
         this.subCreated = subject.getSubCreated();
         this.subDesp = subject.getSubDesp();
-        this.subName = subject.getSubName();
-        this.subId = subject.getSubId();
+        this.compId = subject.getCompId();
+        this.compName = compName;
+        this.levels = levels;
     }
 }

@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PtScoreSheetQuery {
     @Min(1)
-    @NotNull
     private Integer grade;
     @Min(1)
     @NotNull

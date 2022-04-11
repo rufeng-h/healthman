@@ -3,14 +3,12 @@ package com.rufeng.healthman.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
-import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.enums.GradeEnum;
 import com.rufeng.healthman.mapper.PtSubjectMapper;
 import com.rufeng.healthman.pojo.data.PtSubjectFormdata;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
 import com.rufeng.healthman.pojo.ptdo.PtCompetency;
-import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.query.PtSubjectQuery;
 import org.springframework.stereotype.Service;
@@ -45,27 +43,22 @@ public class PtSubjectService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public PtSubject addSubject(PtSubjectFormdata data) {
+    public boolean addSubject(PtSubjectFormdata data) {
         PtSubject subject = new PtSubject();
         subject.setSubDesp(data.getSubDesp());
         subject.setSubName(data.getSubName());
-        ptSubjectMapper.insertSelective(subject);
+        subject.setCompId(data.getCompId());
+        return ptSubjectMapper.insertSelective(subject) == 1;
+    }
 
-        Long subId = subject.getSubId();
-        Set<GenderEnum> genders = data.getGenders();
-        List<GradeEnum> grades = data.getGrades();
-        List<PtScoreSheet> sheets = data.getScoreSheet();
-        sheets.forEach(s -> s.setSubjectId(subId));
-        for (GenderEnum gender : genders) {
-            for (GradeEnum grade : grades) {
-                for (PtScoreSheet sheet : sheets) {
-                    sheet.setGender(gender);
-                    sheet.setGrade(grade.getValue());
-                }
-                ptScoreSheetService.addScoreSheetSelective(sheets);
-            }
-        }
-        return subject;
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateSubject(PtSubjectFormdata data) {
+        PtSubject subject = new PtSubject();
+        subject.setSubDesp(data.getSubDesp());
+        subject.setSubName(data.getSubName());
+        subject.setCompId(data.getCompId());
+        subject.setSubId(data.getSubId());
+        return ptSubjectMapper.updateByPrimaryKeySelective(subject) == 1;
     }
 
     public List<PtSubject> listSubject(List<Long> subIds) {
@@ -85,7 +78,7 @@ public class PtSubjectService {
     public ApiPage<SubjectInfo> pageSubjectInfo(Integer page, Integer pageSize, PtSubjectQuery query) {
         PageHelper.startPage(page, pageSize);
         Page<PtSubject> subjects = ptSubjectMapper.pageSubject(query);
-        List<Long> compIds = subjects.stream().map(PtSubject::getCompId).collect(Collectors.toList());
+        List<Long> compIds = subjects.stream().map(PtSubject::getCompId).distinct().collect(Collectors.toList());
         List<PtCompetency> ptCompetencies = ptCompetencyService.listCompByIds(compIds);
         Map<Long, String> compMap = ptCompetencies.stream()
                 .collect(Collectors.toMap(PtCompetency::getCompId, PtCompetency::getCompName));
@@ -96,5 +89,12 @@ public class PtSubjectService {
         List<SubjectInfo> infos = subjects.stream().map(s -> new SubjectInfo(
                 s, compMap.get(s.getCompId()), sheetMap.get(s.getSubId()))).collect(Collectors.toList());
         return ApiPage.convert(subjects, infos);
+    }
+
+    public SubjectDetail getSubjectDetail(Long subId) {
+        PtSubject subject = ptSubjectMapper.selectByPrimaryKey(subId);
+        List<String> levels = ptSubjectMapper.listLevels(subject.getSubId());
+        PtCompetency competency = ptCompetencyService.getComp(subject.getCompId());
+        return new SubjectDetail(subject, competency.getCompName(), levels);
     }
 }

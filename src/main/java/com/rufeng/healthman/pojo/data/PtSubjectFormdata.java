@@ -1,15 +1,13 @@
 package com.rufeng.healthman.pojo.data;
 
-import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.enums.GradeEnum;
-import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
+import com.rufeng.healthman.validation.group.Insert;
+import com.rufeng.healthman.validation.group.Update;
 import lombok.Data;
 
-import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Set;
+import javax.validation.constraints.Null;
 
 /**
  * @author rufeng
@@ -19,13 +17,12 @@ import java.util.Set;
  */
 @Data
 public class PtSubjectFormdata {
+    @NotNull(groups = Update.class)
+    @Null(groups = Insert.class)
+    @Min(1)
+    private Long subId;
     @NotEmpty
     private String subName;
     private String subDesp;
-    @NotEmpty
-    @Valid
-    private List<@NotNull PtScoreSheet> scoreSheet;
-    @NotEmpty
-    private List<GradeEnum> grades;
-    private Set<GenderEnum> genders;
+    private Long compId;
 }

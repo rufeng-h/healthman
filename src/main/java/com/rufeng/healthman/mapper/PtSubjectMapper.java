@@ -86,4 +86,6 @@ public interface PtSubjectMapper {
 
     @ReturnMap
     Map<Long, String> mapSubIdSubNameByIds(List<Long> subIds);
+
+    List<String> listLevels(Long subId);
 }

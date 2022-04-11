@@ -1,12 +1,13 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
+import com.github.pagehelper.Page;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.ScoreSheetKey;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;
+import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -80,22 +81,16 @@ public interface PtScoreSheetMapper {
     int batchInsert(@Param("list") List<PtScoreSheet> list);
 
     /**
-     * 查询量表
-     *
-     * @param query query
-     * @return list
-     */
-    List<PtScoreSheet> listScoreSheet(@NonNull @Param("query") PtScoreSheetQuery query);
-
-    /**
      * 批量添加
      *
      * @param sheets records
      * @return count
      */
-    Integer batchInsertSelective(@Param("items") List<PtScoreSheet> sheets);
+    Integer batchInsertSelective(@Param("items") List<PtScoreSheetExcel> sheets);
 
     List<SheetInfo> listSheetInfoBySubIds(List<Long> subIds);
 
     List<PtScoreSheet> listScoreSheetBySheetKey(ScoreSheetKey sheetKey);
+
+    Page<PtScoreSheet> pageScoreSheet(PtScoreSheetQuery query);
 }

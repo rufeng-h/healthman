@@ -367,21 +367,12 @@
             </if>
         </trim>
     </insert>
-    <select id="listScoreSheet" resultType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM pt_score_sheet
-        WHERE grade = #{query.grade}
-          AND subject_id = #{query.subjectId}
-          AND gender = #{query.gender}
-        ORDER BY score DESC
-    </select>
 
     <insert id="batchInsertSelective">
         INSERT INTO pt_score_sheet (subject_id, grade, gender, upper, lower, score, level)
         VALUES
         <foreach collection="items" item="item" separator=",">
-            (#{item.subjectId}, #{item.grade}, #{item.gender}, #{item.upper}, #{item.lower}, #{item.score},
+            (#{item.subId}, #{item.grade}, #{item.gender}, #{item.upper}, #{item.lower}, #{item.score},
              #{item.level})
         </foreach>
     </insert>
@@ -403,5 +394,23 @@
         WHERE subject_id = #{subId}
           AND grade = #{grade}
           AND gender = #{stuGender}
+    </select>
+
+    <select id="pageScoreSheet" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_score_sheet
+        <where>
+            <if test="gender != null">
+                AND gender = #{gender}
+            </if>
+            <if test="grade != null">
+                AND grade = #{grade}
+            </if>
+            <if test="subjectId != null">
+                AND subject_id = #{subjectId}
+            </if>
+        </where>
+        ORDER BY score DESC
     </select>
 </mapper>
