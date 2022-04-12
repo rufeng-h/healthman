@@ -7,7 +7,7 @@ import com.rufeng.healthman.exceptions.ExcelException;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.ScoreSheetKey;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.service.PtMesurementService;
 import com.rufeng.healthman.service.PtScoreService;
@@ -43,7 +43,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
      */
     private final Map<Integer, Long> colSubIdMap;
     private final long msId;
-    private final Map<ScoreSheetKey, List<PtScoreSheet>> cache = new HashMap<>(10);
+    private final Map<SubStudent, List<PtScoreSheet>> cache = new HashMap<>(10);
     List<PtScore> dataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
     private int handledCount = 0;
     private int stuIdColumnIndex = -1;
@@ -93,7 +93,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
                 continue;
             }
             Long subId = colSubIdMap.get(key);
-            ScoreSheetKey sheetKey = new ScoreSheetKey(baseInfo, subId);
+            SubStudent sheetKey = new SubStudent(baseInfo, subId);
             BigDecimal scoData = new BigDecimal(value);
             PtScore ptScore = getFromCache(sheetKey, scoData);
             if (ptScore == null) {
@@ -132,7 +132,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
         return handledCount;
     }
 
-    private PtScore getFromCache(ScoreSheetKey key, BigDecimal value) {
+    private PtScore getFromCache(SubStudent key, BigDecimal value) {
         List<PtScoreSheet> sheets = cache.get(key);
         if (sheets == null) {
             return null;

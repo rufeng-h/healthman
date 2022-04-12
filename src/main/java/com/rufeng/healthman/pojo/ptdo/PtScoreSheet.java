@@ -12,14 +12,7 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * @author rufeng
- * @time 2022-03-27 20:23
- * @package com.rufeng.healthman.pojo.DO
- * @description TODO
- */
-
-/**
-    * 单项评分标准（国网）
+ * 单项评分标准（国网）
  * @author rufeng
  */
 @Data
@@ -30,7 +23,7 @@ public class PtScoreSheet implements Serializable {
     /**
     * 科目
     */
-    private Long subjectId;
+    private Long subId;
 
     /**
     * 性别

@@ -551,7 +551,7 @@
                            FROM pt_subject_subgroup
                            WHERE grps.grp_id = pt_subject_subgroup.grp_id) AS gsubs
                               INNER JOIN pt_score_sheet
-                                         ON sub_id = pt_score_sheet.subject_id
+                                         ON sub_id = pt_score_sheet.sub_id
                      WHERE grps.grade = pt_score_sheet.grade
                        AND pt_score_sheet.gender = grps.gender);
     </select>

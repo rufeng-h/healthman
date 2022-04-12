@@ -5,8 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtScoreSheetMapper;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.ScoreSheetKey;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;
 import com.rufeng.healthman.pojo.file.PtScoreSheetExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
@@ -17,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author rufeng
@@ -39,15 +40,8 @@ public class PtScoreSheetService {
         return ptScoreSheetMapper.batchInsertSelective(sheets);
     }
 
-    public List<SheetInfo> listSheetInfoBySubIds(List<Long> subIds) {
-        if (subIds.size() == 0) {
-            return Collections.emptyList();
-        }
-        return ptScoreSheetMapper.listSheetInfoBySubIds(subIds);
-    }
-
-    public List<PtScoreSheet> listScoreSheet(ScoreSheetKey sheetKey) {
-        return ptScoreSheetMapper.listScoreSheetBySheetKey(sheetKey);
+    public List<PtScoreSheet> listScoreSheet(SubStudent sheetKey) {
+        return ptScoreSheetMapper.listScoreSheetBySubStudent(sheetKey);
     }
 
     public int uploadScoreSheet(Long subId, MultipartFile file) {
@@ -66,7 +60,16 @@ public class PtScoreSheetService {
         return ApiPage.convert(sheets);
     }
 
-    public boolean updateScoreSheet(PtScoreSheet scoreSheet){
+    public boolean updateScoreSheet(PtScoreSheet scoreSheet) {
         return true;
+    }
+
+
+    public Map<Long, Boolean> mapHasScoreBySubIds(List<Long> subIds) {
+        if (subIds.size() == 0) {
+            return Collections.emptyMap();
+        }
+        List<Long> ids = ptScoreSheetMapper.listSubIdBySubIds(subIds);
+        return subIds.stream().collect(Collectors.toMap(id -> id, ids::contains));
     }
 }

@@ -29,7 +29,8 @@
         from pt_measurement
         where ms_id = #{msId}
     </delete>
-    <insert id="insert" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement"
+    <insert id="insert" keyColumn="ms_id" keyProperty="msId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_measurement (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
@@ -366,28 +367,24 @@
 #      测验科目信息
         subs AS (SELECT sub_id, ms_id
                  from pt_subject_subgroup
-                          left join pt_measurement on pt_measurement.grp_id = pt_subject_subgroup.grp_id
-                          LEFT JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id
+                          LEFT JOIN pt_measurement ON pt_measurement.grp_id = pt_subject_subgroup.grp_id
+                          LEFT JOIN pt_subgroup ps ON pt_subject_subgroup.grp_id = ps.grp_id
         <where>
             <foreach collection="list" item="item" separator="," open="pt_measurement.ms_id IN (" close=")">
                 #{item}
             </foreach>
         </where>
         ),
-#      各科目评分标准，无评分标准则认为无需测试
-pss AS (
-    SELECT DISTINCT gender, grade, subject_id
-    FROM pt_score_sheet),
 #      测验中学生需要测验的科目
 stusubs AS (
-    SELECT stu_id, stus.ms_id, sub_id
+    SELECT stu_id, stus.ms_id, subs.sub_id
     FROM subs
              INNER JOIN stus
                         ON stus.ms_id = subs.ms_id
-             INNER JOIN pss
+             INNER JOIN pt_sub_student pss
                         ON pss.grade = stus.grade AND
                            stu_gender = pss.gender AND
-                           subs.sub_id = pss.subject_id)
+                           subs.sub_id = pss.sub_id)
         select t1.ms_id, count(t1.stu_id)
         from (select stu_id, ms_id, count(sub_id) as cnt
               from stusubs
@@ -418,19 +415,15 @@ stusubs AS (
                                left join pt_measurement on pt_measurement.grp_id = pt_subject_subgroup.grp_id
                                LEFT JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id
                       WHERE pt_measurement.ms_id = #{msId}),
-#      各科目评分标准，无评分标准则认为无需测试
-             pss AS (
-                 SELECT DISTINCT gender, grade, subject_id
-                 FROM pt_score_sheet),
 #      测验中学生需要测验的科目
              stusubs AS (
-                 SELECT stu_id, sub_id
+                 SELECT stu_id, subs.sub_id
                  FROM subs
                           JOIN stus
-                          INNER JOIN pss
+                          INNER JOIN pt_sub_student pss
                                      ON pss.grade = stus.grade AND
                                         stu_gender = pss.gender AND
-                                        subs.sub_id = pss.subject_id)
+                                        subs.sub_id = pss.sub_id)
         select count(t1.stu_id)
         from (select stu_id, count(sub_id) as cnt
               from stusubs
@@ -482,7 +475,7 @@ stusubs AS (
                            FROM pt_score_sheet pss
                            WHERE pss.grade = stusubs.grade
                              AND pss.gender = stusubs.gender
-                             AND pss.subject_id = stusubs.sub_id)
+                             AND pss.sub_id = stusubs.sub_id)
               GROUP BY ms_id, stu_id) t
         GROUP BY ms_id;
     </select>
@@ -513,7 +506,7 @@ stusubs AS (
                            FROM pt_score_sheet pss
                            WHERE pss.grade = stusubs.grade
                              AND pss.gender = stusubs.gender
-                             AND pss.subject_id = stusubs.sub_id)
+                             AND pss.sub_id = stusubs.sub_id)
               GROUP BY stu_id) t;
     </select>
 
@@ -547,7 +540,7 @@ stusubs AS (
                        FROM ms_stu_info
                        WHERE EXISTS(SELECT sub_id
                                     FROM pt_score_sheet
-                                    WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
+                                    WHERE pt_score_sheet.sub_id = ms_stu_info.sub_id
                                       AND ms_stu_info.gender = pt_score_sheet.gender
                                       AND pt_score_sheet.grade = ms_stu_info.grade)
                        GROUP BY ms_id, sub_id)
@@ -586,7 +579,7 @@ stusubs AS (
                            FROM ms_stu_info
                            WHERE EXISTS(SELECT sub_id
                                         FROM pt_score_sheet
-                                        WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
+                                        WHERE pt_score_sheet.sub_id = ms_stu_info.sub_id
                                           AND ms_stu_info.gender = pt_score_sheet.gender
                                           AND pt_score_sheet.grade = ms_stu_info.grade)
                            GROUP BY ms_id)
@@ -628,7 +621,7 @@ stusubs AS (
                        FROM ms_stu_info
                        WHERE EXISTS(SELECT sub_id
                                     FROM pt_score_sheet
-                                    WHERE pt_score_sheet.subject_id = ms_stu_info.sub_id
+                                    WHERE pt_score_sheet.sub_id = ms_stu_info.sub_id
                                       AND ms_stu_info.gender = pt_score_sheet.gender
                                       AND pt_score_sheet.grade = ms_stu_info.grade))
         SELECT pt_measurement.ms_id, ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin

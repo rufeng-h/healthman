@@ -24,7 +24,7 @@ public class PtScoreSheetFormdata {
     private GradeEnum gradeEnum;
     @NotNull
     @Min(1)
-    private Long subjectId;
+    private Long subId;
     private BigDecimal upper;
     private BigDecimal lower;
 }

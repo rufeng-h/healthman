@@ -338,6 +338,6 @@
     <select id="listLevels" resultType="java.lang.String">
         SELECT DISTINCT level
         FROM pt_score_sheet
-        WHERE subject_id = #{subId}
+        WHERE sub_id = #{subId}
     </select>
 </mapper>

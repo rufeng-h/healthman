@@ -1,5 +1,6 @@
 package com.rufeng.healthman.mapper;
 
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.ptdo.PtSubStudent;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -72,4 +73,10 @@ public interface PtSubStudentMapper {
     int updateBatchSelective(List<PtSubStudent> list);
 
     int batchInsert(@Param("list") List<PtSubStudent> list);
+
+    List<SubStudent> listSubStudentBySubIds(List<Long> subIds);
+
+    int batchInsertSelective(List<SubStudent> subStudents);
+
+    int deleteBySubId(Long subId);
 }

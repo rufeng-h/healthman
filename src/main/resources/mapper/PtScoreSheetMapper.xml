@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         <!--@Table pt_score_sheet-->
-        <id column="subject_id" property="subjectId"/>
+        <id column="sub_id" property="subId"/>
         <id column="gender" property="gender"/>
         <id column="grade" property="grade"/>
         <id column="upper" property="upper"/>
@@ -17,7 +17,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
+        sub_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
         `level`, id
     </sql>
     <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
@@ -25,7 +25,7 @@
         select
         <include refid="Base_Column_List"/>
         from pt_score_sheet
-        where subject_id = #{subjectId}
+        where sub_id = #{subjectId}
           and gender = #{gender}
           and grade = #{grade}
           and `upper` = #{upper}
@@ -35,7 +35,7 @@
         <!--@mbg.generated-->
         delete
         from pt_score_sheet
-        where subject_id = #{subjectId}
+        where sub_id = #{subjectId}
           and gender = #{gender}
           and grade = #{grade}
           and `upper` = #{upper}
@@ -43,17 +43,17 @@
     </delete>
     <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
-        insert into pt_score_sheet (subject_id, gender, grade, `upper`, `lower`, score, created_time,
+        insert into pt_score_sheet (sub_id, gender, grade, `upper`, `lower`, score, created_time,
                                     last_modify_time, `level`, id)
-        values (#{subjectId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime},
+        values (#{subId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime},
                 #{lastModifyTime}, #{level}, #{id})
     </insert>
     <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         insert into pt_score_sheet
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="subjectId != null">
-                subject_id,
+            <if test="subId != null">
+                sub_id,
             </if>
             <if test="gender != null">
                 gender,
@@ -84,8 +84,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="subjectId != null">
-                #{subjectId},
+            <if test="subId != null">
+                #{subId},
             </if>
             <if test="gender != null">
                 #{gender},
@@ -136,7 +136,7 @@
                 id = #{id},
             </if>
         </set>
-        where subject_id = #{subjectId}
+        where sub_id = #{subId}
           and gender = #{gender}
           and grade = #{grade}
           and `upper` = #{upper}
@@ -150,7 +150,7 @@
             last_modify_time = #{lastModifyTime},
             `level`          = #{level},
             id               = #{id}
-        where subject_id = #{subjectId}
+        where sub_id = #{subId}
           and gender = #{gender}
           and grade = #{grade}
           and `upper` = #{upper}
@@ -162,33 +162,33 @@
         <trim prefix="set" suffixOverrides=",">
             <trim prefix="score = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when subject_id = #{item.subjectId} then #{item.score}
+                    when sub_id = #{item.subId} then #{item.score}
                 </foreach>
             </trim>
             <trim prefix="created_time = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when subject_id = #{item.subjectId} then #{item.createdTime}
+                    when sub_id = #{item.subId} then #{item.createdTime}
                 </foreach>
             </trim>
             <trim prefix="last_modify_time = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when subject_id = #{item.subjectId} then #{item.lastModifyTime}
+                    when sub_id = #{item.subId} then #{item.lastModifyTime}
                 </foreach>
             </trim>
             <trim prefix="`level` = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when subject_id = #{item.subjectId} then #{item.level}
+                    when sub_id = #{item.subId} then #{item.level}
                 </foreach>
             </trim>
             <trim prefix="id = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when subject_id = #{item.subjectId} then #{item.id}
+                    when sub_id = #{item.subId} then #{item.id}
                 </foreach>
             </trim>
         </trim>
-        where subject_id in
+        where sub_id in
         <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.subjectId}
+            #{item.subId}
         </foreach>
     </update>
     <update id="updateBatchSelective" parameterType="java.util.List">
@@ -198,63 +198,63 @@
             <trim prefix="score = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.score != null">
-                        when subject_id = #{item.subjectId} then #{item.score}
+                        when sub_id = #{item.subId} then #{item.score}
                     </if>
                 </foreach>
             </trim>
             <trim prefix="created_time = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.createdTime != null">
-                        when subject_id = #{item.subjectId} then #{item.createdTime}
+                        when sub_id = #{item.subId} then #{item.createdTime}
                     </if>
                 </foreach>
             </trim>
             <trim prefix="last_modify_time = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.lastModifyTime != null">
-                        when subject_id = #{item.subjectId} then #{item.lastModifyTime}
+                        when sub_id = #{item.subId} then #{item.lastModifyTime}
                     </if>
                 </foreach>
             </trim>
             <trim prefix="`level` = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.level != null">
-                        when subject_id = #{item.subjectId} then #{item.level}
+                        when sub_id = #{item.subId} then #{item.level}
                     </if>
                 </foreach>
             </trim>
             <trim prefix="id = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.id != null">
-                        when subject_id = #{item.subjectId} then #{item.id}
+                        when sub_id = #{item.subId} then #{item.id}
                     </if>
                 </foreach>
             </trim>
         </trim>
-        where subject_id in
+        where sub_id in
         <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.subjectId}
+            #{item.subId}
         </foreach>
     </update>
     <insert id="batchInsert" parameterType="map">
         <!--@mbg.generated-->
         insert into pt_score_sheet
-        (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
+        (sub_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
          `level`, id)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.subjectId}, #{item.gender}, #{item.grade}, #{item.upper}, #{item.lower},
+            (#{item.subId}, #{item.gender}, #{item.grade}, #{item.upper}, #{item.lower},
              #{item.score}, #{item.createdTime}, #{item.lastModifyTime}, #{item.level}, #{item.id})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtScoreSheet">
         <!--@mbg.generated-->
         insert into pt_score_sheet
-        (subject_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
+        (sub_id, gender, grade, `upper`, `lower`, score, created_time, last_modify_time,
          `level`, id)
-        values (#{subjectId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime},
+        values (#{subId}, #{gender}, #{grade}, #{upper}, #{lower}, #{score}, #{createdTime},
                 #{lastModifyTime}, #{level}, #{id})
-        on duplicate key update subject_id       = #{subjectId},
+        on duplicate key update sub_id           = #{subId},
                                 gender           = #{gender},
                                 grade            = #{grade},
                                 `upper`          = #{upper},
@@ -269,8 +269,8 @@
         <!--@mbg.generated-->
         insert into pt_score_sheet
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="subjectId != null">
-                subject_id,
+            <if test="subId != null">
+                sub_id,
             </if>
             <if test="gender != null">
                 gender,
@@ -302,8 +302,8 @@
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="subjectId != null">
-                #{subjectId},
+            <if test="subId != null">
+                #{subId},
             </if>
             <if test="gender != null">
                 #{gender},
@@ -335,8 +335,8 @@
         </trim>
         on duplicate key update
         <trim suffixOverrides=",">
-            <if test="subjectId != null">
-                subject_id = #{subjectId},
+            <if test="subId != null">
+                sub_id = #{subId},
             </if>
             <if test="gender != null">
                 gender = #{gender},
@@ -369,31 +369,20 @@
     </insert>
 
     <insert id="batchInsertSelective">
-        INSERT INTO pt_score_sheet (subject_id, grade, gender, upper, lower, score, level)
+        INSERT INTO pt_score_sheet (sub_id, grade, gender, upper, lower, score, level)
         VALUES
         <foreach collection="items" item="item" separator=",">
             (#{item.subId}, #{item.grade}, #{item.gender}, #{item.upper}, #{item.lower}, #{item.score},
              #{item.level})
         </foreach>
     </insert>
-
-    <select id="listSheetInfoBySubIds" resultType="com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo">
-        SELECT DISTINCT subject_id AS sub_id, grade, gender
-        FROM pt_score_sheet
-        <where>
-            <foreach collection="list" item="item" open="subject_id IN (" close=")" separator=",">
-                #{item}
-            </foreach>
-        </where>
-    </select>
-
-    <select id="listScoreSheetBySheetKey" resultMap="BaseResultMap">
+    <select id="listScoreSheetBySubStudent" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_score_sheet
-        WHERE subject_id = #{subId}
+        WHERE sub_id = #{subId}
           AND grade = #{grade}
-          AND gender = #{stuGender}
+          AND gender = #{gender}
     </select>
 
     <select id="pageScoreSheet" resultMap="BaseResultMap">
@@ -407,10 +396,20 @@
             <if test="grade != null">
                 AND grade = #{grade}
             </if>
-            <if test="subjectId != null">
-                AND subject_id = #{subjectId}
+            <if test="subId != null">
+                AND sub_id = #{subId}
             </if>
         </where>
         ORDER BY score DESC
+    </select>
+
+    <select id="listSubIdBySubIds" resultType="long">
+        SELECT DISTINCT sub_id
+        FROM pt_score_sheet
+        <where>
+            <foreach collection="list" item="item" separator="," open="sub_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
     </select>
 </mapper>

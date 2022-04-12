@@ -18,6 +18,6 @@ public class PtScoreSheetQuery {
     private Integer grade;
     @Min(1)
     @NotNull
-    private Long subjectId;
+    private Long subId;
     private GenderEnum gender;
 }

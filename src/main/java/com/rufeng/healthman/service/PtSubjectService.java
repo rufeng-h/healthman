@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtSubjectMapper;
 import com.rufeng.healthman.pojo.data.PtSubjectFormdata;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
 import com.rufeng.healthman.pojo.ptdo.PtCompetency;
@@ -26,15 +26,18 @@ import java.util.stream.Collectors;
 @Service
 public class PtSubjectService {
     private final PtSubjectMapper ptSubjectMapper;
-    private final PtScoreSheetService ptScoreSheetService;
     private final PtCompetencyService ptCompetencyService;
+    private final PtSubStudentService ptSubStudentService;
+    private final PtScoreSheetService ptScoreSheetService;
 
     public PtSubjectService(PtSubjectMapper ptSubjectMapper,
-                            PtScoreSheetService ptScoreSheetService,
-                            PtCompetencyService ptCompetencyService) {
+                            PtCompetencyService ptCompetencyService,
+                            PtSubStudentService ptSubStudentService,
+                            PtScoreSheetService ptScoreSheetService) {
         this.ptSubjectMapper = ptSubjectMapper;
-        this.ptScoreSheetService = ptScoreSheetService;
         this.ptCompetencyService = ptCompetencyService;
+        this.ptSubStudentService = ptSubStudentService;
+        this.ptScoreSheetService = ptScoreSheetService;
     }
 
 
@@ -48,17 +51,26 @@ public class PtSubjectService {
         subject.setSubDesp(data.getSubDesp());
         subject.setSubName(data.getSubName());
         subject.setCompId(data.getCompId());
-        return ptSubjectMapper.insertSelective(subject) == 1;
+        ptSubjectMapper.insertSelective(subject);
+        Long subId = subject.getSubId();
+        List<SubStudent> subStudents = data.getSubStudents();
+        subStudents.forEach(item -> item.setSubId(subId));
+        return ptSubStudentService.addSubStuSelective(subStudents) == subStudents.size();
     }
 
     @Transactional(rollbackFor = Exception.class)
     public boolean updateSubject(PtSubjectFormdata data) {
+        Long subId = data.getSubId();
         PtSubject subject = new PtSubject();
         subject.setSubDesp(data.getSubDesp());
         subject.setSubName(data.getSubName());
         subject.setCompId(data.getCompId());
-        subject.setSubId(data.getSubId());
-        return ptSubjectMapper.updateByPrimaryKeySelective(subject) == 1;
+        subject.setSubId(subId);
+        List<SubStudent> subStudents = data.getSubStudents();
+        subStudents.forEach(item -> item.setSubId(subId));
+        ptSubjectMapper.updateByPrimaryKeySelective(subject);
+        ptSubStudentService.deleteBySubId(subId);
+        return ptSubStudentService.addSubStuSelective(subStudents) == subStudents.size();
     }
 
     public List<PtSubject> listSubject(List<Long> subIds) {
@@ -83,11 +95,13 @@ public class PtSubjectService {
         Map<Long, String> compMap = ptCompetencies.stream()
                 .collect(Collectors.toMap(PtCompetency::getCompId, PtCompetency::getCompName));
         List<Long> subIds = subjects.stream().map(PtSubject::getSubId).collect(Collectors.toList());
-        List<SheetInfo> sheetInfos = ptScoreSheetService.listSheetInfoBySubIds(subIds);
-        Map<Long, List<SheetInfo>> sheetMap = new HashMap<>(10);
-        sheetInfos.forEach(s -> sheetMap.computeIfAbsent(s.getSubId(), (sh) -> new ArrayList<>()).add(s));
+        List<SubStudent> subStudents = ptSubStudentService.listSubStudentSubIds(subIds);
+        /* 科目对应需要测试的学生 */
+        Map<Long, List<SubStudent>> subStuMap = new HashMap<>(10);
+        subStudents.forEach(s -> subStuMap.computeIfAbsent(s.getSubId(), (sh) -> new ArrayList<>()).add(s));
+        Map<Long, Boolean> hasScoreMap = ptScoreSheetService.mapHasScoreBySubIds(subIds);
         List<SubjectInfo> infos = subjects.stream().map(s -> new SubjectInfo(
-                s, compMap.get(s.getCompId()), sheetMap.get(s.getSubId()))).collect(Collectors.toList());
+                s, compMap.get(s.getCompId()), subStuMap.get(s.getSubId()), hasScoreMap.get(s.getSubId()))).collect(Collectors.toList());
         return ApiPage.convert(subjects, infos);
     }
 
@@ -96,5 +110,10 @@ public class PtSubjectService {
         List<String> levels = ptSubjectMapper.listLevels(subject.getSubId());
         PtCompetency competency = ptCompetencyService.getComp(subject.getCompId());
         return new SubjectDetail(subject, competency == null ? null : competency.getCompName(), levels);
+    }
+
+    //TODO
+    public boolean deleteSubject(Long subId) {
+        return ptSubjectMapper.deleteByPrimaryKey(subId) == 1;
     }
 }

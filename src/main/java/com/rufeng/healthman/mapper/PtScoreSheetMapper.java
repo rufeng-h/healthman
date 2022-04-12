@@ -1,8 +1,8 @@
 package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.ScoreSheetKey;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.config.support.ReturnMap;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -88,9 +89,10 @@ public interface PtScoreSheetMapper {
      */
     Integer batchInsertSelective(@Param("items") List<PtScoreSheetExcel> sheets);
 
-    List<SheetInfo> listSheetInfoBySubIds(List<Long> subIds);
 
-    List<PtScoreSheet> listScoreSheetBySheetKey(ScoreSheetKey sheetKey);
+    List<PtScoreSheet> listScoreSheetBySubStudent(SubStudent sheetKey);
 
     Page<PtScoreSheet> pageScoreSheet(PtScoreSheetQuery query);
+
+    List<Long> listSubIdBySubIds(List<Long> subIds);
 }

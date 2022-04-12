@@ -1,9 +1,10 @@
 package com.rufeng.healthman.pojo.dto.ptsubject;
 
-import com.rufeng.healthman.pojo.dto.ptscoresheet.SheetInfo;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,15 +22,17 @@ public class SubjectInfo {
     private Long subId;
     private Long compId;
     private String compName;
-    private List<SheetInfo> sheetInfos;
+    private List<SubStudent> subStudents;
+    private Boolean hasScore;
 
-    public SubjectInfo(PtSubject subject, String compName, List<SheetInfo> sheetInfos) {
+    public SubjectInfo(PtSubject subject, String compName, List<SubStudent> subStudents, Boolean hasScore) {
         this.subId = subject.getSubId();
         this.subName = subject.getSubName();
         this.subCreated = subject.getSubCreated();
         this.subDesp = subject.getSubDesp();
         this.compId = subject.getCompId();
         this.compName = compName;
-        this.sheetInfos = sheetInfos;
+        this.subStudents = subStudents;
+        this.hasScore = hasScore;
     }
 }

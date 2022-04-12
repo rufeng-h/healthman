@@ -55,6 +55,11 @@ public class PtSubjectController {
         return ApiResponse.success(ptSubjectService.updateSubject(data));
     }
 
+    @DeleteMapping("/{subId}")
+    public ApiResponse<Boolean> deleteSubject(@PathVariable Long subId) {
+        return ApiResponse.success(ptSubjectService.deleteSubject(subId));
+    }
+
     @GetMapping("/{subId}")
     public ApiResponse<SubjectDetail> getSubject(@PathVariable Long subId) {
         return ApiResponse.success(ptSubjectService.getSubjectDetail(subId));
