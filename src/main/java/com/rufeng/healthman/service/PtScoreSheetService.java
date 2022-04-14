@@ -5,16 +5,19 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtScoreSheetMapper;
+import com.rufeng.healthman.pojo.data.PtScoreSheetFormdata;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;
 import com.rufeng.healthman.pojo.file.PtScoreSheetExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,7 +54,7 @@ public class PtScoreSheetService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0;
+        return listener.getHandleCount();
     }
 
     public ApiPage<PtScoreSheet> pageScoreSheet(Integer page, Integer pageSize, PtScoreSheetQuery query) {
@@ -60,8 +63,19 @@ public class PtScoreSheetService {
         return ApiPage.convert(sheets);
     }
 
-    public boolean updateScoreSheet(PtScoreSheet scoreSheet) {
-        return true;
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateScoreSheet(PtScoreSheetFormdata data) {
+        PtScoreSheet scoreSheet = PtScoreSheet.builder()
+                .id(data.getId())
+                .grade(data.getGrade().getValue())
+                .gender(data.getGender())
+                .score(data.getScore())
+                .lower(data.getLower())
+                .upper(data.getUpper())
+                .level(data.getLevel())
+                .subId(data.getSubId())
+                .lastModifyTime(new Date()).build();
+        return ptScoreSheetMapper.updateByIdSelective(scoreSheet) == 1;
     }
 
 
@@ -71,5 +85,13 @@ public class PtScoreSheetService {
         }
         List<Long> ids = ptScoreSheetMapper.listSubIdBySubIds(subIds);
         return subIds.stream().collect(Collectors.toMap(id -> id, ids::contains));
+    }
+
+    public int deleteBySubId(Long subId) {
+        return ptScoreSheetMapper.deleteBySubId(subId);
+    }
+
+    public boolean deleteById(Long id) {
+        return ptScoreSheetMapper.deleteById(id) == 1;
     }
 }

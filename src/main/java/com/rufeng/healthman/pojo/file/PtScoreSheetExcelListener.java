@@ -7,6 +7,9 @@ import com.rufeng.healthman.service.PtScoreSheetService;
 
 import java.util.List;
 
+import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MAX_UPPER;
+import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER;
+
 /**
  * @author rufeng
  * @time 2022-04-10 15:58
@@ -28,6 +31,12 @@ public class PtScoreSheetExcelListener extends AnalysisEventListener<PtScoreShee
     @Override
     public void invoke(PtScoreSheetExcel data, AnalysisContext context) {
         data.setSubId(subId);
+        if (data.getLower() == null) {
+            data.setLower(MIN_LOWER);
+        }
+        if (data.getUpper() == null) {
+            data.setUpper(MAX_UPPER);
+        }
         scoreSheetList.add(data);
         if (scoreSheetList.size() >= BATCH_COUNT) {
             saveData();

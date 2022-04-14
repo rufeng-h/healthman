@@ -101,7 +101,8 @@ public class PtSubjectService {
         subStudents.forEach(s -> subStuMap.computeIfAbsent(s.getSubId(), (sh) -> new ArrayList<>()).add(s));
         Map<Long, Boolean> hasScoreMap = ptScoreSheetService.mapHasScoreBySubIds(subIds);
         List<SubjectInfo> infos = subjects.stream().map(s -> new SubjectInfo(
-                s, compMap.get(s.getCompId()), subStuMap.get(s.getSubId()), hasScoreMap.get(s.getSubId()))).collect(Collectors.toList());
+                s, compMap.get(s.getCompId()), subStuMap.get(s.getSubId()),
+                hasScoreMap.get(s.getSubId()))).collect(Collectors.toList());
         return ApiPage.convert(subjects, infos);
     }
 
@@ -112,8 +113,12 @@ public class PtSubjectService {
         return new SubjectDetail(subject, competency == null ? null : competency.getCompName(), levels);
     }
 
-    //TODO
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteSubject(Long subId) {
+        /* 删除科目对应测试学生 */
+        ptSubStudentService.deleteBySubId(subId);
+        /* 删除评分标准 */
+        ptScoreSheetService.deleteBySubId(subId);
         return ptSubjectMapper.deleteByPrimaryKey(subId) == 1;
     }
 }

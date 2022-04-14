@@ -6,6 +6,7 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.rufeng.healthman.enums.GenderEnum;
+import com.rufeng.healthman.exceptions.ExcelException;
 
 /**
  * @author rufeng
@@ -16,7 +17,13 @@ import com.rufeng.healthman.enums.GenderEnum;
 public class StringToGenderConverter implements Converter<GenderEnum> {
     @Override
     public GenderEnum convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
-        return GenderEnum.valueOf(cellData.getStringValue());
+        String value = cellData.getStringValue();
+        if (value.equals(GenderEnum.F.getGender())) {
+            return GenderEnum.F;
+        } else if (value.equals(GenderEnum.M.getGender())) {
+            return GenderEnum.M;
+        }
+        throw new ExcelException("未知性别：" + value);
     }
 
     @Override

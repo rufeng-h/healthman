@@ -95,4 +95,10 @@ public interface PtScoreSheetMapper {
     Page<PtScoreSheet> pageScoreSheet(PtScoreSheetQuery query);
 
     List<Long> listSubIdBySubIds(List<Long> subIds);
+
+    int deleteBySubId(Long subId);
+
+    int updateByIdSelective(PtScoreSheet scoreSheet);
+
+    int deleteById(Long id);
 }

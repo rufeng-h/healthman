@@ -539,10 +539,10 @@ stusubs AS (
             ms_sub AS (SELECT ms_id, sub_id
                        FROM ms_stu_info
                        WHERE EXISTS(SELECT sub_id
-                                    FROM pt_score_sheet
-                                    WHERE pt_score_sheet.sub_id = ms_stu_info.sub_id
-                                      AND ms_stu_info.gender = pt_score_sheet.gender
-                                      AND pt_score_sheet.grade = ms_stu_info.grade)
+                                    FROM pt_sub_student
+                                    WHERE pt_sub_student.sub_id = ms_stu_info.sub_id
+                                      AND ms_stu_info.gender = pt_sub_student.gender
+                                      AND pt_sub_student.grade = ms_stu_info.grade)
                        GROUP BY ms_id, sub_id)
            ,
            # 当前完成情况
@@ -578,10 +578,10 @@ stusubs AS (
             ms_sub_cnt AS (SELECT ms_id, COUNT(sub_id) as count
                            FROM ms_stu_info
                            WHERE EXISTS(SELECT sub_id
-                                        FROM pt_score_sheet
-                                        WHERE pt_score_sheet.sub_id = ms_stu_info.sub_id
-                                          AND ms_stu_info.gender = pt_score_sheet.gender
-                                          AND pt_score_sheet.grade = ms_stu_info.grade)
+                                        FROM pt_sub_student
+                                        WHERE pt_sub_student.sub_id = ms_stu_info.sub_id
+                                          AND ms_stu_info.gender = pt_sub_student.gender
+                                          AND pt_sub_student.grade = ms_stu_info.grade)
                            GROUP BY ms_id)
            ,
            # 当前完成情况
@@ -620,10 +620,10 @@ stusubs AS (
             ms_ids AS (SELECT DISTINCT ms_id
                        FROM ms_stu_info
                        WHERE EXISTS(SELECT sub_id
-                                    FROM pt_score_sheet
-                                    WHERE pt_score_sheet.sub_id = ms_stu_info.sub_id
-                                      AND ms_stu_info.gender = pt_score_sheet.gender
-                                      AND pt_score_sheet.grade = ms_stu_info.grade))
+                                    FROM pt_sub_student
+                                    WHERE pt_sub_student.sub_id = ms_stu_info.sub_id
+                                      AND ms_stu_info.gender = pt_sub_student.gender
+                                      AND pt_sub_student.grade = ms_stu_info.grade))
         SELECT pt_measurement.ms_id, ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
         FROM ms_ids
                  INNER JOIN pt_measurement ON ms_ids.ms_id = pt_measurement.ms_id

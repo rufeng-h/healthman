@@ -149,6 +149,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
                         .scoLevel(sheet.getLevel()).build();
             }
         }
-        throw new ExcelException("未找到评分标准！请检查数据");
+//        throw new ExcelException("未找到评分标准！请检查数据");
+        return new PtScore();
     }
 }
