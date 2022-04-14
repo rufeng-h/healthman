@@ -20,16 +20,16 @@
         <include refid="Base_Column_List"/>
         from pt_sub_student
         where sub_id = #{subId}
-          and grade = #{grade}
-          and gender = #{gender}
+        and grade = #{grade}
+        and gender = #{gender}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="map">
         <!--@mbg.generated-->
         delete
         from pt_sub_student
         where sub_id = #{subId}
-          and grade = #{grade}
-          and gender = #{gender}
+        and grade = #{grade}
+        and gender = #{gender}
     </delete>
     <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
         <!--@mbg.generated-->
@@ -86,17 +86,17 @@
             </if>
         </set>
         where sub_id = #{subId}
-          and grade = #{grade}
-          and gender = #{gender}
+        and grade = #{grade}
+        and gender = #{gender}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
         <!--@mbg.generated-->
         update pt_sub_student
-        set id           = #{id},
-            subs_created = #{subsCreated}
+        set id = #{id},
+        subs_created = #{subsCreated}
         where sub_id = #{subId}
-          and grade = #{grade}
-          and gender = #{gender}
+        and grade = #{grade}
+        and gender = #{gender}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
         <!--@mbg.generated-->
@@ -145,7 +145,7 @@
     <insert id="batchInsert" parameterType="map">
         <!--@mbg.generated-->
         insert into pt_sub_student
-            (sub_id, grade, gender, id, subs_created)
+        (sub_id, grade, gender, id, subs_created)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.subId}, #{item.grade}, #{item.gender}, #{item.id}, #{item.subsCreated})
@@ -154,13 +154,13 @@
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
         <!--@mbg.generated-->
         insert into pt_sub_student
-            (sub_id, grade, gender, id, subs_created)
+        (sub_id, grade, gender, id, subs_created)
         values (#{subId}, #{grade}, #{gender}, #{id}, #{subsCreated})
-        on duplicate key update sub_id       = #{subId},
-                                grade        = #{grade},
-                                gender       = #{gender},
-                                id           = #{id},
-                                subs_created = #{subsCreated}
+        on duplicate key update sub_id = #{subId},
+        grade = #{grade},
+        gender = #{gender},
+        id = #{id},
+        subs_created = #{subsCreated}
     </insert>
     <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
         <!--@mbg.generated-->
@@ -243,4 +243,10 @@
         FROM pt_sub_student
         WHERE sub_id = #{subId}
     </delete>
+
+    <select id="listSubIdsByGrade" resultType="java.lang.Long">
+        SELECT DISTINCT sub_id
+        FROM pt_sub_student
+        WHERE grade = #{grade}
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.rufeng.healthman.mapper;
 
+import com.rufeng.healthman.enums.GradeEnum;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.ptdo.PtSubStudent;
 import java.util.List;
@@ -79,4 +80,6 @@ public interface PtSubStudentMapper {
     int batchInsertSelective(List<SubStudent> subStudents);
 
     int deleteBySubId(Long subId);
+
+    List<Long> listSubIdsByGrade(Integer grade);
 }

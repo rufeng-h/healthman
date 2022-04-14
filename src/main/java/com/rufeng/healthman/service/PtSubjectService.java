@@ -88,18 +88,23 @@ public class PtSubjectService {
     }
 
     public ApiPage<SubjectInfo> pageSubjectInfo(Integer page, Integer pageSize, PtSubjectQuery query) {
+        /* 符合年级的科目id */
+        List<Long> gradeSubIds = ptSubStudentService.listSubIdsByGrade(query.getGrade());
+        /* 科目主体 */
         PageHelper.startPage(page, pageSize);
-        Page<PtSubject> subjects = ptSubjectMapper.pageSubject(query);
+        Page<PtSubject> subjects = ptSubjectMapper.pageSubjectByQueryAndSubIds(query, gradeSubIds);
+        /* 运动能力 */
         List<Long> compIds = subjects.stream().map(PtSubject::getCompId).distinct().collect(Collectors.toList());
         List<PtCompetency> ptCompetencies = ptCompetencyService.listCompByIds(compIds);
         Map<Long, String> compMap = ptCompetencies.stream()
                 .collect(Collectors.toMap(PtCompetency::getCompId, PtCompetency::getCompName));
+        /* 科目对应需要测试的标准 */
         List<Long> subIds = subjects.stream().map(PtSubject::getSubId).collect(Collectors.toList());
-        List<SubStudent> subStudents = ptSubStudentService.listSubStudentSubIds(subIds);
-        /* 科目对应需要测试的学生 */
+        List<SubStudent> subStudents = ptSubStudentService.listSubStudentBySubIds(subIds);
         Map<Long, List<SubStudent>> subStuMap = new HashMap<>(10);
         subStudents.forEach(s -> subStuMap.computeIfAbsent(s.getSubId(), (sh) -> new ArrayList<>()).add(s));
         Map<Long, Boolean> hasScoreMap = ptScoreSheetService.mapHasScoreBySubIds(subIds);
+        /* 组装 */
         List<SubjectInfo> infos = subjects.stream().map(s -> new SubjectInfo(
                 s, compMap.get(s.getCompId()), subStuMap.get(s.getSubId()),
                 hasScoreMap.get(s.getSubId()))).collect(Collectors.toList());

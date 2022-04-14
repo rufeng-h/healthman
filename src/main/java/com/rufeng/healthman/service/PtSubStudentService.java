@@ -1,5 +1,6 @@
 package com.rufeng.healthman.service;
 
+import com.rufeng.healthman.enums.GradeEnum;
 import com.rufeng.healthman.mapper.PtSubStudentMapper;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class PtSubStudentService {
         this.ptSubStudentMapper = ptSubStudentMapper;
     }
 
-    public List<SubStudent> listSubStudentSubIds(List<Long> subIds) {
+    public List<SubStudent> listSubStudentBySubIds(List<Long> subIds) {
         if (subIds.size() == 0) {
             return Collections.emptyList();
         }
@@ -37,5 +38,12 @@ public class PtSubStudentService {
 
     public int deleteBySubId(Long subId) {
         return ptSubStudentMapper.deleteBySubId(subId);
+    }
+
+    public List<Long> listSubIdsByGrade(GradeEnum grade) {
+        if (grade == null) {
+            return Collections.emptyList();
+        }
+        return ptSubStudentMapper.listSubIdsByGrade(grade.getValue());
     }
 }

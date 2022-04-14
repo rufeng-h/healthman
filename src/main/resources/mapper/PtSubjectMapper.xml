@@ -98,11 +98,11 @@
     <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubject">
         <!--@mbg.generated-->
         update pt_subject
-        set sub_name     = #{subName},
-            sub_desp     = #{subDesp},
-            sub_created  = #{subCreated},
-            sub_modified = #{subModified},
-            comp_id      = #{compId}
+        set sub_name = #{subName},
+        sub_desp = #{subDesp},
+        sub_created = #{subCreated},
+        sub_modified = #{subModified},
+        comp_id = #{compId}
         where sub_id = #{subId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
@@ -188,7 +188,7 @@
     <insert id="batchInsert" keyColumn="sub_id" keyProperty="subId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subject
-            (sub_name, sub_desp, sub_created, sub_modified, comp_id)
+        (sub_name, sub_desp, sub_created, sub_modified, comp_id)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.subName}, #{item.subDesp}, #{item.subCreated}, #{item.subModified}, #{item.compId})
@@ -224,11 +224,11 @@
             <if test="subId != null">
                 sub_id = #{subId},
             </if>
-            sub_name     = #{subName},
-            sub_desp     = #{subDesp},
-            sub_created  = #{subCreated},
+            sub_name = #{subName},
+            sub_desp = #{subDesp},
+            sub_created = #{subCreated},
             sub_modified = #{subModified},
-            comp_id      = #{compId},
+            comp_id = #{compId},
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="sub_id" keyProperty="subId"
@@ -302,17 +302,7 @@
         SELECT sub_id, sub_name, sub_desp, sub_created, sub_modified
         FROM pt_subject
     </select>
-    <select id="pageSubject" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM pt_subject
-        <where>
-            <if test="query.subName != null">
-                <bind name="subName" value="'%' + query.subName + '%'"/>
-                sub_name like #{subName}
-            </if>
-        </where>
-    </select>
+
 
     <select id="listSubjectByIds" resultMap="BaseResultMap">
         SELECT
@@ -339,5 +329,20 @@
         SELECT DISTINCT level
         FROM pt_score_sheet
         WHERE sub_id = #{subId}
+    </select>
+
+    <select id="pageSubjectByQueryAndSubIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_subject
+        <where>
+            <if test="query.subName != null">
+                <bind name="subName" value="'%' + query.subName + '%'"/>
+                AND sub_name like #{subName}
+            </if>
+            <foreach collection="list" item="item" separator="," open="AND sub_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
     </select>
 </mapper>
