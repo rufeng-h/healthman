@@ -2,6 +2,8 @@ package com.rufeng.healthman.common;
 
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.exceptions.PtException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -26,9 +28,18 @@ public class GlobalExceptionHandler {
         return ApiResponse.unknownError();
     }
 
-    @ExceptionHandler(DuplicateKeyException.class)
-    public ApiResponse<Void> duplicateError() {
-        return ApiResponse.clientError("存在重复记录！请检查文件！");
+    /**
+     * TODO 如何处理异常消息
+     */
+    @ExceptionHandler(DataAccessException.class)
+    public ApiResponse<Void> duplicateError(DataAccessException e) {
+        String messge = "未知异常";
+        if (e instanceof DuplicateKeyException) {
+            messge = "系统存在重复记录！";
+        } else if (e instanceof DataIntegrityViolationException) {
+            messge = "该资源正在使用中！";
+        }
+        return ApiResponse.clientError(messge);
     }
 
     @ExceptionHandler(PtException.class)

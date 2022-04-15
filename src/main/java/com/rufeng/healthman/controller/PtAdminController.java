@@ -2,9 +2,9 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.query.PtAdminQuery;
-import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.service.PtAdminService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.hibernate.validator.constraints.Range;
@@ -35,7 +35,6 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 public class PtAdminController {
     private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("管理员模板文件.xlsx", StandardCharsets.UTF_8);
     private final PtAdminService ptAdminService;
-
 
     public PtAdminController(PtAdminService ptAdminService) {
         this.ptAdminService = ptAdminService;

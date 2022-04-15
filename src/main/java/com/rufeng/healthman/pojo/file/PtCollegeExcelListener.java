@@ -4,7 +4,6 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
 import com.rufeng.healthman.service.PtCollegeService;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -12,9 +11,8 @@ import java.util.List;
  * @author rufeng
  * @time 2022-03-21 10:09
  * @package com.rufeng.healthman.pojo.file
- * @description TODO
+ * @description 学院excel
  */
-@Slf4j
 public class PtCollegeExcelListener extends AnalysisEventListener<PtCollegeExcel> {
     /**
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
@@ -33,7 +31,6 @@ public class PtCollegeExcelListener extends AnalysisEventListener<PtCollegeExcel
 
     @Override
     public void invoke(PtCollegeExcel data, AnalysisContext context) {
-        log.debug("{}", data);
         cachedDataList.add(data);
         if (cachedDataList.size() >= BATCH_COUNT) {
             saveData();

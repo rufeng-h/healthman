@@ -1,8 +1,7 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -24,6 +23,7 @@ import java.util.Set;
  * @description 覆盖springboot默认的错误处理器
  */
 @Controller
+@Slf4j
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class CustomErrorController extends AbstractErrorController {
     private static final Set<ErrorAttributeOptions.Include> ALL_ERROR_ATTRIVUTES = new HashSet<>(4);
@@ -34,8 +34,6 @@ public class CustomErrorController extends AbstractErrorController {
         ALL_ERROR_ATTRIVUTES.add(ErrorAttributeOptions.Include.MESSAGE);
         ALL_ERROR_ATTRIVUTES.add(ErrorAttributeOptions.Include.EXCEPTION);
     }
-
-    private final Log logger = LogFactory.getLog(CustomErrorController.class);
 
     public CustomErrorController(ErrorAttributes errorAttributes) {
         super(errorAttributes);
@@ -53,8 +51,7 @@ public class CustomErrorController extends AbstractErrorController {
         }
 
         Map<String, Object> attributes = getErrorAttributes(request, ErrorAttributeOptions.of(ALL_ERROR_ATTRIVUTES));
-        logger.warn(attributes);
-
+        log.warn(attributes.toString());
         return ApiResponse.unknownError();
     }
 }

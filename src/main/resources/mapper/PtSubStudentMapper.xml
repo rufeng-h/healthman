@@ -249,4 +249,8 @@
         FROM pt_sub_student
         WHERE grade = #{grade}
     </select>
+    <select id="listSubStudentBySubId" resultType="com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent">
+        SELECT sub_id, grade, gender
+        FROM pt_sub_student WHERE sub_id = #{subId}
+    </select>
 </mapper>

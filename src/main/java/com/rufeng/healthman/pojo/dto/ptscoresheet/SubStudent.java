@@ -38,4 +38,10 @@ public class SubStudent {
         this.grade = info.getGrade();
         this.subId = subId;
     }
+
+    public SubStudent(Integer grade, GenderEnum gender, Long subId) {
+        this.grade = grade;
+        this.gender = gender;
+        this.subId = subId;
+    }
 }

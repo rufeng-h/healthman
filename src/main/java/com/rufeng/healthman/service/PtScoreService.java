@@ -115,7 +115,7 @@ public class PtScoreService {
                 .sorted(StuScoreExcel::compareTo).collect(Collectors.toList());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcel.write(outputStream, StuScoreExcel.class)
-                .registerWriteHandler(new ScoreExcelWriteHandler())
+                .registerWriteHandler(new ScoreExcelWriteHandler(excels.size()))
                 .sheet().doWrite(excels);
         return new ByteArrayResource(outputStream.toByteArray());
     }

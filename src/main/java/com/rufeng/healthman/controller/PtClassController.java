@@ -34,7 +34,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @Validated
 @RequestMapping("/api/class")
 @SecurityRequirement(name = JWT_SCHEME_NAME)
-@Tag(name = "PtClass Operation", description = "PtClass")
+@Tag(name = "Class Api", description = "学院操作")
 public class PtClassController {
     private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("班级模板文件.xlsx", StandardCharsets.UTF_8);
     private final PtClassService ptClassService;

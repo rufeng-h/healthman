@@ -25,15 +25,17 @@ import java.util.stream.Collectors;
 /**
  * @author rufeng
  * @time 2022-03-17 17:19
- * @package com.rufeng.healthman.service.impl
+ * @package com.rufeng.healthman.service
  * @description 评分记录
  */
 @Service
 public class PtScoreSheetService {
     private final PtScoreSheetMapper ptScoreSheetMapper;
+    private final PtSubStudentService ptSubStudentService;
 
-    public PtScoreSheetService(PtScoreSheetMapper ptScoreSheetMapper) {
+    public PtScoreSheetService(PtScoreSheetMapper ptScoreSheetMapper, PtSubStudentService ptSubStudentService) {
         this.ptScoreSheetMapper = ptScoreSheetMapper;
+        this.ptSubStudentService = ptSubStudentService;
     }
 
     public int addScoreSheetSelective(List<PtScoreSheetExcel> sheets) {
@@ -48,7 +50,7 @@ public class PtScoreSheetService {
     }
 
     public int uploadScoreSheet(Long subId, MultipartFile file) {
-        PtScoreSheetExcelListener listener = new PtScoreSheetExcelListener(subId, this);
+        PtScoreSheetExcelListener listener = new PtScoreSheetExcelListener(subId, this, ptSubStudentService);
         try {
             EasyExcel.read(file.getInputStream(), PtScoreSheetExcel.class, listener).sheet().doRead();
         } catch (IOException e) {

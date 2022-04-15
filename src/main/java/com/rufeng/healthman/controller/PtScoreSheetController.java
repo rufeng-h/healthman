@@ -42,8 +42,8 @@ public class PtScoreSheetController {
         return ApiResponse.success(ptScoreSheetService.pageScoreSheet(page, pageSize, query));
     }
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<Integer> uploadScoreSheet(@RequestPart MultipartFile file, @RequestParam Long subId) {
+    @PostMapping(value = "/upload/{subId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Integer> uploadScoreSheet(@RequestPart MultipartFile file, @PathVariable Long subId) {
         return ApiResponse.success(ptScoreSheetService.uploadScoreSheet(subId, file));
     }
 

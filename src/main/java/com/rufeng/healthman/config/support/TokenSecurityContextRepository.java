@@ -1,6 +1,6 @@
 package com.rufeng.healthman.config.support;
 
-import com.rufeng.healthman.common.JwtTokenUtil;
+import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.service.RedisService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,7 +34,7 @@ public class TokenSecurityContextRepository implements SecurityContextRepository
             // TODO 可以记录
             return context;
         }
-        String userId = JwtTokenUtil.getId(token);
+        String userId = JwtTokenUtils.getId(token);
         Authentication authentication = redisService.getObject(userId, Authentication.class);
         context.setAuthentication(authentication);
         return context;
@@ -54,6 +54,6 @@ public class TokenSecurityContextRepository implements SecurityContextRepository
     @Override
     public boolean containsContext(HttpServletRequest request) {
         String token = request.getHeader(JWT_HEADER_NAME);
-        return redisService.hasKey(JwtTokenUtil.getId(token));
+        return redisService.hasKey(JwtTokenUtils.getId(token));
     }
 }

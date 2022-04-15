@@ -3,9 +3,15 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
+import com.rufeng.healthman.common.util.TranslationUtils;
+import com.rufeng.healthman.exceptions.ExcelException;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.service.PtScoreSheetService;
+import com.rufeng.healthman.service.PtSubStudentService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MAX_UPPER;
 import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER;
@@ -20,12 +26,16 @@ public class PtScoreSheetExcelListener extends AnalysisEventListener<PtScoreShee
     private static final int BATCH_COUNT = 100;
     private final PtScoreSheetService ptScoreSheetService;
     private final long subId;
+    private final Set<SubStudent> subStudents;
     private int handleCount = 0;
     private List<PtScoreSheetExcel> scoreSheetList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    public PtScoreSheetExcelListener(long subId, PtScoreSheetService ptScoreSheetService) {
+    public PtScoreSheetExcelListener(long subId,
+                                     PtScoreSheetService ptScoreSheetService,
+                                     PtSubStudentService ptSubStudentService) {
         this.subId = subId;
         this.ptScoreSheetService = ptScoreSheetService;
+        this.subStudents = new HashSet<>(ptSubStudentService.listSubStudentBySubId(subId));
     }
 
     @Override
@@ -36,6 +46,15 @@ public class PtScoreSheetExcelListener extends AnalysisEventListener<PtScoreShee
         }
         if (data.getUpper() == null) {
             data.setUpper(MAX_UPPER);
+        }
+        if (data.getUpper().compareTo(data.getLower()) <= 0
+                || data.getUpper().compareTo(MAX_UPPER) > 0
+                || data.getLower().compareTo(MIN_LOWER) < 0) {
+            throw new ExcelException("数据异常！请检查文件");
+        }
+        if (!subStudents.contains(new SubStudent(data.getGrade(), data.getGender(), subId))) {
+            throw new ExcelException(TranslationUtils.translateGrade(data.getGrade()) +
+                    data.getGender().getGender() + "不参与此科目！");
         }
         scoreSheetList.add(data);
         if (scoreSheetList.size() >= BATCH_COUNT) {

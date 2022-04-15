@@ -3,7 +3,7 @@ package com.rufeng.healthman.service;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.rufeng.healthman.common.JwtTokenUtil;
+import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtStudentMapper;
@@ -94,7 +94,7 @@ public class PtStudentService {
         ptStudentMapper.updateByPrimaryKeySelective(stu);
 
         UserInfo info = new StudentUserInfo(student);
-        String token = JwtTokenUtil.generateToken(student.getStuId(), student.getStuName());
+        String token = JwtTokenUtils.generateToken(student.getStuId(), student.getStuName());
         return new LoginResult(token, info);
     }
 

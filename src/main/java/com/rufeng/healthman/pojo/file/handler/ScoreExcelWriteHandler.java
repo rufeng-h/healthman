@@ -15,8 +15,13 @@ import org.apache.poi.ss.util.CellRangeAddress;
  * @description 合并单元格
  */
 public class ScoreExcelWriteHandler implements RowWriteHandler {
+    private final int length;
     private int prevIdx = -1;
     private String prevStuId = null;
+
+    public ScoreExcelWriteHandler(int length) {
+        this.length = length;
+    }
 
     @Override
     public void afterRowDispose(WriteSheetHolder writeSheetHolder, WriteTableHolder writeTableHolder,
@@ -24,15 +29,15 @@ public class ScoreExcelWriteHandler implements RowWriteHandler {
         if (isHead) {
             return;
         }
+        Sheet sheet = writeSheetHolder.getSheet();
+        int curIdx = row.getRowNum();
         if (prevIdx == -1) {
             prevStuId = row.getCell(0).getStringCellValue();
-            prevIdx = row.getRowNum();
+            prevIdx = curIdx;
         } else {
-            int curIdx = row.getRowNum();
             String stuId = row.getCell(0).getStringCellValue();
-            /* 只有一个科目，不合并单元格 */
             if (!stuId.equals(prevStuId)) {
-                Sheet sheet = writeSheetHolder.getSheet();
+                /* 只有一个科目，不合并单元格 */
                 if (curIdx != prevIdx + 1) {
                     for (int i = 0; i < StuScoreExcel.MERGE_COLS; i++) {
                         sheet.addMergedRegion(new CellRangeAddress(prevIdx, curIdx - 1, i, i));
@@ -40,6 +45,15 @@ public class ScoreExcelWriteHandler implements RowWriteHandler {
                 }
                 prevIdx = curIdx;
                 prevStuId = stuId;
+            }
+        }
+        /* 处理最后一行 */
+        if (curIdx == length) {
+            if (curIdx == prevIdx) {
+                return;
+            }
+            for (int i = 0; i < StuScoreExcel.MERGE_COLS; i++) {
+                sheet.addMergedRegion(new CellRangeAddress(prevIdx, curIdx, i, i));
             }
         }
     }

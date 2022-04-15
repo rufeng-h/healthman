@@ -82,4 +82,6 @@ public interface PtSubStudentMapper {
     int deleteBySubId(Long subId);
 
     List<Long> listSubIdsByGrade(Integer grade);
+
+    List<SubStudent> listSubStudentBySubId(long subId);
 }

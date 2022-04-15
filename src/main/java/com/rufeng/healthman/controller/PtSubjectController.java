@@ -10,12 +10,16 @@ import com.rufeng.healthman.pojo.query.PtSubjectQuery;
 import com.rufeng.healthman.service.PtSubjectService;
 import com.rufeng.healthman.validation.group.Insert;
 import com.rufeng.healthman.validation.group.Update;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
+
+import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 
 /**
  * @author rufeng
@@ -26,6 +30,8 @@ import java.util.List;
 @RequestMapping("/api/subject")
 @Validated
 @RestController
+@SecurityRequirement(name = JWT_SCHEME_NAME)
+@Tag(name = "Subject Api", description = "科目接口")
 public class PtSubjectController {
     private final PtSubjectService ptSubjectService;
 

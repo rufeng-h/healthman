@@ -26,13 +26,4 @@ public class PtCollegeExcel {
     private String clgTel;
     @ExcelProperty("主页")
     private String clgHome;
-
-    public PtCollegeExcel(PtCollege college) {
-        clgCode = college.getClgCode();
-        clgHome = college.getClgHome();
-        clgName = college.getClgName();
-        clgOffice = college.getClgOffice();
-        clgPrincipal = college.getClgPrincipal();
-        clgTel = college.getClgTel();
-    }
 }

@@ -37,7 +37,8 @@ public class PtSubgroupService {
 
     public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper,
                              PtCommonService ptCommonService,
-                             PtSubjectSubGroupService ptSubjectSubGroupService, PtAdminService ptAdminService) {
+                             PtSubjectSubGroupService ptSubjectSubGroupService,
+                             PtAdminService ptAdminService) {
         this.ptSubgroupMapper = ptSubgroupMapper;
         this.ptCommonService = ptCommonService;
         this.ptSubjectSubGroupService = ptSubjectSubGroupService;
@@ -83,7 +84,8 @@ public class PtSubgroupService {
         Map<String, String> aMap = admins.stream().collect(
                 Collectors.toMap(PtAdmin::getAdminId, PtAdmin::getAdminName));
         List<SubGroupInfo> groupInfos = subgroups.stream()
-                .map(s -> new SubGroupInfo(s, aMap.get(s.getGrpCreatedAdmin()), map.get(s.getGrpId()))).collect(Collectors.toList());
+                .map(s -> new SubGroupInfo(s, aMap.get(s.getGrpCreatedAdmin()),
+                        map.get(s.getGrpId()))).collect(Collectors.toList());
         return ApiPage.convert(subgroups, groupInfos);
     }
 

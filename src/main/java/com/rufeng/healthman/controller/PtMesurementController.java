@@ -60,7 +60,7 @@ public class PtMesurementController {
         return ApiResponse.success(ptMesurementService.deleteById(msId));
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @PutMapping
     public ApiResponse<Boolean> updateMeasurement(
             @RequestBody @Validated(Update.class) PtMeasurementFormdata formdata) {
         return ApiResponse.success(ptMesurementService.updateMeasurement(formdata));

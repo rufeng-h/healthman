@@ -152,7 +152,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
     private PtScore getFromCache(SubStudent key, BigDecimal value) {
         List<PtScoreSheet> sheets = scoreSheetcache.get(key);
         /* 无需评分 */
-        if (sheets == null || sheets.size() == 0) {
+        if (sheets.size() == 0) {
             return new PtScore();
         }
         for (PtScoreSheet sheet : sheets) {

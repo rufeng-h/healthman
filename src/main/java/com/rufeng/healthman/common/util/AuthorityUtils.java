@@ -1,4 +1,4 @@
-package com.rufeng.healthman.common;
+package com.rufeng.healthman.common.util;
 
 import com.rufeng.healthman.pojo.ptdo.PtRole;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +13,7 @@ import java.util.Set;
  * @package com.rufeng.healthman.common
  * @description TODO
  */
-public class AuthorityUtil {
+public class AuthorityUtils {
     public static final byte ALL_AUTHORITY = 0xf;
     private static final byte INSERT_MASK = 0x8;
     private static final byte DELETE_MASK = 0x4;

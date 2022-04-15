@@ -1,4 +1,4 @@
-package com.rufeng.healthman.common;
+package com.rufeng.healthman.common.util;
 
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import io.jsonwebtoken.Claims;
@@ -15,7 +15,7 @@ import javax.crypto.SecretKey;
  * @package com.rufeng.healthman.common
  * @description jwt工具类
  */
-public class JwtTokenUtil {
+public class JwtTokenUtils {
     private static final SecretKey KEY = Keys.hmacShaKeyFor(
             Decoders.BASE64.decode("SyI/8w+X528KqE2S8JKU8Sv1Bb+coixCZrU/fYYKDqc="));
 

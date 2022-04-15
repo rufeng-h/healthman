@@ -3,8 +3,8 @@ package com.rufeng.healthman.service;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.rufeng.healthman.common.AuthorityUtil;
-import com.rufeng.healthman.common.JwtTokenUtil;
+import com.rufeng.healthman.common.util.AuthorityUtils;
+import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.rufeng.healthman.common.AuthorityUtil.ALL_AUTHORITY;
+import static com.rufeng.healthman.common.util.AuthorityUtils.ALL_AUTHORITY;
 
 /**
  * @author rufeng
@@ -138,7 +138,7 @@ public class PtAdminService {
         }
         /* 查询角色权限 */
         List<PtRole> roles = ptRoleService.listRole(admin.getAdminId());
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtil.fromPtRoles(roles);
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.fromPtRoles(roles);
 
         /* 认证信息 */
         Authentication authentication = new UserIdRoleTypeAuthentication(admin.getAdminId(),
@@ -152,7 +152,7 @@ public class PtAdminService {
                 .build());
         /* 返回结果 */
         UserInfo info = new AdminInfo(admin, clgName, hadleRoles(roles));
-        String token = JwtTokenUtil.generateToken(admin.getAdminId(), admin.getAdminName());
+        String token = JwtTokenUtils.generateToken(admin.getAdminId(), admin.getAdminName());
         return new LoginResult(token, info);
     }
 

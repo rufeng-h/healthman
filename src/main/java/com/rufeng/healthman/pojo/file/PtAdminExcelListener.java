@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author rufeng
  * @time 2022-03-27 23:23
  * @package com.rufeng.healthman.pojo.file
- * @description TODO
+ * @description 管理员excel
  */
 public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
     private static final int BATCH_COUNT = 100;
@@ -32,8 +32,10 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
 
     public PtAdminExcelListener(PtAdminService ptAdminService, PtClassService ptClassService, PtCollegeService ptCollegeService) {
         this.ptAdminService = ptAdminService;
-        clgMap = ptCollegeService.listCollege().stream().collect(Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
-        clsMap = ptClassService.listClass(new PtClassQuery()).stream().collect(Collectors.toMap(PtClass::getClsName, PtClass::getClsCode));
+        clgMap = ptCollegeService.listCollege().stream().collect(
+                Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
+        clsMap = ptClassService.listClass(new PtClassQuery()).stream().collect(
+                Collectors.toMap(PtClass::getClsName, PtClass::getClsCode));
     }
 
     @Override

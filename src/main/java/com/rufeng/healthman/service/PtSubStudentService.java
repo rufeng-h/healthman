@@ -51,4 +51,8 @@ public class PtSubStudentService {
     public PtSubStudent getBySubStudent(SubStudent subStudent) {
         return ptSubStudentMapper.selectByPrimaryKey(subStudent.getSubId(), subStudent.getGrade(), subStudent.getGender().name());
     }
+
+    public List<SubStudent> listSubStudentBySubId(long subId) {
+        return ptSubStudentMapper.listSubStudentBySubId(subId);
+    }
 }

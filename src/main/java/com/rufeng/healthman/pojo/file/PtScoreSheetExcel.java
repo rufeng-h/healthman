@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @author rufeng
  * @time 2022-04-10 16:00
  * @package com.rufeng.healthman.pojo.file
- * @description TODO
+ * @description 评分表excel
  */
 @Data
 @NoArgsConstructor
