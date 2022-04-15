@@ -13,7 +13,6 @@ import com.rufeng.healthman.pojo.file.StuScoreExcel;
 import com.rufeng.healthman.pojo.file.handler.ScoreExcelWriteHandler;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.query.PtScoreQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,6 @@ public class PtScoreService {
     private final PtSubStudentService ptSubStudentService;
     private final PtScoreSheetService ptScoreSheetService;
     private final PtSubjectService ptSubjectService;
-    private PtMesurementService ptMesurementService;
 
     public PtScoreService(PtScoreMapper ptScoreMapper,
                           PtStudentService ptStudentService,
@@ -54,14 +52,6 @@ public class PtScoreService {
         this.ptSubjectService = ptSubjectService;
     }
 
-    /**
-     * TODO 循环依赖
-     */
-    @Autowired
-    public void setPtMesurementService(PtMesurementService ptMesurementService) {
-        this.ptMesurementService = ptMesurementService;
-    }
-
     public Integer addScoreSelective(List<PtScore> dataList) {
         if (dataList.size() == 0) {
             return 0;
@@ -71,7 +61,7 @@ public class PtScoreService {
 
 
     public Integer uploadScore(MultipartFile file, Long msId) {
-        PtScoreExcelListener listener = new PtScoreExcelListener(ptMesurementService, this,
+        PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectService, this,
                 ptStudentService, ptSubStudentService, ptScoreSheetService, msId);
         try {
             EasyExcel.read(file.getInputStream(), listener).sheet().doRead();

@@ -1,11 +1,11 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.enums.GradeEnum;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.ptdo.PtSubStudent;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**

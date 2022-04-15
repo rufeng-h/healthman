@@ -1,23 +1,28 @@
 package com.rufeng.healthman.service;
 
+import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtMeasurementMapper;
-import com.rufeng.healthman.pojo.ptdo.*;
+import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementDetail;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementSubStatus;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementDetail;
 import com.rufeng.healthman.pojo.dto.ptscore.ScoreInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectStatus;
-import com.rufeng.healthman.pojo.query.PtMeasurementQuery;
-import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
+import com.rufeng.healthman.pojo.ptdo.*;
+import com.rufeng.healthman.pojo.query.PtMeasurementQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,7 +30,7 @@ import java.util.stream.Collectors;
  * @author rufeng
  * @time 2022-03-30 0:00
  * @package com.rufeng.healthman.service
- * @description TODO
+ * @description 体测
  */
 @Service
 public class PtMesurementService {
@@ -35,31 +40,42 @@ public class PtMesurementService {
     private final PtSubjectSubGroupService ptSubjectSubGroupService;
     private final PtAdminService ptAdminService;
     private final PtSubgroupService ptSubgroupService;
-    private final PtSubjectService ptSubjectService;
+
+    private PtSubjectService ptSubjectService;
     private PtScoreService ptScoreService;
+    private PtStudentService ptStudentService;
 
     public PtMesurementService(PtCommonService ptCommonService,
                                PtMeasurementMapper ptMeasurementMapper,
                                PtClassMeasurementService ptClassMeasurementService,
                                PtSubjectSubGroupService ptSubjectSubGroupService,
                                PtAdminService ptAdminService,
-                               PtSubgroupService ptSubgroupService,
-                               PtSubjectService ptSubjectService) {
+                               PtSubgroupService ptSubgroupService) {
         this.ptCommonService = ptCommonService;
         this.ptMeasurementMapper = ptMeasurementMapper;
         this.ptClassMeasurementService = ptClassMeasurementService;
         this.ptSubjectSubGroupService = ptSubjectSubGroupService;
         this.ptAdminService = ptAdminService;
         this.ptSubgroupService = ptSubgroupService;
-        this.ptSubjectService = ptSubjectService;
     }
 
     /**
-     * TODO 循环依赖
+     * 循环依赖
+     * TODO
      */
+    @Autowired
+    public void setPtStudentService(PtStudentService ptStudentService) {
+        this.ptStudentService = ptStudentService;
+    }
+
     @Autowired
     public void setPtScoreService(PtScoreService ptScoreService) {
         this.ptScoreService = ptScoreService;
+    }
+
+    @Autowired
+    public void setPtSubjectService(PtSubjectService ptSubjectService) {
+        this.ptSubjectService = ptSubjectService;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -175,11 +191,6 @@ public class PtMesurementService {
         return new MeasurementDetail(measurement, admin, subgroup, subjects, classes, totalStuCnt, compStuCnt);
     }
 
-    public List<PtSubject> listSubject(long msId) {
-        PtMeasurement measurement = ptMeasurementMapper.selectByPrimaryKey(msId);
-        List<Long> subIds = ptSubjectSubGroupService.listSubIdByGrpId(measurement.getGrpId());
-        return ptSubjectService.listSubject(subIds);
-    }
 
     public List<PtMeasurement> listMeasurement(List<Long> msIds) {
         if (msIds.size() == 0) {
@@ -224,5 +235,20 @@ public class PtMesurementService {
 
     public Map<Long, Boolean> listStuMsStatus(String stuId) {
         return ptMeasurementMapper.listStuMsStatus(stuId);
+    }
+
+    public PtMeasurement getMeasurement(long msId) {
+        return ptMeasurementMapper.selectByPrimaryKey(msId);
+    }
+
+    public Resource excelTemplate(Long msId) {
+        List<StudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
+        List<List<String>> data = students.stream().map(s -> List.of(s.getStuId())).collect(Collectors.toList());
+        List<PtSubject> ptSubjects = ptSubjectService.listSubject(msId);
+        List<List<String>> header = ptSubjects.stream().map(s -> List.of(s.getSubName())).collect(Collectors.toList());
+        header.add(0, List.of("学号"));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        EasyExcel.write(outputStream).head(header).sheet().doWrite(data);
+        return new ByteArrayResource(outputStream.toByteArray());
     }
 }

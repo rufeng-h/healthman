@@ -9,8 +9,10 @@ import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
 import com.rufeng.healthman.pojo.ptdo.PtCompetency;
+import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.query.PtSubjectQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
  * @author rufeng
  * @time 2022-03-17 18:44
  * @package com.rufeng.healthman.service.impl
- * @description TODO
+ * @description 科目
  */
 @Service
 public class PtSubjectService {
@@ -29,17 +31,29 @@ public class PtSubjectService {
     private final PtCompetencyService ptCompetencyService;
     private final PtSubStudentService ptSubStudentService;
     private final PtScoreSheetService ptScoreSheetService;
+    private final PtSubjectSubGroupService ptSubjectSubGroupService;
+    private PtMesurementService ptMesurementService;
 
     public PtSubjectService(PtSubjectMapper ptSubjectMapper,
                             PtCompetencyService ptCompetencyService,
                             PtSubStudentService ptSubStudentService,
-                            PtScoreSheetService ptScoreSheetService) {
+                            PtScoreSheetService ptScoreSheetService,
+                            PtSubjectSubGroupService ptSubjectSubGroupService) {
         this.ptSubjectMapper = ptSubjectMapper;
         this.ptCompetencyService = ptCompetencyService;
         this.ptSubStudentService = ptSubStudentService;
         this.ptScoreSheetService = ptScoreSheetService;
+        this.ptSubjectSubGroupService = ptSubjectSubGroupService;
     }
 
+    /**
+     * 循环依赖
+     * TODO
+     */
+    @Autowired
+    public void setPtMesurementService(PtMesurementService ptMesurementService) {
+        this.ptMesurementService = ptMesurementService;
+    }
 
     public List<PtSubject> listSubject() {
         return ptSubjectMapper.listSubject();
@@ -125,5 +139,11 @@ public class PtSubjectService {
         /* 删除评分标准 */
         ptScoreSheetService.deleteBySubId(subId);
         return ptSubjectMapper.deleteByPrimaryKey(subId) == 1;
+    }
+
+    public List<PtSubject> listSubject(long msId) {
+        PtMeasurement measurement = ptMesurementService.getMeasurement(msId);
+        List<Long> subIds = ptSubjectSubGroupService.listSubIdByGrpId(measurement.getGrpId());
+        return this.listSubject(subIds);
     }
 }

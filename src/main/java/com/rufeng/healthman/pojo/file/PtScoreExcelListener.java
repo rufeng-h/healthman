@@ -8,8 +8,10 @@ import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
+import com.rufeng.healthman.pojo.ptdo.PtSubStudent;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.service.*;
+import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -25,9 +27,9 @@ import java.util.stream.Collectors;
  * TODO 校验数据是否包含在体测中
  */
 public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, String>> {
-    private final PtSubStudentService ptSubStudentService;
     private static final String STUDENT_ID_HEADER = "学号";
     private static final int BATCH_COUNT = 100;
+    private final PtSubStudentService ptSubStudentService;
     private final PtScoreService ptScoreService;
     private final PtScoreSheetService ptScoreSheetService;
     /**
@@ -41,15 +43,17 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
     private final long msId;
     private final Map<SubStudent, List<PtScoreSheet>> scoreSheetcache = new HashMap<>(10);
     private final Map<String, StudentBaseInfo> stuInfoMap;
-    List<PtScore> dataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+    private List<PtScore> dataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
     private int handledCount = 0;
     private int stuIdColumnIndex = -1;
 
-    public PtScoreExcelListener(PtMesurementService ptMesurementService,
-                                PtScoreService ptScoreService,
-                                PtStudentService ptStudentService,
-                                PtSubStudentService ptSubStudentService,
-                                PtScoreSheetService ptScoreSheetService, long msId) {
+    public PtScoreExcelListener(
+            PtSubjectService ptSubjectService,
+            PtScoreService ptScoreService,
+            PtStudentService ptStudentService,
+            PtSubStudentService ptSubStudentService,
+            PtScoreSheetService ptScoreSheetService,
+            long msId) {
         this.ptSubStudentService = ptSubStudentService;
         this.ptScoreSheetService = ptScoreSheetService;
         this.msId = msId;
@@ -57,8 +61,8 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
         /* 所有参加本次测验的学生 */
         List<StudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
         stuInfoMap = students.stream().collect(Collectors.toMap(StudentBaseInfo::getStuId, s -> s));
-        /* 本次测验所有科目 TODO:方法移动到subjectService */
-        List<PtSubject> subjects = ptMesurementService.listSubject(msId);
+        /* 本次测验所有科目  */
+        List<PtSubject> subjects = ptSubjectService.listSubject(msId);
         subjectMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubName, PtSubject::getSubId));
         colSubIdMap = new HashMap<>(subjectMap.size());
     }
@@ -73,7 +77,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
                 stuIdColumnIndex = key;
             } else {
                 if (!subjectMap.containsKey(value)) {
-                    throw new ExcelException("未知的科目：" + value);
+                    throw new ExcelException("科目" + value + "不在本次测验中！");
                 }
                 colSubIdMap.put(key, subjectMap.get(value));
             }
@@ -103,18 +107,19 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
             Long subId = colSubIdMap.get(key);
             SubStudent subStudent = new SubStudent(baseInfo, subId);
             /* 是否需要测试该科目 */
-            if (!scoreSheetcache.containsKey(subStudent)){
-
+            if (!scoreSheetcache.containsKey(subStudent)) {
+                PtSubStudent s = ptSubStudentService.getBySubStudent(subStudent);
+                if (s == null) {
+                    throw new ExcelException("学号" + curStuId + "无需测试" + key + "科目");
+                }
+                /* 评分标准 */
+                List<PtScoreSheet> sheets = ptScoreSheetService.listScoreSheet(subStudent);
+                scoreSheetcache.put(subStudent, sheets);
             }
             BigDecimal scoData = new BigDecimal(value);
             PtScore ptScore = getFromCache(subStudent, scoData);
             if (ptScore == null) {
-                List<PtScoreSheet> sheets = ptScoreSheetService.listScoreSheet(subStudent);
-                scoreSheetcache.put(subStudent, sheets);
-                ptScore = getFromCache(subStudent, scoData);
-            }
-            if (ptScore == null) {
-                throw new ExcelException("数据异常，请检查！" + scoData);
+                throw new ExcelException(String.format("数据异常！无评分标准 %s: %s", key, value));
             }
             ptScore.setStuId(curStuId);
             ptScore.setMsId(this.msId);
@@ -143,24 +148,23 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
         return handledCount;
     }
 
+    @Nullable
     private PtScore getFromCache(SubStudent key, BigDecimal value) {
         List<PtScoreSheet> sheets = scoreSheetcache.get(key);
-        if (sheets == null) {
-            return null;
+        /* 无需评分 */
+        if (sheets == null || sheets.size() == 0) {
+            return new PtScore();
         }
         for (PtScoreSheet sheet : sheets) {
             BigDecimal upper = sheet.getUpper();
             BigDecimal lower = sheet.getLower();
-            if (upper == null || lower == null) {
-                return new PtScore();
-            }
             if (lower.compareTo(value) <= 0 && upper.compareTo(value) > 0) {
                 return PtScore.builder()
                         .score(sheet.getScore())
                         .scoLevel(sheet.getLevel()).build();
             }
         }
-//        throw new ExcelException("未找到评分标准！请检查数据");
-        return new PtScore();
+        /* 数据异常 */
+        return null;
     }
 }

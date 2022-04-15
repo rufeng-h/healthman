@@ -177,9 +177,4 @@ public class PtStudentService {
         }
         return new StuMeasurementInfo(student, ptClass.getClsName(), college.getClgCode(), college.getClgName(), msStatus);
     }
-
-
-    public StudentBaseInfo getStuBaseInfo(String stuId) {
-        return ptStudentMapper.getStuBaseInfo(stuId);
-    }
 }

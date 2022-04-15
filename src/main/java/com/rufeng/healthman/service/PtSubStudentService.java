@@ -3,6 +3,7 @@ package com.rufeng.healthman.service;
 import com.rufeng.healthman.enums.GradeEnum;
 import com.rufeng.healthman.mapper.PtSubStudentMapper;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
+import com.rufeng.healthman.pojo.ptdo.PtSubStudent;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -45,5 +46,9 @@ public class PtSubStudentService {
             return Collections.emptyList();
         }
         return ptSubStudentMapper.listSubIdsByGrade(grade.getValue());
+    }
+
+    public PtSubStudent getBySubStudent(SubStudent subStudent) {
+        return ptSubStudentMapper.selectByPrimaryKey(subStudent.getSubId(), subStudent.getGrade(), subStudent.getGender().name());
     }
 }
