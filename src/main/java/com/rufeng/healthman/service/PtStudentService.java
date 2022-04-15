@@ -7,10 +7,6 @@ import com.rufeng.healthman.common.JwtTokenUtil;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtStudentMapper;
-import com.rufeng.healthman.pojo.ptdo.PtClass;
-import com.rufeng.healthman.pojo.ptdo.PtCollege;
-import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
-import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
@@ -19,10 +15,14 @@ import com.rufeng.healthman.pojo.dto.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentUserInfo;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.dto.support.UserInfo;
-import com.rufeng.healthman.pojo.query.LoginQuery;
-import com.rufeng.healthman.pojo.query.PtStudentQuery;
 import com.rufeng.healthman.pojo.file.PtStudentExcel;
 import com.rufeng.healthman.pojo.file.PtStudentExcelListener;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.ptdo.PtCollege;
+import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
+import com.rufeng.healthman.pojo.ptdo.PtStudent;
+import com.rufeng.healthman.pojo.query.LoginQuery;
+import com.rufeng.healthman.pojo.query.PtStudentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -98,6 +98,9 @@ public class PtStudentService {
         return new LoginResult(token, info);
     }
 
+    public List<StudentBaseInfo> listStuBaseInfoByMsId(Long msId) {
+        return ptStudentMapper.listStuBaseInfoByMsId(msId);
+    }
 
     public ApiPage<StudentInfo> pageStudentInfo(Integer page, Integer pageSize, PtStudentQuery query) {
         PageHelper.startPage(page, pageSize);

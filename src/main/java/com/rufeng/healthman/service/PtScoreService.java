@@ -5,14 +5,14 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtScoreMapper;
-import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptscore.ScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
-import com.rufeng.healthman.pojo.query.PtScoreQuery;
 import com.rufeng.healthman.pojo.file.PtScoreExcelListener;
 import com.rufeng.healthman.pojo.file.StuScoreExcel;
 import com.rufeng.healthman.pojo.file.handler.ScoreExcelWriteHandler;
+import com.rufeng.healthman.pojo.ptdo.PtScore;
+import com.rufeng.healthman.pojo.query.PtScoreQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -31,22 +31,25 @@ import java.util.stream.Collectors;
  * @author rufeng
  * @time 2022-03-18 9:13
  * @package com.rufeng.healthman.service.impl
- * @description TODO
+ * @description 成绩
  */
 @Service
 public class PtScoreService {
     private final PtScoreMapper ptScoreMapper;
     private final PtStudentService ptStudentService;
+    private final PtSubStudentService ptSubStudentService;
     private final PtScoreSheetService ptScoreSheetService;
     private final PtSubjectService ptSubjectService;
     private PtMesurementService ptMesurementService;
 
     public PtScoreService(PtScoreMapper ptScoreMapper,
                           PtStudentService ptStudentService,
+                          PtSubStudentService ptSubStudentService,
                           PtScoreSheetService ptScoreSheetService,
                           PtSubjectService ptSubjectService) {
         this.ptScoreMapper = ptScoreMapper;
         this.ptStudentService = ptStudentService;
+        this.ptSubStudentService = ptSubStudentService;
         this.ptScoreSheetService = ptScoreSheetService;
         this.ptSubjectService = ptSubjectService;
     }
@@ -68,7 +71,8 @@ public class PtScoreService {
 
 
     public Integer uploadScore(MultipartFile file, Long msId) {
-        PtScoreExcelListener listener = new PtScoreExcelListener(ptMesurementService, this, ptStudentService, ptScoreSheetService, msId);
+        PtScoreExcelListener listener = new PtScoreExcelListener(ptMesurementService, this,
+                ptStudentService, ptSubStudentService, ptScoreSheetService, msId);
         try {
             EasyExcel.read(file.getInputStream(), listener).sheet().doRead();
         } catch (IOException e) {
@@ -137,7 +141,7 @@ public class PtScoreService {
     }
 
     public List<PtScore> listScoreByStuIdAndMsIds(String stuId, List<Long> msIds) {
-        if (stuId == null || msIds.size() == 0){
+        if (stuId == null || msIds.size() == 0) {
             return Collections.emptyList();
         }
         return ptScoreMapper.listScoreByStuIdAndMsIds(stuId, msIds);

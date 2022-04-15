@@ -2,6 +2,7 @@ package com.rufeng.healthman.pojo.dto.ptstu;
 
 import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode
 public class StudentBaseInfo {
     private String stuId;
     private GenderEnum stuGender;

@@ -25,7 +25,7 @@ import java.util.Date;
  * @author rufeng
  * @time 2022-03-18 0:21
  * @package com.rufeng.healthman.controller
- * @description 成绩查询
+ * @description 成绩操作接口
  */
 @RestController
 @RequestMapping("/api/score")
@@ -53,8 +53,8 @@ public class PtScoreController {
         return ApiResponse.success(ptScoreService.pageStuScore(page, pageSize, query));
     }
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file, @RequestParam Long msId) {
+    @PostMapping(value = "/upload/{msId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file, @PathVariable Long msId) {
         return ApiResponse.success(ptScoreService.uploadScore(file, msId));
     }
 

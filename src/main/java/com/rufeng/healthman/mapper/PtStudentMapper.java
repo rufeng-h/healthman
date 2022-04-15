@@ -1,10 +1,10 @@
 package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
-import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
-import com.rufeng.healthman.pojo.query.PtStudentQuery;
 import com.rufeng.healthman.pojo.file.PtStudentExcel;
+import com.rufeng.healthman.pojo.ptdo.PtStudent;
+import com.rufeng.healthman.pojo.query.PtStudentQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -88,9 +88,7 @@ public interface PtStudentMapper {
 
     StudentBaseInfo getStuBaseInfo(String stuId);
 
+    List<StudentBaseInfo> listStuBaseInfoByMsId(Long msId);
+
     Page<PtStudent> pageStudent(@Param("query") PtStudentQuery query);
-
-    int countStuMs(String stuId);
-
-
 }

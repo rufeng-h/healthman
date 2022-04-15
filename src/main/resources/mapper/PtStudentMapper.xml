@@ -528,31 +528,16 @@
             </if>
         </if>
     </select>
-
-    <select id="countStuMs" resultType="int">
-        WITH stu AS (SELECT stu_gender,
-                            cls_code
-                     FROM pt_student
-                     WHERE stu_id = #{stuId})
-           , ms AS (SELECT ms_id,
-                           # 体测创建时学生年级
-                           YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade,
-                           stu_gender                                                 AS gender
-                    FROM pt_class_measurement
-                             INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
-                             INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code)
-           , grps AS (SELECT grp_id, grade, gender
-                      FROM ms
-                               INNER JOIN pt_measurement ON ms.ms_id = pt_measurement.ms_id)
-        SELECT COUNT(0)
-        FROM grps
-        WHERE EXISTS(SELECT sub_id
-                     FROM (SELECT sub_id
-                           FROM pt_subject_subgroup
-                           WHERE grps.grp_id = pt_subject_subgroup.grp_id) AS gsubs
-                              INNER JOIN pt_score_sheet
-                                         ON sub_id = pt_score_sheet.sub_id
-                     WHERE grps.grade = pt_score_sheet.grade
-                       AND pt_score_sheet.gender = grps.gender);
-    </select>
+    <select id="listStuBaseInfoByMsId" resultType="com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo">
+        WITH cls_info AS (
+        /* 体测建立时，班级的年级 */
+        SELECT pc.cls_code, YEAR(pt_measurement.ms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
+        FROM pt_measurement
+                 INNER JOIN pt_class_measurement pcm on pt_measurement.ms_id = pcm.ms_id
+                 INNER JOIN pt_class pc on pcm.cls_code = pc.cls_code
+        WHERE pt_measurement.ms_id = #{msId})
+        SELECT stu_id, stu_gender, grade, stu_name
+        FROM pt_student
+             INNER JOIN cls_info ON cls_info.cls_code = pt_student.cls_code
+       </select>
 </mapper>
