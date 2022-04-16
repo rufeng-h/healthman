@@ -200,7 +200,7 @@ public class PtAdminService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean addAdmin(PtAdminFormdata formdata) {
+    public boolean addAdminSelective(PtAdminFormdata formdata) {
         PtAdmin admin = PtAdmin.builder().adminName(formdata.getAdminName())
                 .phone(formdata.getPhone())
                 .email(formdata.getEmail())
@@ -241,17 +241,10 @@ public class PtAdminService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Integer addAdmin(List<PtAdminExcel> list) {
+    public int addAdminSelective(List<PtAdminExcel> list) {
         List<PtRole> roles = new ArrayList<>();
-        List<PtAdmin> admins = new ArrayList<>();
         for (PtAdminExcel admin : list) {
             String adminId = admin.getAdminId();
-            admins.add(PtAdmin.builder().adminId(adminId)
-                    .adminDesp(admin.getAdminDesp())
-                    .adminName(admin.getAdminName())
-                    .email(admin.getEmail())
-                    .clgCode(admin.getClgCode())
-                    .phone(admin.getPhone()).build());
             admin.getClgCodes().forEach(code -> roles.add(PtRole.builder()
                     .roleType(RoleTypeEnum.COLLEGE)
                     .roleValue(ALL_AUTHORITY)
@@ -264,7 +257,7 @@ public class PtAdminService {
                     .target(code).build()));
 
         }
-        int count = ptAdminMapper.batchInsertSelective(admins);
+        int count = ptAdminMapper.batchInsertSelective(list);
         ptRoleService.batchInsertSelective(roles);
         return count;
     }
@@ -294,5 +287,9 @@ public class PtAdminService {
 
     public PtAdmin getAdmin(String adminId) {
         return ptAdminMapper.selectByPrimaryKey(adminId);
+    }
+
+    public List<String> listAdminId() {
+        return ptAdminMapper.listAdminId();
     }
 }

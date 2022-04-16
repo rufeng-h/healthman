@@ -1,6 +1,8 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;import com.rufeng.healthman.pojo.ptdo.PtAdmin;
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
+import com.rufeng.healthman.pojo.file.PtAdminExcel;
+import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import java.util.List;
 import com.rufeng.healthman.pojo.query.PtAdminQuery;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;import org.springframework.lang.NonNull;
@@ -81,9 +83,11 @@ public interface PtAdminMapper {
      */
     Page<AdminInfo> pageAdminInfo(@NonNull @Param("query") PtAdminQuery query);
 
-    int batchInsertSelective(@Param("list") List<PtAdmin> list);
+    int batchInsertSelective(@Param("list") List<PtAdminExcel> list);
 
     Page<PtAdmin> pageByQuery(@Param("query") PtAdminQuery query);
 
     List<PtAdmin> listAdminByIds(List<String> adminIds);
+
+    List<String> listAdminId();
 }

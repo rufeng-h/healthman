@@ -89,7 +89,7 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
             throw new ExcelException("班级代码重复" + data.getClsCode());
         }
         /* 班级名称 */
-        if (StringUtils.isEmpty(data.getClsName())) {
+        if (StringUtils.isEmptyOrBlank(data.getClsName())) {
             throw new ExcelException("班级名称不能为空！");
         }
         if (clsNames.contains(data.getClsName())) {

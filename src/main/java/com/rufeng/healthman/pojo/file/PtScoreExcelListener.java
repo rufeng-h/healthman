@@ -3,6 +3,7 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
+import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MAX_UPPER;
+import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER;
 
 /**
  * 创建一个监听器，继承自AnalysisEventListener
@@ -116,7 +120,13 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
                 List<PtScoreSheet> sheets = ptScoreSheetService.listScoreSheet(subStudent);
                 scoreSheetcache.put(subStudent, sheets);
             }
+            if (!StringUtils.isValidNumber(value)) {
+                throw new ExcelException("异常值：" + value);
+            }
             BigDecimal scoData = new BigDecimal(value);
+            if (scoData.compareTo(MIN_LOWER) <= 0 || scoData.compareTo(MAX_UPPER) >= 0) {
+                throw new ExcelException("异常值：" + value);
+            }
             PtScore ptScore = getFromCache(subStudent, scoData);
             if (ptScore == null) {
                 throw new ExcelException(String.format("数据异常！无评分标准 %s: %s", key, value));

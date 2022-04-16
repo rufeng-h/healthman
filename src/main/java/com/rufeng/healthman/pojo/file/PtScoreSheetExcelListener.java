@@ -3,6 +3,7 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
+import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.common.util.TranslationUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
@@ -40,22 +41,16 @@ public class PtScoreSheetExcelListener extends AnalysisEventListener<PtScoreShee
 
     @Override
     public void invoke(PtScoreSheetExcel data, AnalysisContext context) {
-        data.setSubId(subId);
         if (data.getLower() == null) {
             data.setLower(MIN_LOWER);
         }
         if (data.getUpper() == null) {
             data.setUpper(MAX_UPPER);
         }
-        if (data.getUpper().compareTo(data.getLower()) <= 0
-                || data.getUpper().compareTo(MAX_UPPER) > 0
-                || data.getLower().compareTo(MIN_LOWER) < 0) {
-            throw new ExcelException("数据异常！请检查文件");
-        }
-        if (!subStudents.contains(new SubStudent(data.getGrade(), data.getGender(), subId))) {
-            throw new ExcelException(TranslationUtils.translateGrade(data.getGrade()) +
-                    data.getGender().getGender() + "不参与此科目！");
-        }
+        data.setSubId(subId);
+
+        validate(data);
+
         scoreSheetList.add(data);
         if (scoreSheetList.size() >= BATCH_COUNT) {
             saveData();
@@ -66,6 +61,30 @@ public class PtScoreSheetExcelListener extends AnalysisEventListener<PtScoreShee
     private void saveData() {
         if (scoreSheetList.size() > 0) {
             handleCount += ptScoreSheetService.addScoreSheetSelective(scoreSheetList);
+        }
+    }
+
+    private void validate(PtScoreSheetExcel data) {
+        if (data.getGrade() == null) {
+            throw new ExcelException("年级不能为空！");
+        }
+        if (data.getGender() == null) {
+            throw new ExcelException("性别不能为空！");
+        }
+        if (data.getScore() == null) {
+            throw new ExcelException("分数不能为空！");
+        }
+        if (StringUtils.isEmptyOrBlank(data.getLevel())) {
+            throw new ExcelException("等级不能为空！");
+        }
+        if (data.getUpper().compareTo(data.getLower()) <= 0
+                || data.getUpper().compareTo(MAX_UPPER) >= 0
+                || data.getLower().compareTo(MIN_LOWER) <= 0) {
+            throw new ExcelException("数据异常！请检查文件：");
+        }
+        if (!subStudents.contains(new SubStudent(data.getGrade(), data.getGender(), subId))) {
+            throw new ExcelException(TranslationUtils.translateGrade(data.getGrade()) +
+                    data.getGender().getGender() + "不参与此科目！");
         }
     }
 

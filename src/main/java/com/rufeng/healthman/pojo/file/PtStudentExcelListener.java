@@ -62,7 +62,6 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
     @SuppressWarnings("UnstableApiUsage")
     private void validate(PtStudentExcel data) {
         /* 学号 */
-        System.out.println(data.getStuId());
         if (!StringUtils.isLetterNumeric(data.getStuId())) {
             throw new ExcelException("学号不能为空且必须为字母和数字！");
         }
@@ -70,7 +69,7 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
             throw new ExcelException(String.format("学号%s已存在", data.getStuId()));
         }
         /* 姓名 */
-        if (StringUtils.isEmpty(data.getStuName())) {
+        if (StringUtils.isEmptyOrBlank(data.getStuName())) {
             throw new ExcelException("姓名不能为空！");
         }
         /* 性别 */
@@ -82,7 +81,7 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
             throw new ExcelException("出生日期不能为空！");
         }
         /* 班级 */
-        if (StringUtils.isEmpty(data.getClsName())) {
+        if (StringUtils.isEmptyOrBlank(data.getClsName())) {
             throw new ExcelException("班级不能为空！");
         }
         String clsCode = clsMap.get(data.getClsName());

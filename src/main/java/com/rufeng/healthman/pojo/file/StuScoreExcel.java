@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @author rufeng
  * @time 2022-04-03 20:11
  * @package com.rufeng.healthman.pojo.file
- * @description 导出excel
+ * @description 导出学生成绩excel
  */
 @Data
 @NoArgsConstructor

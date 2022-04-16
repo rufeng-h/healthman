@@ -59,11 +59,14 @@ public class PtScoreSheetController {
         if (data.getUpper() == null) {
             data.setUpper(MAX_UPPER);
         }
+        if (data.getLower().compareTo(data.getUpper()) >= 0) {
+            return ApiResponse.validateFailed();
+        }
         return ApiResponse.success(ptScoreSheetService.updateScoreSheet(data));
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse<Boolean> deleteScoreSheet(@PathVariable Long id){
+    public ApiResponse<Boolean> deleteScoreSheet(@PathVariable Long id) {
         return ApiResponse.success(ptScoreSheetService.deleteById(id));
     }
 }

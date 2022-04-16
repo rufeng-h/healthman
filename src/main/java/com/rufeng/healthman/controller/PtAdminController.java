@@ -53,7 +53,7 @@ public class PtAdminController {
 
     @PostMapping
     public ApiResponse<Boolean> addAdmin(@Validated @RequestBody PtAdminFormdata data) {
-        return ApiResponse.success(ptAdminService.addAdmin(data));
+        return ApiResponse.success(ptAdminService.addAdminSelective(data));
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
