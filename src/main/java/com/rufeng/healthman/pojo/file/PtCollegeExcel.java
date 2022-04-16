@@ -1,7 +1,6 @@
 package com.rufeng.healthman.pojo.file;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

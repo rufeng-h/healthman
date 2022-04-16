@@ -540,4 +540,7 @@
         FROM pt_student
              INNER JOIN cls_info ON cls_info.cls_code = pt_student.cls_code
        </select>
+       <select id="listStuId" resultType="java.lang.String">
+            SELECT stu_id FROM pt_student
+       </select>
 </mapper>

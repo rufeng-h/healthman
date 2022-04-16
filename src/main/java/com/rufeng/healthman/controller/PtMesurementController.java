@@ -43,7 +43,8 @@ public class PtMesurementController {
     }
 
     @PostMapping
-    public ApiResponse<PtMeasurement> addMesurement(@Validated(Insert.class) @RequestBody PtMeasurementFormdata formdata) {
+    public ApiResponse<PtMeasurement> addMesurement(
+            @Validated(Insert.class) @RequestBody PtMeasurementFormdata formdata) {
         return ApiResponse.success(ptMesurementService.addMesurement(formdata));
     }
 

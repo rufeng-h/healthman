@@ -3,8 +3,8 @@ package com.rufeng.healthman.service;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.common.api.ApiPage;
+import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtStudentMapper;
 import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
@@ -132,8 +132,8 @@ public class PtStudentService {
     }
 
 
-    public Integer uploadStudent(MultipartFile file) {
-        PtStudentExcelListener listener = new PtStudentExcelListener(this);
+    public Integer uploadStudent(MultipartFile file, String clsCode) {
+        PtStudentExcelListener listener = new PtStudentExcelListener(this, ptClassService, clsCode);
         try {
             EasyExcel.read(file.getInputStream(), PtStudentExcel.class, listener).sheet().doRead();
         } catch (IOException e) {
@@ -176,5 +176,9 @@ public class PtStudentService {
             return new StuMeasurementInfo(student, ptClass.getClsName(), msStatus);
         }
         return new StuMeasurementInfo(student, ptClass.getClsName(), college.getClgCode(), college.getClgName(), msStatus);
+    }
+
+    public List<String> listStuId() {
+        return ptStudentMapper.listStuId();
     }
 }

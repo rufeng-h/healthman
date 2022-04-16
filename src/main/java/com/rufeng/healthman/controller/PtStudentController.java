@@ -7,6 +7,7 @@ import com.rufeng.healthman.pojo.dto.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.query.PtStudentQuery;
 import com.rufeng.healthman.service.PtStudentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -32,6 +33,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @RequestMapping("/api/student")
 @Validated
 @SecurityRequirement(name = JWT_SCHEME_NAME)
+@Tag(name = "Student Api", description = "学生接口")
 public class PtStudentController {
     private static final String FILE_TEMPLATE_NAME = URLEncoder.encode("学生模板.xlsx", StandardCharsets.UTF_8);
     private final PtStudentService ptStudentService;
@@ -62,7 +64,7 @@ public class PtStudentController {
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<Integer> uploadStudent(@RequestPart MultipartFile file) {
-        return ApiResponse.success(ptStudentService.uploadStudent(file));
+    public ApiResponse<Integer> uploadStudent(@RequestPart MultipartFile file, @RequestParam(required = false) String clsCode) {
+        return ApiResponse.success(ptStudentService.uploadStudent(file, clsCode));
     }
 }

@@ -2,6 +2,7 @@ package com.rufeng.healthman.pojo.file;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.rufeng.healthman.pojo.file.converter.GradeConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
  * @author rufeng
  * @time 2022-03-20 9:50
  * @package com.rufeng.healthman.pojo.upload
- * @description TODO
+ * @description classExcel
  */
 @Data
 @NoArgsConstructor
@@ -18,16 +19,19 @@ public class PtClassExcel {
     private String clsCode;
     @ExcelProperty("班级名称")
     private String clsName;
-    @ExcelProperty("年级")
+    @ExcelProperty(value = "年级", converter = GradeConverter.class)
     private Integer clsEntryGrade;
     @ExcelProperty("学院")
     private String clgName;
     /**
      * 测试时使用
      */
-    @ExcelProperty("录入年份")
+    @ExcelIgnore
     private Integer clsEntryYear;
 
+    /**
+     * 可以为null
+     */
     @ExcelIgnore
     private String clgCode;
 }

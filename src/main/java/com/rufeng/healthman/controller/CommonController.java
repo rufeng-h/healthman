@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Validated
-@Tag(name = "common", description = "common")
+@Tag(name = "Common Api", description = "通用操作")
 public class CommonController {
     private final PtCommonService ptCommonService;
 

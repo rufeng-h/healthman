@@ -7,6 +7,7 @@ import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.query.PtAdminQuery;
 import com.rufeng.healthman.service.PtAdminService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @Validated
 @SecurityRequirement(name = JWT_SCHEME_NAME)
 @RequestMapping("/api/admin")
+@Tag(name = "Admin Api", description = "教师操作")
 public class PtAdminController {
     private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("管理员模板文件.xlsx", StandardCharsets.UTF_8);
     private final PtAdminService ptAdminService;

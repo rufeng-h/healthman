@@ -1,5 +1,6 @@
 package com.rufeng.healthman.pojo.file;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.pojo.file.converter.StringToGenderConverter;
@@ -25,6 +26,9 @@ public class PtStudentExcel {
     private Date stuBirth;
     @ExcelProperty(value = "性别", converter = StringToGenderConverter.class)
     private GenderEnum stuGender;
-    @ExcelProperty("班级代码")
+    @ExcelProperty("班级")
+    private String clsName;
+
+    @ExcelIgnore
     private String clsCode;
 }

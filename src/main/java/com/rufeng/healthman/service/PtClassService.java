@@ -5,11 +5,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtClassMapper;
-import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.dto.ptclass.ClassInfo;
-import com.rufeng.healthman.pojo.query.PtClassQuery;
 import com.rufeng.healthman.pojo.file.PtClassExcel;
 import com.rufeng.healthman.pojo.file.PtClassExcelListener;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.query.PtClassQuery;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.NonNull;
@@ -34,7 +35,7 @@ public class PtClassService {
     private final PtClassMapper ptClassMapper;
     private final PtCollegeService ptCollegeService;
 
-    public PtClassService(PtClassMapper ptClassMapper, PtCollegeService ptCollegeService) {
+    public PtClassService(PtClassMapper ptClassMapper, PtCollegeService ptCollegeService, Environment environment) {
         this.ptClassMapper = ptClassMapper;
         this.ptCollegeService = ptCollegeService;
     }
@@ -59,6 +60,10 @@ public class PtClassService {
             return Collections.emptyList();
         }
         return ptClassMapper.listClassByClsCodes(clsCodes);
+    }
+
+    public List<PtClass> listClass() {
+        return ptClassMapper.listClass(new PtClassQuery());
     }
 
     public List<Integer> listGrade(@NonNull PtClassQuery query) {

@@ -11,7 +11,7 @@ import java.util.Map;
  * @author rufeng
  * @time 2022-04-15 22:36
  * @package com.rufeng.healthman.common.util
- * @description TODO
+ * @description Java类型转换
  */
 public class TranslationUtils {
     private static final Map<String, GenderEnum> STR2GENDER = new HashMap<>(2);
@@ -32,7 +32,6 @@ public class TranslationUtils {
         for (GenderEnum genderEnum : genderEnums) {
             STR2GENDER.put(genderEnum.getGender(), genderEnum);
         }
-
     }
 
     public static GenderEnum translateGender(String gender) {

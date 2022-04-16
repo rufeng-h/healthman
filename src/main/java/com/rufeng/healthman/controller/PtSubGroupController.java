@@ -21,7 +21,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
  * @author rufeng
  * @time 2022-03-27 19:30
  * @package com.rufeng.healthman.controller
- * @description TODO
+ * @description 科目组
  */
 @RestController
 @Validated
@@ -51,7 +51,7 @@ public class PtSubGroupController {
         return ApiResponse.success(ptSubgroupService.pageSubGroupInfo(page, pageSize, query));
     }
 
-    @RequestMapping(value = "/{grpId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{grpId}")
     public ApiResponse<Boolean> deleteSubGrp(@PathVariable Long grpId) {
         return ApiResponse.success(ptSubgroupService.deleteGrp(grpId));
     }

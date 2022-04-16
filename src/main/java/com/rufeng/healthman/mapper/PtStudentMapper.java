@@ -91,4 +91,6 @@ public interface PtStudentMapper {
     List<StudentBaseInfo> listStuBaseInfoByMsId(Long msId);
 
     Page<PtStudent> pageStudent(@Param("query") PtStudentQuery query);
+
+    List<String> listStuId();
 }
