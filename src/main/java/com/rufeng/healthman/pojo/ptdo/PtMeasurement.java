@@ -1,8 +1,7 @@
 package com.rufeng.healthman.pojo.ptdo;
 
 import java.io.Serializable;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,13 +9,19 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * 测量记录表
  * @author rufeng
+ * @time 2022-04-16 14:17
+ * @package com.rufeng.healthman.pojo.ptdo
+ * @description TODO
+ */
+
+/**
+ * 测量记录表
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PtMeasurement implements Serializable {
     private Long msId;
 
@@ -24,9 +29,9 @@ public class PtMeasurement implements Serializable {
 
     private String msDesp;
 
-    private Date msCreated;
+    private LocalDateTime msCreated;
 
-    private Date msModified;
+    private LocalDateTime msModified;
 
     /**
      * 科目组id

@@ -1,11 +1,11 @@
 package com.rufeng.healthman.pojo.dto.ptmeasurement;
 
-import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
 import com.rufeng.healthman.pojo.dto.ptscore.ScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectStatus;
+import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ public class StuMeasurementDetail {
     private String msName;
     private String msCreatedAdminId;
     private String msCreatedAdminName;
-    private Date msCreated;
+    private LocalDateTime msCreated;
     private String msDesp;
     private List<ScoreInfo> scores;
 

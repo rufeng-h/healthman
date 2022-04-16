@@ -1,19 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;
-import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
-import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
-import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
+import java.util.List;import java.util.Map;
+import com.rufeng.healthman.pojo.query.PtSubgroupQuery;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:23
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -84,7 +79,6 @@ public interface PtSubgroupMapper {
      * @return list of group
      */
     List<PtSubgroup> listSubGroup();
-
 
     Page<PtSubgroup> pageSubGroup(@Param("query") PtSubgroupQuery query);
 

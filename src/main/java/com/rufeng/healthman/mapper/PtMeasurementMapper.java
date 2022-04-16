@@ -1,20 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;
-import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
-import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementSubStatus;
-import com.rufeng.healthman.pojo.query.PtMeasurementQuery;
-import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementSubStatus;import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
+import java.util.List;import java.util.Map;
+import com.rufeng.healthman.pojo.query.PtMeasurementQuery;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
  * @author rufeng
- * @time 2022-03-30 0:18
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -105,7 +99,6 @@ public interface PtMeasurementMapper {
      */
     @ReturnMap
     Map<Long, Boolean> listStuMsStatus(String stuId);
-
 
     Page<PtMeasurement> pageStuMs(String stuId);
 }

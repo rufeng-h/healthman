@@ -3,8 +3,7 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.pojo.file.converter.GradeConverter;
-import com.rufeng.healthman.pojo.file.converter.StringToGenderConverter;
+import com.rufeng.healthman.pojo.file.converter.StringGradeConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,9 +18,9 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class PtScoreSheetExcel {
-    @ExcelProperty(value = "年级", converter = GradeConverter.class)
+    @ExcelProperty(value = "年级", converter = StringGradeConverter.class)
     private Integer grade;
-    @ExcelProperty(value = "性别", converter = StringToGenderConverter.class)
+    @ExcelProperty(value = "性别")
     private GenderEnum gender;
     @ExcelProperty("下限")
     private BigDecimal lower;

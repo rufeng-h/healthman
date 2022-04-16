@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author rufeng
- * @time 2022-04-09 15:52
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -17,6 +17,7 @@ import org.apache.ibatis.annotations.Param;
 public interface PtCompetencyMapper {
     /**
      * delete by primary key
+     *
      * @param compId primaryKey
      * @return deleteCount
      */
@@ -24,6 +25,7 @@ public interface PtCompetencyMapper {
 
     /**
      * insert record to table
+     *
      * @param record the record
      * @return insert count
      */
@@ -35,6 +37,7 @@ public interface PtCompetencyMapper {
 
     /**
      * insert record to table selective
+     *
      * @param record the record
      * @return insert count
      */
@@ -42,6 +45,7 @@ public interface PtCompetencyMapper {
 
     /**
      * select by primary key
+     *
      * @param compId primary key
      * @return object by primary key
      */
@@ -49,6 +53,7 @@ public interface PtCompetencyMapper {
 
     /**
      * update record selective
+     *
      * @param record the updated record
      * @return update count
      */
@@ -56,6 +61,7 @@ public interface PtCompetencyMapper {
 
     /**
      * update record
+     *
      * @param record the updated record
      * @return update count
      */

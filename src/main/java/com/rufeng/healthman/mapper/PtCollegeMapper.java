@@ -1,18 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.ptdo.PtCollege;
-import com.rufeng.healthman.pojo.file.PtCollegeExcel;
+import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.file.PtCollegeExcel;import com.rufeng.healthman.pojo.ptdo.PtCollege;
+import java.util.List;import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:23
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */

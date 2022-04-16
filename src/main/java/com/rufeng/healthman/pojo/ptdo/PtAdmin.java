@@ -1,8 +1,7 @@
 package com.rufeng.healthman.pojo.ptdo;
 
 import java.io.Serializable;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,19 +10,18 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-03-28 15:01
- * @package com.rufeng.healthman.pojo.DO
+ * @time 2022-04-16 14:17
+ * @package com.rufeng.healthman.pojo.ptdo
  * @description TODO
  */
 
 /**
  * 用户表
- * @author rufeng
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PtAdmin implements Serializable {
     private String adminId;
 
@@ -40,11 +38,11 @@ public class PtAdmin implements Serializable {
 
     private String adminDesp;
 
-    private Date adminCreated;
+    private LocalDateTime adminCreated;
 
-    private Date adminModified;
+    private LocalDateTime adminModified;
 
-    private Date adminLastLogin;
+    private LocalDateTime adminLastLogin;
 
     private String phone;
 

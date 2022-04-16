@@ -36,7 +36,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -90,7 +94,7 @@ public class PtStudentService {
         /* 更新登录时间 */
         PtStudent stu = PtStudent.builder()
                 .stuId(student.getStuId())
-                .stuLastLogin(new Date()).build();
+                .stuLastLogin(LocalDateTime.now()).build();
         ptStudentMapper.updateByPrimaryKeySelective(stu);
 
         UserInfo info = new StudentUserInfo(student);

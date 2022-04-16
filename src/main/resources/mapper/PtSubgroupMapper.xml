@@ -1,316 +1,314 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtSubgroupMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtSubgroup">
-        <!--@mbg.generated-->
-        <!--@Table pt_subgroup-->
-        <id column="grp_id" property="grpId"/>
-        <result column="grp_name" property="grpName"/>
-        <result column="grp_desp" property="grpDesp"/>
-        <result column="grp_created" property="grpCreated"/>
-        <result column="grp_created_admin" property="grpCreatedAdmin"/>
-        <result column="grp_modified" property="grpModified"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        grp_id, grp_name, grp_desp, grp_created, grp_created_admin, grp_modified
-    </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        <!--@mbg.generated-->
-        select
-        <include refid="Base_Column_List"/>
-        from pt_subgroup
-        where grp_id = #{grpId}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        <!--@mbg.generated-->
-        delete
-        from pt_subgroup
-        where grp_id = #{grpId}
-    </delete>
-    <insert id="insert" keyColumn="grp_id" keyProperty="grpId" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup"
-            useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_subgroup (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified)
-        values (#{grpName}, #{grpDesp}, #{grpCreated}, #{grpCreatedAdmin}, #{grpModified})
-    </insert>
-    <insert id="insertSelective" keyColumn="grp_id" keyProperty="grpId"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_subgroup
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="grpName != null">
-                grp_name,
-            </if>
-            <if test="grpDesp != null">
-                grp_desp,
-            </if>
-            <if test="grpCreated != null">
-                grp_created,
-            </if>
-            <if test="grpCreatedAdmin != null">
-                grp_created_admin,
-            </if>
-            <if test="grpModified != null">
-                grp_modified,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="grpName != null">
-                #{grpName},
-            </if>
-            <if test="grpDesp != null">
-                #{grpDesp},
-            </if>
-            <if test="grpCreated != null">
-                #{grpCreated},
-            </if>
-            <if test="grpCreatedAdmin != null">
-                #{grpCreatedAdmin},
-            </if>
-            <if test="grpModified != null">
-                #{grpModified},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup">
-        <!--@mbg.generated-->
-        update pt_subgroup
-        <set>
-            <if test="grpName != null">
-                grp_name = #{grpName},
-            </if>
-            <if test="grpDesp != null">
-                grp_desp = #{grpDesp},
-            </if>
-            <if test="grpCreated != null">
-                grp_created = #{grpCreated},
-            </if>
-            <if test="grpCreatedAdmin != null">
-                grp_created_admin = #{grpCreatedAdmin},
-            </if>
-            <if test="grpModified != null">
-                grp_modified = #{grpModified},
-            </if>
-        </set>
-        where grp_id = #{grpId}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup">
-        <!--@mbg.generated-->
-        update pt_subgroup
-        set grp_name = #{grpName},
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtSubgroup">
+    <!--@mbg.generated-->
+    <!--@Table pt_subgroup-->
+    <id column="grp_id" property="grpId" />
+    <result column="grp_name" property="grpName" />
+    <result column="grp_desp" property="grpDesp" />
+    <result column="grp_created" property="grpCreated" />
+    <result column="grp_created_admin" property="grpCreatedAdmin" />
+    <result column="grp_modified" property="grpModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    grp_id, grp_name, grp_desp, grp_created, grp_created_admin, grp_modified
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pt_subgroup
+    where grp_id = #{grpId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from pt_subgroup
+    where grp_id = #{grpId}
+  </delete>
+  <insert id="insert" keyColumn="grp_id" keyProperty="grpId" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_subgroup (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified
+      )
+    values (#{grpName}, #{grpDesp}, #{grpCreated}, #{grpCreatedAdmin}, #{grpModified}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="grp_id" keyProperty="grpId" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_subgroup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="grpName != null">
+        grp_name,
+      </if>
+      <if test="grpDesp != null">
+        grp_desp,
+      </if>
+      <if test="grpCreated != null">
+        grp_created,
+      </if>
+      <if test="grpCreatedAdmin != null">
+        grp_created_admin,
+      </if>
+      <if test="grpModified != null">
+        grp_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="grpName != null">
+        #{grpName},
+      </if>
+      <if test="grpDesp != null">
+        #{grpDesp},
+      </if>
+      <if test="grpCreated != null">
+        #{grpCreated},
+      </if>
+      <if test="grpCreatedAdmin != null">
+        #{grpCreatedAdmin},
+      </if>
+      <if test="grpModified != null">
+        #{grpModified},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup">
+    <!--@mbg.generated-->
+    update pt_subgroup
+    <set>
+      <if test="grpName != null">
+        grp_name = #{grpName},
+      </if>
+      <if test="grpDesp != null">
         grp_desp = #{grpDesp},
+      </if>
+      <if test="grpCreated != null">
         grp_created = #{grpCreated},
+      </if>
+      <if test="grpCreatedAdmin != null">
         grp_created_admin = #{grpCreatedAdmin},
-        grp_modified = #{grpModified}
-        where grp_id = #{grpId}
-    </update>
-    <update id="updateBatch" parameterType="java.util.List">
-        <!--@mbg.generated-->
-        update pt_subgroup
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="grp_name = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when grp_id = #{item.grpId} then #{item.grpName}
-                </foreach>
-            </trim>
-            <trim prefix="grp_desp = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when grp_id = #{item.grpId} then #{item.grpDesp}
-                </foreach>
-            </trim>
-            <trim prefix="grp_created = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when grp_id = #{item.grpId} then #{item.grpCreated}
-                </foreach>
-            </trim>
-            <trim prefix="grp_created_admin = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when grp_id = #{item.grpId} then #{item.grpCreatedAdmin}
-                </foreach>
-            </trim>
-            <trim prefix="grp_modified = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when grp_id = #{item.grpId} then #{item.grpModified}
-                </foreach>
-            </trim>
-        </trim>
-        where grp_id in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.grpId}
+      </if>
+      <if test="grpModified != null">
+        grp_modified = #{grpModified},
+      </if>
+    </set>
+    where grp_id = #{grpId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup">
+    <!--@mbg.generated-->
+    update pt_subgroup
+    set grp_name = #{grpName},
+      grp_desp = #{grpDesp},
+      grp_created = #{grpCreated},
+      grp_created_admin = #{grpCreatedAdmin},
+      grp_modified = #{grpModified}
+    where grp_id = #{grpId}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_subgroup
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="grp_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when grp_id = #{item.grpId} then #{item.grpName}
         </foreach>
-    </update>
-    <update id="updateBatchSelective" parameterType="java.util.List">
-        <!--@mbg.generated-->
-        update pt_subgroup
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="grp_name = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.grpName != null">
-                        when grp_id = #{item.grpId} then #{item.grpName}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="grp_desp = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.grpDesp != null">
-                        when grp_id = #{item.grpId} then #{item.grpDesp}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="grp_created = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.grpCreated != null">
-                        when grp_id = #{item.grpId} then #{item.grpCreated}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="grp_created_admin = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.grpCreatedAdmin != null">
-                        when grp_id = #{item.grpId} then #{item.grpCreatedAdmin}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="grp_modified = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.grpModified != null">
-                        when grp_id = #{item.grpId} then #{item.grpModified}
-                    </if>
-                </foreach>
-            </trim>
-        </trim>
-        where grp_id in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.grpId}
+      </trim>
+      <trim prefix="grp_desp = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when grp_id = #{item.grpId} then #{item.grpDesp}
         </foreach>
-    </update>
-    <insert id="batchInsert" keyColumn="grp_id" keyProperty="grpId" parameterType="map" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_subgroup
-        (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.grpName}, #{item.grpDesp}, #{item.grpCreated}, #{item.grpCreatedAdmin}, #{item.grpModified})
+      </trim>
+      <trim prefix="grp_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when grp_id = #{item.grpId} then #{item.grpCreated}
         </foreach>
-    </insert>
-    <insert id="insertOrUpdate" keyColumn="grp_id" keyProperty="grpId"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_subgroup
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="grpId != null">
-                grp_id,
-            </if>
-            grp_name,
-            grp_desp,
-            grp_created,
-            grp_created_admin,
-            grp_modified,
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="grpId != null">
-                #{grpId},
-            </if>
-            #{grpName},
-            #{grpDesp},
-            #{grpCreated},
-            #{grpCreatedAdmin},
-            #{grpModified},
-        </trim>
-        on duplicate key update
-        <trim suffixOverrides=",">
-            <if test="grpId != null">
-                grp_id = #{grpId},
-            </if>
-            grp_name = #{grpName},
-            grp_desp = #{grpDesp},
-            grp_created = #{grpCreated},
-            grp_created_admin = #{grpCreatedAdmin},
-            grp_modified = #{grpModified},
-        </trim>
-    </insert>
-    <insert id="insertOrUpdateSelective" keyColumn="grp_id" keyProperty="grpId"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_subgroup
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="grpId != null">
-                grp_id,
-            </if>
-            <if test="grpName != null">
-                grp_name,
-            </if>
-            <if test="grpDesp != null">
-                grp_desp,
-            </if>
-            <if test="grpCreated != null">
-                grp_created,
-            </if>
-            <if test="grpCreatedAdmin != null">
-                grp_created_admin,
-            </if>
-            <if test="grpModified != null">
-                grp_modified,
-            </if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="grpId != null">
-                #{grpId},
-            </if>
-            <if test="grpName != null">
-                #{grpName},
-            </if>
-            <if test="grpDesp != null">
-                #{grpDesp},
-            </if>
-            <if test="grpCreated != null">
-                #{grpCreated},
-            </if>
-            <if test="grpCreatedAdmin != null">
-                #{grpCreatedAdmin},
-            </if>
-            <if test="grpModified != null">
-                #{grpModified},
-            </if>
-        </trim>
-        on duplicate key update
-        <trim suffixOverrides=",">
-            <if test="grpId != null">
-                grp_id = #{grpId},
-            </if>
-            <if test="grpName != null">
-                grp_name = #{grpName},
-            </if>
-            <if test="grpDesp != null">
-                grp_desp = #{grpDesp},
-            </if>
-            <if test="grpCreated != null">
-                grp_created = #{grpCreated},
-            </if>
-            <if test="grpCreatedAdmin != null">
-                grp_created_admin = #{grpCreatedAdmin},
-            </if>
-            <if test="grpModified != null">
-                grp_modified = #{grpModified},
-            </if>
-        </trim>
-    </insert>
+      </trim>
+      <trim prefix="grp_created_admin = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when grp_id = #{item.grpId} then #{item.grpCreatedAdmin}
+        </foreach>
+      </trim>
+      <trim prefix="grp_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when grp_id = #{item.grpId} then #{item.grpModified}
+        </foreach>
+      </trim>
+    </trim>
+    where grp_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.grpId}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_subgroup
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="grp_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.grpName != null">
+            when grp_id = #{item.grpId} then #{item.grpName}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="grp_desp = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.grpDesp != null">
+            when grp_id = #{item.grpId} then #{item.grpDesp}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="grp_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.grpCreated != null">
+            when grp_id = #{item.grpId} then #{item.grpCreated}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="grp_created_admin = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.grpCreatedAdmin != null">
+            when grp_id = #{item.grpId} then #{item.grpCreatedAdmin}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="grp_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.grpModified != null">
+            when grp_id = #{item.grpId} then #{item.grpModified}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where grp_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.grpId}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="grp_id" keyProperty="grpId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_subgroup
+    (grp_name, grp_desp, grp_created, grp_created_admin, grp_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.grpName}, #{item.grpDesp}, #{item.grpCreated}, #{item.grpCreatedAdmin}, #{item.grpModified}
+        )
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="grp_id" keyProperty="grpId" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_subgroup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="grpId != null">
+        grp_id,
+      </if>
+      grp_name,
+      grp_desp,
+      grp_created,
+      grp_created_admin,
+      grp_modified,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="grpId != null">
+        #{grpId},
+      </if>
+      #{grpName},
+      #{grpDesp},
+      #{grpCreated},
+      #{grpCreatedAdmin},
+      #{grpModified},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="grpId != null">
+        grp_id = #{grpId},
+      </if>
+      grp_name = #{grpName},
+      grp_desp = #{grpDesp},
+      grp_created = #{grpCreated},
+      grp_created_admin = #{grpCreatedAdmin},
+      grp_modified = #{grpModified},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="grp_id" keyProperty="grpId" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_subgroup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="grpId != null">
+        grp_id,
+      </if>
+      <if test="grpName != null">
+        grp_name,
+      </if>
+      <if test="grpDesp != null">
+        grp_desp,
+      </if>
+      <if test="grpCreated != null">
+        grp_created,
+      </if>
+      <if test="grpCreatedAdmin != null">
+        grp_created_admin,
+      </if>
+      <if test="grpModified != null">
+        grp_modified,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="grpId != null">
+        #{grpId},
+      </if>
+      <if test="grpName != null">
+        #{grpName},
+      </if>
+      <if test="grpDesp != null">
+        #{grpDesp},
+      </if>
+      <if test="grpCreated != null">
+        #{grpCreated},
+      </if>
+      <if test="grpCreatedAdmin != null">
+        #{grpCreatedAdmin},
+      </if>
+      <if test="grpModified != null">
+        #{grpModified},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="grpId != null">
+        grp_id = #{grpId},
+      </if>
+      <if test="grpName != null">
+        grp_name = #{grpName},
+      </if>
+      <if test="grpDesp != null">
+        grp_desp = #{grpDesp},
+      </if>
+      <if test="grpCreated != null">
+        grp_created = #{grpCreated},
+      </if>
+      <if test="grpCreatedAdmin != null">
+        grp_created_admin = #{grpCreatedAdmin},
+      </if>
+      <if test="grpModified != null">
+        grp_modified = #{grpModified},
+      </if>
+    </trim>
+  </insert>
 
     <select id="listSubGroup" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from pt_subgroup
     </select>
     <select id="pageSubGroup" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_subgroup
         <where>
             <if test="query.grpName != null">
-                <bind name="grpName" value="'%' + query.grpName + '%'"/>
+                <bind name="grpName" value="'%' + query.grpName + '%'" />
                 grp_name like #{grpName}
             </if>
         </where>
@@ -320,7 +318,7 @@
         SELECT grp_id, grp_name
         FROM pt_subgroup
         <where>
-            <foreach collection="list" item="item" separator="," open="grp_id IN (" close=")">
+            <foreach close=")" collection="list" item="item" open="grp_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>

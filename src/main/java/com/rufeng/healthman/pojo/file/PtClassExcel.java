@@ -2,7 +2,7 @@ package com.rufeng.healthman.pojo.file;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.rufeng.healthman.pojo.file.converter.GradeConverter;
+import com.rufeng.healthman.pojo.file.converter.StringGradeConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +19,7 @@ public class PtClassExcel {
     private String clsCode;
     @ExcelProperty("班级名称")
     private String clsName;
-    @ExcelProperty(value = "年级", converter = GradeConverter.class)
+    @ExcelProperty(value = "年级", converter = StringGradeConverter.class)
     private Integer clsEntryGrade;
     @ExcelProperty("学院")
     private String clgName;

@@ -1,19 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;
-import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
-import com.rufeng.healthman.pojo.ptdo.PtScore;
-import com.rufeng.healthman.pojo.query.PtScoreQuery;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;import com.rufeng.healthman.pojo.ptdo.PtScore;
 import java.util.List;
+import com.rufeng.healthman.pojo.query.PtScoreQuery;import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
  * @author rufeng
- * @time 2022-04-02 21:52
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -73,6 +68,8 @@ public interface PtScoreMapper {
     int updateByPrimaryKey(PtScore record);
 
     int updateBatch(List<PtScore> list);
+
+    int updateBatchSelective(List<PtScore> list);
 
     int batchInsert(@Param("list") List<PtScore> list);
 

@@ -1,29 +1,39 @@
 package com.rufeng.healthman.pojo.ptdo;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.Date;
 
+/**
+ * @author rufeng
+ * @time 2022-04-16 14:17
+ * @package com.rufeng.healthman.pojo.ptdo
+ * @description TODO
+ */
 
 /**
  * 运动处方
- *
- * @author rufeng
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PtPrescription implements Serializable {
-    private static final long serialVersionUID = 1L;
     private Long prsId;
+
     private Long compId;
+
     private String prsLevel;
+
     private String prsText;
-    private Date prsCreated;
-    private Date prsModified;
+
+    private LocalDateTime prsCreated;
+
+    private LocalDateTime prsModified;
+
+    private static final long serialVersionUID = 1L;
 }

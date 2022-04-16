@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -89,7 +90,7 @@ public class PtMesurementService {
                 .build();
         ptMeasurementMapper.insertSelective(measurement);
         long msId = measurement.getMsId();
-        List<PtClassMesurement> list = formdata.getClsCodes().stream().map(code -> PtClassMesurement.builder()
+        List<PtClassMeasurement> list = formdata.getClsCodes().stream().map(code -> PtClassMeasurement.builder()
                 .clsCode(code)
                 .cmsCreatedAdmin(adminId)
                 .msId(msId).build()).collect(Collectors.toList());
@@ -159,14 +160,14 @@ public class PtMesurementService {
                 .msId(formdata.getMsId())
                 .msDesp(formdata.getMsDesp())
                 .msName(formdata.getMsName())
-                .msModified(new Date()).build();
+                .msModified(LocalDateTime.now()).build();
         Long msId = measurement.getMsId();
         ptMeasurementMapper.updateByPrimaryKeySelective(measurement);
         /* 删除原来的关联记录 */
         ptClassMeasurementService.delByMsId(msId);
         /* 插入现在的关联记录 */
-        List<PtClassMesurement> list = formdata.getClsCodes().stream().map(
-                code -> PtClassMesurement.builder()
+        List<PtClassMeasurement> list = formdata.getClsCodes().stream().map(
+                code -> PtClassMeasurement.builder()
                         .msId(msId)
                         .clsCode(code)
                         .cmsCreatedAdmin(adminId).build()).collect(Collectors.toList());

@@ -1,348 +1,344 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtMeasurementMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
-        <!--@mbg.generated-->
-        <!--@Table pt_measurement-->
-        <id column="ms_id" property="msId"/>
-        <result column="ms_name" property="msName"/>
-        <result column="ms_desp" property="msDesp"/>
-        <result column="ms_created" property="msCreated"/>
-        <result column="ms_modified" property="msModified"/>
-        <result column="grp_id" property="grpId"/>
-        <result column="ms_created_admin" property="msCreatedAdmin"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        ms_id, ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
-    </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        <!--@mbg.generated-->
-        select
-        <include refid="Base_Column_List"/>
-        from pt_measurement
-        where ms_id = #{msId}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        <!--@mbg.generated-->
-        delete
-        from pt_measurement
-        where ms_id = #{msId}
-    </delete>
-    <insert id="insert" keyColumn="ms_id" keyProperty="msId"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement"
-            useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_measurement (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
-        values (#{msName}, #{msDesp}, #{msCreated}, #{msModified}, #{grpId}, #{msCreatedAdmin})
-    </insert>
-    <insert id="insertSelective" keyColumn="ms_id" keyProperty="msId"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_measurement
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="msName != null">
-                ms_name,
-            </if>
-            <if test="msDesp != null">
-                ms_desp,
-            </if>
-            <if test="msCreated != null">
-                ms_created,
-            </if>
-            <if test="msModified != null">
-                ms_modified,
-            </if>
-            <if test="grpId != null">
-                grp_id,
-            </if>
-            <if test="msCreatedAdmin != null">
-                ms_created_admin,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="msName != null">
-                #{msName},
-            </if>
-            <if test="msDesp != null">
-                #{msDesp},
-            </if>
-            <if test="msCreated != null">
-                #{msCreated},
-            </if>
-            <if test="msModified != null">
-                #{msModified},
-            </if>
-            <if test="grpId != null">
-                #{grpId},
-            </if>
-            <if test="msCreatedAdmin != null">
-                #{msCreatedAdmin},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
-        <!--@mbg.generated-->
-        update pt_measurement
-        <set>
-            <if test="msName != null">
-                ms_name = #{msName},
-            </if>
-            <if test="msDesp != null">
-                ms_desp = #{msDesp},
-            </if>
-            <if test="msCreated != null">
-                ms_created = #{msCreated},
-            </if>
-            <if test="msModified != null">
-                ms_modified = #{msModified},
-            </if>
-            <if test="grpId != null">
-                grp_id = #{grpId},
-            </if>
-            <if test="msCreatedAdmin != null">
-                ms_created_admin = #{msCreatedAdmin},
-            </if>
-        </set>
-        where ms_id = #{msId}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
-        <!--@mbg.generated-->
-        update pt_measurement
-        set ms_name          = #{msName},
-            ms_desp          = #{msDesp},
-            ms_created       = #{msCreated},
-            ms_modified      = #{msModified},
-            grp_id           = #{grpId},
-            ms_created_admin = #{msCreatedAdmin}
-        where ms_id = #{msId}
-    </update>
-    <update id="updateBatch" parameterType="java.util.List">
-        <!--@mbg.generated-->
-        update pt_measurement
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="ms_name = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ms_id = #{item.msId} then #{item.msName}
-                </foreach>
-            </trim>
-            <trim prefix="ms_desp = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ms_id = #{item.msId} then #{item.msDesp}
-                </foreach>
-            </trim>
-            <trim prefix="ms_created = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ms_id = #{item.msId} then #{item.msCreated}
-                </foreach>
-            </trim>
-            <trim prefix="ms_modified = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ms_id = #{item.msId} then #{item.msModified}
-                </foreach>
-            </trim>
-            <trim prefix="grp_id = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ms_id = #{item.msId} then #{item.grpId}
-                </foreach>
-            </trim>
-            <trim prefix="ms_created_admin = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ms_id = #{item.msId} then #{item.msCreatedAdmin}
-                </foreach>
-            </trim>
-        </trim>
-        where ms_id in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.msId}
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
+    <!--@mbg.generated-->
+    <!--@Table pt_measurement-->
+    <id column="ms_id" property="msId" />
+    <result column="ms_name" property="msName" />
+    <result column="ms_desp" property="msDesp" />
+    <result column="ms_created" property="msCreated" />
+    <result column="ms_modified" property="msModified" />
+    <result column="grp_id" property="grpId" />
+    <result column="ms_created_admin" property="msCreatedAdmin" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ms_id, ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pt_measurement
+    where ms_id = #{msId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from pt_measurement
+    where ms_id = #{msId}
+  </delete>
+  <insert id="insert" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_measurement (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
+      )
+    values (#{msName}, #{msDesp}, #{msCreated}, #{msModified}, #{grpId}, #{msCreatedAdmin}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_measurement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msName != null">
+        ms_name,
+      </if>
+      <if test="msDesp != null">
+        ms_desp,
+      </if>
+      <if test="msCreated != null">
+        ms_created,
+      </if>
+      <if test="msModified != null">
+        ms_modified,
+      </if>
+      <if test="grpId != null">
+        grp_id,
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="msName != null">
+        #{msName},
+      </if>
+      <if test="msDesp != null">
+        #{msDesp},
+      </if>
+      <if test="msCreated != null">
+        #{msCreated},
+      </if>
+      <if test="msModified != null">
+        #{msModified},
+      </if>
+      <if test="grpId != null">
+        #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        #{msCreatedAdmin},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
+    <!--@mbg.generated-->
+    update pt_measurement
+    <set>
+      <if test="msName != null">
+        ms_name = #{msName},
+      </if>
+      <if test="msDesp != null">
+        ms_desp = #{msDesp},
+      </if>
+      <if test="msCreated != null">
+        ms_created = #{msCreated},
+      </if>
+      <if test="msModified != null">
+        ms_modified = #{msModified},
+      </if>
+      <if test="grpId != null">
+        grp_id = #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin = #{msCreatedAdmin},
+      </if>
+    </set>
+    where ms_id = #{msId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement">
+    <!--@mbg.generated-->
+    update pt_measurement
+    set ms_name = #{msName},
+      ms_desp = #{msDesp},
+      ms_created = #{msCreated},
+      ms_modified = #{msModified},
+      grp_id = #{grpId},
+      ms_created_admin = #{msCreatedAdmin}
+    where ms_id = #{msId}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_measurement
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="ms_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ms_id = #{item.msId} then #{item.msName}
         </foreach>
-    </update>
-    <update id="updateBatchSelective" parameterType="java.util.List">
-        <!--@mbg.generated-->
-        update pt_measurement
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="ms_name = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.msName != null">
-                        when ms_id = #{item.msId} then #{item.msName}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="ms_desp = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.msDesp != null">
-                        when ms_id = #{item.msId} then #{item.msDesp}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="ms_created = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.msCreated != null">
-                        when ms_id = #{item.msId} then #{item.msCreated}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="ms_modified = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.msModified != null">
-                        when ms_id = #{item.msId} then #{item.msModified}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="grp_id = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.grpId != null">
-                        when ms_id = #{item.msId} then #{item.grpId}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="ms_created_admin = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.msCreatedAdmin != null">
-                        when ms_id = #{item.msId} then #{item.msCreatedAdmin}
-                    </if>
-                </foreach>
-            </trim>
-        </trim>
-        where ms_id in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.msId}
+      </trim>
+      <trim prefix="ms_desp = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ms_id = #{item.msId} then #{item.msDesp}
         </foreach>
-    </update>
-    <insert id="batchInsert" keyColumn="ms_id" keyProperty="msId" parameterType="map" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_measurement
-            (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.msName}, #{item.msDesp}, #{item.msCreated}, #{item.msModified}, #{item.grpId},
-             #{item.msCreatedAdmin})
+      </trim>
+      <trim prefix="ms_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ms_id = #{item.msId} then #{item.msCreated}
         </foreach>
-    </insert>
-    <insert id="insertOrUpdate" keyColumn="ms_id" keyProperty="msId"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_measurement
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="msId != null">
-                ms_id,
-            </if>
-            ms_name,
-            ms_desp,
-            ms_created,
-            ms_modified,
-            grp_id,
-            ms_created_admin,
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="msId != null">
-                #{msId},
-            </if>
-            #{msName},
-            #{msDesp},
-            #{msCreated},
-            #{msModified},
-            #{grpId},
-            #{msCreatedAdmin},
-        </trim>
-        on duplicate key update
-        <trim suffixOverrides=",">
-            <if test="msId != null">
-                ms_id = #{msId},
-            </if>
-            ms_name          = #{msName},
-            ms_desp          = #{msDesp},
-            ms_created       = #{msCreated},
-            ms_modified      = #{msModified},
-            grp_id           = #{grpId},
-            ms_created_admin = #{msCreatedAdmin},
-        </trim>
-    </insert>
-    <insert id="insertOrUpdateSelective" keyColumn="ms_id" keyProperty="msId"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into pt_measurement
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="msId != null">
-                ms_id,
-            </if>
-            <if test="msName != null">
-                ms_name,
-            </if>
-            <if test="msDesp != null">
-                ms_desp,
-            </if>
-            <if test="msCreated != null">
-                ms_created,
-            </if>
-            <if test="msModified != null">
-                ms_modified,
-            </if>
-            <if test="grpId != null">
-                grp_id,
-            </if>
-            <if test="msCreatedAdmin != null">
-                ms_created_admin,
-            </if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="msId != null">
-                #{msId},
-            </if>
-            <if test="msName != null">
-                #{msName},
-            </if>
-            <if test="msDesp != null">
-                #{msDesp},
-            </if>
-            <if test="msCreated != null">
-                #{msCreated},
-            </if>
-            <if test="msModified != null">
-                #{msModified},
-            </if>
-            <if test="grpId != null">
-                #{grpId},
-            </if>
-            <if test="msCreatedAdmin != null">
-                #{msCreatedAdmin},
-            </if>
-        </trim>
-        on duplicate key update
-        <trim suffixOverrides=",">
-            <if test="msId != null">
-                ms_id = #{msId},
-            </if>
-            <if test="msName != null">
-                ms_name = #{msName},
-            </if>
-            <if test="msDesp != null">
-                ms_desp = #{msDesp},
-            </if>
-            <if test="msCreated != null">
-                ms_created = #{msCreated},
-            </if>
-            <if test="msModified != null">
-                ms_modified = #{msModified},
-            </if>
-            <if test="grpId != null">
-                grp_id = #{grpId},
-            </if>
-            <if test="msCreatedAdmin != null">
-                ms_created_admin = #{msCreatedAdmin},
-            </if>
-        </trim>
-    </insert>
+      </trim>
+      <trim prefix="ms_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ms_id = #{item.msId} then #{item.msModified}
+        </foreach>
+      </trim>
+      <trim prefix="grp_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ms_id = #{item.msId} then #{item.grpId}
+        </foreach>
+      </trim>
+      <trim prefix="ms_created_admin = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ms_id = #{item.msId} then #{item.msCreatedAdmin}
+        </foreach>
+      </trim>
+    </trim>
+    where ms_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.msId}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_measurement
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="ms_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.msName != null">
+            when ms_id = #{item.msId} then #{item.msName}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="ms_desp = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.msDesp != null">
+            when ms_id = #{item.msId} then #{item.msDesp}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="ms_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.msCreated != null">
+            when ms_id = #{item.msId} then #{item.msCreated}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="ms_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.msModified != null">
+            when ms_id = #{item.msId} then #{item.msModified}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="grp_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.grpId != null">
+            when ms_id = #{item.msId} then #{item.grpId}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="ms_created_admin = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.msCreatedAdmin != null">
+            when ms_id = #{item.msId} then #{item.msCreatedAdmin}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where ms_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.msId}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="ms_id" keyProperty="msId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_measurement
+    (ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.msName}, #{item.msDesp}, #{item.msCreated}, #{item.msModified}, #{item.grpId}, 
+        #{item.msCreatedAdmin})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_measurement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        ms_id,
+      </if>
+      ms_name,
+      ms_desp,
+      ms_created,
+      ms_modified,
+      grp_id,
+      ms_created_admin,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        #{msId},
+      </if>
+      #{msName},
+      #{msDesp},
+      #{msCreated},
+      #{msModified},
+      #{grpId},
+      #{msCreatedAdmin},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="msId != null">
+        ms_id = #{msId},
+      </if>
+      ms_name = #{msName},
+      ms_desp = #{msDesp},
+      ms_created = #{msCreated},
+      ms_modified = #{msModified},
+      grp_id = #{grpId},
+      ms_created_admin = #{msCreatedAdmin},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="ms_id" keyProperty="msId" parameterType="com.rufeng.healthman.pojo.ptdo.PtMeasurement" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_measurement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        ms_id,
+      </if>
+      <if test="msName != null">
+        ms_name,
+      </if>
+      <if test="msDesp != null">
+        ms_desp,
+      </if>
+      <if test="msCreated != null">
+        ms_created,
+      </if>
+      <if test="msModified != null">
+        ms_modified,
+      </if>
+      <if test="grpId != null">
+        grp_id,
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        #{msId},
+      </if>
+      <if test="msName != null">
+        #{msName},
+      </if>
+      <if test="msDesp != null">
+        #{msDesp},
+      </if>
+      <if test="msCreated != null">
+        #{msCreated},
+      </if>
+      <if test="msModified != null">
+        #{msModified},
+      </if>
+      <if test="grpId != null">
+        #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        #{msCreatedAdmin},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="msId != null">
+        ms_id = #{msId},
+      </if>
+      <if test="msName != null">
+        ms_name = #{msName},
+      </if>
+      <if test="msDesp != null">
+        ms_desp = #{msDesp},
+      </if>
+      <if test="msCreated != null">
+        ms_created = #{msCreated},
+      </if>
+      <if test="msModified != null">
+        ms_modified = #{msModified},
+      </if>
+      <if test="grpId != null">
+        grp_id = #{grpId},
+      </if>
+      <if test="msCreatedAdmin != null">
+        ms_created_admin = #{msCreatedAdmin},
+      </if>
+    </trim>
+  </insert>
 
     <select id="pageMeasurement" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_measurement
         <where>
             <if test="query.msName != null">
-                <bind name="msName" value="'%' + query.msName + '%'"/>
+                <bind name="msName" value="'%' + query.msName + '%'" />
                 AND ms_name like #{msName}
             </if>
         </where>
@@ -359,7 +355,7 @@
                                          on pt_class_measurement.cls_code = pc.cls_code
                                LEFT JOIN pt_student ps on pc.cls_code = ps.cls_code
         <where>
-            <foreach collection="list" item="item" separator="," open="ms_id IN (" close=")">
+            <foreach close=")" collection="list" item="item" open="ms_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
@@ -370,7 +366,7 @@
                           LEFT JOIN pt_measurement ON pt_measurement.grp_id = pt_subject_subgroup.grp_id
                           LEFT JOIN pt_subgroup ps ON pt_subject_subgroup.grp_id = ps.grp_id
         <where>
-            <foreach collection="list" item="item" separator="," open="pt_measurement.ms_id IN (" close=")">
+            <foreach close=")" collection="list" item="item" open="pt_measurement.ms_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
@@ -434,15 +430,15 @@ stusubs AS (
                              AND pt_score.ms_id = #{msId})
               group by stu_id) t1
                  INNER JOIN (select stu_id, count(sub_id) as cnt from stusubs group by stu_id) t2
-                            ON t1.stu_id = t2.stu_id AND t1.cnt >= t2.cnt;
+                            ON t1.stu_id = t2.stu_id AND t1.cnt &gt;= t2.cnt;
     </select>
 
     <select id="listMeasurement" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_measurement
         <where>
-            <foreach collection="list" item="item" open="ms_id IN (" close=")" separator=",">
+            <foreach close=")" collection="list" item="item" open="ms_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
@@ -455,7 +451,7 @@ stusubs AS (
                  INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code
                  INNER JOIN pt_student ps on pc.cls_code = ps.cls_code
         <where>
-            <foreach collection="list" item="item" separator="," open="ms_id IN (" close=")">
+            <foreach close=")" collection="list" item="item" open="ms_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
@@ -522,7 +518,7 @@ stusubs AS (
                              INNER JOIN stu ON stu.cls_code = pt_class_measurement.cls_code
                              INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code
         <where>
-            <foreach collection="list" open="ms_id IN (" close=")" separator="," item="item">
+            <foreach close=")" collection="list" item="item" open="ms_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>

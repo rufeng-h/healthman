@@ -1,387 +1,388 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtCollegeMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        <!--@mbg.generated-->
-        <!--@Table pt_college-->
-        <id column="clg_code" property="clgCode"/>
-        <result column="clg_id" property="clgId"/>
-        <result column="clg_name" property="clgName"/>
-        <result column="clg_principal" property="clgPrincipal"/>
-        <result column="clg_office" property="clgOffice"/>
-        <result column="clg_tel" property="clgTel"/>
-        <result column="clg_home" property="clgHome"/>
-        <result column="clg_created" property="clgCreated"/>
-        <result column="clg_modified" property="clgModified"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, clg_home, clg_created,
-        clg_modified
-    </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        <!--@mbg.generated-->
-        select
-        <include refid="Base_Column_List"/>
-        from pt_college
-        where clg_code = #{clgCode}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        <!--@mbg.generated-->
-        delete
-        from pt_college
-        where clg_code = #{clgCode}
-    </delete>
-    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        <!--@mbg.generated-->
-        insert into pt_college (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel,
-                                clg_home, clg_created, clg_modified)
-        values (#{clgCode}, #{clgId}, #{clgName}, #{clgPrincipal}, #{clgOffice}, #{clgTel},
-                #{clgHome}, #{clgCreated}, #{clgModified})
-    </insert>
-    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        <!--@mbg.generated-->
-        insert into pt_college
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="clgCode != null">
-                clg_code,
-            </if>
-            <if test="clgId != null">
-                clg_id,
-            </if>
-            <if test="clgName != null">
-                clg_name,
-            </if>
-            <if test="clgPrincipal != null">
-                clg_principal,
-            </if>
-            <if test="clgOffice != null">
-                clg_office,
-            </if>
-            <if test="clgTel != null">
-                clg_tel,
-            </if>
-            <if test="clgHome != null">
-                clg_home,
-            </if>
-            <if test="clgCreated != null">
-                clg_created,
-            </if>
-            <if test="clgModified != null">
-                clg_modified,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="clgCode != null">
-                #{clgCode},
-            </if>
-            <if test="clgId != null">
-                #{clgId},
-            </if>
-            <if test="clgName != null">
-                #{clgName},
-            </if>
-            <if test="clgPrincipal != null">
-                #{clgPrincipal},
-            </if>
-            <if test="clgOffice != null">
-                #{clgOffice},
-            </if>
-            <if test="clgTel != null">
-                #{clgTel},
-            </if>
-            <if test="clgHome != null">
-                #{clgHome},
-            </if>
-            <if test="clgCreated != null">
-                #{clgCreated},
-            </if>
-            <if test="clgModified != null">
-                #{clgModified},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        <!--@mbg.generated-->
-        update pt_college
-        <set>
-            <if test="clgId != null">
-                clg_id = #{clgId},
-            </if>
-            <if test="clgName != null">
-                clg_name = #{clgName},
-            </if>
-            <if test="clgPrincipal != null">
-                clg_principal = #{clgPrincipal},
-            </if>
-            <if test="clgOffice != null">
-                clg_office = #{clgOffice},
-            </if>
-            <if test="clgTel != null">
-                clg_tel = #{clgTel},
-            </if>
-            <if test="clgHome != null">
-                clg_home = #{clgHome},
-            </if>
-            <if test="clgCreated != null">
-                clg_created = #{clgCreated},
-            </if>
-            <if test="clgModified != null">
-                clg_modified = #{clgModified},
-            </if>
-        </set>
-        where clg_code = #{clgCode}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        <!--@mbg.generated-->
-        update pt_college
-        set clg_id        = #{clgId},
-            clg_name      = #{clgName},
-            clg_principal = #{clgPrincipal},
-            clg_office    = #{clgOffice},
-            clg_tel       = #{clgTel},
-            clg_home      = #{clgHome},
-            clg_created   = #{clgCreated},
-            clg_modified  = #{clgModified}
-        where clg_code = #{clgCode}
-    </update>
-    <update id="updateBatch" parameterType="java.util.List">
-        <!--@mbg.generated-->
-        update pt_college
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="clg_id = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgId}
-                </foreach>
-            </trim>
-            <trim prefix="clg_name = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgName}
-                </foreach>
-            </trim>
-            <trim prefix="clg_principal = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgPrincipal}
-                </foreach>
-            </trim>
-            <trim prefix="clg_office = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgOffice}
-                </foreach>
-            </trim>
-            <trim prefix="clg_tel = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgTel}
-                </foreach>
-            </trim>
-            <trim prefix="clg_home = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgHome}
-                </foreach>
-            </trim>
-            <trim prefix="clg_created = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgCreated}
-                </foreach>
-            </trim>
-            <trim prefix="clg_modified = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when clg_code = #{item.clgCode} then #{item.clgModified}
-                </foreach>
-            </trim>
-        </trim>
-        where clg_code in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.clgCode}
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtCollege">
+    <!--@mbg.generated-->
+    <!--@Table pt_college-->
+    <id column="clg_code" property="clgCode" />
+    <result column="clg_id" property="clgId" />
+    <result column="clg_name" property="clgName" />
+    <result column="clg_principal" property="clgPrincipal" />
+    <result column="clg_office" property="clgOffice" />
+    <result column="clg_tel" property="clgTel" />
+    <result column="clg_home" property="clgHome" />
+    <result column="clg_created" property="clgCreated" />
+    <result column="clg_modified" property="clgModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, clg_home, clg_created, 
+    clg_modified
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pt_college
+    where clg_code = #{clgCode}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from pt_college
+    where clg_code = #{clgCode}
+  </delete>
+  <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
+    <!--@mbg.generated-->
+    insert into pt_college (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, 
+      clg_home, clg_created, clg_modified)
+    values (#{clgCode}, #{clgId}, #{clgName}, #{clgPrincipal}, #{clgOffice}, #{clgTel}, 
+      #{clgHome}, #{clgCreated}, #{clgModified})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
+    <!--@mbg.generated-->
+    insert into pt_college
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clgCode != null">
+        clg_code,
+      </if>
+      <if test="clgId != null">
+        clg_id,
+      </if>
+      <if test="clgName != null">
+        clg_name,
+      </if>
+      <if test="clgPrincipal != null">
+        clg_principal,
+      </if>
+      <if test="clgOffice != null">
+        clg_office,
+      </if>
+      <if test="clgTel != null">
+        clg_tel,
+      </if>
+      <if test="clgHome != null">
+        clg_home,
+      </if>
+      <if test="clgCreated != null">
+        clg_created,
+      </if>
+      <if test="clgModified != null">
+        clg_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="clgCode != null">
+        #{clgCode},
+      </if>
+      <if test="clgId != null">
+        #{clgId},
+      </if>
+      <if test="clgName != null">
+        #{clgName},
+      </if>
+      <if test="clgPrincipal != null">
+        #{clgPrincipal},
+      </if>
+      <if test="clgOffice != null">
+        #{clgOffice},
+      </if>
+      <if test="clgTel != null">
+        #{clgTel},
+      </if>
+      <if test="clgHome != null">
+        #{clgHome},
+      </if>
+      <if test="clgCreated != null">
+        #{clgCreated},
+      </if>
+      <if test="clgModified != null">
+        #{clgModified},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
+    <!--@mbg.generated-->
+    update pt_college
+    <set>
+      <if test="clgId != null">
+        clg_id = #{clgId},
+      </if>
+      <if test="clgName != null">
+        clg_name = #{clgName},
+      </if>
+      <if test="clgPrincipal != null">
+        clg_principal = #{clgPrincipal},
+      </if>
+      <if test="clgOffice != null">
+        clg_office = #{clgOffice},
+      </if>
+      <if test="clgTel != null">
+        clg_tel = #{clgTel},
+      </if>
+      <if test="clgHome != null">
+        clg_home = #{clgHome},
+      </if>
+      <if test="clgCreated != null">
+        clg_created = #{clgCreated},
+      </if>
+      <if test="clgModified != null">
+        clg_modified = #{clgModified},
+      </if>
+    </set>
+    where clg_code = #{clgCode}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
+    <!--@mbg.generated-->
+    update pt_college
+    set clg_id = #{clgId},
+      clg_name = #{clgName},
+      clg_principal = #{clgPrincipal},
+      clg_office = #{clgOffice},
+      clg_tel = #{clgTel},
+      clg_home = #{clgHome},
+      clg_created = #{clgCreated},
+      clg_modified = #{clgModified}
+    where clg_code = #{clgCode}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_college
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="clg_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgId}
         </foreach>
-    </update>
-    <update id="updateBatchSelective" parameterType="java.util.List">
-        <!--@mbg.generated-->
-        update pt_college
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="clg_id = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgId != null">
-                        when clg_code = #{item.clgCode} then #{item.clgId}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="clg_name = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgName != null">
-                        when clg_code = #{item.clgCode} then #{item.clgName}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="clg_principal = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgPrincipal != null">
-                        when clg_code = #{item.clgCode} then #{item.clgPrincipal}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="clg_office = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgOffice != null">
-                        when clg_code = #{item.clgCode} then #{item.clgOffice}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="clg_tel = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgTel != null">
-                        when clg_code = #{item.clgCode} then #{item.clgTel}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="clg_home = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgHome != null">
-                        when clg_code = #{item.clgCode} then #{item.clgHome}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="clg_created = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgCreated != null">
-                        when clg_code = #{item.clgCode} then #{item.clgCreated}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="clg_modified = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.clgModified != null">
-                        when clg_code = #{item.clgCode} then #{item.clgModified}
-                    </if>
-                </foreach>
-            </trim>
-        </trim>
-        where clg_code in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.clgCode}
+      </trim>
+      <trim prefix="clg_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgName}
         </foreach>
-    </update>
-    <insert id="batchInsert" parameterType="map">
-        <!--@mbg.generated-->
-        insert into pt_college
-                (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, clg_home, clg_created,
-                 clg_modified)
-                values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.clgCode}, #{item.clgId}, #{item.clgName}, #{item.clgPrincipal}, #{item.clgOffice},
-             #{item.clgTel}, #{item.clgHome}, #{item.clgCreated}, #{item.clgModified})
+      </trim>
+      <trim prefix="clg_principal = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgPrincipal}
         </foreach>
-    </insert>
-    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        <!--@mbg.generated-->
-        insert into pt_college
-                (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, clg_home, clg_created,
-                 clg_modified)
-        values (#{clgCode}, #{clgId}, #{clgName}, #{clgPrincipal}, #{clgOffice}, #{clgTel}, #{clgHome},
-                #{clgCreated}, #{clgModified})
-        on duplicate key update clg_code      = #{clgCode},
-                                clg_id        = #{clgId},
-                                clg_name      = #{clgName},
-                                clg_principal = #{clgPrincipal},
-                                clg_office    = #{clgOffice},
-                                clg_tel       = #{clgTel},
-                                clg_home      = #{clgHome},
-                                clg_created   = #{clgCreated},
-                                clg_modified  = #{clgModified}
-    </insert>
-    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        <!--@mbg.generated-->
-        insert into pt_college
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="clgCode != null">
-                clg_code,
-            </if>
-            <if test="clgId != null">
-                clg_id,
-            </if>
-            <if test="clgName != null">
-                clg_name,
-            </if>
-            <if test="clgPrincipal != null">
-                clg_principal,
-            </if>
-            <if test="clgOffice != null">
-                clg_office,
-            </if>
-            <if test="clgTel != null">
-                clg_tel,
-            </if>
-            <if test="clgHome != null">
-                clg_home,
-            </if>
-            <if test="clgCreated != null">
-                clg_created,
-            </if>
-            <if test="clgModified != null">
-                clg_modified,
-            </if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="clgCode != null">
-                #{clgCode},
-            </if>
-            <if test="clgId != null">
-                #{clgId},
-            </if>
-            <if test="clgName != null">
-                #{clgName},
-            </if>
-            <if test="clgPrincipal != null">
-                #{clgPrincipal},
-            </if>
-            <if test="clgOffice != null">
-                #{clgOffice},
-            </if>
-            <if test="clgTel != null">
-                #{clgTel},
-            </if>
-            <if test="clgHome != null">
-                #{clgHome},
-            </if>
-            <if test="clgCreated != null">
-                #{clgCreated},
-            </if>
-            <if test="clgModified != null">
-                #{clgModified},
-            </if>
-        </trim>
-        on duplicate key update
-        <trim suffixOverrides=",">
-            <if test="clgCode != null">
-                clg_code = #{clgCode},
-            </if>
-            <if test="clgId != null">
-                clg_id = #{clgId},
-            </if>
-            <if test="clgName != null">
-                clg_name = #{clgName},
-            </if>
-            <if test="clgPrincipal != null">
-                clg_principal = #{clgPrincipal},
-            </if>
-            <if test="clgOffice != null">
-                clg_office = #{clgOffice},
-            </if>
-            <if test="clgTel != null">
-                clg_tel = #{clgTel},
-            </if>
-            <if test="clgHome != null">
-                clg_home = #{clgHome},
-            </if>
-            <if test="clgCreated != null">
-                clg_created = #{clgCreated},
-            </if>
-            <if test="clgModified != null">
-                clg_modified = #{clgModified},
-            </if>
-        </trim>
-    </insert>
+      </trim>
+      <trim prefix="clg_office = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgOffice}
+        </foreach>
+      </trim>
+      <trim prefix="clg_tel = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgTel}
+        </foreach>
+      </trim>
+      <trim prefix="clg_home = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgHome}
+        </foreach>
+      </trim>
+      <trim prefix="clg_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgCreated}
+        </foreach>
+      </trim>
+      <trim prefix="clg_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when clg_code = #{item.clgCode} then #{item.clgModified}
+        </foreach>
+      </trim>
+    </trim>
+    where clg_code in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.clgCode}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_college
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="clg_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgId != null">
+            when clg_code = #{item.clgCode} then #{item.clgId}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="clg_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgName != null">
+            when clg_code = #{item.clgCode} then #{item.clgName}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="clg_principal = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgPrincipal != null">
+            when clg_code = #{item.clgCode} then #{item.clgPrincipal}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="clg_office = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgOffice != null">
+            when clg_code = #{item.clgCode} then #{item.clgOffice}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="clg_tel = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgTel != null">
+            when clg_code = #{item.clgCode} then #{item.clgTel}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="clg_home = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgHome != null">
+            when clg_code = #{item.clgCode} then #{item.clgHome}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="clg_created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgCreated != null">
+            when clg_code = #{item.clgCode} then #{item.clgCreated}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="clg_modified = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.clgModified != null">
+            when clg_code = #{item.clgCode} then #{item.clgModified}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where clg_code in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.clgCode}
+    </foreach>
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into pt_college
+    (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, clg_home, clg_created, 
+      clg_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.clgCode}, #{item.clgId}, #{item.clgName}, #{item.clgPrincipal}, #{item.clgOffice}, 
+        #{item.clgTel}, #{item.clgHome}, #{item.clgCreated}, #{item.clgModified})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
+    <!--@mbg.generated-->
+    insert into pt_college
+    (clg_code, clg_id, clg_name, clg_principal, clg_office, clg_tel, clg_home, clg_created, 
+      clg_modified)
+    values
+    (#{clgCode}, #{clgId}, #{clgName}, #{clgPrincipal}, #{clgOffice}, #{clgTel}, #{clgHome}, 
+      #{clgCreated}, #{clgModified})
+    on duplicate key update 
+    clg_code = #{clgCode}, 
+    clg_id = #{clgId}, 
+    clg_name = #{clgName}, 
+    clg_principal = #{clgPrincipal}, 
+    clg_office = #{clgOffice}, 
+    clg_tel = #{clgTel}, 
+    clg_home = #{clgHome}, 
+    clg_created = #{clgCreated}, 
+    clg_modified = #{clgModified}
+  </insert>
+  <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtCollege">
+    <!--@mbg.generated-->
+    insert into pt_college
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clgCode != null">
+        clg_code,
+      </if>
+      <if test="clgId != null">
+        clg_id,
+      </if>
+      <if test="clgName != null">
+        clg_name,
+      </if>
+      <if test="clgPrincipal != null">
+        clg_principal,
+      </if>
+      <if test="clgOffice != null">
+        clg_office,
+      </if>
+      <if test="clgTel != null">
+        clg_tel,
+      </if>
+      <if test="clgHome != null">
+        clg_home,
+      </if>
+      <if test="clgCreated != null">
+        clg_created,
+      </if>
+      <if test="clgModified != null">
+        clg_modified,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clgCode != null">
+        #{clgCode},
+      </if>
+      <if test="clgId != null">
+        #{clgId},
+      </if>
+      <if test="clgName != null">
+        #{clgName},
+      </if>
+      <if test="clgPrincipal != null">
+        #{clgPrincipal},
+      </if>
+      <if test="clgOffice != null">
+        #{clgOffice},
+      </if>
+      <if test="clgTel != null">
+        #{clgTel},
+      </if>
+      <if test="clgHome != null">
+        #{clgHome},
+      </if>
+      <if test="clgCreated != null">
+        #{clgCreated},
+      </if>
+      <if test="clgModified != null">
+        #{clgModified},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="clgCode != null">
+        clg_code = #{clgCode},
+      </if>
+      <if test="clgId != null">
+        clg_id = #{clgId},
+      </if>
+      <if test="clgName != null">
+        clg_name = #{clgName},
+      </if>
+      <if test="clgPrincipal != null">
+        clg_principal = #{clgPrincipal},
+      </if>
+      <if test="clgOffice != null">
+        clg_office = #{clgOffice},
+      </if>
+      <if test="clgTel != null">
+        clg_tel = #{clgTel},
+      </if>
+      <if test="clgHome != null">
+        clg_home = #{clgHome},
+      </if>
+      <if test="clgCreated != null">
+        clg_created = #{clgCreated},
+      </if>
+      <if test="clgModified != null">
+        clg_modified = #{clgModified},
+      </if>
+    </trim>
+  </insert>
     <insert id="batchInsertSelective">
         INSERT INTO pt_college (clg_code, clg_name, clg_principal, clg_office, clg_tel, clg_home) VALUES
         <foreach collection="items" item="item" separator=",">
@@ -391,19 +392,19 @@
 
     <select id="listCollege" resultType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_college;
     </select>
     <select id="getCollege" resultType="com.rufeng.healthman.pojo.ptdo.PtCollege">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_college
         WHERE clg_code = #{clgCode}
     </select>
 
     <select id="getCollegeByName" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_college
         WHERE clg_name = #{clgName}
     </select>
@@ -413,7 +414,7 @@
                clg_name
         FROM pt_college
         <where>
-            <foreach collection="items" item="item" open="clg_code IN (" close=")" separator=",">
+            <foreach close=")" collection="items" item="item" open="clg_code IN (" separator=",">
                 #{item}
             </foreach>
         </where>

@@ -1,6 +1,7 @@
 package com.rufeng.healthman.service;
 
 import com.alibaba.excel.EasyExcel;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.util.AuthorityUtils;
@@ -35,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -148,7 +150,7 @@ public class PtAdminService {
         /* 更新上次登录时间 */
         ptAdminMapper.updateByPrimaryKeySelective(PtAdmin
                 .builder().adminId(admin.getAdminId())
-                .adminLastLogin(new Date())
+                .adminLastLogin(LocalDateTime.now())
                 .build());
         /* 返回结果 */
         UserInfo info = new AdminInfo(admin, clgName, hadleRoles(roles));

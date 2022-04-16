@@ -1,164 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtPrescriptionMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtPrescription">
-        <!--@mbg.generated-->
-        <!--@Table pt_prescription-->
-        <result column="prs_id" property="prsId"/>
-        <result column="comp_id" property="compId"/>
-        <result column="prs_level" property="prsLevel"/>
-        <result column="prs_text" property="prsText"/>
-        <result column="prs_created" property="prsCreated"/>
-        <result column="prs_modified" property="prsModified"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified
-    </sql>
-    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
-        <!--@mbg.generated-->
-        insert into pt_prescription (prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified)
-        values (#{prsId}, #{compId}, #{prsLevel}, #{prsText}, #{prsCreated}, #{prsModified})
-    </insert>
-    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
-        <!--@mbg.generated-->
-        insert into pt_prescription
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="prsId != null">
-                prs_id,
-            </if>
-            <if test="compId != null">
-                comp_id,
-            </if>
-            <if test="prsLevel != null">
-                prs_level,
-            </if>
-            <if test="prsText != null">
-                prs_text,
-            </if>
-            <if test="prsCreated != null">
-                prs_created,
-            </if>
-            <if test="prsModified != null">
-                prs_modified,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="prsId != null">
-                #{prsId},
-            </if>
-            <if test="compId != null">
-                #{compId},
-            </if>
-            <if test="prsLevel != null">
-                #{prsLevel},
-            </if>
-            <if test="prsText != null">
-                #{prsText},
-            </if>
-            <if test="prsCreated != null">
-                #{prsCreated},
-            </if>
-            <if test="prsModified != null">
-                #{prsModified},
-            </if>
-        </trim>
-    </insert>
-    <insert id="batchInsert" parameterType="map">
-        <!--@mbg.generated-->
-        insert into pt_prescription
-            (prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.prsId}, #{item.compId}, #{item.prsLevel}, #{item.prsText}, #{item.prsCreated},
-             #{item.prsModified})
-        </foreach>
-    </insert>
-    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
-        <!--@mbg.generated-->
-        insert into pt_prescription
-            (prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified)
-        values (#{prsId}, #{compId}, #{prsLevel}, #{prsText}, #{prsCreated}, #{prsModified})
-        on duplicate key update prs_id       = #{prsId},
-                                comp_id      = #{compId},
-                                prs_level    = #{prsLevel},
-                                prs_text     = #{prsText},
-                                prs_created  = #{prsCreated},
-                                prs_modified = #{prsModified}
-    </insert>
-    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
-        <!--@mbg.generated-->
-        insert into pt_prescription
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="prsId != null">
-                prs_id,
-            </if>
-            <if test="compId != null">
-                comp_id,
-            </if>
-            <if test="prsLevel != null">
-                prs_level,
-            </if>
-            <if test="prsText != null">
-                prs_text,
-            </if>
-            <if test="prsCreated != null">
-                prs_created,
-            </if>
-            <if test="prsModified != null">
-                prs_modified,
-            </if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="prsId != null">
-                #{prsId},
-            </if>
-            <if test="compId != null">
-                #{compId},
-            </if>
-            <if test="prsLevel != null">
-                #{prsLevel},
-            </if>
-            <if test="prsText != null">
-                #{prsText},
-            </if>
-            <if test="prsCreated != null">
-                #{prsCreated},
-            </if>
-            <if test="prsModified != null">
-                #{prsModified},
-            </if>
-        </trim>
-        on duplicate key update
-        <trim suffixOverrides=",">
-            <if test="prsId != null">
-                prs_id = #{prsId},
-            </if>
-            <if test="compId != null">
-                comp_id = #{compId},
-            </if>
-            <if test="prsLevel != null">
-                prs_level = #{prsLevel},
-            </if>
-            <if test="prsText != null">
-                prs_text = #{prsText},
-            </if>
-            <if test="prsCreated != null">
-                prs_created = #{prsCreated},
-            </if>
-            <if test="prsModified != null">
-                prs_modified = #{prsModified},
-            </if>
-        </trim>
-    </insert>
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtPrescription">
+    <!--@mbg.generated-->
+    <!--@Table pt_prescription-->
+    <result column="prs_id" property="prsId" />
+    <result column="comp_id" property="compId" />
+    <result column="prs_level" property="prsLevel" />
+    <result column="prs_text" property="prsText" />
+    <result column="prs_created" property="prsCreated" />
+    <result column="prs_modified" property="prsModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified
+  </sql>
+  <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
+    <!--@mbg.generated-->
+    insert into pt_prescription (prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified
+      )
+    values (#{prsId}, #{compId}, #{prsLevel}, #{prsText}, #{prsCreated}, #{prsModified}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
+    <!--@mbg.generated-->
+    insert into pt_prescription
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="prsId != null">
+        prs_id,
+      </if>
+      <if test="compId != null">
+        comp_id,
+      </if>
+      <if test="prsLevel != null">
+        prs_level,
+      </if>
+      <if test="prsText != null">
+        prs_text,
+      </if>
+      <if test="prsCreated != null">
+        prs_created,
+      </if>
+      <if test="prsModified != null">
+        prs_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="prsId != null">
+        #{prsId},
+      </if>
+      <if test="compId != null">
+        #{compId},
+      </if>
+      <if test="prsLevel != null">
+        #{prsLevel},
+      </if>
+      <if test="prsText != null">
+        #{prsText},
+      </if>
+      <if test="prsCreated != null">
+        #{prsCreated},
+      </if>
+      <if test="prsModified != null">
+        #{prsModified},
+      </if>
+    </trim>
+  </insert>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into pt_prescription
+    (prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.prsId}, #{item.compId}, #{item.prsLevel}, #{item.prsText}, #{item.prsCreated}, 
+        #{item.prsModified})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
+    <!--@mbg.generated-->
+    insert into pt_prescription
+    (prs_id, comp_id, prs_level, prs_text, prs_created, prs_modified)
+    values
+    (#{prsId}, #{compId}, #{prsLevel}, #{prsText}, #{prsCreated}, #{prsModified})
+    on duplicate key update 
+    prs_id = #{prsId}, 
+    comp_id = #{compId}, 
+    prs_level = #{prsLevel}, 
+    prs_text = #{prsText}, 
+    prs_created = #{prsCreated}, 
+    prs_modified = #{prsModified}
+  </insert>
+  <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtPrescription">
+    <!--@mbg.generated-->
+    insert into pt_prescription
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="prsId != null">
+        prs_id,
+      </if>
+      <if test="compId != null">
+        comp_id,
+      </if>
+      <if test="prsLevel != null">
+        prs_level,
+      </if>
+      <if test="prsText != null">
+        prs_text,
+      </if>
+      <if test="prsCreated != null">
+        prs_created,
+      </if>
+      <if test="prsModified != null">
+        prs_modified,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="prsId != null">
+        #{prsId},
+      </if>
+      <if test="compId != null">
+        #{compId},
+      </if>
+      <if test="prsLevel != null">
+        #{prsLevel},
+      </if>
+      <if test="prsText != null">
+        #{prsText},
+      </if>
+      <if test="prsCreated != null">
+        #{prsCreated},
+      </if>
+      <if test="prsModified != null">
+        #{prsModified},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="prsId != null">
+        prs_id = #{prsId},
+      </if>
+      <if test="compId != null">
+        comp_id = #{compId},
+      </if>
+      <if test="prsLevel != null">
+        prs_level = #{prsLevel},
+      </if>
+      <if test="prsText != null">
+        prs_text = #{prsText},
+      </if>
+      <if test="prsCreated != null">
+        prs_created = #{prsCreated},
+      </if>
+      <if test="prsModified != null">
+        prs_modified = #{prsModified},
+      </if>
+    </trim>
+  </insert>
 
     <select id="listPrsByIds" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM pt_prescription
         <where>
-            <foreach collection="list" item="item" separator="," open="prs_id IN (" close=")">
+            <foreach close=")" collection="list" item="item" open="prs_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>

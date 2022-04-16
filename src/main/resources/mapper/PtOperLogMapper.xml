@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.healthman.mapper.PtOperLogMapper">
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtOperLog">
+    <!--@mbg.generated-->
+    <!--@Table pt_oper_log-->
+    <id column="oper_id" property="operId" />
+    <result column="oper_module" property="operModule" />
+    <result column="oper_type" property="operType" />
+    <result column="oper_desc" property="operDesc" />
+    <result column="oper_req_param" property="operReqParam" />
+    <result column="oper_res" property="operRes" />
+    <result column="oper_method" property="operMethod" />
+    <result column="oper_admin_id" property="operAdminId" />
+    <result column="oper_admin_name" property="operAdminName" />
+    <result column="oper_uri" property="operUri" />
+    <result column="oper_ip" property="operIp" />
+    <result column="oper_created_time" property="operCreatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    oper_id, oper_module, oper_type, oper_desc, oper_req_param, oper_res, oper_method, 
+    oper_admin_id, oper_admin_name, oper_uri, oper_ip, oper_created_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pt_oper_log
+    where oper_id = #{operId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from pt_oper_log
+    where oper_id = #{operId}
+  </delete>
+  <insert id="insert" keyColumn="oper_id" keyProperty="operId" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperLog" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_oper_log (oper_module, oper_type, oper_desc, oper_req_param, oper_res, oper_method, 
+      oper_admin_id, oper_admin_name, oper_uri, oper_ip, oper_created_time)
+    values (#{operModule}, #{operType}, #{operDesc}, #{operReqParam}, #{operRes}, #{operMethod}, 
+      #{operAdminId}, #{operAdminName}, #{operUri}, #{operIp}, #{operCreatedTime})
+  </insert>
+  <insert id="insertSelective" keyColumn="oper_id" keyProperty="operId" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperLog" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_oper_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operModule != null">
+        oper_module,
+      </if>
+      <if test="operType != null">
+        oper_type,
+      </if>
+      <if test="operDesc != null">
+        oper_desc,
+      </if>
+      <if test="operReqParam != null">
+        oper_req_param,
+      </if>
+      <if test="operRes != null">
+        oper_res,
+      </if>
+      <if test="operMethod != null">
+        oper_method,
+      </if>
+      <if test="operAdminId != null">
+        oper_admin_id,
+      </if>
+      <if test="operAdminName != null">
+        oper_admin_name,
+      </if>
+      <if test="operUri != null">
+        oper_uri,
+      </if>
+      <if test="operIp != null">
+        oper_ip,
+      </if>
+      <if test="operCreatedTime != null">
+        oper_created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="operModule != null">
+        #{operModule},
+      </if>
+      <if test="operType != null">
+        #{operType},
+      </if>
+      <if test="operDesc != null">
+        #{operDesc},
+      </if>
+      <if test="operReqParam != null">
+        #{operReqParam},
+      </if>
+      <if test="operRes != null">
+        #{operRes},
+      </if>
+      <if test="operMethod != null">
+        #{operMethod},
+      </if>
+      <if test="operAdminId != null">
+        #{operAdminId},
+      </if>
+      <if test="operAdminName != null">
+        #{operAdminName},
+      </if>
+      <if test="operUri != null">
+        #{operUri},
+      </if>
+      <if test="operIp != null">
+        #{operIp},
+      </if>
+      <if test="operCreatedTime != null">
+        #{operCreatedTime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperLog">
+    <!--@mbg.generated-->
+    update pt_oper_log
+    <set>
+      <if test="operModule != null">
+        oper_module = #{operModule},
+      </if>
+      <if test="operType != null">
+        oper_type = #{operType},
+      </if>
+      <if test="operDesc != null">
+        oper_desc = #{operDesc},
+      </if>
+      <if test="operReqParam != null">
+        oper_req_param = #{operReqParam},
+      </if>
+      <if test="operRes != null">
+        oper_res = #{operRes},
+      </if>
+      <if test="operMethod != null">
+        oper_method = #{operMethod},
+      </if>
+      <if test="operAdminId != null">
+        oper_admin_id = #{operAdminId},
+      </if>
+      <if test="operAdminName != null">
+        oper_admin_name = #{operAdminName},
+      </if>
+      <if test="operUri != null">
+        oper_uri = #{operUri},
+      </if>
+      <if test="operIp != null">
+        oper_ip = #{operIp},
+      </if>
+      <if test="operCreatedTime != null">
+        oper_created_time = #{operCreatedTime},
+      </if>
+    </set>
+    where oper_id = #{operId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperLog">
+    <!--@mbg.generated-->
+    update pt_oper_log
+    set oper_module = #{operModule},
+      oper_type = #{operType},
+      oper_desc = #{operDesc},
+      oper_req_param = #{operReqParam},
+      oper_res = #{operRes},
+      oper_method = #{operMethod},
+      oper_admin_id = #{operAdminId},
+      oper_admin_name = #{operAdminName},
+      oper_uri = #{operUri},
+      oper_ip = #{operIp},
+      oper_created_time = #{operCreatedTime}
+    where oper_id = #{operId}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_oper_log
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="oper_module = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operModule}
+        </foreach>
+      </trim>
+      <trim prefix="oper_type = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operType}
+        </foreach>
+      </trim>
+      <trim prefix="oper_desc = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operDesc}
+        </foreach>
+      </trim>
+      <trim prefix="oper_req_param = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operReqParam}
+        </foreach>
+      </trim>
+      <trim prefix="oper_res = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operRes}
+        </foreach>
+      </trim>
+      <trim prefix="oper_method = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operMethod}
+        </foreach>
+      </trim>
+      <trim prefix="oper_admin_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operAdminId}
+        </foreach>
+      </trim>
+      <trim prefix="oper_admin_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operAdminName}
+        </foreach>
+      </trim>
+      <trim prefix="oper_uri = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operUri}
+        </foreach>
+      </trim>
+      <trim prefix="oper_ip = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operIp}
+        </foreach>
+      </trim>
+      <trim prefix="oper_created_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when oper_id = #{item.operId} then #{item.operCreatedTime}
+        </foreach>
+      </trim>
+    </trim>
+    where oper_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.operId}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_oper_log
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="oper_module = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operModule != null">
+            when oper_id = #{item.operId} then #{item.operModule}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_type = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operType != null">
+            when oper_id = #{item.operId} then #{item.operType}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_desc = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operDesc != null">
+            when oper_id = #{item.operId} then #{item.operDesc}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_req_param = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operReqParam != null">
+            when oper_id = #{item.operId} then #{item.operReqParam}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_res = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operRes != null">
+            when oper_id = #{item.operId} then #{item.operRes}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_method = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operMethod != null">
+            when oper_id = #{item.operId} then #{item.operMethod}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_admin_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operAdminId != null">
+            when oper_id = #{item.operId} then #{item.operAdminId}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_admin_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operAdminName != null">
+            when oper_id = #{item.operId} then #{item.operAdminName}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_uri = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operUri != null">
+            when oper_id = #{item.operId} then #{item.operUri}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_ip = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operIp != null">
+            when oper_id = #{item.operId} then #{item.operIp}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="oper_created_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.operCreatedTime != null">
+            when oper_id = #{item.operId} then #{item.operCreatedTime}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where oper_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.operId}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="oper_id" keyProperty="operId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_oper_log
+    (oper_module, oper_type, oper_desc, oper_req_param, oper_res, oper_method, oper_admin_id, 
+      oper_admin_name, oper_uri, oper_ip, oper_created_time)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.operModule}, #{item.operType}, #{item.operDesc}, #{item.operReqParam}, #{item.operRes}, 
+        #{item.operMethod}, #{item.operAdminId}, #{item.operAdminName}, #{item.operUri}, 
+        #{item.operIp}, #{item.operCreatedTime})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="oper_id" keyProperty="operId" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperLog" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_oper_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operId != null">
+        oper_id,
+      </if>
+      oper_module,
+      oper_type,
+      oper_desc,
+      oper_req_param,
+      oper_res,
+      oper_method,
+      oper_admin_id,
+      oper_admin_name,
+      oper_uri,
+      oper_ip,
+      oper_created_time,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operId != null">
+        #{operId},
+      </if>
+      #{operModule},
+      #{operType},
+      #{operDesc},
+      #{operReqParam},
+      #{operRes},
+      #{operMethod},
+      #{operAdminId},
+      #{operAdminName},
+      #{operUri},
+      #{operIp},
+      #{operCreatedTime},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="operId != null">
+        oper_id = #{operId},
+      </if>
+      oper_module = #{operModule},
+      oper_type = #{operType},
+      oper_desc = #{operDesc},
+      oper_req_param = #{operReqParam},
+      oper_res = #{operRes},
+      oper_method = #{operMethod},
+      oper_admin_id = #{operAdminId},
+      oper_admin_name = #{operAdminName},
+      oper_uri = #{operUri},
+      oper_ip = #{operIp},
+      oper_created_time = #{operCreatedTime},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="oper_id" keyProperty="operId" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperLog" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_oper_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operId != null">
+        oper_id,
+      </if>
+      <if test="operModule != null">
+        oper_module,
+      </if>
+      <if test="operType != null">
+        oper_type,
+      </if>
+      <if test="operDesc != null">
+        oper_desc,
+      </if>
+      <if test="operReqParam != null">
+        oper_req_param,
+      </if>
+      <if test="operRes != null">
+        oper_res,
+      </if>
+      <if test="operMethod != null">
+        oper_method,
+      </if>
+      <if test="operAdminId != null">
+        oper_admin_id,
+      </if>
+      <if test="operAdminName != null">
+        oper_admin_name,
+      </if>
+      <if test="operUri != null">
+        oper_uri,
+      </if>
+      <if test="operIp != null">
+        oper_ip,
+      </if>
+      <if test="operCreatedTime != null">
+        oper_created_time,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operId != null">
+        #{operId},
+      </if>
+      <if test="operModule != null">
+        #{operModule},
+      </if>
+      <if test="operType != null">
+        #{operType},
+      </if>
+      <if test="operDesc != null">
+        #{operDesc},
+      </if>
+      <if test="operReqParam != null">
+        #{operReqParam},
+      </if>
+      <if test="operRes != null">
+        #{operRes},
+      </if>
+      <if test="operMethod != null">
+        #{operMethod},
+      </if>
+      <if test="operAdminId != null">
+        #{operAdminId},
+      </if>
+      <if test="operAdminName != null">
+        #{operAdminName},
+      </if>
+      <if test="operUri != null">
+        #{operUri},
+      </if>
+      <if test="operIp != null">
+        #{operIp},
+      </if>
+      <if test="operCreatedTime != null">
+        #{operCreatedTime},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="operId != null">
+        oper_id = #{operId},
+      </if>
+      <if test="operModule != null">
+        oper_module = #{operModule},
+      </if>
+      <if test="operType != null">
+        oper_type = #{operType},
+      </if>
+      <if test="operDesc != null">
+        oper_desc = #{operDesc},
+      </if>
+      <if test="operReqParam != null">
+        oper_req_param = #{operReqParam},
+      </if>
+      <if test="operRes != null">
+        oper_res = #{operRes},
+      </if>
+      <if test="operMethod != null">
+        oper_method = #{operMethod},
+      </if>
+      <if test="operAdminId != null">
+        oper_admin_id = #{operAdminId},
+      </if>
+      <if test="operAdminName != null">
+        oper_admin_name = #{operAdminName},
+      </if>
+      <if test="operUri != null">
+        oper_uri = #{operUri},
+      </if>
+      <if test="operIp != null">
+        oper_ip = #{operIp},
+      </if>
+      <if test="operCreatedTime != null">
+        oper_created_time = #{operCreatedTime},
+      </if>
+    </trim>
+  </insert>
+</mapper>

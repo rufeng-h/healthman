@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author rufeng
- * @time 2022-04-09 15:14
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -17,6 +17,7 @@ import org.apache.ibatis.annotations.Param;
 public interface PtPrescriptionMapper {
     /**
      * insert record to table
+     *
      * @param record the record
      * @return insert count
      */
@@ -28,6 +29,7 @@ public interface PtPrescriptionMapper {
 
     /**
      * insert record to table selective
+     *
      * @param record the record
      * @return insert count
      */

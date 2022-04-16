@@ -1,7 +1,7 @@
 package com.rufeng.healthman.pojo.ptdo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import lombok.AllArgsConstructor;
@@ -12,19 +12,18 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-03-28 0:33
- * @package com.rufeng.healthman.pojo.DO
+ * @time 2022-04-16 14:17
+ * @package com.rufeng.healthman.pojo.ptdo
  * @description TODO
  */
 
 /**
  * 角色表
- * @author rufeng
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PtRole implements Serializable {
     private Long roleId;
 
@@ -36,9 +35,9 @@ public class PtRole implements Serializable {
      */
     private Byte roleValue;
 
-    private Date roleCreated;
+    private LocalDateTime roleCreated;
 
-    private Date roleModified;
+    private LocalDateTime roleModified;
 
     /**
      * 角色类型 SYSTEM COLLEGE CLASS

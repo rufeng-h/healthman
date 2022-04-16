@@ -3,11 +3,12 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.pojo.file.converter.StringToGenderConverter;
+import com.rufeng.healthman.pojo.file.converter.StringGenderConverter;
+import com.rufeng.healthman.pojo.file.converter.StringLocalDateConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @author rufeng
@@ -23,8 +24,8 @@ public class PtStudentExcel {
     @ExcelProperty("姓名")
     private String stuName;
     @ExcelProperty(value = "出生日期")
-    private Date stuBirth;
-    @ExcelProperty(value = "性别", converter = StringToGenderConverter.class)
+    private LocalDate stuBirth;
+    @ExcelProperty(value = "性别")
     private GenderEnum stuGender;
     @ExcelProperty("班级")
     private String clsName;

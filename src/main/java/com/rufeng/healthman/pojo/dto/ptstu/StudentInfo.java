@@ -5,8 +5,7 @@ import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author rufeng
@@ -22,8 +21,8 @@ public class StudentInfo {
     private LocalDate stuBirth;
     private GenderEnum stuGender;
     private String clsCode;
-    private Date stuCreated;
-    private Date stuLastLogin;
+    private LocalDateTime stuCreated;
+    private LocalDateTime stuLastLogin;
     private String avatar;
     private String stuDesp;
 
@@ -35,7 +34,7 @@ public class StudentInfo {
         this.sid = student.getSid();
         this.stuId = student.getStuId();
         this.stuName = student.getStuName();
-        this.stuBirth = LocalDate.ofInstant(student.getStuBirth().toInstant(), ZoneId.systemDefault());
+        this.stuBirth = student.getStuBirth();
         this.stuGender = student.getStuGender();
         this.clsCode = student.getClsCode();
         this.stuCreated = student.getStuCreated();

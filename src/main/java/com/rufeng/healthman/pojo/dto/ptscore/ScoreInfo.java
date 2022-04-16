@@ -4,6 +4,7 @@ import com.rufeng.healthman.pojo.ptdo.PtScore;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -18,7 +19,7 @@ public class ScoreInfo {
     private Long scoId;
     private String subName;
     private BigDecimal scoData;
-    private Date scoCreated;
+    private LocalDateTime scoCreated;
     private String scoLevel;
     private Integer score;
 

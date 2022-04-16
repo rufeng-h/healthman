@@ -3,6 +3,7 @@ package com.rufeng.healthman.pojo.dto.ptsubject;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Date;
 public class SubjectStatus {
     private String subName;
     private String subDesp;
-    private Date subCreated;
+    private LocalDateTime subCreated;
     private Long subId;
     private Boolean status;
 

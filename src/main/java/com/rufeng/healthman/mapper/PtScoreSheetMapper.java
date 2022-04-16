@@ -1,22 +1,15 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;
-import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
-import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;
-import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
-import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
+import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:23
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -26,10 +19,10 @@ public interface PtScoreSheetMapper {
     /**
      * delete by primary key
      *
-     * @param subjectId primaryKey
+     * @param subId primaryKey
      * @return deleteCount
      */
-    int deleteByPrimaryKey(@Param("subjectId") Long subjectId, @Param("gender") String gender, @Param("grade") Integer grade, @Param("upper") BigDecimal upper, @Param("lower") BigDecimal lower);
+    int deleteByPrimaryKey(@Param("subId") Long subId, @Param("gender") String gender, @Param("grade") Integer grade, @Param("upper") BigDecimal upper, @Param("lower") BigDecimal lower);
 
     /**
      * insert record to table
@@ -54,10 +47,10 @@ public interface PtScoreSheetMapper {
     /**
      * select by primary key
      *
-     * @param subjectId primary key
+     * @param subId primary key
      * @return object by primary key
      */
-    PtScoreSheet selectByPrimaryKey(@Param("subjectId") Long subjectId, @Param("gender") String gender, @Param("grade") Integer grade, @Param("upper") BigDecimal upper, @Param("lower") BigDecimal lower);
+    PtScoreSheet selectByPrimaryKey(@Param("subId") Long subId, @Param("gender") String gender, @Param("grade") Integer grade, @Param("upper") BigDecimal upper, @Param("lower") BigDecimal lower);
 
     /**
      * update record selective
@@ -88,7 +81,6 @@ public interface PtScoreSheetMapper {
      * @return count
      */
     Integer batchInsertSelective(@Param("items") List<PtScoreSheetExcel> sheets);
-
 
     List<PtScoreSheet> listScoreSheetBySubStudent(SubStudent sheetKey);
 

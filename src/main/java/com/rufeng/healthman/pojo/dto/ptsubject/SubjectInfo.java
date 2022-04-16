@@ -4,8 +4,7 @@ import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ import java.util.List;
 public class SubjectInfo {
     private String subName;
     private String subDesp;
-    private Date subCreated;
+    private LocalDateTime subCreated;
     private Long subId;
     private Long compId;
     private String compName;

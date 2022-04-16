@@ -1,8 +1,7 @@
 package com.rufeng.healthman.pojo.ptdo;
 
 import java.io.Serializable;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,13 +9,19 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * 科目
  * @author rufeng
+ * @time 2022-04-16 14:17
+ * @package com.rufeng.healthman.pojo.ptdo
+ * @description TODO
+ */
+
+/**
+ * 科目
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PtSubject implements Serializable {
     private Long subId;
 
@@ -30,9 +35,9 @@ public class PtSubject implements Serializable {
      */
     private String subDesp;
 
-    private Date subCreated;
+    private LocalDateTime subCreated;
 
-    private Date subModified;
+    private LocalDateTime subModified;
 
     /**
      * 运动能力id

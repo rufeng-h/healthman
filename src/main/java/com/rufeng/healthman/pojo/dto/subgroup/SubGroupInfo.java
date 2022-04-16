@@ -4,7 +4,7 @@ import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,8 +17,8 @@ import java.util.List;
 public class SubGroupInfo {
     private String grpName;
     private Long grpId;
-    private Date grpModified;
-    private Date grpCreated;
+    private LocalDateTime grpModified;
+    private LocalDateTime grpCreated;
     private String grpDesp;
     private List<PtSubject> subjects;
     private String grpCreatedAdminName;

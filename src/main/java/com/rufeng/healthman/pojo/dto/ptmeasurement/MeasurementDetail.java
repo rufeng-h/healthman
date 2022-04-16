@@ -3,6 +3,7 @@ package com.rufeng.healthman.pojo.dto.ptmeasurement;
 import com.rufeng.healthman.pojo.ptdo.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +17,9 @@ import java.util.List;
 public class MeasurementDetail {
     private Long msId;
     private String msName;
-    private Date msModified;
+    private LocalDateTime msModified;
     private String msDesp;
-    private Date msCreated;
+    private LocalDateTime msCreated;
     private String grpName;
     private Long grpId;
     private String msCreatedAdminId;

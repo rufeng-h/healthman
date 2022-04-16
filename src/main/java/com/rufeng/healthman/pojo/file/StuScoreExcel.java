@@ -4,12 +4,12 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
-import com.rufeng.healthman.pojo.file.converter.StringToGenderConverter;
+import com.rufeng.healthman.pojo.file.converter.StringGenderConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author rufeng
@@ -25,7 +25,7 @@ public class StuScoreExcel implements Comparable<StuScoreExcel> {
     private String stuId;
     @ExcelProperty("姓名")
     private String stuName;
-    @ExcelProperty(value = "性别", converter = StringToGenderConverter.class)
+    @ExcelProperty(value = "性别", converter = StringGenderConverter.class)
     private GenderEnum stuGender;
     @ExcelProperty("测试编号")
     private Long msId;
@@ -38,7 +38,7 @@ public class StuScoreExcel implements Comparable<StuScoreExcel> {
     @ExcelProperty("等级")
     private String scoLevel;
     @ExcelProperty(value = "测试时间")
-    private Date scoCreated;
+    private LocalDateTime scoCreated;
 
     public StuScoreExcel(StudentBaseInfo stu, String subName, PtScore score) {
         this.msId = score.getMsId();

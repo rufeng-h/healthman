@@ -6,8 +6,8 @@ import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,8 +22,8 @@ public abstract class UserInfo {
     private String userId;
     private String username;
     private String avatar;
-    private Date createdTime;
-    private Date lastLoginTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime lastLoginTime;
     private String desp;
     private List<RoleInfo> roles;
 

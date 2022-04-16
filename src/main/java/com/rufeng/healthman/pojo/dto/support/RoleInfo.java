@@ -4,6 +4,7 @@ import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.pojo.ptdo.PtRole;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
 public class RoleInfo {
     private String roleName;
     private byte roleValue;
-    private Date roleCreated;
+    private LocalDateTime roleCreated;
     private long roleId;
     private String target;
     private RoleTypeEnum roleType;

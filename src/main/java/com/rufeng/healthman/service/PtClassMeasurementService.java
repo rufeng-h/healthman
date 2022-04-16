@@ -1,8 +1,8 @@
 package com.rufeng.healthman.service;
 
-import com.rufeng.healthman.mapper.PtClassMesurementMapper;
+import com.rufeng.healthman.mapper.PtClassMeasurementMapper;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
-import com.rufeng.healthman.pojo.ptdo.PtClassMesurement;
+import com.rufeng.healthman.pojo.ptdo.PtClassMeasurement;
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -18,31 +18,31 @@ import java.util.List;
  */
 @Service
 public class PtClassMeasurementService {
-    private final PtClassMesurementMapper ptClassMesurementMapper;
+    private final PtClassMeasurementMapper ptClassMeasurementMapper;
 
-    public PtClassMeasurementService(PtClassMesurementMapper ptClassMesurementMapper) {
-        this.ptClassMesurementMapper = ptClassMesurementMapper;
+    public PtClassMeasurementService(PtClassMeasurementMapper ptClassMeasurementMapper) {
+        this.ptClassMeasurementMapper = ptClassMeasurementMapper;
     }
 
-    public int batchInsertSelective(List<PtClassMesurement> list) {
+    public int batchInsertSelective(List<PtClassMeasurement> list) {
         if (list.size() == 0) {
             return 0;
         }
-        return ptClassMesurementMapper.batchInsertSelective(list);
+        return ptClassMeasurementMapper.batchInsertSelective(list);
     }
 
     public int delByMsId(Long msId) {
-        return ptClassMesurementMapper.deleteByMsId(msId);
+        return ptClassMeasurementMapper.deleteByMsId(msId);
     }
 
     public List<PtMeasurementClass> listClsMeasurementByMsIds(@NonNull List<Long> msIds) {
         if (msIds.size() == 0) {
             return Collections.emptyList();
         }
-        return ptClassMesurementMapper.listClsMeasurementByMsIds(msIds);
+        return ptClassMeasurementMapper.listClsMeasurementByMsIds(msIds);
     }
 
     public List<PtClass> listClassByMsId(Long msId) {
-        return ptClassMesurementMapper.listClsMeasurementByMsId(msId);
+        return ptClassMeasurementMapper.listClsMeasurementByMsId(msId);
     }
 }

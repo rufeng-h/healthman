@@ -1,19 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;
-import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.ptdo.PtSubject;
-import com.rufeng.healthman.pojo.query.PtSubjectQuery;
-import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.ptdo.PtSubject;
+import java.util.List;import java.util.Map;
+import com.rufeng.healthman.pojo.query.PtSubjectQuery;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
  * @author rufeng
- * @time 2022-04-09 15:13
+ * @time 2022-04-16 14:17
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */

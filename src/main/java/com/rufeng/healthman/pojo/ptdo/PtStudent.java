@@ -1,7 +1,8 @@
 package com.rufeng.healthman.pojo.ptdo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.rufeng.healthman.enums.GenderEnum;
 import lombok.AllArgsConstructor;
@@ -12,74 +13,64 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-03-27 20:23
- * @package com.rufeng.healthman.pojo.DO
+ * @time 2022-04-16 14:17
+ * @package com.rufeng.healthman.pojo.ptdo
  * @description TODO
  */
 
 /**
-    * 学生表
- * @author rufeng
+ * 学生表
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PtStudent implements Serializable {
-    /**
-    * 学号
-    */
     private String stuId;
 
     /**
-    * id
-    */
+     * id
+     */
     private Long sid;
 
-    /**
-    * 姓名
-    */
     private String stuName;
 
     /**
-    * 出生日期
-    */
-    private Date stuBirth;
+     * 出生日期
+     */
+    private LocalDate stuBirth;
 
     /**
-    * 性别
-    */
+     * 性别
+     */
     private GenderEnum stuGender;
 
     /**
-    * 登陆密码
-    */
+     * 登陆密码
+     */
     private String password;
 
     /**
-    * 头像
-    */
+     * 头像
+     */
     private String avatar;
 
-    /**
-    * 班级代码
-    */
     private String clsCode;
 
     /**
-    * 创建时间
-    */
-    private Date stuCreated;
+     * 创建时间
+     */
+    private LocalDateTime stuCreated;
 
     /**
-    * 上次修改时间
-    */
-    private Date stuModified;
+     * 上次修改时间
+     */
+    private LocalDateTime stuModified;
 
     /**
-    * 上次登录
-    */
-    private Date stuLastLogin;
+     * 上次登录
+     */
+    private LocalDateTime stuLastLogin;
 
     private String stuDesp;
 
