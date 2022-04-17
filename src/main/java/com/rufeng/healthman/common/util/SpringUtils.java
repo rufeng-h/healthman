@@ -2,6 +2,7 @@ package com.rufeng.healthman.common.util;
 
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,7 +26,7 @@ public class SpringUtils implements EnvironmentAware {
     }
 
     @Override
-    public void setEnvironment(Environment environment) {
+    public void setEnvironment(@NonNull Environment environment) {
         env = environment;
     }
 }

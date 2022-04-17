@@ -1,228 +1,227 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtSubStudentMapper">
-  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
-    <!--@mbg.generated-->
-    <!--@Table pt_sub_student-->
-    <id column="sub_id" property="subId" />
-    <id column="grade" property="grade" />
-    <id column="gender" property="gender" />
-    <result column="id" property="id" />
-    <result column="subs_created" property="subsCreated" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    sub_id, grade, gender, id, subs_created
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from pt_sub_student
-    where sub_id = #{subId}
-      and grade = #{grade}
-      and gender = #{gender}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="map">
-    <!--@mbg.generated-->
-    delete from pt_sub_student
-    where sub_id = #{subId}
-      and grade = #{grade}
-      and gender = #{gender}
-  </delete>
-  <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
-    <!--@mbg.generated-->
-    insert into pt_sub_student (sub_id, grade, gender, id, subs_created)
-    values (#{subId}, #{grade}, #{gender}, #{id}, #{subsCreated})
-  </insert>
-  <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
-    <!--@mbg.generated-->
-    insert into pt_sub_student
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        sub_id,
-      </if>
-      <if test="grade != null">
-        grade,
-      </if>
-      <if test="gender != null">
-        gender,
-      </if>
-      <if test="id != null">
-        id,
-      </if>
-      <if test="subsCreated != null">
-        subs_created,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        #{subId},
-      </if>
-      <if test="grade != null">
-        #{grade},
-      </if>
-      <if test="gender != null">
-        #{gender},
-      </if>
-      <if test="id != null">
-        #{id},
-      </if>
-      <if test="subsCreated != null">
-        #{subsCreated},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
-    <!--@mbg.generated-->
-    update pt_sub_student
-    <set>
-      <if test="id != null">
-        id = #{id},
-      </if>
-      <if test="subsCreated != null">
-        subs_created = #{subsCreated},
-      </if>
-    </set>
-    where sub_id = #{subId}
-      and grade = #{grade}
-      and gender = #{gender}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
-    <!--@mbg.generated-->
-    update pt_sub_student
-    set id = #{id},
-      subs_created = #{subsCreated}
-    where sub_id = #{subId}
-      and grade = #{grade}
-      and gender = #{gender}
-  </update>
-  <update id="updateBatch" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_sub_student
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sub_id = #{item.subId} then #{item.id}
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
+        <!--@mbg.generated-->
+        <!--@Table pt_sub_student-->
+        <id column="sub_id" property="subId"/>
+        <id column="grade" property="grade"/>
+        <id column="gender" property="gender"/>
+        <result column="id" property="id"/>
+        <result column="subs_created" property="subsCreated"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        sub_id, grade, gender, id, subs_created
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_sub_student
+        where sub_id = #{subId}
+          and grade = #{grade}
+          and gender = #{gender}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        <!--@mbg.generated-->
+        delete
+        from pt_sub_student
+        where sub_id = #{subId}
+          and grade = #{grade}
+          and gender = #{gender}
+    </delete>
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
+        <!--@mbg.generated-->
+        insert into pt_sub_student (sub_id, grade, gender, id, subs_created)
+        values (#{subId}, #{grade}, #{gender}, #{id}, #{subsCreated})
+    </insert>
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
+        <!--@mbg.generated-->
+        insert into pt_sub_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                sub_id,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="subsCreated != null">
+                subs_created,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                #{subId},
+            </if>
+            <if test="grade != null">
+                #{grade},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="subsCreated != null">
+                #{subsCreated},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
+        <!--@mbg.generated-->
+        update pt_sub_student
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="subsCreated != null">
+                subs_created = #{subsCreated},
+            </if>
+        </set>
+        where sub_id = #{subId}
+          and grade = #{grade}
+          and gender = #{gender}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
+        <!--@mbg.generated-->
+        update pt_sub_student
+        set id           = #{id},
+            subs_created = #{subsCreated}
+        where sub_id = #{subId}
+          and grade = #{grade}
+          and gender = #{gender}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_sub_student
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sub_id = #{item.subId} then #{item.id}
+                </foreach>
+            </trim>
+            <trim prefix="subs_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sub_id = #{item.subId} then #{item.subsCreated}
+                </foreach>
+            </trim>
+        </trim>
+        where sub_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.subId}
         </foreach>
-      </trim>
-      <trim prefix="subs_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sub_id = #{item.subId} then #{item.subsCreated}
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_sub_student
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.id != null">
+                        when sub_id = #{item.subId} then #{item.id}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="subs_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.subsCreated != null">
+                        when sub_id = #{item.subId} then #{item.subsCreated}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where sub_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.subId}
         </foreach>
-      </trim>
-    </trim>
-    where sub_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.subId}
-    </foreach>
-  </update>
-  <update id="updateBatchSelective" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_sub_student
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.id != null">
-            when sub_id = #{item.subId} then #{item.id}
-          </if>
+    </update>
+    <insert id="batchInsert" parameterType="map">
+        <!--@mbg.generated-->
+        insert into pt_sub_student
+            (sub_id, grade, gender, id, subs_created)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.subId}, #{item.grade}, #{item.gender}, #{item.id}, #{item.subsCreated})
         </foreach>
-      </trim>
-      <trim prefix="subs_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.subsCreated != null">
-            when sub_id = #{item.subId} then #{item.subsCreated}
-          </if>
-        </foreach>
-      </trim>
-    </trim>
-    where sub_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.subId}
-    </foreach>
-  </update>
-  <insert id="batchInsert" parameterType="map">
-    <!--@mbg.generated-->
-    insert into pt_sub_student
-    (sub_id, grade, gender, id, subs_created)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.subId}, #{item.grade}, #{item.gender}, #{item.id}, #{item.subsCreated})
-    </foreach>
-  </insert>
-  <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
-    <!--@mbg.generated-->
-    insert into pt_sub_student
-    (sub_id, grade, gender, id, subs_created)
-    values
-    (#{subId}, #{grade}, #{gender}, #{id}, #{subsCreated})
-    on duplicate key update 
-    sub_id = #{subId}, 
-    grade = #{grade}, 
-    gender = #{gender}, 
-    id = #{id}, 
-    subs_created = #{subsCreated}
-  </insert>
-  <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
-    <!--@mbg.generated-->
-    insert into pt_sub_student
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        sub_id,
-      </if>
-      <if test="grade != null">
-        grade,
-      </if>
-      <if test="gender != null">
-        gender,
-      </if>
-      <if test="id != null">
-        id,
-      </if>
-      <if test="subsCreated != null">
-        subs_created,
-      </if>
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="subId != null">
-        #{subId},
-      </if>
-      <if test="grade != null">
-        #{grade},
-      </if>
-      <if test="gender != null">
-        #{gender},
-      </if>
-      <if test="id != null">
-        #{id},
-      </if>
-      <if test="subsCreated != null">
-        #{subsCreated},
-      </if>
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="subId != null">
-        sub_id = #{subId},
-      </if>
-      <if test="grade != null">
-        grade = #{grade},
-      </if>
-      <if test="gender != null">
-        gender = #{gender},
-      </if>
-      <if test="id != null">
-        id = #{id},
-      </if>
-      <if test="subsCreated != null">
-        subs_created = #{subsCreated},
-      </if>
-    </trim>
-  </insert>
+    </insert>
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
+        <!--@mbg.generated-->
+        insert into pt_sub_student
+            (sub_id, grade, gender, id, subs_created)
+        values (#{subId}, #{grade}, #{gender}, #{id}, #{subsCreated})
+        on duplicate key update sub_id       = #{subId},
+                                grade        = #{grade},
+                                gender       = #{gender},
+                                id           = #{id},
+                                subs_created = #{subsCreated}
+    </insert>
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubStudent">
+        <!--@mbg.generated-->
+        insert into pt_sub_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                sub_id,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="subsCreated != null">
+                subs_created,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                #{subId},
+            </if>
+            <if test="grade != null">
+                #{grade},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="subsCreated != null">
+                #{subsCreated},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="subId != null">
+                sub_id = #{subId},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="subsCreated != null">
+                subs_created = #{subsCreated},
+            </if>
+        </trim>
+    </insert>
 
     <select id="listSubStudentBySubIds" resultType="com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent">
-        SELECT sub_id, grade, gender
+        SELECT id, sub_id, grade, gender
         FROM pt_sub_student
         <where>
             <foreach close=")" collection="list" item="item" open="sub_id IN (" separator=",">
@@ -251,7 +250,18 @@
         WHERE grade = #{grade}
     </select>
     <select id="listSubStudentBySubId" resultType="com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent">
-        SELECT sub_id, grade, gender
-        FROM pt_sub_student WHERE sub_id = #{subId}
+        SELECT id, sub_id, grade, gender
+        FROM pt_sub_student
+        WHERE sub_id = #{subId}
     </select>
+
+    <delete id="deleteByIds">
+        DELETE
+        FROM pt_sub_student
+        <where>
+            <foreach collection="list" item="item" separator="," open="id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
 </mapper>

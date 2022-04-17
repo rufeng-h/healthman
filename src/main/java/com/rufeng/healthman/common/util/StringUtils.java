@@ -53,9 +53,6 @@ public class StringUtils {
         while (i < len && value.charAt(i) == '0') {
             i++;
         }
-        if (i == len) {
-            return true;
-        }
         while (i < len) {
             char c = value.charAt(i);
             if (c == '.') {

@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,7 +50,8 @@ public class PtScoreSheetService {
     }
 
     public int uploadScoreSheet(Long subId, MultipartFile file) {
-        PtScoreSheetExcelListener listener = new PtScoreSheetExcelListener(subId, this, ptSubStudentService);
+        PtScoreSheetExcelListener listener = new PtScoreSheetExcelListener(subId,
+                this, ptSubStudentService);
         try {
             EasyExcel.read(file.getInputStream(), PtScoreSheetExcel.class, listener).sheet().doRead();
         } catch (IOException e) {
@@ -96,5 +96,16 @@ public class PtScoreSheetService {
 
     public boolean deleteById(Long id) {
         return ptScoreSheetMapper.deleteById(id) == 1;
+    }
+
+    public List<PtScoreSheet> listScoreSheetBySubId(long subId) {
+        return ptScoreSheetMapper.listBySubId(subId);
+    }
+
+    public int deleteByIds(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return 0;
+        }
+        return ptScoreSheetMapper.deleteByIds(ids);
     }
 }

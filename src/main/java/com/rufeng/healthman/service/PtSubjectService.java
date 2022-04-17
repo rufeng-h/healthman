@@ -10,6 +10,7 @@ import com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
 import com.rufeng.healthman.pojo.ptdo.PtCompetency;
 import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
+import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.query.PtSubjectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,9 @@ public class PtSubjectService {
         return ptSubStudentService.addSubStuSelective(subStudents) == subStudents.size();
     }
 
+    /**
+     * 对应测试年级性别修改，删除其评分标准 TODO
+     */
     @Transactional(rollbackFor = Exception.class)
     public boolean updateSubject(PtSubjectFormdata data) {
         Long subId = data.getSubId();
@@ -80,11 +84,32 @@ public class PtSubjectService {
         subject.setSubName(data.getSubName());
         subject.setCompId(data.getCompId());
         subject.setSubId(subId);
+        /* 处理年级、性别 */
         List<SubStudent> subStudents = data.getSubStudents();
         subStudents.forEach(item -> item.setSubId(subId));
-        ptSubjectMapper.updateByPrimaryKeySelective(subject);
-        ptSubStudentService.deleteBySubId(subId);
-        return ptSubStudentService.addSubStuSelective(subStudents) == subStudents.size();
+        List<SubStudent> subStus = ptSubStudentService.listSubStudentBySubId(subId);
+        Set<SubStudent> prev = new HashSet<>(subStus);
+        Set<SubStudent> cur = new HashSet<>(subStudents);
+        prev.removeAll(cur);
+        if (prev.size() != 0) {
+            ptSubStudentService.deleteByIds(prev.stream().map(SubStudent::getId).collect(Collectors.toList()));
+            /* 删除评分标准 TODO 数据库设计问题 */
+            List<PtScoreSheet> scoreSheets = ptScoreSheetService.listScoreSheetBySubId(subId);
+            /* 找出要删的id */
+            List<Long> ids = new ArrayList<>();
+            for (PtScoreSheet s : scoreSheets) {
+                if (prev.contains(new SubStudent(s.getGrade(), s.getGender(), s.getSubId()))) {
+                    ids.add(s.getId());
+                }
+            }
+            ptScoreSheetService.deleteByIds(ids);
+        }
+        prev = new HashSet<>(subStus);
+        cur.removeAll(prev);
+        if (cur.size() != 0) {
+            ptSubStudentService.addSubStuSelective(new ArrayList<>(cur));
+        }
+        return ptSubjectMapper.updateByPrimaryKeySelective(subject) == 1;
     }
 
     public List<PtSubject> listSubject(List<Long> subIds) {

@@ -55,4 +55,11 @@ public class PtSubStudentService {
     public List<SubStudent> listSubStudentBySubId(long subId) {
         return ptSubStudentMapper.listSubStudentBySubId(subId);
     }
+
+    public int deleteByIds(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return 0;
+        }
+        return ptSubStudentMapper.deleteByIds(ids);
+    }
 }

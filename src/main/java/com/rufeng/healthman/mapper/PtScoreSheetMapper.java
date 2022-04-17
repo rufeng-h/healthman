@@ -1,10 +1,15 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
+import com.github.pagehelper.Page;
+import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
+import com.rufeng.healthman.pojo.file.PtScoreSheetExcel;
+import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
+import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import java.math.BigDecimal;
 import java.util.List;
-import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 
 /**
@@ -93,4 +98,8 @@ public interface PtScoreSheetMapper {
     int updateByIdSelective(PtScoreSheet scoreSheet);
 
     int deleteById(Long id);
+
+    List<PtScoreSheet> listBySubId(Long subId);
+
+    int deleteByIds(List<Long> ids);
 }
