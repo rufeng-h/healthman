@@ -16,11 +16,13 @@
         <result column="phone" property="phone"/>
         <result column="aid" property="aid"/>
         <result column="clg_code" property="clgCode"/>
+        <result column="admin_gender" property="adminGender"/>
+        <result column="admin_birth" property="adminBirth"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-        admin_last_login, phone, aid, clg_code
+        admin_last_login, phone, aid, clg_code, admin_gender, admin_birth
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -38,9 +40,11 @@
     <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
         insert into pt_admin (admin_id, admin_name, `password`, avatar, email, admin_desp,
-                              admin_created, admin_modified, admin_last_login, phone, aid, clg_code)
+                              admin_created, admin_modified, admin_last_login, phone, aid, clg_code,
+                              admin_gender, admin_birth)
         values (#{adminId}, #{adminName}, #{password}, #{avatar}, #{email}, #{adminDesp},
-                #{adminCreated}, #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode})
+                #{adminCreated}, #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode},
+                #{adminGender}, #{adminBirth})
     </insert>
     <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
@@ -82,6 +86,12 @@
             <if test="clgCode != null">
                 clg_code,
             </if>
+            <if test="adminGender != null">
+                admin_gender,
+            </if>
+            <if test="adminBirth != null">
+                admin_birth,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="adminId != null">
@@ -119,6 +129,12 @@
             </if>
             <if test="clgCode != null">
                 #{clgCode},
+            </if>
+            <if test="adminGender != null">
+                #{adminGender},
+            </if>
+            <if test="adminBirth != null">
+                #{adminBirth},
             </if>
         </trim>
     </insert>
@@ -159,6 +175,12 @@
             <if test="clgCode != null">
                 clg_code = #{clgCode},
             </if>
+            <if test="adminGender != null">
+                admin_gender = #{adminGender},
+            </if>
+            <if test="adminBirth != null">
+                admin_birth = #{adminBirth},
+            </if>
         </set>
         where admin_id = #{adminId}
     </update>
@@ -175,7 +197,9 @@
             admin_last_login = #{adminLastLogin},
             phone            = #{phone},
             aid              = #{aid},
-            clg_code         = #{clgCode}
+            clg_code         = #{clgCode},
+            admin_gender     = #{adminGender},
+            admin_birth      = #{adminBirth}
         where admin_id = #{adminId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
@@ -235,6 +259,16 @@
             <trim prefix="clg_code = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when admin_id = #{item.adminId} then #{item.clgCode}
+                </foreach>
+            </trim>
+            <trim prefix="admin_gender = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when admin_id = #{item.adminId} then #{item.adminGender}
+                </foreach>
+            </trim>
+            <trim prefix="admin_birth = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when admin_id = #{item.adminId} then #{item.adminBirth}
                 </foreach>
             </trim>
         </trim>
@@ -324,6 +358,20 @@
                     </if>
                 </foreach>
             </trim>
+            <trim prefix="admin_gender = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.adminGender != null">
+                        when admin_id = #{item.adminId} then #{item.adminGender}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="admin_birth = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.adminBirth != null">
+                        when admin_id = #{item.adminId} then #{item.adminBirth}
+                    </if>
+                </foreach>
+            </trim>
         </trim>
         where admin_id in
         <foreach close=")" collection="list" item="item" open="(" separator=", ">
@@ -334,21 +382,22 @@
         <!--@mbg.generated-->
         insert into pt_admin
         (admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-         admin_last_login, phone, aid, clg_code)
+         admin_last_login, phone, aid, clg_code, admin_gender, admin_birth)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.adminId}, #{item.adminName}, #{item.password}, #{item.avatar}, #{item.email},
              #{item.adminDesp}, #{item.adminCreated}, #{item.adminModified}, #{item.adminLastLogin},
-             #{item.phone}, #{item.aid}, #{item.clgCode})
+             #{item.phone}, #{item.aid}, #{item.clgCode}, #{item.adminGender}, #{item.adminBirth})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
         insert into pt_admin
         (admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-         admin_last_login, phone, aid, clg_code)
+         admin_last_login, phone, aid, clg_code, admin_gender, admin_birth)
         values (#{adminId}, #{adminName}, #{password}, #{avatar}, #{email}, #{adminDesp}, #{adminCreated},
-                #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode})
+                #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode}, #{adminGender},
+                #{adminBirth})
         on duplicate key update admin_id         = #{adminId},
                                 admin_name       = #{adminName},
                                 `password`       = #{password},
@@ -360,7 +409,9 @@
                                 admin_last_login = #{adminLastLogin},
                                 phone            = #{phone},
                                 aid              = #{aid},
-                                clg_code         = #{clgCode}
+                                clg_code         = #{clgCode},
+                                admin_gender     = #{adminGender},
+                                admin_birth      = #{adminBirth}
     </insert>
     <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
@@ -402,6 +453,12 @@
             <if test="clgCode != null">
                 clg_code,
             </if>
+            <if test="adminGender != null">
+                admin_gender,
+            </if>
+            <if test="adminBirth != null">
+                admin_birth,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -441,6 +498,12 @@
             <if test="clgCode != null">
                 #{clgCode},
             </if>
+            <if test="adminGender != null">
+                #{adminGender},
+            </if>
+            <if test="adminBirth != null">
+                #{adminBirth},
+            </if>
         </trim>
         on duplicate key update
         <trim suffixOverrides=",">
@@ -479,6 +542,12 @@
             </if>
             <if test="clgCode != null">
                 clg_code = #{clgCode},
+            </if>
+            <if test="adminGender != null">
+                admin_gender = #{adminGender},
+            </if>
+            <if test="adminBirth != null">
+                admin_birth = #{adminBirth},
             </if>
         </trim>
     </insert>
@@ -571,10 +640,11 @@
     </select>
 
     <insert id="batchInsertSelective">
-        insert into pt_admin (admin_id, admin_name, email, phone, clg_code, admin_desp)
+        insert into pt_admin (admin_id, admin_name, email, phone, clg_code, admin_gender, admin_birth)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.adminId}, #{item.adminName}, #{item.email}, #{item.phone}, #{item.clgCode}, #{item.adminDesp})
+            (#{item.adminId}, #{item.adminName}, #{item.email}, #{item.phone}, #{item.clgCode}, #{item.adminGender},
+             #{item.adminBirth})
         </foreach>
     </insert>
 </mapper>

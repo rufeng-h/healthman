@@ -1,16 +1,20 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
+import com.github.pagehelper.Page;
+import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.file.PtAdminExcel;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
+import com.rufeng.healthman.pojo.query.PtAdminQuery;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.lang.NonNull;
+
 import java.util.List;
-import com.rufeng.healthman.pojo.query.PtAdminQuery;import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;import org.springframework.lang.NonNull;
 
 
 /**
  * @author rufeng
- * @time 2022-04-16 14:17
+ * @time 2022-04-18 10:33
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */

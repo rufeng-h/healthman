@@ -41,7 +41,7 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
         this.clsCode = clsCode;
         List<String> stuIds = ptStudentService.listStuId();
         stuIdBloomFilter = BloomFilter.create(
-                Funnels.stringFunnel(StandardCharsets.UTF_8), stuIds.size() * 2, 0.001);
+                Funnels.stringFunnel(StandardCharsets.UTF_8), 1 << 20, 0.001);
         stuIds.forEach(stuIdBloomFilter::put);
         /* 可以只返回名称和代码 */
         List<PtClass> classes = ptClassService.listClass();

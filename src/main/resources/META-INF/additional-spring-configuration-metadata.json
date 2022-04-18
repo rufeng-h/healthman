@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "healthman.upload-cache-control",
+      "type": "java.time.Duration",
+      "description": "过期时间."
+    },
+    {
+      "name": "healthman.upload-dir",
+      "type": "java.lang.String",
+      "description": "上传目录,必须配置."
+    }
+  ]
+}

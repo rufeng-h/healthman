@@ -1,5 +1,6 @@
 package com.rufeng.healthman.pojo.dto.support;
 
+import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
@@ -7,6 +8,7 @@ import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -23,11 +25,14 @@ public abstract class UserInfo {
     private String userId;
     private String username;
     private String avatar;
+    private GenderEnum gender;
+    private LocalDate birth;
     private LocalDateTime createdTime;
     private LocalDateTime lastLoginTime;
     private String desp;
     private UserTypeEnum userType;
     private List<RoleInfo> roles;
+    private LocalDateTime lastModifyTime;
 
     public UserInfo(PtAdmin user, List<RoleInfo> roles) {
         this.userId = user.getAdminId();
@@ -37,7 +42,10 @@ public abstract class UserInfo {
         this.lastLoginTime = user.getAdminLastLogin();
         this.desp = user.getAdminDesp();
         this.roles = roles;
+        this.gender = user.getAdminGender();
+        this.birth = user.getAdminBirth();
         this.userType = UserTypeEnum.ADMIN;
+        this.lastModifyTime = user.getAdminModified();
     }
 
     public UserInfo(PtStudent student) {
@@ -47,6 +55,9 @@ public abstract class UserInfo {
         this.createdTime = student.getStuCreated();
         this.lastLoginTime = student.getStuLastLogin();
         this.desp = student.getStuDesp();
+        this.gender = student.getStuGender();
+        this.birth = student.getStuBirth();
+        this.lastModifyTime = student.getStuModified();
 
         RoleInfo role = new RoleInfo("学生", RoleTypeEnum.STUDENT);
 

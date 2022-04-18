@@ -29,4 +29,7 @@ mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
   type-aliases-package: com.rufeng.healthman.pojo
 
+healthman:
+  upload-dir: ${user.home}/.healthman/upload
+  upload-cache-control: 1D
 

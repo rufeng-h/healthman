@@ -30,10 +30,10 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
     private final Map<String, String> clgMap;
     private final Map<String, String> clsMap;
     private final PtAdminService ptAdminService;
-    private int handledCount = 0;
-    private List<PtAdminExcel> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
     @SuppressWarnings("UnstableApiUsage")
     private final BloomFilter<String> adminIdBloomFilter;
+    private int handledCount = 0;
+    private List<PtAdminExcel> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
     @SuppressWarnings("UnstableApiUsage")
     public PtAdminExcelListener(PtAdminService ptAdminService,
@@ -45,7 +45,7 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
         clsMap = ptClassService.listClass().stream().collect(
                 Collectors.toMap(PtClass::getClsName, PtClass::getClsCode));
         List<String> adminIds = ptAdminService.listAdminId();
-        adminIdBloomFilter = BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), adminIds.size() * 2, 0.001);
+        adminIdBloomFilter = BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), 1 << 16, 0.001);
         adminIds.forEach(adminIdBloomFilter::put);
     }
 
@@ -74,12 +74,14 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
 
     @SuppressWarnings("UnstableApiUsage")
     private void validate(PtAdminExcel data, String[] clgRoles, String[] clsRoles) {
+        String adminId = data.getAdminId();
         /* 工号 */
-        if (!StringUtils.isLetterNumeric(data.getAdminId())) {
+        if (!StringUtils.isLetterNumeric(adminId)) {
             throw new ExcelException("工号不能空，且只能包含数字和字母");
         }
-        if (adminIdBloomFilter.mightContain(data.getAdminId())) {
-            throw new ExcelException("工号不能重复：" + data.getAdminId());
+        if (adminIdBloomFilter.mightContain(adminId)) {
+            System.out.println(adminIdBloomFilter);
+            throw new ExcelException("工号不能重复：" + adminId);
         }
         /* 名称 */
         if (StringUtils.isEmptyOrBlank(data.getAdminName())) {
@@ -88,6 +90,13 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
         /* 学院 */
         if (data.getClgName() != null && !clgMap.containsKey(data.getClgName())) {
             throw new ExcelException("不能识别学院：" + data.getClgName());
+        }
+        /* 性别 */
+        if (data.getAdminGender() == null) {
+            throw new ExcelException("性别不能为空");
+        }
+        if (data.getAdminBirth() == null) {
+            throw new ExcelException("出生日期不能为空");
         }
         if (clgRoles.length == 0 && clsRoles.length == 0) {
             throw new ExcelException("权限不能为空");
@@ -102,7 +111,7 @@ public class PtAdminExcelListener extends AnalysisEventListener<PtAdminExcel> {
                 throw new ExcelException("未知学院：" + clgRole);
             }
         }
-        adminIdBloomFilter.put(data.getAdminId());
+        adminIdBloomFilter.put(adminId);
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.rufeng.healthman.pojo.file;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.rufeng.healthman.enums.GenderEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,6 @@ public class PtAdminExcel {
     private String adminName;
     @ExcelProperty("邮箱")
     private String email;
-    @ExcelProperty("备注")
-    private String adminDesp;
     @ExcelProperty("手机")
     private String phone;
     @ExcelProperty("工号")
@@ -33,6 +33,10 @@ public class PtAdminExcel {
     private String clgRole;
     @ExcelProperty("学院")
     private String clgName;
+    @ExcelProperty("性别")
+    private GenderEnum adminGender;
+    @ExcelProperty("出生日期")
+    private LocalDate adminBirth;
 
     @ExcelIgnore
     private String clgCode;

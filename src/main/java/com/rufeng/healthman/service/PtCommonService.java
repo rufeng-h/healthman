@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PtCommonService {
-    private  PtAdminService ptAdminService;
-    private PtStudentService ptStudentService;
     private final RedisService redisService;
+    private PtAdminService ptAdminService;
+    private PtStudentService ptStudentService;
 
     public PtCommonService(RedisService redisService) {
 

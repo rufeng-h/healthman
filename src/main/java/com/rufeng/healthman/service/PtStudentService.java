@@ -7,6 +7,7 @@ import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtStudentMapper;
+import com.rufeng.healthman.pojo.data.StudentFormData;
 import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
@@ -32,6 +33,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -97,7 +99,11 @@ public class PtStudentService {
                 .stuLastLogin(LocalDateTime.now()).build();
         ptStudentMapper.updateByPrimaryKeySelective(stu);
 
-        UserInfo info = new StudentUserInfo(student);
+        /* 查班级 */
+        PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
+        /* 查学院 */
+        PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
+        UserInfo info = new StudentUserInfo(student, ptClass, college);
         String token = JwtTokenUtils.generateToken(student.getStuId(), student.getStuName());
         return new LoginResult(token, info);
     }
@@ -158,7 +164,9 @@ public class PtStudentService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String stuId = (String) authentication.getPrincipal();
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
-        return new StudentUserInfo(student);
+        PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
+        PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
+        return new StudentUserInfo(student, ptClass, college);
     }
 
     public StuMeasurementInfo getStuMsInfo(String stuId) {
@@ -184,5 +192,16 @@ public class PtStudentService {
 
     public List<String> listStuId() {
         return ptStudentMapper.listStuId();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateStudent(StudentFormData formData) {
+        PtStudent student = new PtStudent();
+        student.setStuBirth(formData.getBirth());
+        student.setAvatar(formData.getAvatar());
+        student.setStuDesp(formData.getDesp());
+        student.setStuId(formData.getStuId());
+        student.setStuModified(LocalDateTime.now());
+        return ptStudentMapper.updateByPrimaryKeySelective(student) == 1;
     }
 }

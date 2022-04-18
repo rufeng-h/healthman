@@ -4,17 +4,28 @@
  description 
 """
 import copy
+import random
+import datetime
 
 import pandas as pd
 from faker import Faker
 
-from v2.sql import get_conn
+from sql import get_conn
 
 faker = Faker('zh-CN')
 
 
 def gen_avatar():
     return faker.image_url()
+
+def gen_gender():
+    return random.choice(['男', '女'])
+    
+def gen_date():
+    fmt = '%Y-%m-%d'
+    start = datetime.datetime.strptime('1970-01-01', fmt)
+    end = datetime.datetime.strptime('1990-12-31', fmt)
+    return faker.date_between_dates(start, end).strftime(fmt)
 
 
 class AdminGenerator(object):
@@ -26,7 +37,7 @@ class AdminGenerator(object):
         self.class_college_map = self._get_cls_name_clg_name()
 
     def run(self):
-        template = {'姓名': None, '邮箱': None, '备注': None, '手机': None, '工号': None, '班级权限': None, '学院权限': None}
+        template = {'姓名': None, '邮箱': None, '手机': None, '工号': None, '班级权限': None, '学院权限': None, '性别': None, '出生日期':None}
         res = []
 
         cnt = 1
@@ -38,6 +49,8 @@ class AdminGenerator(object):
             item['手机'] = faker.phone_number()
             item['学院权限'] = clg
             item['学院'] = clg
+            item['性别'] = gen_gender()
+            item['出生日期'] = gen_date()
             res.append(item)
             cnt += 1
 
@@ -49,6 +62,8 @@ class AdminGenerator(object):
             item['手机'] = faker.phone_number()
             item['班级权限'] = cls
             item['学院'] = self.class_college_map.get(cls)
+            item['性别'] = gen_gender()
+            item['出生日期'] = gen_date()
             res.append(item)
             cnt += 1
 

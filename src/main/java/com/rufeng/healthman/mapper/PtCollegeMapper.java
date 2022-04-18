@@ -1,9 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.file.PtCollegeExcel;import com.rufeng.healthman.pojo.ptdo.PtCollege;
-import java.util.List;import java.util.Map;
+import com.rufeng.healthman.config.support.ReturnMap;
+import com.rufeng.healthman.pojo.file.PtCollegeExcel;
+import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.lang.NonNull;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -86,7 +91,7 @@ public interface PtCollegeMapper {
      * @param clgCode 学院代码
      * @return college
      */
-    PtCollege getCollege(@Param("clgCode") String clgCode);
+    PtCollege getCollege(@NonNull @Param("clgCode") String clgCode);
 
     /**
      * excel批量添加

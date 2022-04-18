@@ -2,6 +2,7 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.data.AdminFormdata;
 import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.query.PtAdminQuery;
@@ -68,5 +69,10 @@ public class PtAdminController {
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + TEMPLATE_FILE_NAME + "\"")
                 .body(resource);
+    }
+
+    @PutMapping
+    public ApiResponse<Boolean> updateAdmin(@Validated @RequestBody AdminFormdata formdata){
+        return ApiResponse.success(ptAdminService.updateAdmin(formdata));
     }
 }

@@ -1,27 +1,27 @@
 package com.rufeng.healthman.service;
 
 import com.alibaba.excel.EasyExcel;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.util.AuthorityUtils;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
-import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.mapper.PtAdminMapper;
-import com.rufeng.healthman.pojo.ptdo.PtAdmin;
-import com.rufeng.healthman.pojo.ptdo.PtRole;
+import com.rufeng.healthman.pojo.data.AdminFormdata;
+import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.dto.support.RoleInfo;
 import com.rufeng.healthman.pojo.dto.support.UserInfo;
-import com.rufeng.healthman.pojo.query.LoginQuery;
-import com.rufeng.healthman.pojo.query.PtAdminQuery;
-import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.pojo.file.PtAdminExcel;
 import com.rufeng.healthman.pojo.file.PtAdminExcelListener;
+import com.rufeng.healthman.pojo.ptdo.PtAdmin;
+import com.rufeng.healthman.pojo.ptdo.PtRole;
+import com.rufeng.healthman.pojo.query.LoginQuery;
+import com.rufeng.healthman.pojo.query.PtAdminQuery;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -291,5 +291,18 @@ public class PtAdminService {
 
     public List<String> listAdminId() {
         return ptAdminMapper.listAdminId();
+    }
+
+    public boolean updateAdmin(AdminFormdata formdata) {
+        PtAdmin admin = PtAdmin.builder()
+                .adminId(formdata.getAdminId())
+                .adminDesp(formdata.getDesp())
+                .adminModified(LocalDateTime.now())
+                .avatar(formdata.getAvatar())
+                .phone(formdata.getPhone())
+                .email(formdata.getEmail())
+                .adminBirth(formdata.getBirth())
+                .build();
+        return ptAdminMapper.updateByPrimaryKeySelective(admin) == 1;
     }
 }

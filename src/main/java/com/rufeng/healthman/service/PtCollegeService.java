@@ -2,13 +2,14 @@ package com.rufeng.healthman.service;
 
 import com.alibaba.excel.EasyExcel;
 import com.rufeng.healthman.mapper.PtCollegeMapper;
+import com.rufeng.healthman.pojo.file.PtCollegeExcel;
+import com.rufeng.healthman.pojo.file.PtCollegeExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
-import com.rufeng.healthman.pojo.file.PtCollegeExcel;
-import com.rufeng.healthman.pojo.file.PtCollegeExcelListener;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +39,10 @@ public class PtCollegeService {
         return ptCollegeMapper.listCollege();
     }
 
-    public PtCollege getCollege(String clgCode) {
+    public PtCollege getCollege(@Nullable String clgCode) {
+        if (clgCode == null) {
+            return null;
+        }
         return ptCollegeMapper.getCollege(clgCode);
     }
 

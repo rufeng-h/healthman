@@ -2,6 +2,7 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.data.StudentFormData;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.query.PtStudentQuery;
@@ -66,5 +67,10 @@ public class PtStudentController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadStudent(@RequestPart MultipartFile file, @RequestParam(required = false) String clsCode) {
         return ApiResponse.success(ptStudentService.uploadStudent(file, clsCode));
+    }
+
+    @PutMapping
+    public ApiResponse<Boolean> updateStudent(@Validated @RequestBody StudentFormData formData){
+        return ApiResponse.success(ptStudentService.updateStudent(formData));
     }
 }
