@@ -1,10 +1,11 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.dto.support.UserInfo;
 import com.rufeng.healthman.pojo.query.LoginQuery;
-import com.rufeng.healthman.service.FileStoreService;
+import com.rufeng.healthman.service.FileService;
 import com.rufeng.healthman.service.PtCommonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
@@ -25,11 +26,11 @@ import java.net.URI;
 @Tag(name = "Common Api", description = "通用操作")
 public class CommonController {
     private final PtCommonService ptCommonService;
-    private final FileStoreService fileStoreService;
+    private final FileService fileService;
 
-    public CommonController(PtCommonService ptCommonService, FileStoreService fileStoreService) {
+    public CommonController(PtCommonService ptCommonService, FileService fileService) {
         this.ptCommonService = ptCommonService;
-        this.fileStoreService = fileStoreService;
+        this.fileService = fileService;
     }
 
     @GetMapping("/api/logout")
@@ -51,6 +52,11 @@ public class CommonController {
 
     @PostMapping(value = "/upload/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<URI> uploadAvatar(@RequestPart MultipartFile file) {
-        return ApiResponse.success(fileStoreService.uploadAvatar(file));
+        return ApiResponse.success(fileService.uploadAvatar(file));
+    }
+
+    @PutMapping("/api/password")
+    public ApiResponse<Boolean> updatePassword(@Validated @RequestBody UpdatePwdFormdata formdata){
+        return ApiResponse.success(ptCommonService.updatePwd(formdata));
     }
 }

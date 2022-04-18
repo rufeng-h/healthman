@@ -26,6 +26,9 @@ public class AuthorityUtils {
             byte value = role.getRoleValue();
             String target = role.getTarget();
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleType()));
+            if (target == null){
+                return;
+            }
             if ((value & SELECT_MASK) != 0) {
                 authorities.add(new SimpleGrantedAuthority(target + ":" + "SELECT"));
             }

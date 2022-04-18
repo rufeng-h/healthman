@@ -30,6 +30,4 @@ mybatis:
   type-aliases-package: com.rufeng.healthman.pojo
 
 healthman:
-  upload-dir: ${user.home}/.healthman/upload
-  upload-cache-control: 1D
-
+  work-dir: ${user.home}/.healthman
