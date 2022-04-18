@@ -1,5 +1,6 @@
 package com.rufeng.healthman;
 
+import java.net.URI;
 import java.nio.file.Paths;
 
 /**
@@ -10,8 +11,12 @@ import java.nio.file.Paths;
  */
 public class Main {
     public static void main(String[] args) {
-
-        System.out.println(System.getProperty("user.home"));
-        System.out.println(Paths.get(System.getProperty("user.dir")).getFileName().toString());
+        URI uri = URI.create("https://p1.music.126.net/Y3C5ob6SQjXRijaVNBu4Sw==/109951164400648086.jpg");
+        URI uri1 = URI.create("dad/adads");
+        System.out.println(uri.getHost());
+        System.out.println(uri.getAuthority());
+        System.out.println(uri.getScheme());
+        System.out.println(uri.getRawSchemeSpecificPart());
+        System.out.println(uri1.getScheme());
     }
 }

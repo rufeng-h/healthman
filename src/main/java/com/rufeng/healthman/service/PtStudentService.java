@@ -6,8 +6,10 @@ import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.enums.UserTypeEnum;
+import com.rufeng.healthman.exceptions.FileException;
 import com.rufeng.healthman.mapper.PtStudentMapper;
 import com.rufeng.healthman.pojo.data.StudentFormData;
+import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
@@ -58,18 +60,20 @@ public class PtStudentService {
     private final PtClassService ptClassService;
     private final RedisService redisService;
     private final PtCollegeService ptCollegeService;
+    private final FileService fileService;
     private PtMesurementService ptMesurementService;
 
     public PtStudentService(PtStudentMapper ptStudentMapper,
                             PasswordEncoder passwordEncoder,
                             PtClassService ptClassService,
                             RedisService redisService,
-                            PtCollegeService ptCollegeService) {
+                            PtCollegeService ptCollegeService, FileService fileService) {
         this.ptStudentMapper = ptStudentMapper;
         this.passwordEncoder = passwordEncoder;
         this.ptClassService = ptClassService;
         this.redisService = redisService;
         this.ptCollegeService = ptCollegeService;
+        this.fileService = fileService;
     }
 
     /**
@@ -196,12 +200,34 @@ public class PtStudentService {
 
     @Transactional(rollbackFor = Exception.class)
     public boolean updateStudent(StudentFormData formData) {
+        PtStudent ptStudent = ptStudentMapper.selectByPrimaryKey(formData.getStuId());
         PtStudent student = new PtStudent();
         student.setStuBirth(formData.getBirth());
         student.setAvatar(formData.getAvatar());
         student.setStuDesp(formData.getDesp());
         student.setStuId(formData.getStuId());
         student.setStuModified(LocalDateTime.now());
-        return ptStudentMapper.updateByPrimaryKeySelective(student) == 1;
+
+        if (ptStudentMapper.updateByPrimaryKeySelective(student) != 1) {
+            return false;
+        }
+        if (fileService.remove(ptStudent.getAvatar())) {
+            return true;
+        }
+        throw new FileException("删除头像失败！");
+
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updatePwd(UpdatePwdFormdata formdata) {
+        PtStudent student = ptStudentMapper.selectByPrimaryKey(formdata.getUserId());
+        if (!passwordEncoder.matches(formdata.getOldPwd(), student.getPassword())) {
+            throw new BadCredentialsException("原始密码错误！");
+        }
+        PtStudent stu = new PtStudent();
+        stu.setStuId(formdata.getUserId());
+        stu.setPassword(passwordEncoder.encode(formdata.getNewPwd()));
+        stu.setStuModified(LocalDateTime.now());
+        return ptStudentMapper.updateByPrimaryKeySelective(stu) == 1;
     }
 }

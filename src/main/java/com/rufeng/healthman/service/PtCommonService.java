@@ -1,6 +1,7 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.enums.UserTypeEnum;
+import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.dto.support.UserInfo;
 import com.rufeng.healthman.pojo.query.LoginQuery;
@@ -64,5 +65,15 @@ public class PtCommonService {
         }
         /* 不该到这里 */
         return null;
+    }
+
+    public boolean updatePwd(UpdatePwdFormdata formdata) {
+        UserTypeEnum userType = formdata.getUserType();
+        if (userType == UserTypeEnum.ADMIN) {
+            return ptAdminService.updatePwd(formdata);
+        } else if (userType == UserTypeEnum.STUDENT) {
+            return ptStudentService.updatePwd(formdata);
+        }
+        return false;
     }
 }

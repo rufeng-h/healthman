@@ -6,9 +6,9 @@
       "description": "过期时间."
     },
     {
-      "name": "healthman.upload-dir",
+      "name": "healthman.work-dir",
       "type": "java.lang.String",
-      "description": "上传目录,必须配置."
+      "description": "本地目录."
     }
   ]
 }

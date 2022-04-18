@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,15 +24,17 @@ import java.time.Duration;
 @ConfigurationProperties(prefix = "healthman")
 @Validated
 public class HealthmanProperties {
-    private final String uploadDir;
+    private final String workDir;
     private final Duration uploadCacheControl;
+    private final String uploadDir;
     private final String urlSeperator = "/";
+    private final String uploadPrefix = "upload";
 
-    public HealthmanProperties(@NotEmpty String uploadDir, Duration uploadCacheControl) {
-        this.uploadDir = uploadDir;
+    public HealthmanProperties(@NotEmpty String workDir, Duration uploadCacheControl) {
+        this.workDir = workDir;
         this.uploadCacheControl = uploadCacheControl;
-        if (this.uploadDir != null) {
-            Path path = Paths.get(this.uploadDir);
+        if (this.workDir != null) {
+            Path path = Paths.get(this.workDir);
             if (!Files.exists(path)) {
                 try {
                     Files.createDirectories(path);
@@ -39,6 +42,12 @@ public class HealthmanProperties {
                     e.printStackTrace();
                 }
             }
+        }
+
+        if (this.workDir != null) {
+            this.uploadDir = this.workDir + File.separator + this.uploadPrefix;
+        } else {
+            this.uploadDir = null;
         }
     }
 }

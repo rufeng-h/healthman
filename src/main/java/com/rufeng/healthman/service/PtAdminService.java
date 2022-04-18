@@ -8,9 +8,11 @@ import com.rufeng.healthman.common.util.AuthorityUtils;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
+import com.rufeng.healthman.exceptions.FileException;
 import com.rufeng.healthman.mapper.PtAdminMapper;
 import com.rufeng.healthman.pojo.data.AdminFormdata;
 import com.rufeng.healthman.pojo.data.PtAdminFormdata;
+import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
 import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
@@ -56,18 +58,22 @@ public class PtAdminService {
     private final PtRoleService ptRoleService;
     private final PtClassService ptClassService;
     private final PtCollegeService ptCollegeService;
+    private final FileService fileService;
 
     public PtAdminService(PtAdminMapper ptAdminMapper,
                           PasswordEncoder passwordEncoder,
                           RedisService redisService,
                           PtRoleService ptRoleService,
-                          PtClassService ptClassService, PtCollegeService ptCollegeService) {
+                          PtClassService ptClassService,
+                          PtCollegeService ptCollegeService,
+                          FileService fileService) {
         this.ptAdminMapper = ptAdminMapper;
         this.passwordEncoder = passwordEncoder;
         this.redisService = redisService;
         this.ptRoleService = ptRoleService;
         this.ptClassService = ptClassService;
         this.ptCollegeService = ptCollegeService;
+        this.fileService = fileService;
     }
 
 
@@ -293,7 +299,9 @@ public class PtAdminService {
         return ptAdminMapper.listAdminId();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateAdmin(AdminFormdata formdata) {
+        PtAdmin ptAdmin = ptAdminMapper.selectByPrimaryKey(formdata.getAdminId());
         PtAdmin admin = PtAdmin.builder()
                 .adminId(formdata.getAdminId())
                 .adminDesp(formdata.getDesp())
@@ -303,6 +311,25 @@ public class PtAdminService {
                 .email(formdata.getEmail())
                 .adminBirth(formdata.getBirth())
                 .build();
-        return ptAdminMapper.updateByPrimaryKeySelective(admin) == 1;
+        if (ptAdminMapper.updateByPrimaryKeySelective(admin) != 1) {
+            return false;
+        }
+        if (!fileService.remove(ptAdmin.getAvatar())) {
+            throw new FileException("删除文件失败！");
+        }
+        return true;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updatePwd(UpdatePwdFormdata formdata) {
+        PtAdmin admin = ptAdminMapper.selectByPrimaryKey(formdata.getUserId());
+        if (!passwordEncoder.matches(formdata.getOldPwd(), admin.getPassword())) {
+            throw new BadCredentialsException("原始密码错误！");
+        }
+        PtAdmin ptAdmin = new PtAdmin();
+        ptAdmin.setAdminId(formdata.getUserId());
+        ptAdmin.setPassword(passwordEncoder.encode(formdata.getNewPwd()));
+        ptAdmin.setAdminModified(LocalDateTime.now());
+        return ptAdminMapper.updateByPrimaryKeySelective(ptAdmin) == 1;
     }
 }
