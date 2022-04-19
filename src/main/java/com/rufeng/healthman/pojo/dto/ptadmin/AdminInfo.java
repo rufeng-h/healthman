@@ -2,7 +2,7 @@ package com.rufeng.healthman.pojo.dto.ptadmin;
 
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.dto.support.RoleInfo;
-import com.rufeng.healthman.pojo.dto.support.UserInfo;
+import com.rufeng.healthman.security.support.UserInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

@@ -3,12 +3,13 @@ package com.rufeng.healthman.service;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
-import com.rufeng.healthman.pojo.dto.support.UserInfo;
 import com.rufeng.healthman.pojo.query.LoginQuery;
+import com.rufeng.healthman.security.authentication.Authentication;
+import com.rufeng.healthman.security.context.SecurityContextHolder;
+import com.rufeng.healthman.security.support.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 /**
  * @author rufeng
@@ -39,19 +40,19 @@ public class PtCommonService {
     public void logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            String userId = (String) authentication.getPrincipal();
+            String userId = authentication.getUserInfo().getUserId();
             redisService.remove(userId);
         }
     }
 
-    public UserInfo userInfo() {
+    public UserInfo getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserTypeEnum userType = (UserTypeEnum) authentication.getDetails();
-        return userType == UserTypeEnum.ADMIN ? ptAdminService.adminInfo() : ptStudentService.studentInfo();
+        Assert.notNull(authentication, "未认证！");
+        return authentication.getUserInfo();
     }
 
     public String getCurrentUserId() {
-        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return getUserInfo().getUserId();
     }
 
     public LoginResult login(LoginQuery loginQuery) {
@@ -66,7 +67,7 @@ public class PtCommonService {
     }
 
     public UserTypeEnum getCurrentUserType() {
-        return (UserTypeEnum) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        return getUserInfo().getUserType();
     }
 
     public boolean updatePwd(UpdatePwdFormdata formdata) {
@@ -81,6 +82,6 @@ public class PtCommonService {
     }
 
     public String getCurrentUserName() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return getUserInfo().getUsername();
     }
 }

@@ -1,18 +1,18 @@
-package com.rufeng.healthman.config.support;
+package com.rufeng.healthman.security.repositry;
 
 import com.rufeng.healthman.common.util.JwtTokenUtils;
+import com.rufeng.healthman.security.authentication.Authentication;
+import com.rufeng.healthman.security.context.SecurityContext;
+import com.rufeng.healthman.security.context.SecurityContextHolder;
 import com.rufeng.healthman.service.RedisService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.HttpRequestResponseHolder;
-import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.rufeng.healthman.config.SecurityConfig.JWT_HEADER_NAME;
+import static com.rufeng.healthman.config.OpenApiConfig.JWT_HEADER_NAME;
+
 
 /**
  * @author rufeng
@@ -26,9 +26,9 @@ public class TokenSecurityContextRepository implements SecurityContextRepository
     }
 
     @Override
-    public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
+    @NonNull
+    public SecurityContext loadContext(HttpServletRequest request) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
-        HttpServletRequest request = requestResponseHolder.getRequest();
         String token = request.getHeader(JWT_HEADER_NAME);
         if (token == null) {
             // TODO 可以记录
@@ -46,14 +46,5 @@ public class TokenSecurityContextRepository implements SecurityContextRepository
     @Override
     public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
 
-    }
-
-    /**
-     * 虽然没有用到，但还是实现一下
-     */
-    @Override
-    public boolean containsContext(HttpServletRequest request) {
-        String token = request.getHeader(JWT_HEADER_NAME);
-        return redisService.hasKey(JwtTokenUtils.getId(token));
     }
 }

@@ -5,19 +5,17 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
-import com.rufeng.healthman.enums.UserTypeEnum;
+import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.exceptions.FileException;
 import com.rufeng.healthman.mapper.PtStudentMapper;
 import com.rufeng.healthman.pojo.data.StudentFormData;
 import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
-import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.StudentUserInfo;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
-import com.rufeng.healthman.pojo.dto.support.UserInfo;
 import com.rufeng.healthman.pojo.file.PtStudentExcel;
 import com.rufeng.healthman.pojo.file.PtStudentExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
@@ -26,20 +24,20 @@ import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
 import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import com.rufeng.healthman.pojo.query.LoginQuery;
 import com.rufeng.healthman.pojo.query.PtStudentQuery;
+import com.rufeng.healthman.security.authentication.Authentication;
+import com.rufeng.healthman.security.authentication.AuthenticationImpl;
+import com.rufeng.healthman.security.support.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,7 +54,6 @@ import java.util.stream.Collectors;
 @Service
 public class PtStudentService {
     private final PtStudentMapper ptStudentMapper;
-    private final PasswordEncoder passwordEncoder;
     private final PtClassService ptClassService;
     private final RedisService redisService;
     private final PtCollegeService ptCollegeService;
@@ -64,12 +61,10 @@ public class PtStudentService {
     private PtMesurementService ptMesurementService;
 
     public PtStudentService(PtStudentMapper ptStudentMapper,
-                            PasswordEncoder passwordEncoder,
                             PtClassService ptClassService,
                             RedisService redisService,
                             PtCollegeService ptCollegeService, FileService fileService) {
         this.ptStudentMapper = ptStudentMapper;
-        this.passwordEncoder = passwordEncoder;
         this.ptClassService = ptClassService;
         this.redisService = redisService;
         this.ptCollegeService = ptCollegeService;
@@ -87,14 +82,18 @@ public class PtStudentService {
     public LoginResult login(LoginQuery loginQuery) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(loginQuery.getUserId());
         if (student == null) {
-            throw new UsernameNotFoundException("用户不存在!");
+            throw new AuthenticationException("用户不存在!");
         }
-        if (!passwordEncoder.matches(loginQuery.getPassword(), student.getPassword())) {
-            throw new BadCredentialsException("密码错误!");
+        if (!DigestUtils.md5DigestAsHex(loginQuery.getPassword().getBytes(StandardCharsets.UTF_8)).equals(student.getPassword())) {
+            throw new AuthenticationException("密码错误!");
         }
+        /* 查班级 */
+        PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
+        /* 查学院 */
+        PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
+        UserInfo info = new StudentUserInfo(student, ptClass, college);
         /* 认证信息 */
-        Authentication authentication = new UserIdRoleTypeAuthentication(student.getStuId(),
-                student.getStuName(), UserTypeEnum.STUDENT, Collections.emptyList());
+        Authentication authentication = new AuthenticationImpl(info);
         redisService.setObject(student.getStuId(), authentication);
 
         /* 更新登录时间 */
@@ -103,11 +102,6 @@ public class PtStudentService {
                 .stuLastLogin(LocalDateTime.now()).build();
         ptStudentMapper.updateByPrimaryKeySelective(stu);
 
-        /* 查班级 */
-        PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
-        /* 查学院 */
-        PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
-        UserInfo info = new StudentUserInfo(student, ptClass, college);
         String token = JwtTokenUtils.generateToken(student.getStuId(), student.getStuName());
         return new LoginResult(token, info);
     }
@@ -164,15 +158,6 @@ public class PtStudentService {
         return ptStudentMapper.batchInsertSelective(cachedDataList);
     }
 
-    public StudentUserInfo studentInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String stuId = (String) authentication.getPrincipal();
-        PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
-        PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
-        PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
-        return new StudentUserInfo(student, ptClass, college);
-    }
-
     public StuMeasurementInfo getStuMsInfo(String stuId) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
         /* 查班级 */
@@ -221,12 +206,12 @@ public class PtStudentService {
     @Transactional(rollbackFor = Exception.class)
     public boolean updatePwd(String stuId, UpdatePwdFormdata formdata) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
-        if (!passwordEncoder.matches(formdata.getOldPwd(), student.getPassword())) {
-            throw new BadCredentialsException("原始密码错误！");
+        if (!DigestUtils.md5DigestAsHex(formdata.getOldPwd().getBytes(StandardCharsets.UTF_8)).equals(student.getPassword())) {
+            throw new AuthenticationException("原始密码错误！");
         }
         PtStudent stu = new PtStudent();
         stu.setStuId(stuId);
-        stu.setPassword(passwordEncoder.encode(formdata.getNewPwd()));
+        stu.setPassword(DigestUtils.md5DigestAsHex(formdata.getNewPwd().getBytes(StandardCharsets.UTF_8)));
         stu.setStuModified(LocalDateTime.now());
         return ptStudentMapper.updateByPrimaryKeySelective(stu) == 1;
     }

@@ -1,6 +1,6 @@
 package com.rufeng.healthman.pojo.dto.ptstu;
 
-import com.rufeng.healthman.pojo.dto.support.UserInfo;
+import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.pojo.ptdo.PtStudent;

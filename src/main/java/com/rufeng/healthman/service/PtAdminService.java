@@ -5,41 +5,37 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
-import com.rufeng.healthman.common.util.AuthorityUtils;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.enums.RoleTypeEnum;
-import com.rufeng.healthman.enums.UserTypeEnum;
+import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.exceptions.FileException;
 import com.rufeng.healthman.mapper.PtAdminMapper;
 import com.rufeng.healthman.pojo.data.AdminFormdata;
 import com.rufeng.healthman.pojo.data.PtAdminFormdata;
 import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo;
-import com.rufeng.healthman.pojo.dto.ptadmin.UserIdRoleTypeAuthentication;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.dto.support.RoleInfo;
-import com.rufeng.healthman.pojo.dto.support.UserInfo;
 import com.rufeng.healthman.pojo.file.PtAdminExcel;
 import com.rufeng.healthman.pojo.file.PtAdminExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.ptdo.PtRole;
 import com.rufeng.healthman.pojo.query.LoginQuery;
 import com.rufeng.healthman.pojo.query.PtAdminQuery;
+import com.rufeng.healthman.security.authentication.Authentication;
+import com.rufeng.healthman.security.authentication.AuthenticationImpl;
+import com.rufeng.healthman.security.support.UserInfo;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -55,7 +51,6 @@ import static com.rufeng.healthman.common.util.AuthorityUtils.ALL_AUTHORITY;
 @Service
 public class PtAdminService {
     private final PtAdminMapper ptAdminMapper;
-    private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
     private final PtRoleService ptRoleService;
     private final PtClassService ptClassService;
@@ -63,14 +58,12 @@ public class PtAdminService {
     private final FileService fileService;
 
     public PtAdminService(PtAdminMapper ptAdminMapper,
-                          PasswordEncoder passwordEncoder,
                           RedisService redisService,
                           PtRoleService ptRoleService,
                           PtClassService ptClassService,
                           PtCollegeService ptCollegeService,
                           FileService fileService) {
         this.ptAdminMapper = ptAdminMapper;
-        this.passwordEncoder = passwordEncoder;
         this.redisService = redisService;
         this.ptRoleService = ptRoleService;
         this.ptClassService = ptClassService;
@@ -136,23 +129,23 @@ public class PtAdminService {
     public LoginResult login(LoginQuery loginQuery) {
         PtAdmin admin = ptAdminMapper.selectByPrimaryKey(loginQuery.getUserId());
         if (admin == null) {
-            throw new UsernameNotFoundException("用户不存在!");
+            throw new AuthenticationException("用户不存在!");
         }
-        if (!passwordEncoder.matches(loginQuery.getPassword(), admin.getPassword())) {
-            throw new BadCredentialsException("密码错误!");
+        if (!DigestUtils.md5DigestAsHex(loginQuery.getPassword().getBytes(StandardCharsets.UTF_8)).equals(admin.getPassword())) {
+            throw new AuthenticationException("密码错误!");
         }
         /* 查询学院 */
         String clgName = null;
         if (admin.getClgCode() != null) {
             clgName = ptCollegeService.getCollege(admin.getClgCode()).getClgName();
         }
+
         /* 查询角色权限 */
         List<PtRole> roles = ptRoleService.listRole(admin.getAdminId());
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.fromPtRoles(roles);
-
+        /* 返回结果 */
+        UserInfo info = new AdminInfo(admin, clgName, hadleRoles(roles));
         /* 认证信息 */
-        Authentication authentication = new UserIdRoleTypeAuthentication(admin.getAdminId(),
-                admin.getAdminName(), UserTypeEnum.ADMIN, authorities);
+        Authentication authentication = new AuthenticationImpl(info);
         redisService.setObject(admin.getAdminId(), authentication);
 
         /* 更新上次登录时间 */
@@ -160,8 +153,7 @@ public class PtAdminService {
                 .builder().adminId(admin.getAdminId())
                 .adminLastLogin(LocalDateTime.now())
                 .build());
-        /* 返回结果 */
-        UserInfo info = new AdminInfo(admin, clgName, hadleRoles(roles));
+
         String token = JwtTokenUtils.generateToken(admin.getAdminId(), admin.getAdminName());
         return new LoginResult(token, info);
     }
@@ -192,19 +184,6 @@ public class PtAdminService {
         roleInfos.addAll(clgRoles.stream().map(r -> new RoleInfo(r, clgNameMap.get(r.getTarget()))).collect(Collectors.toList()));
         roleInfos.addAll(clsRoles.stream().map(r -> new RoleInfo(r, clsNameMap.get(r.getTarget()))).collect(Collectors.toList()));
         return roleInfos;
-    }
-
-
-    public AdminInfo adminInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String adminId = (String) authentication.getPrincipal();
-        PtAdmin user = ptAdminMapper.selectByPrimaryKey(adminId);
-        List<PtRole> roles = ptRoleService.listRole(user.getAdminId());
-        String clgName = null;
-        if (user.getClgCode() != null) {
-            clgName = ptCollegeService.getCollege(user.getClgCode()).getClgName();
-        }
-        return new AdminInfo(user, clgName, hadleRoles(roles));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -326,12 +305,12 @@ public class PtAdminService {
     @Transactional(rollbackFor = Exception.class)
     public boolean updatePwd(String adminId, UpdatePwdFormdata formdata) {
         PtAdmin admin = ptAdminMapper.selectByPrimaryKey(adminId);
-        if (!passwordEncoder.matches(formdata.getOldPwd(), admin.getPassword())) {
-            throw new BadCredentialsException("原始密码错误！");
+        if (!DigestUtils.md5DigestAsHex(formdata.getOldPwd().getBytes(StandardCharsets.UTF_8)).equals(admin.getPassword())) {
+            throw new AuthenticationException("原始密码错误！");
         }
         PtAdmin ptAdmin = new PtAdmin();
         ptAdmin.setAdminId(adminId);
-        ptAdmin.setPassword(passwordEncoder.encode(formdata.getNewPwd()));
+        ptAdmin.setPassword(DigestUtils.md5DigestAsHex(formdata.getNewPwd().getBytes(StandardCharsets.UTF_8)));
         ptAdmin.setAdminModified(LocalDateTime.now());
         return ptAdminMapper.updateByPrimaryKeySelective(ptAdmin) == 1;
     }

@@ -3,7 +3,7 @@ package com.rufeng.healthman.controller;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
-import com.rufeng.healthman.pojo.dto.support.UserInfo;
+import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.pojo.query.LoginQuery;
 import com.rufeng.healthman.service.FileService;
 import com.rufeng.healthman.service.PtCommonService;
@@ -53,7 +53,7 @@ public class CommonController {
     @SecurityRequirement(name = JWT_SCHEME_NAME)
     @GetMapping("/api/userInfo")
     public ApiResponse<UserInfo> userInfo() {
-        return ApiResponse.success(ptCommonService.userInfo());
+        return ApiResponse.success(ptCommonService.getUserInfo());
     }
 
     @SecurityRequirement(name = JWT_SCHEME_NAME)

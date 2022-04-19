@@ -2,12 +2,12 @@ package com.rufeng.healthman.common;
 
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.exceptions.AccessDeniedException;
+import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.exceptions.PtException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

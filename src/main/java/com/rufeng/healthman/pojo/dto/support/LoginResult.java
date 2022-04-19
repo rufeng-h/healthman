@@ -1,5 +1,6 @@
 package com.rufeng.healthman.pojo.dto.support;
 
+import com.rufeng.healthman.security.support.UserInfo;
 import lombok.Data;
 
 /**

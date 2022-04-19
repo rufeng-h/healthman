@@ -4,8 +4,8 @@ import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.pojo.ptdo.PtRole;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author rufeng
@@ -14,11 +14,11 @@ import java.util.Date;
  * @description TODO
  */
 @Data
-public class RoleInfo {
+public class RoleInfo implements Serializable {
     private String roleName;
-    private byte roleValue;
+    private Byte roleValue;
     private LocalDateTime roleCreated;
-    private long roleId;
+    private Long roleId;
     private String target;
     private RoleTypeEnum roleType;
 

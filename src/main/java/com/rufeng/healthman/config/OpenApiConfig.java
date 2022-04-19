@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import static com.rufeng.healthman.config.SecurityConfig.JWT_HEADER_NAME;
-
 /**
  * @author rufeng
  * @time 2022-02-24 10:09
@@ -21,6 +19,7 @@ import static com.rufeng.healthman.config.SecurityConfig.JWT_HEADER_NAME;
 @Configuration
 public class OpenApiConfig {
     public static final String JWT_SCHEME_NAME = "JWT";
+    public static final String JWT_HEADER_NAME = "Authorization";
 
     @Bean
     public OpenAPI openApi() {

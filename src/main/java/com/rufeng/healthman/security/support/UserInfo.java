@@ -1,13 +1,15 @@
-package com.rufeng.healthman.pojo.dto.support;
+package com.rufeng.healthman.security.support;
 
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
+import com.rufeng.healthman.pojo.dto.support.RoleInfo;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public abstract class UserInfo {
+public abstract class UserInfo implements Serializable {
     private String userId;
     private String username;
     private String avatar;

@@ -1,7 +1,7 @@
 package com.rufeng.healthman.common.util;
 
 import com.rufeng.healthman.pojo.ptdo.PtRole;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.rufeng.healthman.security.support.SimpleGrantedAuthority;
 
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +26,7 @@ public class AuthorityUtils {
             byte value = role.getRoleValue();
             String target = role.getTarget();
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleType()));
-            if (target == null){
+            if (target == null) {
                 return;
             }
             if ((value & SELECT_MASK) != 0) {
