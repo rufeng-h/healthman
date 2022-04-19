@@ -2,6 +2,8 @@ package com.rufeng.healthman.pojo.ptdo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.rufeng.healthman.enums.OperTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-04-16 14:17
+ * @time 2022-04-19 14:18
  * @package com.rufeng.healthman.pojo.ptdo
  * @description TODO
  */
@@ -26,16 +28,6 @@ public class PtOperLog implements Serializable {
     private Long operId;
 
     /**
-     * 操作模块
-     */
-    private String operModule;
-
-    /**
-     * 操作类型
-     */
-    private String operType;
-
-    /**
      * 操作说明
      */
     private String operDesc;
@@ -48,7 +40,7 @@ public class PtOperLog implements Serializable {
     /**
      * 返回结果
      */
-    private String operRes;
+    private String operExp;
 
     /**
      * 操作方法
@@ -72,7 +64,14 @@ public class PtOperLog implements Serializable {
 
     private String operIp;
 
-    private LocalDateTime operCreatedTime;
+    private LocalDateTime operTime;
+
+    /**
+     * 1 成功 0 失败
+     */
+    private Integer operStatus;
+
+    private OperTypeEnum operType;
 
     private static final long serialVersionUID = 1L;
 }

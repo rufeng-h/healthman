@@ -2,16 +2,18 @@ package com.rufeng.healthman.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
+import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.mapper.PtSubgroupMapper;
+import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
+import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
+import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup;
-import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
 import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
-import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
-import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +51,7 @@ public class PtSubgroupService {
         return ptSubgroupMapper.listSubGroup();
     }
 
+    @OperLogRecord(description = "添加科目组", operType = OperTypeEnum.INSERT)
     @Transactional(rollbackFor = Exception.class)
     public PtSubgroup addSubGroup(PtSubGroupFormdata formdata) {
         List<Long> subIds = formdata.getSubIds();
@@ -100,6 +103,7 @@ public class PtSubgroupService {
         return ptSubgroupMapper.mapGrpIdGrpNameByIds(grpIds);
     }
 
+    @OperLogRecord(description = "删除科目组", operType = OperTypeEnum.DELETE)
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteGrp(Long grpId) {
         ptSubjectSubGroupService.deleteByGrpId(grpId);

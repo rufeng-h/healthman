@@ -23,7 +23,6 @@ public class PtCommonService {
     private PtStudentService ptStudentService;
 
     public PtCommonService(RedisService redisService) {
-
         this.redisService = redisService;
     }
 
@@ -44,7 +43,6 @@ public class PtCommonService {
             redisService.remove(userId);
         }
     }
-
 
     public UserInfo userInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -67,13 +65,22 @@ public class PtCommonService {
         return null;
     }
 
+    public UserTypeEnum getCurrentUserType() {
+        return (UserTypeEnum) SecurityContextHolder.getContext().getAuthentication().getDetails();
+    }
+
     public boolean updatePwd(UpdatePwdFormdata formdata) {
-        UserTypeEnum userType = formdata.getUserType();
+        UserTypeEnum userType = this.getCurrentUserType();
+        String userId = this.getCurrentUserId();
         if (userType == UserTypeEnum.ADMIN) {
-            return ptAdminService.updatePwd(formdata);
+            return ptAdminService.updatePwd(userId, formdata);
         } else if (userType == UserTypeEnum.STUDENT) {
-            return ptStudentService.updatePwd(formdata);
+            return ptStudentService.updatePwd(userId, formdata);
         }
         return false;
+    }
+
+    public String getCurrentUserName() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

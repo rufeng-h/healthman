@@ -3,7 +3,9 @@ package com.rufeng.healthman.service;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
+import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.mapper.PtMeasurementMapper;
 import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementDetail;
@@ -79,6 +81,7 @@ public class PtMesurementService {
         this.ptSubjectService = ptSubjectService;
     }
 
+    @OperLogRecord(description = "新建体测", operType = OperTypeEnum.INSERT)
     @Transactional(rollbackFor = Exception.class)
     public PtMeasurement addMesurement(PtMeasurementFormdata formdata) {
         String adminId = ptCommonService.getCurrentUserId();

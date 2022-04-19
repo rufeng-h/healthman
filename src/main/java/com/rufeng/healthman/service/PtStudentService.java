@@ -219,13 +219,13 @@ public class PtStudentService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean updatePwd(UpdatePwdFormdata formdata) {
-        PtStudent student = ptStudentMapper.selectByPrimaryKey(formdata.getUserId());
+    public boolean updatePwd(String stuId, UpdatePwdFormdata formdata) {
+        PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
         if (!passwordEncoder.matches(formdata.getOldPwd(), student.getPassword())) {
             throw new BadCredentialsException("原始密码错误！");
         }
         PtStudent stu = new PtStudent();
-        stu.setStuId(formdata.getUserId());
+        stu.setStuId(stuId);
         stu.setPassword(passwordEncoder.encode(formdata.getNewPwd()));
         stu.setStuModified(LocalDateTime.now());
         return ptStudentMapper.updateByPrimaryKeySelective(stu) == 1;

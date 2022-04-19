@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.AdminFormdata;
@@ -43,7 +44,6 @@ public class PtAdminController {
         this.ptAdminService = ptAdminService;
     }
 
-    //    @PreAuthorize("hasAuthority('null:select')")
     @GetMapping
     public ApiResponse<ApiPage<AdminInfo>> pageAdmin(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -72,7 +72,7 @@ public class PtAdminController {
     }
 
     @PutMapping
-    public ApiResponse<Boolean> updateAdmin(@Validated @RequestBody AdminFormdata formdata){
+    public ApiResponse<Boolean> updateAdmin(@Validated @RequestBody AdminFormdata formdata) {
         return ApiResponse.success(ptAdminService.updateAdmin(formdata));
     }
 }

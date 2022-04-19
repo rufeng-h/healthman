@@ -3,9 +3,11 @@ package com.rufeng.healthman.service;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.util.AuthorityUtils;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
+import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.FileException;
@@ -268,6 +270,7 @@ public class PtAdminService {
         return count;
     }
 
+    @OperLogRecord(description = "导入教师数据", operType = OperTypeEnum.INSERT)
     public Integer uploadAdmin(MultipartFile file) {
         PtAdminExcelListener listener = new PtAdminExcelListener(this, ptClassService, ptCollegeService);
         try {
@@ -321,13 +324,13 @@ public class PtAdminService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean updatePwd(UpdatePwdFormdata formdata) {
-        PtAdmin admin = ptAdminMapper.selectByPrimaryKey(formdata.getUserId());
+    public boolean updatePwd(String adminId, UpdatePwdFormdata formdata) {
+        PtAdmin admin = ptAdminMapper.selectByPrimaryKey(adminId);
         if (!passwordEncoder.matches(formdata.getOldPwd(), admin.getPassword())) {
             throw new BadCredentialsException("原始密码错误！");
         }
         PtAdmin ptAdmin = new PtAdmin();
-        ptAdmin.setAdminId(formdata.getUserId());
+        ptAdmin.setAdminId(adminId);
         ptAdmin.setPassword(passwordEncoder.encode(formdata.getNewPwd()));
         ptAdmin.setAdminModified(LocalDateTime.now());
         return ptAdminMapper.updateByPrimaryKeySelective(ptAdmin) == 1;
