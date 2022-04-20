@@ -9,10 +9,10 @@ import com.rufeng.healthman.mapper.PtSubgroupMapper;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
 import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
 import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
-import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup;
+import com.rufeng.healthman.pojo.ptdo.PtTeacher;
 import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,16 +35,16 @@ public class PtSubgroupService {
     private final PtSubgroupMapper ptSubgroupMapper;
     private final PtCommonService ptCommonService;
     private final PtSubjectSubGroupService ptSubjectSubGroupService;
-    private final PtAdminService ptAdminService;
+    private final PtTeacherService ptTeacherService;
 
     public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper,
                              PtCommonService ptCommonService,
                              PtSubjectSubGroupService ptSubjectSubGroupService,
-                             PtAdminService ptAdminService) {
+                             PtTeacherService ptTeacherService) {
         this.ptSubgroupMapper = ptSubgroupMapper;
         this.ptCommonService = ptCommonService;
         this.ptSubjectSubGroupService = ptSubjectSubGroupService;
-        this.ptAdminService = ptAdminService;
+        this.ptTeacherService = ptTeacherService;
     }
 
     public List<PtSubgroup> listSubGroup() {
@@ -83,9 +83,9 @@ public class PtSubgroupService {
                 Collectors.toMap(PtSubGrpSubject::getGrpId, PtSubGrpSubject::getSubjects));
         List<String> adminIds = subgroups.stream().map(PtSubgroup::getGrpCreatedAdmin)
                 .collect(Collectors.toList());
-        List<PtAdmin> admins = ptAdminService.listAdminByIds(adminIds);
+        List<PtTeacher> admins = ptTeacherService.listByIds(adminIds);
         Map<String, String> aMap = admins.stream().collect(
-                Collectors.toMap(PtAdmin::getAdminId, PtAdmin::getAdminName));
+                Collectors.toMap(PtTeacher::getTeaId, PtTeacher::getTeaName));
         List<SubGroupInfo> groupInfos = subgroups.stream()
                 .map(s -> new SubGroupInfo(s, aMap.get(s.getGrpCreatedAdmin()),
                         map.get(s.getGrpId()))).collect(Collectors.toList());

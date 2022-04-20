@@ -3,10 +3,10 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
+import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.service.PtCollegeService;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -50,13 +50,13 @@ public class PtCollegeExcelListener extends AnalysisEventListener<PtCollegeExcel
     }
 
     private void validate(PtCollegeExcel data) {
-        if (!StringUtils.isAsciiPrintable(data.getClgCode())) {
+        if (!StringUtils.isLetterNumeric(data.getClgCode())) {
             throw new ExcelException("学院代码不能为空且必须为数字和字母！");
         }
         if (clgCodes.contains(data.getClgCode())) {
             throw new ExcelException("学院代码重复！");
         }
-        if (StringUtils.isEmpty(data.getClgName())) {
+        if (StringUtils.isEmptyOrBlank(data.getClgName())) {
             throw new ExcelException("学院名称为空！");
         }
         if (clgNames.contains(data.getClgName())) {

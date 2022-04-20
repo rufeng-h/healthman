@@ -1,14 +1,21 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.dto.ptclass.ClassInfo;import com.rufeng.healthman.pojo.file.PtClassExcel;import com.rufeng.healthman.pojo.ptdo.PtClass;
-import java.util.List;import java.util.Map;
-import com.rufeng.healthman.pojo.query.PtClassQuery;import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;import org.springframework.lang.NonNull;
+import com.github.pagehelper.Page;
+import com.rufeng.healthman.config.support.ReturnMap;
+import com.rufeng.healthman.pojo.file.PtClassExcel;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.query.PtClassQuery;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.lang.NonNull;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * @author rufeng
- * @time 2022-04-16 14:17
+ * @time 2022-04-20 14:16
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -74,28 +81,19 @@ public interface PtClassMapper {
     int batchInsert(@Param("list") List<PtClass> list);
 
     /**
-     * 分页
-     *
-     * @param query 查询参数 不为null
-     * @return page
-     */
-    Page<ClassInfo> pageClassInfo(@Param("query") @NonNull PtClassQuery query);
-
-    /**
      * 同上，不分页
      *
      * @param query 查询参数
      * @return page
      */
-    List<PtClass> listClass(@Param("query") @NonNull PtClassQuery query);
+    List<PtClass> listClass(@NonNull PtClassQuery query);
 
     /**
      * 查询所有年级
      *
-     * @param query query
      * @return page
      */
-    List<Integer> listGrade(@Param("query") @NonNull PtClassQuery query);
+    List<Integer> listGrade(@Param("clgCode") String clgCode);
 
     /**
      * 插入excel数据
@@ -118,4 +116,10 @@ public interface PtClassMapper {
     Map<String, String> mapClsNameByIds(@Param("items") List<String> clss);
 
     List<PtClass> listClassByClsCodes(List<String> clsCodes);
+
+    List<PtClass> listByTeaId(String teaId);
+
+    Page<PtClass> page(PtClassQuery ptClassQuery);
+
+    List<PtClass> listByTeaIds(List<String> teaIds);
 }

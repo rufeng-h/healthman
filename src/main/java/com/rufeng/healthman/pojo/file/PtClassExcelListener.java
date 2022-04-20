@@ -10,11 +10,15 @@ import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.service.PtClassService;
 import com.rufeng.healthman.service.PtCollegeService;
+import com.rufeng.healthman.service.PtTeacherService;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +37,13 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
     private final Map<String, String> clgNameMap;
     private final Set<String> clsNames;
     private final Set<String> clsCodes;
+    private final Set<String> teaIds;
+    /**
+     * 从班级中获取年级，dev模式
+     */
+    private final Pattern pattern = Pattern.compile("(\\d{4})-");
     private int handledCount = 0;
+    private final boolean isDevMode = SpringUtils.isDevMode();
     /**
      * 缓存的数据
      */
@@ -41,6 +51,7 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
 
     public PtClassExcelListener(PtClassService ptClassService,
                                 PtCollegeService ptCollegeService,
+                                PtTeacherService ptTeacherService,
                                 String clgCode) {
         this.ptClassService = ptClassService;
         this.clgCode = clgCode;
@@ -49,14 +60,20 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
         List<PtClass> classes = ptClassService.listClass();
         clsNames = classes.stream().map(PtClass::getClsName).collect(Collectors.toSet());
         clsCodes = classes.stream().map(PtClass::getClsCode).collect(Collectors.toSet());
+        teaIds = new HashSet<>(ptTeacherService.listTeaId());
     }
 
     @Override
     public void invoke(PtClassExcel row, AnalysisContext context) {
         validate(row);
         row.setClgCode(this.clgCode == null ? clgNameMap.get(row.getClgName()) : this.clgCode);
-        if (SpringUtils.isDevMode()) {
-            row.setClsEntryYear(LocalDateTime.now().getYear() - 3);
+        if (isDevMode) {
+            Matcher matcher = pattern.matcher(row.getClsName());
+            boolean b = matcher.find();
+            if (!b) {
+                throw new ExcelException("开发模式下错误的班级名！");
+            }
+            row.setClsEntryYear(Integer.parseInt(matcher.group(1)));
         } else {
             row.setClsEntryYear(LocalDateTime.now().getYear());
         }
@@ -99,13 +116,20 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
         if (data.getClsEntryGrade() == null) {
             throw new ExcelException("年级不能为空！");
         }
+        /* 教师编号 */
+        if (StringUtils.isEmptyOrBlank(data.getTeaId())) {
+            throw new ExcelException("教师编号不能为空！");
+        }
+        if (!teaIds.contains(data.getTeaId())) {
+            throw new ExcelException("不存在教师编号！" + data.getTeaId());
+        }
         clsCodes.add(data.getClsCode());
         clsNames.add(data.getClsName());
     }
 
     private void saveData() {
         if (cachedDataList.size() != 0) {
-            handledCount += ptClassService.addClassSelective(cachedDataList);
+            handledCount += ptClassService.batchInsertSelective(cachedDataList);
         }
     }
 

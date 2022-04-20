@@ -5,16 +5,18 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
+import com.rufeng.healthman.common.util.StringUtils;
+import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
-import com.rufeng.healthman.exceptions.FileException;
 import com.rufeng.healthman.mapper.PtStudentMapper;
-import com.rufeng.healthman.pojo.data.StudentFormData;
+import com.rufeng.healthman.pojo.data.LoginFormdata;
+import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
-import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementInfo;
+import com.rufeng.healthman.pojo.dto.ptmeasurement.PtStuMeasurementPageInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentInfo;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentUserInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentPageInfo;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.file.PtStudentExcel;
 import com.rufeng.healthman.pojo.file.PtStudentExcelListener;
@@ -22,11 +24,11 @@ import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
 import com.rufeng.healthman.pojo.ptdo.PtStudent;
-import com.rufeng.healthman.pojo.query.LoginQuery;
 import com.rufeng.healthman.pojo.query.PtStudentQuery;
 import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.authentication.AuthenticationImpl;
 import com.rufeng.healthman.security.support.UserInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -52,6 +54,7 @@ import java.util.stream.Collectors;
  * @description .
  */
 @Service
+@Slf4j
 public class PtStudentService {
     private final PtStudentMapper ptStudentMapper;
     private final PtClassService ptClassService;
@@ -79,22 +82,23 @@ public class PtStudentService {
         this.ptMesurementService = ptMesurementService;
     }
 
-    public LoginResult login(LoginQuery loginQuery) {
-        PtStudent student = ptStudentMapper.selectByPrimaryKey(loginQuery.getUserId());
+    @Transactional(rollbackFor = Exception.class)
+    public LoginResult login(LoginFormdata loginFormdata) {
+        PtStudent student = ptStudentMapper.selectByPrimaryKey(loginFormdata.getUserId());
         if (student == null) {
             throw new AuthenticationException("用户不存在!");
         }
-        if (!DigestUtils.md5DigestAsHex(loginQuery.getPassword().getBytes(StandardCharsets.UTF_8)).equals(student.getPassword())) {
+        if (!DigestUtils.md5DigestAsHex(loginFormdata.getPassword().getBytes(StandardCharsets.UTF_8)).equals(student.getPassword())) {
             throw new AuthenticationException("密码错误!");
         }
         /* 查班级 */
         PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
         /* 查学院 */
         PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
-        UserInfo info = new StudentUserInfo(student, ptClass, college);
+        UserInfo info = new PtStudentInfo(student, ptClass, college);
         /* 认证信息 */
         Authentication authentication = new AuthenticationImpl(info);
-        redisService.setObject(student.getStuId(), authentication);
+        redisService.setObject(UserInfo.userKey(UserTypeEnum.STUDENT, student.getStuId()), authentication);
 
         /* 更新登录时间 */
         PtStudent stu = PtStudent.builder()
@@ -102,15 +106,15 @@ public class PtStudentService {
                 .stuLastLogin(LocalDateTime.now()).build();
         ptStudentMapper.updateByPrimaryKeySelective(stu);
 
-        String token = JwtTokenUtils.generateToken(student.getStuId(), student.getStuName());
+        String token = JwtTokenUtils.generateToken(student.getStuId(), UserTypeEnum.STUDENT);
         return new LoginResult(token, info);
     }
 
-    public List<StudentBaseInfo> listStuBaseInfoByMsId(Long msId) {
+    public List<PtStudentBaseInfo> listStuBaseInfoByMsId(Long msId) {
         return ptStudentMapper.listStuBaseInfoByMsId(msId);
     }
 
-    public ApiPage<StudentInfo> pageStudentInfo(Integer page, Integer pageSize, PtStudentQuery query) {
+    public ApiPage<PtStudentPageInfo> pageStudentInfo(Integer page, Integer pageSize, PtStudentQuery query) {
         PageHelper.startPage(page, pageSize);
         Page<PtStudent> students = ptStudentMapper.pageStudent(query);
         /* 查班级名 */
@@ -118,16 +122,16 @@ public class PtStudentService {
         List<PtClass> classes = ptClassService.listClass(clsCodes);
         Map<String, PtClass> clsMap = classes.stream().collect(Collectors.toMap(PtClass::getClsCode, c -> c));
         /* 查学院名和代码 */
-        List<String> clgCodes = ptCollegeService.getClsCodeFromClasses(classes);
+        List<String> clgCodes = ptCollegeService.getClgCodeFromClasses(classes);
         Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(clgCodes);
         /* 组装数据 */
-        List<StudentInfo> infos = students.stream().map(s -> {
+        List<PtStudentPageInfo> infos = students.stream().map(s -> {
             PtClass cls = clsMap.get(s.getClsCode());
             String clgCode = cls.getClgCode();
             if (clgCode != null) {
-                return new StudentInfo(s, cls.getClsName(), clgCode, clgNameMap.get(clgCode));
+                return new PtStudentPageInfo(s, cls.getClsName(), clgCode, clgNameMap.get(clgCode));
             }
-            return new StudentInfo(s, cls.getClsName());
+            return new PtStudentPageInfo(s, cls.getClsName());
         }).collect(Collectors.toList());
         return ApiPage.convert(students, infos);
     }
@@ -158,7 +162,7 @@ public class PtStudentService {
         return ptStudentMapper.batchInsertSelective(cachedDataList);
     }
 
-    public StuMeasurementInfo getStuMsInfo(String stuId) {
+    public PtStuMeasurementPageInfo getStuMsInfo(String stuId) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
         /* 查班级 */
         PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
@@ -174,9 +178,9 @@ public class PtStudentService {
         List<StuMeasurementStatus> msStatus = measurements.stream().map(m -> new StuMeasurementStatus(m, msStatusMap.get(m.getMsId()))).collect(Collectors.toList());
         /* 查分数 */
         if (college == null) {
-            return new StuMeasurementInfo(student, ptClass.getClsName(), msStatus);
+            return new PtStuMeasurementPageInfo(student, ptClass.getClsName(), msStatus);
         }
-        return new StuMeasurementInfo(student, ptClass.getClsName(), college.getClgCode(), college.getClgName(), msStatus);
+        return new PtStuMeasurementPageInfo(student, ptClass.getClsName(), college.getClgCode(), college.getClgName(), msStatus);
     }
 
     public List<String> listStuId() {
@@ -184,29 +188,27 @@ public class PtStudentService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateStudent(StudentFormData formData) {
-        PtStudent ptStudent = ptStudentMapper.selectByPrimaryKey(formData.getStuId());
+    public boolean updateStudent(String stuId, PtUserFormdata formdata) {
+        PtStudent ptStudent = ptStudentMapper.selectByPrimaryKey(stuId);
         PtStudent student = new PtStudent();
-        student.setStuBirth(formData.getBirth());
-        student.setAvatar(formData.getAvatar());
-        student.setStuDesp(formData.getDesp());
-        student.setStuId(formData.getStuId());
+        student.setStuId(stuId);
+        student.setStuBirth(formdata.getBirth());
+        student.setAvatar(formdata.getAvatar());
+        student.setStuDesp(formdata.getDesp());
         student.setStuModified(LocalDateTime.now());
-
         if (ptStudentMapper.updateByPrimaryKeySelective(student) != 1) {
             return false;
         }
-        if (fileService.remove(ptStudent.getAvatar())) {
-            return true;
+        if (!fileService.remove(ptStudent.getAvatar())) {
+            log.warn("删除头像失败！");
         }
-        throw new FileException("删除头像失败！");
-
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public boolean updatePwd(String stuId, UpdatePwdFormdata formdata) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
-        if (!DigestUtils.md5DigestAsHex(formdata.getOldPwd().getBytes(StandardCharsets.UTF_8)).equals(student.getPassword())) {
+        if (!StringUtils.pwdEquals(formdata.getOldPwd(), student.getPassword())) {
             throw new AuthenticationException("原始密码错误！");
         }
         PtStudent stu = new PtStudent();

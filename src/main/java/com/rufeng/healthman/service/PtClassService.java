@@ -5,12 +5,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtClassMapper;
-import com.rufeng.healthman.pojo.dto.ptclass.ClassInfo;
+import com.rufeng.healthman.pojo.dto.ptclass.PtClassPageInfo;
 import com.rufeng.healthman.pojo.file.PtClassExcel;
 import com.rufeng.healthman.pojo.file.PtClassExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.query.PtClassQuery;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.NonNull;
@@ -33,21 +33,39 @@ import java.util.stream.Collectors;
 @Service
 public class PtClassService {
     private final PtClassMapper ptClassMapper;
-    private final PtCollegeService ptCollegeService;
+    private PtCollegeService ptCollegeService;
+    private PtTeacherService ptTeacherService;
 
-    public PtClassService(PtClassMapper ptClassMapper, PtCollegeService ptCollegeService, Environment environment) {
+    public PtClassService(PtClassMapper ptClassMapper) {
         this.ptClassMapper = ptClassMapper;
+    }
+
+    @Autowired
+    public void setPtCollegeService(PtCollegeService ptCollegeService) {
         this.ptCollegeService = ptCollegeService;
     }
 
+    /**
+     * 循环依赖 TODO
+     */
+    @Autowired
+    public void setPtTeacherService(PtTeacherService ptTeacherService) {
+        this.ptTeacherService = ptTeacherService;
+    }
 
-    public ApiPage<ClassInfo> pageClassInfo(Integer page, Integer pageSize, @NonNull PtClassQuery ptClassQuery) {
+    public ApiPage<PtClassPageInfo> pageClassInfo(Integer page, Integer pageSize, @NonNull PtClassQuery ptClassQuery) {
         PageHelper.startPage(page, pageSize);
-        Page<ClassInfo> infos = ptClassMapper.pageClassInfo(ptClassQuery);
-        List<String> clsCodes = infos.stream().map(ClassInfo::getClsCode).collect(Collectors.toList());
+        Page<PtClass> classes = ptClassMapper.page(ptClassQuery);
+        /* 查学院 */
+        List<String> clgCodes = ptCollegeService.getClgCodeFromClasses(classes);
+        Map<String, String> clgCodeNameMap = ptCollegeService.mapClgNameByIds(clgCodes);
+        List<String> clsCodes = classes.stream().map(PtClass::getClsCode).collect(Collectors.toList());
         Map<String, Integer> map = ptClassMapper.countStudent(clsCodes);
-        infos.forEach(info -> info.setStuCount(map.get(info.getClsCode())));
-        return ApiPage.convert(infos);
+        Map<String, String> teaIdNameMap = ptTeacherService.mapTeaNameByIds(
+                classes.stream().map(PtClass::getTeaId).collect(Collectors.toList()));
+        List<PtClassPageInfo> infos = classes.stream().map(c -> new PtClassPageInfo(
+                c, clgCodeNameMap.get(c.getClgCode()), teaIdNameMap.get(c.getTeaId()), map.get(c.getClsCode()))).collect(Collectors.toList());
+        return ApiPage.convert(classes, infos);
     }
 
 
@@ -66,8 +84,8 @@ public class PtClassService {
         return ptClassMapper.listClass(new PtClassQuery());
     }
 
-    public List<Integer> listGrade(@NonNull PtClassQuery query) {
-        return ptClassMapper.listGrade(query);
+    public List<Integer> listGrade(@Nullable String clgCode) {
+        return ptClassMapper.listGrade(clgCode);
     }
 
 
@@ -77,7 +95,7 @@ public class PtClassService {
 
 
     public Integer uploadClass(MultipartFile file, @Nullable String clgCode) {
-        PtClassExcelListener excelListener = new PtClassExcelListener(this, ptCollegeService, clgCode);
+        PtClassExcelListener excelListener = new PtClassExcelListener(this, ptCollegeService, ptTeacherService, clgCode);
         try {
             EasyExcel.read(file.getInputStream(), PtClassExcel.class, excelListener).sheet().doRead();
         } catch (IOException e) {
@@ -87,7 +105,7 @@ public class PtClassService {
     }
 
 
-    public Integer addClassSelective(List<PtClassExcel> cachedDataList) {
+    public Integer batchInsertSelective(List<PtClassExcel> cachedDataList) {
         if (cachedDataList.size() == 0) {
             return 0;
         }
@@ -113,5 +131,16 @@ public class PtClassService {
             return Collections.emptyMap();
         }
         return ptClassMapper.countStudent(clsCodes);
+    }
+
+    public List<PtClass> listByTeaId(String teaId) {
+        return ptClassMapper.listByTeaId(teaId);
+    }
+
+    public List<PtClass> listByTeaIds(List<String> teaIds) {
+        if (teaIds.isEmpty()){
+            return Collections.emptyList();
+        }
+        return ptClassMapper.listByTeaIds(teaIds);
     }
 }

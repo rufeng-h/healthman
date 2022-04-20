@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.healthman.mapper.PtUrlResourceMapper">
+  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtUrlResource">
+    <!--@mbg.generated-->
+    <!--@Table pt_url_resource-->
+    <id column="res_id" property="resId" />
+    <result column="res_name" property="resName" />
+    <result column="pattern" property="pattern" />
+    <result column="created" property="created" />
+    <result column="parent_id" property="parentId" />
+    <result column="method" property="method" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    res_id, res_name, pattern, created, parent_id, `method`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pt_url_resource
+    where res_id = #{resId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from pt_url_resource
+    where res_id = #{resId}
+  </delete>
+  <insert id="insert" keyColumn="res_id" keyProperty="resId" parameterType="com.rufeng.healthman.pojo.ptdo.PtUrlResource" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_url_resource (res_name, pattern, created, parent_id, `method`)
+    values (#{resName}, #{pattern}, #{created}, #{parentId}, #{method})
+  </insert>
+  <insert id="insertSelective" keyColumn="res_id" keyProperty="resId" parameterType="com.rufeng.healthman.pojo.ptdo.PtUrlResource" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_url_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resName != null">
+        res_name,
+      </if>
+      <if test="pattern != null">
+        pattern,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="method != null">
+        `method`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="resName != null">
+        #{resName},
+      </if>
+      <if test="pattern != null">
+        #{pattern},
+      </if>
+      <if test="created != null">
+        #{created},
+      </if>
+      <if test="parentId != null">
+        #{parentId},
+      </if>
+      <if test="method != null">
+        #{method},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtUrlResource">
+    <!--@mbg.generated-->
+    update pt_url_resource
+    <set>
+      <if test="resName != null">
+        res_name = #{resName},
+      </if>
+      <if test="pattern != null">
+        pattern = #{pattern},
+      </if>
+      <if test="created != null">
+        created = #{created},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId},
+      </if>
+      <if test="method != null">
+        `method` = #{method},
+      </if>
+    </set>
+    where res_id = #{resId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtUrlResource">
+    <!--@mbg.generated-->
+    update pt_url_resource
+    set res_name = #{resName},
+      pattern = #{pattern},
+      created = #{created},
+      parent_id = #{parentId},
+      `method` = #{method}
+    where res_id = #{resId}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_url_resource
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="res_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when res_id = #{item.resId} then #{item.resName}
+        </foreach>
+      </trim>
+      <trim prefix="pattern = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when res_id = #{item.resId} then #{item.pattern}
+        </foreach>
+      </trim>
+      <trim prefix="created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when res_id = #{item.resId} then #{item.created}
+        </foreach>
+      </trim>
+      <trim prefix="parent_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when res_id = #{item.resId} then #{item.parentId}
+        </foreach>
+      </trim>
+      <trim prefix="`method` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when res_id = #{item.resId} then #{item.method}
+        </foreach>
+      </trim>
+    </trim>
+    where res_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.resId}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update pt_url_resource
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="res_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.resName != null">
+            when res_id = #{item.resId} then #{item.resName}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="pattern = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.pattern != null">
+            when res_id = #{item.resId} then #{item.pattern}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="created = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.created != null">
+            when res_id = #{item.resId} then #{item.created}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="parent_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.parentId != null">
+            when res_id = #{item.resId} then #{item.parentId}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`method` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.method != null">
+            when res_id = #{item.resId} then #{item.method}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where res_id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.resId}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="res_id" keyProperty="resId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_url_resource
+    (res_name, pattern, created, parent_id, `method`)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.resName}, #{item.pattern}, #{item.created}, #{item.parentId}, #{item.method}
+        )
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="res_id" keyProperty="resId" parameterType="com.rufeng.healthman.pojo.ptdo.PtUrlResource" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_url_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resId != null">
+        res_id,
+      </if>
+      res_name,
+      pattern,
+      created,
+      parent_id,
+      `method`,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resId != null">
+        #{resId},
+      </if>
+      #{resName},
+      #{pattern},
+      #{created},
+      #{parentId},
+      #{method},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="resId != null">
+        res_id = #{resId},
+      </if>
+      res_name = #{resName},
+      pattern = #{pattern},
+      created = #{created},
+      parent_id = #{parentId},
+      `method` = #{method},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="res_id" keyProperty="resId" parameterType="com.rufeng.healthman.pojo.ptdo.PtUrlResource" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into pt_url_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resId != null">
+        res_id,
+      </if>
+      <if test="resName != null">
+        res_name,
+      </if>
+      <if test="pattern != null">
+        pattern,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="method != null">
+        `method`,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resId != null">
+        #{resId},
+      </if>
+      <if test="resName != null">
+        #{resName},
+      </if>
+      <if test="pattern != null">
+        #{pattern},
+      </if>
+      <if test="created != null">
+        #{created},
+      </if>
+      <if test="parentId != null">
+        #{parentId},
+      </if>
+      <if test="method != null">
+        #{method},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="resId != null">
+        res_id = #{resId},
+      </if>
+      <if test="resName != null">
+        res_name = #{resName},
+      </if>
+      <if test="pattern != null">
+        pattern = #{pattern},
+      </if>
+      <if test="created != null">
+        created = #{created},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId},
+      </if>
+      <if test="method != null">
+        `method` = #{method},
+      </if>
+    </trim>
+  </insert>
+</mapper>

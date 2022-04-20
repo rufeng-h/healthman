@@ -1,7 +1,7 @@
 package com.rufeng.healthman.pojo.dto.ptmeasurement;
 
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.pojo.dto.ptscore.ScoreInfo;
+import com.rufeng.healthman.pojo.dto.ptscore.PtScoreInfo;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -18,5 +18,5 @@ public class MeasurementScoreInfo {
     private String stuName;
     private String stuId;
     private GenderEnum stuGender;
-    private List<ScoreInfo> scores = new ArrayList<>();
+    private List<PtScoreInfo> scores = new ArrayList<>();
 }

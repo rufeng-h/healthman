@@ -21,11 +21,11 @@ public class PtRoleService {
         this.ptRoleMapper = ptRoleMapper;
     }
 
-    public List<PtRole> listRoleByIds(List<String> adminIds) {
-        if (adminIds.size() == 0) {
+    public List<PtRole> listByIds(List<Long> roleIds) {
+        if (roleIds.size() == 0) {
             return Collections.emptyList();
         }
-        return ptRoleMapper.listRoleByAdminIds(adminIds);
+        return ptRoleMapper.listByIds(roleIds);
     }
 
     public List<PtRole> listRole(String adminId) {

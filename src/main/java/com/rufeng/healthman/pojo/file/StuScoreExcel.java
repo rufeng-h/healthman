@@ -3,7 +3,7 @@ package com.rufeng.healthman.pojo.file;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
 import com.rufeng.healthman.pojo.file.converter.StringGenderConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,7 @@ public class StuScoreExcel implements Comparable<StuScoreExcel> {
     @ExcelProperty(value = "测试时间")
     private LocalDateTime scoCreated;
 
-    public StuScoreExcel(StudentBaseInfo stu, String subName, PtScore score) {
+    public StuScoreExcel(PtStudentBaseInfo stu, String subName, PtScore score) {
         this.msId = score.getMsId();
         this.stuId = stu.getStuId();
         this.stuName = stu.getStuName();

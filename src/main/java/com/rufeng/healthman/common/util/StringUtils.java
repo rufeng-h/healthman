@@ -1,5 +1,9 @@
 package com.rufeng.healthman.common.util;
 
+import org.springframework.util.DigestUtils;
+
+import java.nio.charset.StandardCharsets;
+
 /**
  * @author rufeng
  * @time 2022-04-16 13:33
@@ -67,5 +71,9 @@ public class StringUtils {
             i++;
         }
         return true;
+    }
+
+    public static boolean pwdEquals(String rawPwd, String encodePwd) {
+        return DigestUtils.md5DigestAsHex(rawPwd.getBytes(StandardCharsets.UTF_8)).equals(encodePwd);
     }
 }

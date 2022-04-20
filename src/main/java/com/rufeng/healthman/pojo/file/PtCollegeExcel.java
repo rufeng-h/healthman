@@ -17,8 +17,6 @@ public class PtCollegeExcel {
     private String clgCode;
     @ExcelProperty("学院名称")
     private String clgName;
-    @ExcelProperty("负责人")
-    private String clgPrincipal;
     @ExcelProperty("办公室")
     private String clgOffice;
     @ExcelProperty("电话")

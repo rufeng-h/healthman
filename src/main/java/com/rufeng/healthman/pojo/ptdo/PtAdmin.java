@@ -1,25 +1,17 @@
 package com.rufeng.healthman.pojo.ptdo;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import com.rufeng.healthman.enums.GenderEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 
 /**
- * @author rufeng
- * @time 2022-04-18 10:33
- * @package com.rufeng.healthman.pojo.ptdo
- * @description TODO
- */
-
-/**
- * 用户表
+ * 管理员
  * @author rufeng
  */
 @Data
@@ -27,39 +19,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PtAdmin implements Serializable {
-    private String adminId;
-
-    private String adminName;
-
-    private String password;
-
-    /**
-     * 头像
-     */
-    private String avatar;
-
-    private String email;
-
-    private String adminDesp;
-
-    private LocalDateTime adminCreated;
-
-    private LocalDateTime adminModified;
-
-    private LocalDateTime adminLastLogin;
-
-    private String phone;
-
-    private Long aid;
-
-    /**
-     * 所属学院
-     */
-    private String clgCode;
-
-    private GenderEnum adminGender;
-
-    private LocalDate adminBirth;
-
     private static final long serialVersionUID = 1L;
+    private String adminId;
+    private Long aid;
+    private String adminName;
+    private LocalDateTime adminCreated;
+    private LocalDateTime adminModified;
+    private String password;
+    private String phone;
+    private String email;
+    private String avatar;
+    private LocalDateTime adminLastLogin;
+    private String adminDesp;
+    private GenderEnum adminGender;
 }

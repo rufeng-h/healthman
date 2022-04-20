@@ -1,6 +1,6 @@
 package com.rufeng.healthman.common.util;
 
-import com.rufeng.healthman.enums.RoleTypeEnum;
+import com.rufeng.healthman.enums.UserTypeEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,9 +19,9 @@ public class JwtTokenUtils {
     private static final SecretKey KEY = Keys.hmacShaKeyFor(
             Decoders.BASE64.decode("SyI/8w+X528KqE2S8JKU8Sv1Bb+coixCZrU/fYYKDqc="));
 
-    public static String generateToken(String id, String username) {
+    public static String generateToken(String id, UserTypeEnum userType) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userType.name())
                 .setId(id)
                 .signWith(KEY)
                 .compact();
@@ -31,8 +31,8 @@ public class JwtTokenUtils {
         return getClaimsBody(token).getId();
     }
 
-    public static String getSubject(String token) {
-        return getClaimsBody(token).getSubject();
+    public static UserTypeEnum getSubject(String token) {
+        return UserTypeEnum.valueOf(getClaimsBody(token).getSubject());
     }
 
 

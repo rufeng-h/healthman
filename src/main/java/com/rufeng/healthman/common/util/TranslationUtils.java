@@ -18,6 +18,8 @@ public class TranslationUtils {
 
     private static final Map<String, Integer> STR2GRADE = new HashMap<>(16);
     private static final Map<Integer, String> GRADE2STR = new HashMap<>(16);
+    private static final Map<Boolean, String> BOOL2STR = new HashMap<>(2);
+    private static final Map<String, Boolean> STR2BOOL = new HashMap<>(2);
 
     static {
         GradeEnum[] gradeEnums = GradeEnum.class.getEnumConstants();
@@ -32,6 +34,13 @@ public class TranslationUtils {
         for (GenderEnum genderEnum : genderEnums) {
             STR2GENDER.put(genderEnum.getGender(), genderEnum);
         }
+    }
+
+    static {
+        BOOL2STR.put(true, "是");
+        BOOL2STR.put(false, "否");
+        STR2BOOL.put("是", true);
+        STR2BOOL.put("否", false);
     }
 
     public static GenderEnum translateGender(String gender) {
@@ -56,5 +65,17 @@ public class TranslationUtils {
             throw new TranslateException("年级错误：" + grade);
         }
         return value;
+    }
+
+    public static String translateBool(boolean b) {
+        return BOOL2STR.get(b);
+    }
+
+    public static Boolean tanslateStr2Bool(String s) {
+        Boolean b = STR2BOOL.get(s);
+        if (b == null) {
+            throw new TranslateException("不能识别：" + s);
+        }
+        return b;
     }
 }

@@ -1,9 +1,9 @@
-#logging:
-#  level:
-#    web: DEBUG
-#    com.rufeng.healthman: DEBUG
-#    org.springframework.security: DEBUG
-#    sql: DEBUG
+logging:
+  level:
+    web: DEBUG
+    com.rufeng.healthman: DEBUG
+    org.springframework.security: DEBUG
+    sql: DEBUG
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

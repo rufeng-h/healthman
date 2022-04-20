@@ -23,6 +23,8 @@ public class PtClassExcel {
     private Integer clsEntryGrade;
     @ExcelProperty("学院")
     private String clgName;
+    @ExcelProperty("教师工号")
+    private String teaId;
     /**
      * 测试时使用
      */

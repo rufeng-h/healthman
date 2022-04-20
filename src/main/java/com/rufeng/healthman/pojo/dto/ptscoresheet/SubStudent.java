@@ -2,7 +2,7 @@ package com.rufeng.healthman.pojo.dto.ptscoresheet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,7 +39,7 @@ public class SubStudent {
     @Null
     private Long subId;
 
-    public SubStudent(StudentBaseInfo info, Long subId) {
+    public SubStudent(PtStudentBaseInfo info, Long subId) {
         this.gender = info.getStuGender();
         this.grade = info.getGrade();
         this.subId = subId;

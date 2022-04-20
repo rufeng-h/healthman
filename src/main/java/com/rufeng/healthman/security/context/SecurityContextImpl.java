@@ -8,9 +8,7 @@ import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 /**
- * Security context implementation.
- *
- * @author johnniang
+ * @author rufeng
  */
 @ToString
 @EqualsAndHashCode

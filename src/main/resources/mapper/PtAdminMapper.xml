@@ -5,24 +5,22 @@
         <!--@mbg.generated-->
         <!--@Table pt_admin-->
         <id column="admin_id" property="adminId"/>
+        <result column="aid" property="aid"/>
         <result column="admin_name" property="adminName"/>
-        <result column="password" property="password"/>
-        <result column="avatar" property="avatar"/>
-        <result column="email" property="email"/>
-        <result column="admin_desp" property="adminDesp"/>
         <result column="admin_created" property="adminCreated"/>
         <result column="admin_modified" property="adminModified"/>
-        <result column="admin_last_login" property="adminLastLogin"/>
+        <result column="password" property="password"/>
         <result column="phone" property="phone"/>
-        <result column="aid" property="aid"/>
-        <result column="clg_code" property="clgCode"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="admin_last_login" property="adminLastLogin"/>
+        <result column="admin_desp" property="adminDesp"/>
         <result column="admin_gender" property="adminGender"/>
-        <result column="admin_birth" property="adminBirth"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-        admin_last_login, phone, aid, clg_code, admin_gender, admin_birth
+        admin_id, aid, admin_name, admin_created, admin_modified, `password`, phone, email,
+        avatar, admin_last_login, admin_desp, admin_gender
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -39,12 +37,10 @@
     </delete>
     <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
-        insert into pt_admin (admin_id, admin_name, `password`, avatar, email, admin_desp,
-                              admin_created, admin_modified, admin_last_login, phone, aid, clg_code,
-                              admin_gender, admin_birth)
-        values (#{adminId}, #{adminName}, #{password}, #{avatar}, #{email}, #{adminDesp},
-                #{adminCreated}, #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode},
-                #{adminGender}, #{adminBirth})
+        insert into pt_admin (admin_id, aid, admin_name, admin_created, admin_modified, `password`,
+                              phone, email, avatar, admin_last_login, admin_desp, admin_gender)
+        values (#{adminId}, #{aid}, #{adminName}, #{adminCreated}, #{adminModified}, #{password},
+                #{phone}, #{email}, #{avatar}, #{adminLastLogin}, #{adminDesp}, #{adminGender})
     </insert>
     <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
@@ -53,20 +49,11 @@
             <if test="adminId != null">
                 admin_id,
             </if>
+            <if test="aid != null">
+                aid,
+            </if>
             <if test="adminName != null">
                 admin_name,
-            </if>
-            <if test="password != null">
-                `password`,
-            </if>
-            <if test="avatar != null">
-                avatar,
-            </if>
-            <if test="email != null">
-                email,
-            </if>
-            <if test="adminDesp != null">
-                admin_desp,
             </if>
             <if test="adminCreated != null">
                 admin_created,
@@ -74,43 +61,37 @@
             <if test="adminModified != null">
                 admin_modified,
             </if>
-            <if test="adminLastLogin != null">
-                admin_last_login,
+            <if test="password != null">
+                `password`,
             </if>
             <if test="phone != null">
                 phone,
             </if>
-            <if test="aid != null">
-                aid,
+            <if test="email != null">
+                email,
             </if>
-            <if test="clgCode != null">
-                clg_code,
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="adminLastLogin != null">
+                admin_last_login,
+            </if>
+            <if test="adminDesp != null">
+                admin_desp,
             </if>
             <if test="adminGender != null">
                 admin_gender,
-            </if>
-            <if test="adminBirth != null">
-                admin_birth,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="adminId != null">
                 #{adminId},
             </if>
+            <if test="aid != null">
+                #{aid},
+            </if>
             <if test="adminName != null">
                 #{adminName},
-            </if>
-            <if test="password != null">
-                #{password},
-            </if>
-            <if test="avatar != null">
-                #{avatar},
-            </if>
-            <if test="email != null">
-                #{email},
-            </if>
-            <if test="adminDesp != null">
-                #{adminDesp},
             </if>
             <if test="adminCreated != null">
                 #{adminCreated},
@@ -118,23 +99,26 @@
             <if test="adminModified != null">
                 #{adminModified},
             </if>
-            <if test="adminLastLogin != null">
-                #{adminLastLogin},
+            <if test="password != null">
+                #{password},
             </if>
             <if test="phone != null">
                 #{phone},
             </if>
-            <if test="aid != null">
-                #{aid},
+            <if test="email != null">
+                #{email},
             </if>
-            <if test="clgCode != null">
-                #{clgCode},
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="adminLastLogin != null">
+                #{adminLastLogin},
+            </if>
+            <if test="adminDesp != null">
+                #{adminDesp},
             </if>
             <if test="adminGender != null">
                 #{adminGender},
-            </if>
-            <if test="adminBirth != null">
-                #{adminBirth},
             </if>
         </trim>
     </insert>
@@ -142,20 +126,11 @@
         <!--@mbg.generated-->
         update pt_admin
         <set>
+            <if test="aid != null">
+                aid = #{aid},
+            </if>
             <if test="adminName != null">
                 admin_name = #{adminName},
-            </if>
-            <if test="password != null">
-                `password` = #{password},
-            </if>
-            <if test="avatar != null">
-                avatar = #{avatar},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-            <if test="adminDesp != null">
-                admin_desp = #{adminDesp},
             </if>
             <if test="adminCreated != null">
                 admin_created = #{adminCreated},
@@ -163,23 +138,26 @@
             <if test="adminModified != null">
                 admin_modified = #{adminModified},
             </if>
-            <if test="adminLastLogin != null">
-                admin_last_login = #{adminLastLogin},
+            <if test="password != null">
+                `password` = #{password},
             </if>
             <if test="phone != null">
                 phone = #{phone},
             </if>
-            <if test="aid != null">
-                aid = #{aid},
+            <if test="email != null">
+                email = #{email},
             </if>
-            <if test="clgCode != null">
-                clg_code = #{clgCode},
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="adminLastLogin != null">
+                admin_last_login = #{adminLastLogin},
+            </if>
+            <if test="adminDesp != null">
+                admin_desp = #{adminDesp},
             </if>
             <if test="adminGender != null">
                 admin_gender = #{adminGender},
-            </if>
-            <if test="adminBirth != null">
-                admin_birth = #{adminBirth},
             </if>
         </set>
         where admin_id = #{adminId}
@@ -187,48 +165,31 @@
     <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
         update pt_admin
-        set admin_name       = #{adminName},
-            `password`       = #{password},
-            avatar           = #{avatar},
-            email            = #{email},
-            admin_desp       = #{adminDesp},
+        set aid              = #{aid},
+            admin_name       = #{adminName},
             admin_created    = #{adminCreated},
             admin_modified   = #{adminModified},
-            admin_last_login = #{adminLastLogin},
+            `password`       = #{password},
             phone            = #{phone},
-            aid              = #{aid},
-            clg_code         = #{clgCode},
-            admin_gender     = #{adminGender},
-            admin_birth      = #{adminBirth}
+            email            = #{email},
+            avatar           = #{avatar},
+            admin_last_login = #{adminLastLogin},
+            admin_desp       = #{adminDesp},
+            admin_gender     = #{adminGender}
         where admin_id = #{adminId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
         <!--@mbg.generated-->
         update pt_admin
         <trim prefix="set" suffixOverrides=",">
+            <trim prefix="aid = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when admin_id = #{item.adminId} then #{item.aid}
+                </foreach>
+            </trim>
             <trim prefix="admin_name = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when admin_id = #{item.adminId} then #{item.adminName}
-                </foreach>
-            </trim>
-            <trim prefix="`password` = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.password}
-                </foreach>
-            </trim>
-            <trim prefix="avatar = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.avatar}
-                </foreach>
-            </trim>
-            <trim prefix="email = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.email}
-                </foreach>
-            </trim>
-            <trim prefix="admin_desp = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.adminDesp}
                 </foreach>
             </trim>
             <trim prefix="admin_created = case" suffix="end,">
@@ -241,9 +202,9 @@
                     when admin_id = #{item.adminId} then #{item.adminModified}
                 </foreach>
             </trim>
-            <trim prefix="admin_last_login = case" suffix="end,">
+            <trim prefix="`password` = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.adminLastLogin}
+                    when admin_id = #{item.adminId} then #{item.password}
                 </foreach>
             </trim>
             <trim prefix="phone = case" suffix="end,">
@@ -251,24 +212,29 @@
                     when admin_id = #{item.adminId} then #{item.phone}
                 </foreach>
             </trim>
-            <trim prefix="aid = case" suffix="end,">
+            <trim prefix="email = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.aid}
+                    when admin_id = #{item.adminId} then #{item.email}
                 </foreach>
             </trim>
-            <trim prefix="clg_code = case" suffix="end,">
+            <trim prefix="avatar = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.clgCode}
+                    when admin_id = #{item.adminId} then #{item.avatar}
+                </foreach>
+            </trim>
+            <trim prefix="admin_last_login = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when admin_id = #{item.adminId} then #{item.adminLastLogin}
+                </foreach>
+            </trim>
+            <trim prefix="admin_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when admin_id = #{item.adminId} then #{item.adminDesp}
                 </foreach>
             </trim>
             <trim prefix="admin_gender = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when admin_id = #{item.adminId} then #{item.adminGender}
-                </foreach>
-            </trim>
-            <trim prefix="admin_birth = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when admin_id = #{item.adminId} then #{item.adminBirth}
                 </foreach>
             </trim>
         </trim>
@@ -281,38 +247,17 @@
         <!--@mbg.generated-->
         update pt_admin
         <trim prefix="set" suffixOverrides=",">
+            <trim prefix="aid = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.aid != null">
+                        when admin_id = #{item.adminId} then #{item.aid}
+                    </if>
+                </foreach>
+            </trim>
             <trim prefix="admin_name = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.adminName != null">
                         when admin_id = #{item.adminId} then #{item.adminName}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="`password` = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.password != null">
-                        when admin_id = #{item.adminId} then #{item.password}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="avatar = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.avatar != null">
-                        when admin_id = #{item.adminId} then #{item.avatar}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="email = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.email != null">
-                        when admin_id = #{item.adminId} then #{item.email}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="admin_desp = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.adminDesp != null">
-                        when admin_id = #{item.adminId} then #{item.adminDesp}
                     </if>
                 </foreach>
             </trim>
@@ -330,10 +275,10 @@
                     </if>
                 </foreach>
             </trim>
-            <trim prefix="admin_last_login = case" suffix="end,">
+            <trim prefix="`password` = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    <if test="item.adminLastLogin != null">
-                        when admin_id = #{item.adminId} then #{item.adminLastLogin}
+                    <if test="item.password != null">
+                        when admin_id = #{item.adminId} then #{item.password}
                     </if>
                 </foreach>
             </trim>
@@ -344,17 +289,31 @@
                     </if>
                 </foreach>
             </trim>
-            <trim prefix="aid = case" suffix="end,">
+            <trim prefix="email = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    <if test="item.aid != null">
-                        when admin_id = #{item.adminId} then #{item.aid}
+                    <if test="item.email != null">
+                        when admin_id = #{item.adminId} then #{item.email}
                     </if>
                 </foreach>
             </trim>
-            <trim prefix="clg_code = case" suffix="end,">
+            <trim prefix="avatar = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    <if test="item.clgCode != null">
-                        when admin_id = #{item.adminId} then #{item.clgCode}
+                    <if test="item.avatar != null">
+                        when admin_id = #{item.adminId} then #{item.avatar}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="admin_last_login = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.adminLastLogin != null">
+                        when admin_id = #{item.adminId} then #{item.adminLastLogin}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="admin_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.adminDesp != null">
+                        when admin_id = #{item.adminId} then #{item.adminDesp}
                     </if>
                 </foreach>
             </trim>
@@ -362,13 +321,6 @@
                 <foreach collection="list" index="index" item="item">
                     <if test="item.adminGender != null">
                         when admin_id = #{item.adminId} then #{item.adminGender}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="admin_birth = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.adminBirth != null">
-                        when admin_id = #{item.adminId} then #{item.adminBirth}
                     </if>
                 </foreach>
             </trim>
@@ -381,37 +333,34 @@
     <insert id="batchInsert" parameterType="map">
         <!--@mbg.generated-->
         insert into pt_admin
-        (admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-         admin_last_login, phone, aid, clg_code, admin_gender, admin_birth)
+        (admin_id, aid, admin_name, admin_created, admin_modified, `password`, phone, email,
+         avatar, admin_last_login, admin_desp, admin_gender)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.adminId}, #{item.adminName}, #{item.password}, #{item.avatar}, #{item.email},
-             #{item.adminDesp}, #{item.adminCreated}, #{item.adminModified}, #{item.adminLastLogin},
-             #{item.phone}, #{item.aid}, #{item.clgCode}, #{item.adminGender}, #{item.adminBirth})
+            (#{item.adminId}, #{item.aid}, #{item.adminName}, #{item.adminCreated}, #{item.adminModified},
+             #{item.password}, #{item.phone}, #{item.email}, #{item.avatar}, #{item.adminLastLogin},
+             #{item.adminDesp}, #{item.adminGender})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
         insert into pt_admin
-        (admin_id, admin_name, `password`, avatar, email, admin_desp, admin_created, admin_modified,
-         admin_last_login, phone, aid, clg_code, admin_gender, admin_birth)
-        values (#{adminId}, #{adminName}, #{password}, #{avatar}, #{email}, #{adminDesp}, #{adminCreated},
-                #{adminModified}, #{adminLastLogin}, #{phone}, #{aid}, #{clgCode}, #{adminGender},
-                #{adminBirth})
+        (admin_id, aid, admin_name, admin_created, admin_modified, `password`, phone, email,
+         avatar, admin_last_login, admin_desp, admin_gender)
+        values (#{adminId}, #{aid}, #{adminName}, #{adminCreated}, #{adminModified}, #{password},
+                #{phone}, #{email}, #{avatar}, #{adminLastLogin}, #{adminDesp}, #{adminGender})
         on duplicate key update admin_id         = #{adminId},
+                                aid              = #{aid},
                                 admin_name       = #{adminName},
-                                `password`       = #{password},
-                                avatar           = #{avatar},
-                                email            = #{email},
-                                admin_desp       = #{adminDesp},
                                 admin_created    = #{adminCreated},
                                 admin_modified   = #{adminModified},
-                                admin_last_login = #{adminLastLogin},
+                                `password`       = #{password},
                                 phone            = #{phone},
-                                aid              = #{aid},
-                                clg_code         = #{clgCode},
-                                admin_gender     = #{adminGender},
-                                admin_birth      = #{adminBirth}
+                                email            = #{email},
+                                avatar           = #{avatar},
+                                admin_last_login = #{adminLastLogin},
+                                admin_desp       = #{adminDesp},
+                                admin_gender     = #{adminGender}
     </insert>
     <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtAdmin">
         <!--@mbg.generated-->
@@ -420,20 +369,11 @@
             <if test="adminId != null">
                 admin_id,
             </if>
+            <if test="aid != null">
+                aid,
+            </if>
             <if test="adminName != null">
                 admin_name,
-            </if>
-            <if test="password != null">
-                `password`,
-            </if>
-            <if test="avatar != null">
-                avatar,
-            </if>
-            <if test="email != null">
-                email,
-            </if>
-            <if test="adminDesp != null">
-                admin_desp,
             </if>
             <if test="adminCreated != null">
                 admin_created,
@@ -441,23 +381,26 @@
             <if test="adminModified != null">
                 admin_modified,
             </if>
-            <if test="adminLastLogin != null">
-                admin_last_login,
+            <if test="password != null">
+                `password`,
             </if>
             <if test="phone != null">
                 phone,
             </if>
-            <if test="aid != null">
-                aid,
+            <if test="email != null">
+                email,
             </if>
-            <if test="clgCode != null">
-                clg_code,
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="adminLastLogin != null">
+                admin_last_login,
+            </if>
+            <if test="adminDesp != null">
+                admin_desp,
             </if>
             <if test="adminGender != null">
                 admin_gender,
-            </if>
-            <if test="adminBirth != null">
-                admin_birth,
             </if>
         </trim>
         values
@@ -465,20 +408,11 @@
             <if test="adminId != null">
                 #{adminId},
             </if>
+            <if test="aid != null">
+                #{aid},
+            </if>
             <if test="adminName != null">
                 #{adminName},
-            </if>
-            <if test="password != null">
-                #{password},
-            </if>
-            <if test="avatar != null">
-                #{avatar},
-            </if>
-            <if test="email != null">
-                #{email},
-            </if>
-            <if test="adminDesp != null">
-                #{adminDesp},
             </if>
             <if test="adminCreated != null">
                 #{adminCreated},
@@ -486,23 +420,26 @@
             <if test="adminModified != null">
                 #{adminModified},
             </if>
-            <if test="adminLastLogin != null">
-                #{adminLastLogin},
+            <if test="password != null">
+                #{password},
             </if>
             <if test="phone != null">
                 #{phone},
             </if>
-            <if test="aid != null">
-                #{aid},
+            <if test="email != null">
+                #{email},
             </if>
-            <if test="clgCode != null">
-                #{clgCode},
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="adminLastLogin != null">
+                #{adminLastLogin},
+            </if>
+            <if test="adminDesp != null">
+                #{adminDesp},
             </if>
             <if test="adminGender != null">
                 #{adminGender},
-            </if>
-            <if test="adminBirth != null">
-                #{adminBirth},
             </if>
         </trim>
         on duplicate key update
@@ -510,20 +447,11 @@
             <if test="adminId != null">
                 admin_id = #{adminId},
             </if>
+            <if test="aid != null">
+                aid = #{aid},
+            </if>
             <if test="adminName != null">
                 admin_name = #{adminName},
-            </if>
-            <if test="password != null">
-                `password` = #{password},
-            </if>
-            <if test="avatar != null">
-                avatar = #{avatar},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-            <if test="adminDesp != null">
-                admin_desp = #{adminDesp},
             </if>
             <if test="adminCreated != null">
                 admin_created = #{adminCreated},
@@ -531,120 +459,27 @@
             <if test="adminModified != null">
                 admin_modified = #{adminModified},
             </if>
-            <if test="adminLastLogin != null">
-                admin_last_login = #{adminLastLogin},
+            <if test="password != null">
+                `password` = #{password},
             </if>
             <if test="phone != null">
                 phone = #{phone},
             </if>
-            <if test="aid != null">
-                aid = #{aid},
+            <if test="email != null">
+                email = #{email},
             </if>
-            <if test="clgCode != null">
-                clg_code = #{clgCode},
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="adminLastLogin != null">
+                admin_last_login = #{adminLastLogin},
+            </if>
+            <if test="adminDesp != null">
+                admin_desp = #{adminDesp},
             </if>
             <if test="adminGender != null">
                 admin_gender = #{adminGender},
             </if>
-            <if test="adminBirth != null">
-                admin_birth = #{adminBirth},
-            </if>
         </trim>
-    </insert>
-
-    <resultMap id="AdminInfoMap" type="com.rufeng.healthman.pojo.dto.ptadmin.AdminInfo">
-        <id column="admin_id" property="userId"/>
-        <result column="admin_desp" property="desp"/>
-        <result column="admin_created" property="createdTime"/>
-        <result column="phone" property="phone"/>
-        <result column="avatar" property="avatar"/>
-        <result column="admin_name" property="username"/>
-        <result column="email" property="email"/>
-        <result column="admin_last_login" property="lastLoginTime"/>
-        <collection autoMapping="true" foreignColumn="admin_id" ofType="PtRole" property="roles">
-            <id column="role_id" property="roleId"/>
-        </collection>
-    </resultMap>
-
-    <sql id="AdminColumns">
-        admin_id,
-        admin_name,
-        password,
-        avatar,
-        email,
-        admin_desp,
-        admin_created,
-        admin_modified,
-        admin_last_login,
-        phone
-    </sql>
-
-    <select id="pageAdminInfo" resultMap="AdminInfoMap">
-        SELECT admin_name,
-               password,
-               avatar,
-               email,
-               admin_desp,
-               admin_created,
-               admin_modified,
-               admin_last_login,
-               phone,
-               aid,
-               admin_id,
-               role_value,
-               role_created,
-               role_modified,
-               role_id
-        FROM pt_admin
-                 NATURAL JOIN pt_role
-        <where>
-            <if test="query.adminName != null">
-                <bind name="adminName" value="'%' + query.adminName + '%'"/>
-                AND admin_name like #{adminName}
-            </if>
-            <if test="query.adminId != null">
-                AND admin_id = #{query.adminId}
-            </if>
-        </where>
-    </select>
-
-    <select id="pageByQuery" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM pt_admin
-        <where>
-            <if test="query.adminName != null">
-                <bind name="adminName" value="'%' + query.adminName + '%'"/>
-                AND admin_name like #{adminName}
-            </if>
-            <if test="query.adminId != null">
-                AND admin_id = #{query.adminId}
-            </if>
-        </where>
-    </select>
-
-    <select id="listAdminByIds" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM pt_admin
-        <where>
-            <foreach close=")" collection="list" item="item" open="admin_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
-    </select>
-
-    <select id="listAdminId" resultType="java.lang.String">
-        SELECT admin_id
-        FROM pt_admin
-    </select>
-
-    <insert id="batchInsertSelective">
-        insert into pt_admin (admin_id, admin_name, email, phone, clg_code, admin_gender, admin_birth)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.adminId}, #{item.adminName}, #{item.email}, #{item.phone}, #{item.clgCode}, #{item.adminGender},
-             #{item.adminBirth})
-        </foreach>
     </insert>
 </mapper>

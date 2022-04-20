@@ -1,12 +1,15 @@
 package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.enums.UserTypeEnum;
+import com.rufeng.healthman.exceptions.UnknownException;
+import com.rufeng.healthman.pojo.data.LoginFormdata;
+import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
-import com.rufeng.healthman.pojo.query.LoginQuery;
 import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.context.SecurityContextHolder;
 import com.rufeng.healthman.security.support.UserInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -18,18 +21,21 @@ import org.springframework.util.Assert;
  * @description TODO
  */
 @Service
+@Slf4j
 public class PtCommonService {
     private final RedisService redisService;
-    private PtAdminService ptAdminService;
+    private final PtAdminService ptAdminService;
+    private PtTeacherService ptTeacherService;
     private PtStudentService ptStudentService;
 
-    public PtCommonService(RedisService redisService) {
+    public PtCommonService(RedisService redisService, PtAdminService ptAdminService) {
         this.redisService = redisService;
+        this.ptAdminService = ptAdminService;
     }
 
     @Autowired
-    public void setPtAdminService(PtAdminService ptAdminService) {
-        this.ptAdminService = ptAdminService;
+    public void setPtAdminService(PtTeacherService ptTeacherService) {
+        this.ptTeacherService = ptTeacherService;
     }
 
     @Autowired
@@ -40,9 +46,17 @@ public class PtCommonService {
     public void logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            String userId = authentication.getUserInfo().getUserId();
-            redisService.remove(userId);
+            UserInfo userInfo = authentication.getUserInfo();
+            String userId = userInfo.getUserId();
+            UserTypeEnum userType = userInfo.getUserType();
+            String key = UserInfo.userKey(userType, userId);
+            redisService.removeObject(key);
+            log.debug(userType + userInfo.getUsername() + "登出");
         }
+    }
+
+    public boolean isLogin() {
+        return SecurityContextHolder.getContext().getAuthentication() != null;
     }
 
     public UserInfo getUserInfo() {
@@ -55,15 +69,17 @@ public class PtCommonService {
         return getUserInfo().getUserId();
     }
 
-    public LoginResult login(LoginQuery loginQuery) {
-        UserTypeEnum userTypeEnum = loginQuery.getUserType();
+    public LoginResult login(LoginFormdata loginFormdata) {
+        UserTypeEnum userTypeEnum = loginFormdata.getUserType();
         if (userTypeEnum == UserTypeEnum.ADMIN) {
-            return ptAdminService.login(loginQuery);
+            return ptAdminService.login(loginFormdata);
         } else if (userTypeEnum == UserTypeEnum.STUDENT) {
-            return ptStudentService.login(loginQuery);
+            return ptStudentService.login(loginFormdata);
+        } else if (userTypeEnum == UserTypeEnum.TEACHER) {
+            return ptTeacherService.login(loginFormdata);
         }
-        /* 不该到这里 */
-        return null;
+        /* 永远不会到这里 */
+        throw new UnknownException("未知的用户类型");
     }
 
     public UserTypeEnum getCurrentUserType() {
@@ -71,17 +87,34 @@ public class PtCommonService {
     }
 
     public boolean updatePwd(UpdatePwdFormdata formdata) {
-        UserTypeEnum userType = this.getCurrentUserType();
-        String userId = this.getCurrentUserId();
-        if (userType == UserTypeEnum.ADMIN) {
-            return ptAdminService.updatePwd(userId, formdata);
+        UserInfo userInfo = getUserInfo();
+        UserTypeEnum userType = userInfo.getUserType();
+        String userId = userInfo.getUserId();
+        if (userType == UserTypeEnum.TEACHER) {
+            return ptTeacherService.updatePwd(userId, formdata);
         } else if (userType == UserTypeEnum.STUDENT) {
             return ptStudentService.updatePwd(userId, formdata);
+        } else if (userType == UserTypeEnum.ADMIN) {
+            return ptAdminService.updatePwd(userId, formdata);
         }
         return false;
     }
 
     public String getCurrentUserName() {
         return getUserInfo().getUsername();
+    }
+
+    public boolean updateUser(PtUserFormdata formdata) {
+        UserInfo userInfo = getUserInfo();
+        UserTypeEnum userType = userInfo.getUserType();
+        String userId = userInfo.getUserId();
+        if (userType == UserTypeEnum.ADMIN) {
+            return ptAdminService.updateAdmin(userId, formdata);
+        } else if (userType == UserTypeEnum.TEACHER) {
+            return ptTeacherService.updateTeacher(userId, formdata);
+        } else if (userType == UserTypeEnum.STUDENT) {
+            return ptStudentService.updateStudent(userId, formdata);
+        }
+        throw new UnknownException("未知异常");
     }
 }

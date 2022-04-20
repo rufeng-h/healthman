@@ -454,7 +454,7 @@
         </where>
     </select>
 
-    <select id="listStuBaseInfo" resultType="com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo">
+    <select id="listStuBaseInfo" resultType="com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo">
         SELECT DISTINCT pt_student.stu_id, pt_student.stu_name, pt_student.stu_gender
         FROM pt_student
                  INNER JOIN pt_score ON pt_student.stu_id = pt_score.stu_id

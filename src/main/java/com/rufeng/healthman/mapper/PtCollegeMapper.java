@@ -1,5 +1,6 @@
 package com.rufeng.healthman.mapper;
 
+import com.github.pagehelper.Page;
 import com.rufeng.healthman.config.support.ReturnMap;
 import com.rufeng.healthman.pojo.file.PtCollegeExcel;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 /**
  * @author rufeng
- * @time 2022-04-16 14:17
+ * @time 2022-04-20 11:16
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -101,11 +102,11 @@ public interface PtCollegeMapper {
      */
     int batchInsertSelective(@Param("items") List<PtCollegeExcel> cachedDataList);
 
-    PtCollege getCollegeByName(String clgName);
-
     @ReturnMap
     Map<String, String> mapClgNameByIds(@Param("items") List<String> clgs);
 
     @ReturnMap
     Map<String, String> mapAdminIdClgNameByIds(@Param("items") List<String> collect);
+
+    Page<PtCollege> page();
 }

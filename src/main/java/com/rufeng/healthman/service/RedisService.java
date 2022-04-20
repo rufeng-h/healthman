@@ -28,28 +28,28 @@ public class RedisService {
         return REDIS_KEY_PREFIX + ":" + key;
     }
 
-    
+
     public boolean hasKey(String key) {
         return Boolean.TRUE.equals(redisTemplate.hasKey(genRealKey(key)));
     }
 
-    
+
     @SuppressWarnings("all")
     public <T> T getObject(String key, Class<T> requeriedType) {
         return (T) redisTemplate.opsForValue().get(genRealKey(key));
     }
 
-    
+
     public void setObject(String key, Object value) {
         redisTemplate.opsForValue().set(genRealKey(key), value);
     }
 
-    
+
     public void set(String key, String value) {
         stringRedisTemplate.opsForValue().set(genRealKey(key), value);
     }
 
-    
+
     public String get(String key) {
         return stringRedisTemplate.opsForValue().get(genRealKey(key));
     }
@@ -57,17 +57,27 @@ public class RedisService {
     /**
      * 设置过期时间，毫秒
      */
-    
+
     public void expire(String key, long expire) {
         stringRedisTemplate.expire(genRealKey(key), expire, TimeUnit.MILLISECONDS);
     }
 
-    
+
+    /**
+     * 删除对象
+     */
+    public void removeObject(String key) {
+        redisTemplate.delete(genRealKey(key));
+    }
+
+    /**
+     * 删除字符串
+     */
     public void remove(String key) {
         stringRedisTemplate.delete(genRealKey(key));
     }
 
-    
+
     public Long increment(String key, long delta) {
         return stringRedisTemplate.opsForValue().increment(genRealKey(key), delta);
     }

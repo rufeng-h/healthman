@@ -14,7 +14,8 @@ public enum UserTypeEnum {
      * 用户类型
      */
     ADMIN("管理员"),
-    STUDENT("学生");
+    STUDENT("学生"),
+    TEACHER("教师");
     private final String identity;
 
     UserTypeEnum(String identity) {

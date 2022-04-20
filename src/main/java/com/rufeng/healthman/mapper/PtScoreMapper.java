@@ -1,6 +1,6 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;import com.rufeng.healthman.pojo.ptdo.PtScore;
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;import com.rufeng.healthman.pojo.ptdo.PtScore;
 import java.util.List;
 import com.rufeng.healthman.pojo.query.PtScoreQuery;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -106,7 +106,7 @@ public interface PtScoreMapper {
     /**
      * 按姓名查，需要连表，所以有此查询
      */
-    List<StudentBaseInfo> listStuBaseInfo(PtScoreQuery query);
+    List<PtStudentBaseInfo> listStuBaseInfo(PtScoreQuery query);
 
     /**
      * 条件查询成绩

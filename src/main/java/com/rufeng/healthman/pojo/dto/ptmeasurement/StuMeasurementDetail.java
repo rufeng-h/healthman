@@ -1,6 +1,6 @@
 package com.rufeng.healthman.pojo.dto.ptmeasurement;
 
-import com.rufeng.healthman.pojo.dto.ptscore.ScoreInfo;
+import com.rufeng.healthman.pojo.dto.ptscore.PtScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectStatus;
 import com.rufeng.healthman.pojo.ptdo.PtMeasurement;
 import lombok.Data;
@@ -26,9 +26,9 @@ public class StuMeasurementDetail {
     private String msCreatedAdminName;
     private LocalDateTime msCreated;
     private String msDesp;
-    private List<ScoreInfo> scores;
+    private List<PtScoreInfo> scores;
 
-    public StuMeasurementDetail(PtMeasurement measurement, String msCreatedAdminName, List<SubjectStatus> subjects, List<ScoreInfo> scores) {
+    public StuMeasurementDetail(PtMeasurement measurement, String msCreatedAdminName, List<SubjectStatus> subjects, List<PtScoreInfo> scores) {
         this.msId = measurement.getMsId();
         this.msName = measurement.getMsName();
         this.msCreatedAdminId = measurement.getMsCreatedAdmin();

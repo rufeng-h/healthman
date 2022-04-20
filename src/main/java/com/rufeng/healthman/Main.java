@@ -1,6 +1,5 @@
 package com.rufeng.healthman;
 
-import com.rufeng.healthman.security.context.SecurityContextHolder;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;

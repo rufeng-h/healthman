@@ -4,6 +4,7 @@ import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.converters.ConverterKeyBuild;
 import com.alibaba.excel.converters.DefaultConverterLoader;
 import com.rufeng.healthman.pojo.file.converter.NumberLocalDateConverter;
+import com.rufeng.healthman.pojo.file.converter.StringBooleanConverter;
 import com.rufeng.healthman.pojo.file.converter.StringGenderConverter;
 import com.rufeng.healthman.pojo.file.converter.StringLocalDateConverter;
 import org.springframework.context.annotation.Configuration;
@@ -35,5 +36,10 @@ public class EasyExcelConfig {
                         numberLocalDateConverter.supportJavaTypeKey(),
                         numberLocalDateConverter.supportExcelTypeKey()),
                 numberLocalDateConverter);
+
+        StringBooleanConverter stringBooleanConverter = new StringBooleanConverter();
+        allConverter.put(ConverterKeyBuild.buildKey(
+                stringBooleanConverter.supportJavaTypeKey(),
+                stringBooleanConverter.supportExcelTypeKey()), stringBooleanConverter);
     }
 }

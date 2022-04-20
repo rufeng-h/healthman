@@ -1,6 +1,6 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;import com.rufeng.healthman.pojo.file.PtStudentExcel;import com.rufeng.healthman.pojo.ptdo.PtStudent;
+import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;import com.rufeng.healthman.pojo.file.PtStudentExcel;import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import java.util.List;
 import com.rufeng.healthman.pojo.query.PtStudentQuery;import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -81,9 +81,9 @@ public interface PtStudentMapper {
      */
     Integer batchInsertSelective(@Param("items") List<PtStudentExcel> cachedDataList);
 
-    StudentBaseInfo getStuBaseInfo(String stuId);
+    PtStudentBaseInfo getStuBaseInfo(String stuId);
 
-    List<StudentBaseInfo> listStuBaseInfoByMsId(Long msId);
+    List<PtStudentBaseInfo> listStuBaseInfoByMsId(Long msId);
 
     Page<PtStudent> pageStudent(@Param("query") PtStudentQuery query);
 

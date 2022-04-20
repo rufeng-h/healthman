@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author rufeng
- * @time 2022-04-16 14:17
+ * @time 2022-04-19 22:58
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -17,7 +17,6 @@ import org.apache.ibatis.annotations.Param;
 public interface PtRoleMapper {
     /**
      * delete by primary key
-     *
      * @param roleId primaryKey
      * @return deleteCount
      */
@@ -25,7 +24,6 @@ public interface PtRoleMapper {
 
     /**
      * insert record to table
-     *
      * @param record the record
      * @return insert count
      */
@@ -37,7 +35,6 @@ public interface PtRoleMapper {
 
     /**
      * insert record to table selective
-     *
      * @param record the record
      * @return insert count
      */
@@ -45,7 +42,6 @@ public interface PtRoleMapper {
 
     /**
      * select by primary key
-     *
      * @param roleId primary key
      * @return object by primary key
      */
@@ -53,7 +49,6 @@ public interface PtRoleMapper {
 
     /**
      * update record selective
-     *
      * @param record the updated record
      * @return update count
      */
@@ -61,7 +56,6 @@ public interface PtRoleMapper {
 
     /**
      * update record
-     *
      * @param record the updated record
      * @return update count
      */
@@ -73,15 +67,9 @@ public interface PtRoleMapper {
 
     int batchInsert(@Param("list") List<PtRole> list);
 
-    /**
-     * 查询用户角色列表
-     *
-     * @param userId 用户id
-     * @return page
-     */
-    List<PtRole> listRole(String userId);
+    List<PtRole> listByIds(List<Long> roleIds);
 
-    int batchInsertSelective(@Param("list") List<PtRole> list);
+    int batchInsertSelective(List<PtRole> roles);
 
-    List<PtRole> listRoleByAdminIds(@Param("items") List<String> adminIds);
+    List<PtRole> listRole(String adminId);
 }

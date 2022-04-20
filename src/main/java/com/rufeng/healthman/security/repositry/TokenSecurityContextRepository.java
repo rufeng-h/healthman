@@ -1,10 +1,13 @@
 package com.rufeng.healthman.security.repositry;
 
 import com.rufeng.healthman.common.util.JwtTokenUtils;
+import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.context.SecurityContext;
 import com.rufeng.healthman.security.context.SecurityContextHolder;
+import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.service.RedisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +21,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_HEADER_NAME;
  * @author rufeng
  */
 @Component
+@Slf4j
 public class TokenSecurityContextRepository implements SecurityContextRepository {
     private final RedisService redisService;
 
@@ -31,11 +35,18 @@ public class TokenSecurityContextRepository implements SecurityContextRepository
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         String token = request.getHeader(JWT_HEADER_NAME);
         if (token == null) {
-            // TODO 可以记录
+            log.warn("未找到token！");
             return context;
         }
         String userId = JwtTokenUtils.getId(token);
-        Authentication authentication = redisService.getObject(userId, Authentication.class);
+        UserTypeEnum userType = JwtTokenUtils.getSubject(token);
+        Authentication authentication = redisService.getObject(UserInfo.userKey(userType, userId), Authentication.class);
+        if (authentication == null) {
+            log.warn("空的认证信息！");
+        } else {
+            UserInfo userInfo = authentication.getUserInfo();
+            log.debug(userInfo.getUserType() + ": " + userInfo.getUsername());
+        }
         context.setAuthentication(authentication);
         return context;
     }

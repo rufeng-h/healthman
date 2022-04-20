@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.healthman.mapper.PtTeacherMapper">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtTeacher">
+        <!--@mbg.generated-->
+        <!--@Table pt_teacher-->
+        <id column="tea_id" property="teaId"/>
+        <result column="tea_name" property="teaName"/>
+        <result column="password" property="password"/>
+        <result column="avatar" property="avatar"/>
+        <result column="email" property="email"/>
+        <result column="tea_desp" property="teaDesp"/>
+        <result column="tea_created" property="teaCreated"/>
+        <result column="tea_modified" property="teaModified"/>
+        <result column="tea_last_login" property="teaLastLogin"/>
+        <result column="phone" property="phone"/>
+        <result column="tid" property="tid"/>
+        <result column="clg_code" property="clgCode"/>
+        <result column="tea_gender" property="teaGender"/>
+        <result column="tea_birth" property="teaBirth"/>
+        <result column="principal" property="principal"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        tea_id, tea_name, `password`, avatar, email, tea_desp, tea_created, tea_modified,
+        tea_last_login, phone, tid, clg_code, tea_gender, tea_birth, principal
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_teacher
+        where tea_id = #{teaId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete
+        from pt_teacher
+        where tea_id = #{teaId}
+    </delete>
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacher">
+        <!--@mbg.generated-->
+        insert into pt_teacher (tea_id, tea_name, `password`, avatar, email, tea_desp, tea_created,
+                                tea_modified, tea_last_login, phone, tid, clg_code, tea_gender, tea_birth,
+                                principal)
+        values (#{teaId}, #{teaName}, #{password}, #{avatar}, #{email}, #{teaDesp}, #{teaCreated},
+                #{teaModified}, #{teaLastLogin}, #{phone}, #{tid}, #{clgCode}, #{teaGender}, #{teaBirth},
+                #{principal})
+    </insert>
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacher">
+        <!--@mbg.generated-->
+        insert into pt_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                tea_id,
+            </if>
+            <if test="teaName != null">
+                tea_name,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="teaDesp != null">
+                tea_desp,
+            </if>
+            <if test="teaCreated != null">
+                tea_created,
+            </if>
+            <if test="teaModified != null">
+                tea_modified,
+            </if>
+            <if test="teaLastLogin != null">
+                tea_last_login,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="tid != null">
+                tid,
+            </if>
+            <if test="clgCode != null">
+                clg_code,
+            </if>
+            <if test="teaGender != null">
+                tea_gender,
+            </if>
+            <if test="teaBirth != null">
+                tea_birth,
+            </if>
+            <if test="principal != null">
+                principal,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                #{teaId},
+            </if>
+            <if test="teaName != null">
+                #{teaName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="teaDesp != null">
+                #{teaDesp},
+            </if>
+            <if test="teaCreated != null">
+                #{teaCreated},
+            </if>
+            <if test="teaModified != null">
+                #{teaModified},
+            </if>
+            <if test="teaLastLogin != null">
+                #{teaLastLogin},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="tid != null">
+                #{tid},
+            </if>
+            <if test="clgCode != null">
+                #{clgCode},
+            </if>
+            <if test="teaGender != null">
+                #{teaGender},
+            </if>
+            <if test="teaBirth != null">
+                #{teaBirth},
+            </if>
+            <if test="principal != null">
+                #{principal},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacher">
+        <!--@mbg.generated-->
+        update pt_teacher
+        <set>
+            <if test="teaName != null">
+                tea_name = #{teaName},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="teaDesp != null">
+                tea_desp = #{teaDesp},
+            </if>
+            <if test="teaCreated != null">
+                tea_created = #{teaCreated},
+            </if>
+            <if test="teaModified != null">
+                tea_modified = #{teaModified},
+            </if>
+            <if test="teaLastLogin != null">
+                tea_last_login = #{teaLastLogin},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="tid != null">
+                tid = #{tid},
+            </if>
+            <if test="clgCode != null">
+                clg_code = #{clgCode},
+            </if>
+            <if test="teaGender != null">
+                tea_gender = #{teaGender},
+            </if>
+            <if test="teaBirth != null">
+                tea_birth = #{teaBirth},
+            </if>
+            <if test="principal != null">
+                principal = #{principal},
+            </if>
+        </set>
+        where tea_id = #{teaId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacher">
+        <!--@mbg.generated-->
+        update pt_teacher
+        set tea_name       = #{teaName},
+            `password`     = #{password},
+            avatar         = #{avatar},
+            email          = #{email},
+            tea_desp       = #{teaDesp},
+            tea_created    = #{teaCreated},
+            tea_modified   = #{teaModified},
+            tea_last_login = #{teaLastLogin},
+            phone          = #{phone},
+            tid            = #{tid},
+            clg_code       = #{clgCode},
+            tea_gender     = #{teaGender},
+            tea_birth      = #{teaBirth},
+            principal      = #{principal}
+        where tea_id = #{teaId}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_teacher
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="tea_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.teaName}
+                </foreach>
+            </trim>
+            <trim prefix="`password` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.password}
+                </foreach>
+            </trim>
+            <trim prefix="avatar = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.avatar}
+                </foreach>
+            </trim>
+            <trim prefix="email = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.email}
+                </foreach>
+            </trim>
+            <trim prefix="tea_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.teaDesp}
+                </foreach>
+            </trim>
+            <trim prefix="tea_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.teaCreated}
+                </foreach>
+            </trim>
+            <trim prefix="tea_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.teaModified}
+                </foreach>
+            </trim>
+            <trim prefix="tea_last_login = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.teaLastLogin}
+                </foreach>
+            </trim>
+            <trim prefix="phone = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.phone}
+                </foreach>
+            </trim>
+            <trim prefix="tid = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.tid}
+                </foreach>
+            </trim>
+            <trim prefix="clg_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.clgCode}
+                </foreach>
+            </trim>
+            <trim prefix="tea_gender = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.teaGender}
+                </foreach>
+            </trim>
+            <trim prefix="tea_birth = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.teaBirth}
+                </foreach>
+            </trim>
+            <trim prefix="principal = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when tea_id = #{item.teaId} then #{item.principal}
+                </foreach>
+            </trim>
+        </trim>
+        where tea_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.teaId}
+        </foreach>
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_teacher
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="tea_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaName != null">
+                        when tea_id = #{item.teaId} then #{item.teaName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="`password` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.password != null">
+                        when tea_id = #{item.teaId} then #{item.password}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="avatar = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.avatar != null">
+                        when tea_id = #{item.teaId} then #{item.avatar}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="email = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.email != null">
+                        when tea_id = #{item.teaId} then #{item.email}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tea_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaDesp != null">
+                        when tea_id = #{item.teaId} then #{item.teaDesp}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tea_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaCreated != null">
+                        when tea_id = #{item.teaId} then #{item.teaCreated}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tea_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaModified != null">
+                        when tea_id = #{item.teaId} then #{item.teaModified}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tea_last_login = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaLastLogin != null">
+                        when tea_id = #{item.teaId} then #{item.teaLastLogin}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="phone = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.phone != null">
+                        when tea_id = #{item.teaId} then #{item.phone}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tid = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.tid != null">
+                        when tea_id = #{item.teaId} then #{item.tid}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="clg_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clgCode != null">
+                        when tea_id = #{item.teaId} then #{item.clgCode}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tea_gender = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaGender != null">
+                        when tea_id = #{item.teaId} then #{item.teaGender}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tea_birth = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaBirth != null">
+                        when tea_id = #{item.teaId} then #{item.teaBirth}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="principal = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.principal != null">
+                        when tea_id = #{item.teaId} then #{item.principal}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where tea_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.teaId}
+        </foreach>
+    </update>
+    <insert id="batchInsert" parameterType="map">
+        <!--@mbg.generated-->
+        insert into pt_teacher
+        (tea_id, tea_name, `password`, avatar, email, tea_desp, tea_created, tea_modified,
+         tea_last_login, phone, tid, clg_code, tea_gender, tea_birth, principal)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.teaId}, #{item.teaName}, #{item.password}, #{item.avatar}, #{item.email},
+             #{item.teaDesp}, #{item.teaCreated}, #{item.teaModified}, #{item.teaLastLogin},
+             #{item.phone}, #{item.tid}, #{item.clgCode}, #{item.teaGender}, #{item.teaBirth},
+             #{item.principal})
+        </foreach>
+    </insert>
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacher">
+        <!--@mbg.generated-->
+        insert into pt_teacher
+        (tea_id, tea_name, `password`, avatar, email, tea_desp, tea_created, tea_modified,
+         tea_last_login, phone, tid, clg_code, tea_gender, tea_birth, principal)
+        values (#{teaId}, #{teaName}, #{password}, #{avatar}, #{email}, #{teaDesp}, #{teaCreated},
+                #{teaModified}, #{teaLastLogin}, #{phone}, #{tid}, #{clgCode}, #{teaGender}, #{teaBirth},
+                #{principal})
+        on duplicate key update tea_id         = #{teaId},
+                                tea_name       = #{teaName},
+                                `password`     = #{password},
+                                avatar         = #{avatar},
+                                email          = #{email},
+                                tea_desp       = #{teaDesp},
+                                tea_created    = #{teaCreated},
+                                tea_modified   = #{teaModified},
+                                tea_last_login = #{teaLastLogin},
+                                phone          = #{phone},
+                                tid            = #{tid},
+                                clg_code       = #{clgCode},
+                                tea_gender     = #{teaGender},
+                                tea_birth      = #{teaBirth},
+                                principal      = #{principal}
+    </insert>
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacher">
+        <!--@mbg.generated-->
+        insert into pt_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                tea_id,
+            </if>
+            <if test="teaName != null">
+                tea_name,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="teaDesp != null">
+                tea_desp,
+            </if>
+            <if test="teaCreated != null">
+                tea_created,
+            </if>
+            <if test="teaModified != null">
+                tea_modified,
+            </if>
+            <if test="teaLastLogin != null">
+                tea_last_login,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="tid != null">
+                tid,
+            </if>
+            <if test="clgCode != null">
+                clg_code,
+            </if>
+            <if test="teaGender != null">
+                tea_gender,
+            </if>
+            <if test="teaBirth != null">
+                tea_birth,
+            </if>
+            <if test="principal != null">
+                principal,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                #{teaId},
+            </if>
+            <if test="teaName != null">
+                #{teaName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="teaDesp != null">
+                #{teaDesp},
+            </if>
+            <if test="teaCreated != null">
+                #{teaCreated},
+            </if>
+            <if test="teaModified != null">
+                #{teaModified},
+            </if>
+            <if test="teaLastLogin != null">
+                #{teaLastLogin},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="tid != null">
+                #{tid},
+            </if>
+            <if test="clgCode != null">
+                #{clgCode},
+            </if>
+            <if test="teaGender != null">
+                #{teaGender},
+            </if>
+            <if test="teaBirth != null">
+                #{teaBirth},
+            </if>
+            <if test="principal != null">
+                #{principal},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="teaId != null">
+                tea_id = #{teaId},
+            </if>
+            <if test="teaName != null">
+                tea_name = #{teaName},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="teaDesp != null">
+                tea_desp = #{teaDesp},
+            </if>
+            <if test="teaCreated != null">
+                tea_created = #{teaCreated},
+            </if>
+            <if test="teaModified != null">
+                tea_modified = #{teaModified},
+            </if>
+            <if test="teaLastLogin != null">
+                tea_last_login = #{teaLastLogin},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="tid != null">
+                tid = #{tid},
+            </if>
+            <if test="clgCode != null">
+                clg_code = #{clgCode},
+            </if>
+            <if test="teaGender != null">
+                tea_gender = #{teaGender},
+            </if>
+            <if test="teaBirth != null">
+                tea_birth = #{teaBirth},
+            </if>
+            <if test="principal != null">
+                principal = #{principal},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="listTeaId" resultType="java.lang.String">
+        SELECT tea_id
+        FROM pt_teacher
+    </select>
+
+    <insert id="batchInsertSelective">
+        insert into pt_teacher (tea_id, tea_name, email, phone, clg_code, tea_gender, tea_birth, principal)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.teaId}, #{item.teaName}, #{item.email}, #{item.phone}, #{item.clgCode}, #{item.teaGender},
+             #{item.teaBirth}, #{item.principal})
+        </foreach>
+    </insert>
+
+    <select id="listByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_teacher
+        <where>
+            <foreach close=")" collection="list" item="item" open="tea_id IN (" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="listPincipal" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_teacher
+        WHERE principal = 1
+          AND clg_code IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
+    </select>
+
+    <select id="mapTeaNameByIds" resultType="java.util.Map">
+        SELECT tea_id, tea_name
+        FROM pt_teacher
+        <where>
+            <foreach collection="list" item="item" separator="," open="tea_id IN (" close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_teacher
+        <where>
+            <if test="teaId != null">
+                AND tea_id = #{teaId}
+            </if>
+            <if test="teaName != null">
+                <bind name="name" value="'%' + teaName + '%'"/>
+                AND tea_name like #{name}
+            </if>
+            <if test="clgCode != null">
+                AND clg_code = #{clgCode}
+            </if>
+        </where>
+    </select>
+</mapper>

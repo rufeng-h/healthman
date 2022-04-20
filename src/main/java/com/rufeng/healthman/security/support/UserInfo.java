@@ -1,18 +1,17 @@
 package com.rufeng.healthman.security.support;
 
 import com.rufeng.healthman.enums.GenderEnum;
-import com.rufeng.healthman.enums.RoleTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.pojo.dto.support.RoleInfo;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.ptdo.PtStudent;
+import com.rufeng.healthman.pojo.ptdo.PtTeacher;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,12 +22,12 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
+@ToString
 public abstract class UserInfo implements Serializable {
     private String userId;
     private String username;
     private String avatar;
     private GenderEnum gender;
-    private LocalDate birth;
     private LocalDateTime createdTime;
     private LocalDateTime lastLoginTime;
     private String desp;
@@ -36,18 +35,17 @@ public abstract class UserInfo implements Serializable {
     private List<RoleInfo> roles;
     private LocalDateTime lastModifyTime;
 
-    public UserInfo(PtAdmin user, List<RoleInfo> roles) {
-        this.userId = user.getAdminId();
-        this.username = user.getAdminName();
-        this.avatar = user.getAvatar();
-        this.createdTime = user.getAdminCreated();
-        this.lastLoginTime = user.getAdminLastLogin();
-        this.desp = user.getAdminDesp();
+    public UserInfo(PtTeacher teacher, List<RoleInfo> roles) {
+        this.userId = teacher.getTeaId();
+        this.username = teacher.getTeaName();
+        this.avatar = teacher.getAvatar();
+        this.createdTime = teacher.getTeaCreated();
+        this.lastLoginTime = teacher.getTeaLastLogin();
+        this.desp = teacher.getTeaDesp();
         this.roles = roles;
-        this.gender = user.getAdminGender();
-        this.birth = user.getAdminBirth();
-        this.userType = UserTypeEnum.ADMIN;
-        this.lastModifyTime = user.getAdminModified();
+        this.gender = teacher.getTeaGender();
+        this.userType = UserTypeEnum.TEACHER;
+        this.lastModifyTime = teacher.getTeaModified();
     }
 
     public UserInfo(PtStudent student) {
@@ -58,12 +56,23 @@ public abstract class UserInfo implements Serializable {
         this.lastLoginTime = student.getStuLastLogin();
         this.desp = student.getStuDesp();
         this.gender = student.getStuGender();
-        this.birth = student.getStuBirth();
         this.lastModifyTime = student.getStuModified();
-
-        RoleInfo role = new RoleInfo("学生", RoleTypeEnum.STUDENT);
-
-        this.roles = Collections.singletonList(role);
         this.userType = UserTypeEnum.STUDENT;
+    }
+
+    public UserInfo(PtAdmin admin) {
+        this.userId = admin.getAdminId();
+        this.username = admin.getAdminName();
+        this.createdTime = admin.getAdminCreated();
+        this.lastLoginTime = admin.getAdminLastLogin();
+        this.desp = admin.getAdminDesp();
+        this.userType = UserTypeEnum.ADMIN;
+        this.lastModifyTime = admin.getAdminModified();
+        this.avatar = admin.getAvatar();
+        this.gender = admin.getAdminGender();
+    }
+
+    public static String userKey(UserTypeEnum userType, String userId) {
+        return userType + ":" + userId;
     }
 }

@@ -2,13 +2,14 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.ptdo.PtClass;
-import com.rufeng.healthman.pojo.dto.ptclass.ClassInfo;
+import com.rufeng.healthman.pojo.dto.ptclass.PtClassPageInfo;
 import com.rufeng.healthman.pojo.dto.ptclass.PtClassTreeItem;
+import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.query.PtClassQuery;
 import com.rufeng.healthman.service.PtClassService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -34,7 +35,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @Validated
 @RequestMapping("/api/class")
 @SecurityRequirement(name = JWT_SCHEME_NAME)
-@Tag(name = "Class Api", description = "学院操作")
+@Tag(name = "Class Api", description = "班级操作")
 public class PtClassController {
     private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("班级模板文件.xlsx", StandardCharsets.UTF_8);
     private final PtClassService ptClassService;
@@ -44,7 +45,7 @@ public class PtClassController {
     }
 
     @GetMapping
-    public ApiResponse<ApiPage<ClassInfo>> page(
+    public ApiResponse<ApiPage<PtClassPageInfo>> page(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @Validated PtClassQuery ptClassQuery) {
@@ -80,8 +81,8 @@ public class PtClassController {
     }
 
     @GetMapping("/grade/list")
-    public ApiResponse<List<Integer>> listGrade(@Validated PtClassQuery query) {
-        return ApiResponse.success(ptClassService.listGrade(query));
+    public ApiResponse<List<Integer>> listGrade(@Length(min = 1) String clgCode) {
+        return ApiResponse.success(ptClassService.listGrade(clgCode));
     }
 
     @GetMapping("/{clsCode}")

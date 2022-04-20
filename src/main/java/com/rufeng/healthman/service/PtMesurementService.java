@@ -12,8 +12,8 @@ import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementDetail;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementSubStatus;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementDetail;
-import com.rufeng.healthman.pojo.dto.ptscore.ScoreInfo;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
+import com.rufeng.healthman.pojo.dto.ptscore.PtScoreInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectStatus;
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import com.rufeng.healthman.pojo.ptdo.*;
@@ -41,7 +41,7 @@ public class PtMesurementService {
     private final PtMeasurementMapper ptMeasurementMapper;
     private final PtClassMeasurementService ptClassMeasurementService;
     private final PtSubjectSubGroupService ptSubjectSubGroupService;
-    private final PtAdminService ptAdminService;
+    private final PtTeacherService ptTeacherService;
     private final PtSubgroupService ptSubgroupService;
 
     private PtSubjectService ptSubjectService;
@@ -52,13 +52,13 @@ public class PtMesurementService {
                                PtMeasurementMapper ptMeasurementMapper,
                                PtClassMeasurementService ptClassMeasurementService,
                                PtSubjectSubGroupService ptSubjectSubGroupService,
-                               PtAdminService ptAdminService,
+                               PtTeacherService ptTeacherService,
                                PtSubgroupService ptSubgroupService) {
         this.ptCommonService = ptCommonService;
         this.ptMeasurementMapper = ptMeasurementMapper;
         this.ptClassMeasurementService = ptClassMeasurementService;
         this.ptSubjectSubGroupService = ptSubjectSubGroupService;
-        this.ptAdminService = ptAdminService;
+        this.ptTeacherService = ptTeacherService;
         this.ptSubgroupService = ptSubgroupService;
     }
 
@@ -107,9 +107,9 @@ public class PtMesurementService {
         List<MeasurementInfo> infoList = measurements.stream().map(MeasurementInfo::new).collect(Collectors.toList());
         List<Long> msIds = measurements.stream().map(PtMeasurement::getMsId).collect(Collectors.toList());
         /* 查admin */
-        List<PtAdmin> admins = ptAdminService.listAdminByIds(measurements.stream()
+        List<PtTeacher> admins = ptTeacherService.listByIds(measurements.stream()
                 .map(PtMeasurement::getMsCreatedAdmin).collect(Collectors.toList()));
-        Map<String, PtAdmin> aMap = admins.stream().collect(Collectors.toMap(PtAdmin::getAdminId, a -> a));
+        Map<String, PtTeacher> aMap = admins.stream().collect(Collectors.toMap(PtTeacher::getTeaId, a -> a));
         /* 科目数 */
         List<Long> grpIds = measurements.stream().map(PtMeasurement::getGrpId).collect(Collectors.toList());
         Map<Long, Integer> grpSubCount = ptSubjectSubGroupService.countSubByGrpIds(grpIds);
@@ -126,7 +126,7 @@ public class PtMesurementService {
             info.setGrpName(grpNameMap.get(info.getGrpId()));
             info.setSubCnt(grpSubCount.get(info.getGrpId()));
             info.setCompStuCnt(msCompStuCount.get(info.getMsId()));
-            info.setMsCreatedAdminName(aMap.get(info.getMsCreatedAdminId()).getAdminName());
+            info.setMsCreatedAdminName(aMap.get(info.getMsCreatedAdminId()).getTeaName());
             info.setStuCnt(msStuCount.get(info.getMsId()));
         });
         return ApiPage.convert(measurements, infoList);
@@ -180,7 +180,7 @@ public class PtMesurementService {
     public MeasurementDetail getMeasurementDetail(Long msId) {
         PtMeasurement measurement = ptMeasurementMapper.selectByPrimaryKey(msId);
         /* 查admin */
-        PtAdmin admin = ptAdminService.getAdmin(measurement.getMsCreatedAdmin());
+        PtTeacher admin = ptTeacherService.getTeacher(measurement.getMsCreatedAdmin());
         /* 查科目组 */
         PtSubgroup subgroup = ptSubgroupService.getSubGrp(measurement.getGrpId());
         /* 查科目 */
@@ -216,8 +216,8 @@ public class PtMesurementService {
         List<PtScore> scores = ptScoreService.listScoreByStuIdAndMsIds(stuId, msIds);
         /* 查admin */
         List<String> adminIds = measurements.stream().map(PtMeasurement::getMsCreatedAdmin).distinct().collect(Collectors.toList());
-        List<PtAdmin> admins = ptAdminService.listAdminByIds(adminIds);
-        Map<String, PtAdmin> adminMap = admins.stream().collect(Collectors.toMap(PtAdmin::getAdminId, a -> a));
+        List<PtTeacher> admins = ptTeacherService.listByIds(adminIds);
+        Map<String, PtTeacher> adminMap = admins.stream().collect(Collectors.toMap(PtTeacher::getTeaId, a -> a));
         /* 组装科目 */
         Map<Long, List<SubjectStatus>> resSubMap = new HashMap<>(10);
         subStatuses.forEach(status -> {
@@ -225,13 +225,13 @@ public class PtMesurementService {
             subjectStatuses.add(new SubjectStatus(subMap.get(status.getSubId()), status.getStatus()));
         });
         /* 组装分数 */
-        Map<Long, List<ScoreInfo>> resScoreMap = new HashMap<>(10);
+        Map<Long, List<PtScoreInfo>> resScoreMap = new HashMap<>(10);
         scores.forEach(s -> {
-            List<ScoreInfo> scoreInfos = resScoreMap.computeIfAbsent(s.getMsId(), k -> new ArrayList<>());
-            scoreInfos.add(new ScoreInfo(s, subMap.get(s.getSubId()).getSubName()));
+            List<PtScoreInfo> ptScoreInfos = resScoreMap.computeIfAbsent(s.getMsId(), k -> new ArrayList<>());
+            ptScoreInfos.add(new PtScoreInfo(s, subMap.get(s.getSubId()).getSubName()));
         });
         List<StuMeasurementDetail> res = measurements.stream().map(m -> new StuMeasurementDetail(m,
-                adminMap.get(m.getMsCreatedAdmin()).getAdminName(),
+                adminMap.get(m.getMsCreatedAdmin()).getTeaName(),
                 resSubMap.get(m.getMsId()),
                 resScoreMap.get(m.getMsId()))).collect(Collectors.toList());
         return ApiPage.convert(measurements, res);
@@ -246,7 +246,7 @@ public class PtMesurementService {
     }
 
     public Resource excelTemplate(Long msId) {
-        List<StudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
+        List<PtStudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
         List<List<String>> data = students.stream().map(s -> List.of(s.getStuId())).collect(Collectors.toList());
         List<PtSubject> ptSubjects = ptSubjectService.listSubject(msId);
         List<List<String>> header = ptSubjects.stream().map(s -> List.of(s.getSubName())).collect(Collectors.toList());

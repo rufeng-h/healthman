@@ -490,7 +490,7 @@
         </foreach>
     </insert>
 
-    <select id="getStuBaseInfo" resultType="com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo">
+    <select id="getStuBaseInfo" resultType="com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo">
         SELECT pt_student.stu_id,
                pt_student.stu_gender,
                YEAR(CURRENT_TIMESTAMP) - pt_class.cls_entry_year + pt_class.cls_entry_grade as grade
@@ -529,7 +529,7 @@
             </if>
         </if>
     </select>
-    <select id="listStuBaseInfoByMsId" resultType="com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo">
+    <select id="listStuBaseInfoByMsId" resultType="com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo">
         WITH cls_info AS (
         /* 体测建立时，班级的年级 */
         SELECT pc.cls_code, YEAR(pt_measurement.ms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade

@@ -6,7 +6,7 @@ import com.alibaba.excel.util.ListUtils;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
-import com.rufeng.healthman.pojo.dto.ptstu.StudentBaseInfo;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.ptdo.PtSubStudent;
@@ -46,7 +46,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
     private final Map<Integer, Long> colSubIdMap;
     private final long msId;
     private final Map<SubStudent, List<PtScoreSheet>> scoreSheetcache = new HashMap<>(10);
-    private final Map<String, StudentBaseInfo> stuInfoMap;
+    private final Map<String, PtStudentBaseInfo> stuInfoMap;
     private List<PtScore> dataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
     private int handledCount = 0;
     private int stuIdColumnIndex = -1;
@@ -63,8 +63,8 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
         this.msId = msId;
         this.ptScoreService = ptScoreService;
         /* 所有参加本次测验的学生 */
-        List<StudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
-        stuInfoMap = students.stream().collect(Collectors.toMap(StudentBaseInfo::getStuId, s -> s));
+        List<PtStudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
+        stuInfoMap = students.stream().collect(Collectors.toMap(PtStudentBaseInfo::getStuId, s -> s));
         /* 本次测验所有科目  */
         List<PtSubject> subjects = ptSubjectService.listSubject(msId);
         subjectMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubName, PtSubject::getSubId));
@@ -95,7 +95,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         String curStuId = data.get(stuIdColumnIndex);
         /* 该学生是否参加本次体测 */
-        StudentBaseInfo baseInfo = stuInfoMap.get(curStuId);
+        PtStudentBaseInfo baseInfo = stuInfoMap.get(curStuId);
         if (baseInfo == null) {
             throw new ExcelException("学号" + curStuId + "的学生不在该次测验中！");
         }

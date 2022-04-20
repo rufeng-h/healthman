@@ -40,7 +40,7 @@ public class OperationAop {
     @Around("@annotation(OperLogRecord)")
     public Object operLog(ProceedingJoinPoint pjp) throws Throwable {
         PtOperLog operLog = null;
-        if (ptCommonService.getCurrentUserType() == UserTypeEnum.ADMIN) {
+        if (ptCommonService.isLogin() && ptCommonService.getCurrentUserType() == UserTypeEnum.ADMIN) {
             MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
             Method method = methodSignature.getMethod();
             OperLogRecord operation = method.getAnnotation(OperLogRecord.class);

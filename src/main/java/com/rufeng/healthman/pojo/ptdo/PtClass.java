@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
- * @time 2022-04-16 14:17
+ * @time 2022-04-20 14:16
  * @package com.rufeng.healthman.pojo.ptdo
  * @description TODO
  */
@@ -44,6 +44,8 @@ public class PtClass implements Serializable {
     private LocalDateTime clsCreated;
 
     private LocalDateTime clsModified;
+
+    private String teaId;
 
     private static final long serialVersionUID = 1L;
 }

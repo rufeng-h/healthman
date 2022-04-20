@@ -4,7 +4,6 @@ import com.rufeng.healthman.pojo.ptdo.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class MeasurementDetail {
     private Integer stuCnt;
     private Integer compStuCnt;
 
-    public MeasurementDetail(PtMeasurement measurement, PtAdmin admin, PtSubgroup subgroup,
+    public MeasurementDetail(PtMeasurement measurement, PtTeacher admin, PtSubgroup subgroup,
                              List<PtSubject> subjects, List<PtClass> classes, int totalStuCnt, int compStuCnt) {
         this.classes = classes;
         this.msId = measurement.getMsId();
@@ -38,8 +37,8 @@ public class MeasurementDetail {
         this.msDesp = measurement.getMsDesp();
         this.grpName = subgroup.getGrpName();
         this.grpId = subgroup.getGrpId();
-        this.msCreatedAdminId = admin.getAdminId();
-        this.msCreatedAdminName = admin.getAdminName();
+        this.msCreatedAdminId = admin.getTeaId();
+        this.msCreatedAdminName = admin.getTeaName();
         this.msCreated = measurement.getMsCreated();
         this.subjects = subjects;
         this.stuCnt = totalStuCnt;

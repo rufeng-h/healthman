@@ -1,8 +1,9 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.dto.ptcollege.PtCollegePageInfo;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
-import com.rufeng.healthman.pojo.dto.ptcollege.PtCollegeTreeItem;
 import com.rufeng.healthman.service.PtCollegeService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 
@@ -40,12 +40,19 @@ public class PtCollegeController {
         this.ptCollegeService = ptCollegeService;
     }
 
-    @GetMapping("/tree")
-    public ApiResponse<List<PtCollegeTreeItem>> treeCollege() {
-        List<PtCollege> colleges = ptCollegeService.listCollege();
-        List<PtCollegeTreeItem> treeItems =
-                colleges.stream().map(PtCollegeTreeItem::new).collect(Collectors.toList());
-        return ApiResponse.success(treeItems);
+//    @GetMapping("/tree")
+//    public ApiResponse<List<PtCollegeTreeItem>> treeCollege() {
+//        List<PtCollege> colleges = ptCollegeService.listCollege();
+//        List<PtCollegeTreeItem> treeItems =
+//                colleges.stream().map(PtCollegeTreeItem::new).collect(Collectors.toList());
+//        return ApiResponse.success(treeItems);
+//    }
+
+
+    @GetMapping
+    public ApiResponse<ApiPage<PtCollegePageInfo>> pageCollegeInfo(@RequestParam(defaultValue = "1") Integer page,
+                                                                   @RequestParam(defaultValue = "10") Integer pageSize) {
+        return ApiResponse.success(ptCollegeService.pageCollegeInfo(page, pageSize));
     }
 
 
