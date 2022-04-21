@@ -2,7 +2,6 @@ package com.rufeng.healthman.security.support;
 
 import com.rufeng.healthman.enums.GenderEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
-import com.rufeng.healthman.pojo.dto.support.RoleInfo;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
 import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import com.rufeng.healthman.pojo.ptdo.PtTeacher;
@@ -12,7 +11,9 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author rufeng
@@ -32,23 +33,24 @@ public abstract class UserInfo implements Serializable {
     private LocalDateTime lastLoginTime;
     private String desp;
     private UserTypeEnum userType;
-    private List<RoleInfo> roles;
     private LocalDateTime lastModifyTime;
+    private Collection<String> authorities;
 
-    public UserInfo(PtTeacher teacher, List<RoleInfo> roles) {
+    public UserInfo(PtTeacher teacher, Set<String> authorities) {
+        this.authorities = authorities;
         this.userId = teacher.getTeaId();
         this.username = teacher.getTeaName();
         this.avatar = teacher.getAvatar();
         this.createdTime = teacher.getTeaCreated();
         this.lastLoginTime = teacher.getTeaLastLogin();
         this.desp = teacher.getTeaDesp();
-        this.roles = roles;
         this.gender = teacher.getTeaGender();
         this.userType = UserTypeEnum.TEACHER;
         this.lastModifyTime = teacher.getTeaModified();
     }
 
-    public UserInfo(PtStudent student) {
+    public UserInfo(PtStudent student, Set<String> authorities) {
+        this.authorities = Collections.unmodifiableSet(authorities);
         this.userId = student.getStuId();
         this.username = student.getStuName();
         this.avatar = student.getAvatar();
@@ -60,7 +62,8 @@ public abstract class UserInfo implements Serializable {
         this.userType = UserTypeEnum.STUDENT;
     }
 
-    public UserInfo(PtAdmin admin) {
+    public UserInfo(PtAdmin admin, Set<String> authorities) {
+        this.authorities = Collections.unmodifiableSet(authorities);
         this.userId = admin.getAdminId();
         this.username = admin.getAdminName();
         this.createdTime = admin.getAdminCreated();

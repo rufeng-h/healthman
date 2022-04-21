@@ -41,11 +41,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.rufeng.healthman.security.authority.Authority.DEFAULT_STUDENT_AUTHORITIES;
 
 /**
  * @author rufeng
@@ -95,7 +94,7 @@ public class PtStudentService {
         PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
         /* 查学院 */
         PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
-        UserInfo info = new PtStudentInfo(student, ptClass, college);
+        UserInfo info = new PtStudentInfo(student, ptClass, college, new HashSet<>(DEFAULT_STUDENT_AUTHORITIES));
         /* 认证信息 */
         Authentication authentication = new AuthenticationImpl(info);
         redisService.setObject(UserInfo.userKey(UserTypeEnum.STUDENT, student.getStuId()), authentication);

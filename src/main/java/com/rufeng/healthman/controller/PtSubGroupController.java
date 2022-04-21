@@ -2,12 +2,16 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
-import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
-import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
+import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
+import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
+import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
+import com.rufeng.healthman.security.authority.ApiAuthority;
+import com.rufeng.healthman.security.authority.Authority;
 import com.rufeng.healthman.service.PtSubgroupService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +31,8 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @Validated
 @RequestMapping("/api/subGroup")
 @SecurityRequirement(name = JWT_SCHEME_NAME)
+@Tag(name = "SubGrp Api", description = "科目组操作")
+@ApiAuthority
 public class PtSubGroupController {
     private final PtSubgroupService ptSubgroupService;
 
@@ -34,16 +40,19 @@ public class PtSubGroupController {
         this.ptSubgroupService = ptSubgroupService;
     }
 
+    @Operation(operationId = Authority.SUBGRP_LIST, summary = "所有科目组")
     @GetMapping("/list")
     public ApiResponse<List<PtSubgroup>> listSubGroup() {
         return ApiResponse.success(ptSubgroupService.listSubGroup());
     }
 
+    @Operation(operationId = Authority.SUBGRP_INSERT, summary = "新增科目组")
     @PostMapping
     public ApiResponse<PtSubgroup> addSubGroup(@Validated @RequestBody PtSubGroupFormdata formdata) {
         return ApiResponse.success(ptSubgroupService.addSubGroup(formdata));
     }
 
+    @Operation(operationId = Authority.SUBGRP_PAGE, summary = "科目组列表")
     @GetMapping
     public ApiResponse<ApiPage<SubGroupInfo>> pageSubGroupInfo(@RequestParam(defaultValue = "1") @Min(1) Integer page,
                                                                @RequestParam(defaultValue = "3") @Min(1) @Max(100) Integer pageSize,
@@ -51,6 +60,7 @@ public class PtSubGroupController {
         return ApiResponse.success(ptSubgroupService.pageSubGroupInfo(page, pageSize, query));
     }
 
+    @Operation(operationId = Authority.SUBGRP_DELETE, summary = "删除科目组")
     @DeleteMapping("/{grpId}")
     public ApiResponse<Boolean> deleteSubGrp(@PathVariable Long grpId) {
         return ApiResponse.success(ptSubgroupService.deleteGrp(grpId));

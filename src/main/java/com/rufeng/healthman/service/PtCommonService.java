@@ -6,6 +6,7 @@ import com.rufeng.healthman.pojo.data.LoginFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
+import com.rufeng.healthman.pojo.dto.support.PtMenuItem;
 import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.context.SecurityContextHolder;
 import com.rufeng.healthman.security.support.UserInfo;
@@ -13,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author rufeng
@@ -116,5 +120,26 @@ public class PtCommonService {
             return ptStudentService.updateStudent(userId, formdata);
         }
         throw new UnknownException("未知异常");
+    }
+
+    public List<PtMenuItem> listMenu() {
+        UserTypeEnum userType = getCurrentUserType();
+        List<PtMenuItem> menuItems = new ArrayList<>();
+        switch (userType) {
+            case ADMIN:
+                menuItems.add(PtMenuItem.ADMIN_MENU_ITEM);
+                break;
+            case TEACHER:
+                menuItems.add(PtMenuItem.SUBJECT_MENU_ITEM);
+                menuItems.add(PtMenuItem.MEASUREMENT_MENU_ITEM);
+                menuItems.add(PtMenuItem.BASEDATA_MENU_ITEM);
+                break;
+            case STUDENT:
+                menuItems.add(PtMenuItem.MEASUREMENT_MENU_ITEM);
+                break;
+            default:
+                throw new UnknownException("未知用户类型");
+        }
+        return menuItems;
     }
 }

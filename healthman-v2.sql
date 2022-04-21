@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : vuemall
+ Source Server         : healthman
  Source Server Type    : MySQL
  Source Server Version : 80019
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 20/04/2022 21:22:12
+ Date: 23/04/2022 17:55:22
 */
 
 SET NAMES utf8mb4;
@@ -79,7 +79,7 @@ CREATE TABLE `pt_class_measurement`  (
   CONSTRAINT `pt_class_measurement_ibfk_1` FOREIGN KEY (`ms_id`) REFERENCES `pt_measurement` (`ms_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_class_measurement_ibfk_2` FOREIGN KEY (`cls_code`) REFERENCES `pt_class` (`cls_code`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_class_measurement_ibfk_3` FOREIGN KEY (`cms_created_admin`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '班级、测量中间表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 103 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '班级、测量中间表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_college
@@ -131,7 +131,7 @@ CREATE TABLE `pt_measurement`  (
   INDEX `ms_created_admin`(`ms_created_admin`) USING BTREE,
   CONSTRAINT `pt_measurement_ibfk_2` FOREIGN KEY (`grp_id`) REFERENCES `pt_subgroup` (`grp_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_measurement_ibfk_3` FOREIGN KEY (`ms_created_admin`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '测量记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '测量记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_oper_log
@@ -154,6 +154,20 @@ CREATE TABLE `pt_oper_log`  (
   INDEX `oper_admin_id`(`oper_admin_id`) USING BTREE,
   CONSTRAINT `pt_oper_log_ibfk_1` FOREIGN KEY (`oper_admin_id`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '操作记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for pt_operation
+-- ----------------------------
+DROP TABLE IF EXISTS `pt_operation`;
+CREATE TABLE `pt_operation`  (
+  `oper_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `oper_summary` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `oper_desp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '无',
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`oper_id`) USING BTREE,
+  UNIQUE INDEX `id`(`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '接口表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_prescription
@@ -182,21 +196,21 @@ CREATE TABLE `pt_role`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for pt_role_resource
+-- Table structure for pt_role_oper
 -- ----------------------------
-DROP TABLE IF EXISTS `pt_role_resource`;
-CREATE TABLE `pt_role_resource`  (
+DROP TABLE IF EXISTS `pt_role_oper`;
+CREATE TABLE `pt_role_oper`  (
   `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `role_id` bigint(0) UNSIGNED NOT NULL,
-  `res_id` bigint(0) UNSIGNED NOT NULL,
+  `oper_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `modified` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `pt_role_authority_id_uindex`(`id`) USING BTREE,
   INDEX `role_id`(`role_id`) USING BTREE,
-  INDEX `res_id`(`res_id`) USING BTREE,
-  CONSTRAINT `pt_role_resource_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `pt_role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `pt_role_resource_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `pt_url_resource` (`res_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `oper_id`(`oper_id`) USING BTREE,
+  CONSTRAINT `pt_role_oper_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `pt_role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `pt_role_oper_ibfk_2` FOREIGN KEY (`oper_id`) REFERENCES `pt_operation` (`oper_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '角色资源' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -294,7 +308,7 @@ CREATE TABLE `pt_subgroup`  (
   UNIQUE INDEX `pt_subject_group_grp_name_uindex`(`grp_name`) USING BTREE,
   INDEX `grp_created_admin`(`grp_created_admin`) USING BTREE,
   CONSTRAINT `pt_subgroup_ibfk_1` FOREIGN KEY (`grp_created_admin`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目组' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目组' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_subject
@@ -331,7 +345,7 @@ CREATE TABLE `pt_subject_subgroup`  (
   CONSTRAINT `pt_subject_subgroup_ibfk_1` FOREIGN KEY (`grp_id`) REFERENCES `pt_subgroup` (`grp_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_subject_subgroup_ibfk_2` FOREIGN KEY (`sub_id`) REFERENCES `pt_subject` (`sub_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_subject_subgroup_ibfk_3` FOREIGN KEY (`sub_grp_admin`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目与科目组关联' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 75 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目与科目组关联' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_teacher
@@ -376,21 +390,5 @@ CREATE TABLE `pt_teacher_role`  (
   CONSTRAINT `pt_teacher_role_ibfk_1` FOREIGN KEY (`tea_id`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_teacher_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `pt_role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 795 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '教师、角色' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for pt_url_resource
--- ----------------------------
-DROP TABLE IF EXISTS `pt_url_resource`;
-CREATE TABLE `pt_url_resource`  (
-  `res_id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `res_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `pattern` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-  `parent_id` bigint(0) UNSIGNED NOT NULL DEFAULT 0,
-  `method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  PRIMARY KEY (`res_id`) USING BTREE,
-  UNIQUE INDEX `pt_authority_auth_name_uindex`(`res_name`) USING BTREE,
-  UNIQUE INDEX `pt_authority_pattern_uindex`(`pattern`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '资源表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

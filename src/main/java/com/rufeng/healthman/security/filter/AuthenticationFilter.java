@@ -1,4 +1,4 @@
-package com.rufeng.healthman.security;
+package com.rufeng.healthman.security.filter;
 
 import com.rufeng.healthman.exceptions.AccessDeniedException;
 import com.rufeng.healthman.exceptions.AuthenticationException;

@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * @author rufeng
@@ -24,8 +25,8 @@ public class PtStudentInfo extends UserInfo {
     private String clsName;
     private LocalDate birth;
 
-    public PtStudentInfo(PtStudent student, PtClass ptClass, PtCollege college) {
-        super(student);
+    public PtStudentInfo(PtStudent student, PtClass ptClass, PtCollege college, Set<String> authorities) {
+        super(student, authorities);
         this.clgName = college.getClgName();
         this.clsName = ptClass.getClsName();
         this.birth = student.getStuBirth();

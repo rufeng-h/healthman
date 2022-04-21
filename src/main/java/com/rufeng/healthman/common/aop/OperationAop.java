@@ -1,7 +1,6 @@
 package com.rufeng.healthman.common.aop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.pojo.ptdo.PtOperLog;
 import com.rufeng.healthman.service.PtCommonService;
 import com.rufeng.healthman.service.PtOperLogService;
@@ -9,6 +8,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Component
+@Order(1)
 public class OperationAop {
     private final PtOperLogService ptOperLogService;
     private final ObjectMapper objectMapper;
@@ -40,7 +41,7 @@ public class OperationAop {
     @Around("@annotation(OperLogRecord)")
     public Object operLog(ProceedingJoinPoint pjp) throws Throwable {
         PtOperLog operLog = null;
-        if (ptCommonService.isLogin() && ptCommonService.getCurrentUserType() == UserTypeEnum.ADMIN) {
+        if (ptCommonService.isLogin()) {
             MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
             Method method = methodSignature.getMethod();
             OperLogRecord operation = method.getAnnotation(OperLogRecord.class);

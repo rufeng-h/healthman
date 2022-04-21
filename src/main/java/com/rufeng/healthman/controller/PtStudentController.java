@@ -5,7 +5,10 @@ import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.PtStuMeasurementPageInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentPageInfo;
 import com.rufeng.healthman.pojo.query.PtStudentQuery;
+import com.rufeng.healthman.security.authority.ApiAuthority;
+import com.rufeng.healthman.security.authority.Authority;
 import com.rufeng.healthman.service.PtStudentService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
@@ -34,6 +37,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @Validated
 @SecurityRequirement(name = JWT_SCHEME_NAME)
 @Tag(name = "Student Api", description = "学生接口")
+@ApiAuthority
 public class PtStudentController {
     private static final String FILE_TEMPLATE_NAME = URLEncoder.encode("学生模板.xlsx", StandardCharsets.UTF_8);
     private final PtStudentService ptStudentService;
@@ -42,11 +46,13 @@ public class PtStudentController {
         this.ptStudentService = ptStudentService;
     }
 
+    @Operation(operationId = Authority.STUDENT_GET, summary = "学生")
     @GetMapping("/{stuId}")
     public ApiResponse<PtStuMeasurementPageInfo> getPtStuByNo(@PathVariable String stuId) {
         return ApiResponse.success(ptStudentService.getStuMsInfo(stuId));
     }
 
+    @Operation(operationId = Authority.STUDENT_PAGE, summary = "学生列表")
     @GetMapping
     public ApiResponse<ApiPage<PtStudentPageInfo>> pageStudentInfo(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -55,6 +61,7 @@ public class PtStudentController {
         return ApiResponse.success(ptStudentService.pageStudentInfo(page, pageSize, query));
     }
 
+    @Operation(operationId = Authority.STUDENT_TEMPLATE, summary = "学生excel模板")
     @GetMapping("/template")
     public ResponseEntity<Resource> excelTemplate() {
         Resource resource = ptStudentService.fileTemplate();
@@ -63,6 +70,7 @@ public class PtStudentController {
                 .body(resource);
     }
 
+    @Operation(operationId = Authority.STUDENT_UPLOAD, summary = "学生上传")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadStudent(@RequestPart MultipartFile file, @RequestParam(required = false) String clsCode) {
         return ApiResponse.success(ptStudentService.uploadStudent(file, clsCode));

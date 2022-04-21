@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rufeng.healthman.mapper.PtTeacherRoleMapper">
-    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtTeacherRole">
+<mapper namespace="com.rufeng.healthman.mapper.PtRoleOperMapper">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtRoleOper">
         <!--@mbg.generated-->
-        <!--@Table pt_teacher_role-->
+        <!--@Table pt_role_oper-->
         <id column="id" property="id"/>
-        <result column="tea_id" property="teaId"/>
         <result column="role_id" property="roleId"/>
+        <result column="oper_id" property="operId"/>
         <result column="created" property="created"/>
         <result column="modified" property="modified"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, tea_id, role_id, created, modified
+        id, role_id, oper_id, created, modified
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--@mbg.generated-->
         select
         <include refid="Base_Column_List"/>
-        from pt_teacher_role
+        from pt_role_oper
         where id = #{id}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         <!--@mbg.generated-->
         delete
-        from pt_teacher_role
+        from pt_role_oper
         where id = #{id}
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacherRole"
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.rufeng.healthman.pojo.ptdo.PtRoleOper"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_teacher_role (tea_id, role_id, created, modified)
-        values (#{teaId}, #{roleId}, #{created}, #{modified})
+        insert into pt_role_oper (role_id, oper_id, created, modified)
+        values (#{roleId}, #{operId}, #{created}, #{modified})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacherRole" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtRoleOper" useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_teacher_role
+        insert into pt_role_oper
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="teaId != null">
-                tea_id,
-            </if>
             <if test="roleId != null">
                 role_id,
+            </if>
+            <if test="operId != null">
+                oper_id,
             </if>
             <if test="created != null">
                 created,
@@ -52,11 +52,11 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="teaId != null">
-                #{teaId},
-            </if>
             <if test="roleId != null">
                 #{roleId},
+            </if>
+            <if test="operId != null">
+                #{operId},
             </if>
             <if test="created != null">
                 #{created},
@@ -66,15 +66,15 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacherRole">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtRoleOper">
         <!--@mbg.generated-->
-        update pt_teacher_role
+        update pt_role_oper
         <set>
-            <if test="teaId != null">
-                tea_id = #{teaId},
-            </if>
             <if test="roleId != null">
                 role_id = #{roleId},
+            </if>
+            <if test="operId != null">
+                oper_id = #{operId},
             </if>
             <if test="created != null">
                 created = #{created},
@@ -85,27 +85,27 @@
         </set>
         where id = #{id}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacherRole">
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtRoleOper">
         <!--@mbg.generated-->
-        update pt_teacher_role
-        set tea_id   = #{teaId},
-            role_id  = #{roleId},
+        update pt_role_oper
+        set role_id  = #{roleId},
+            oper_id  = #{operId},
             created  = #{created},
             modified = #{modified}
         where id = #{id}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
         <!--@mbg.generated-->
-        update pt_teacher_role
+        update pt_role_oper
         <trim prefix="set" suffixOverrides=",">
-            <trim prefix="tea_id = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when id = #{item.id} then #{item.teaId}
-                </foreach>
-            </trim>
             <trim prefix="role_id = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when id = #{item.id} then #{item.roleId}
+                </foreach>
+            </trim>
+            <trim prefix="oper_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.operId}
                 </foreach>
             </trim>
             <trim prefix="created = case" suffix="end,">
@@ -126,19 +126,19 @@
     </update>
     <update id="updateBatchSelective" parameterType="java.util.List">
         <!--@mbg.generated-->
-        update pt_teacher_role
+        update pt_role_oper
         <trim prefix="set" suffixOverrides=",">
-            <trim prefix="tea_id = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.teaId != null">
-                        when id = #{item.id} then #{item.teaId}
-                    </if>
-                </foreach>
-            </trim>
             <trim prefix="role_id = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.roleId != null">
                         when id = #{item.id} then #{item.roleId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="oper_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.operId != null">
+                        when id = #{item.id} then #{item.operId}
                     </if>
                 </foreach>
             </trim>
@@ -164,23 +164,23 @@
     </update>
     <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_teacher_role
-            (tea_id, role_id, created, modified)
+        insert into pt_role_oper
+            (role_id, oper_id, created, modified)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.teaId}, #{item.roleId}, #{item.created}, #{item.modified})
+            (#{item.roleId}, #{item.operId}, #{item.created}, #{item.modified})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="id" keyProperty="id"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacherRole" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtRoleOper" useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_teacher_role
+        insert into pt_role_oper
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            tea_id,
             role_id,
+            oper_id,
             created,
             modified,
         </trim>
@@ -189,8 +189,8 @@
             <if test="id != null">
                 #{id},
             </if>
-            #{teaId},
             #{roleId},
+            #{operId},
             #{created},
             #{modified},
         </trim>
@@ -199,25 +199,25 @@
             <if test="id != null">
                 id = #{id},
             </if>
-            tea_id   = #{teaId},
             role_id  = #{roleId},
+            oper_id  = #{operId},
             created  = #{created},
             modified = #{modified},
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id"
-            parameterType="com.rufeng.healthman.pojo.ptdo.PtTeacherRole" useGeneratedKeys="true">
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtRoleOper" useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_teacher_role
+        insert into pt_role_oper
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="teaId != null">
-                tea_id,
-            </if>
             <if test="roleId != null">
                 role_id,
+            </if>
+            <if test="operId != null">
+                oper_id,
             </if>
             <if test="created != null">
                 created,
@@ -231,11 +231,11 @@
             <if test="id != null">
                 #{id},
             </if>
-            <if test="teaId != null">
-                #{teaId},
-            </if>
             <if test="roleId != null">
                 #{roleId},
+            </if>
+            <if test="operId != null">
+                #{operId},
             </if>
             <if test="created != null">
                 #{created},
@@ -249,11 +249,11 @@
             <if test="id != null">
                 id = #{id},
             </if>
-            <if test="teaId != null">
-                tea_id = #{teaId},
-            </if>
             <if test="roleId != null">
                 role_id = #{roleId},
+            </if>
+            <if test="operId != null">
+                oper_id = #{operId},
             </if>
             <if test="created != null">
                 created = #{created},
@@ -263,10 +263,14 @@
             </if>
         </trim>
     </insert>
-    <select id="listByTeaId" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM pt_teacher_role
-        WHERE tea_id = #{teaId}
+
+    <select id="listOperIdByRoleIds" resultType="java.lang.String">
+        SELECT oper_id
+        FROM pt_role_oper
+        <where>
+            <foreach collection="list" separator="," open="role_id IN (" item="item" close=")">
+                #{item}
+            </foreach>
+        </where>
     </select>
 </mapper>

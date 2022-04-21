@@ -21,6 +21,9 @@ import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+
+import static com.rufeng.healthman.security.authority.Authority.DEFAULT_ADMIN_AUTHORITIES;
 
 /**
  * @author rufeng
@@ -55,7 +58,7 @@ public class PtAdminService {
                 PtAdmin.builder()
                         .adminId(adminId)
                         .adminLastLogin(LocalDateTime.now()).build());
-        PtAdminInfo info = new PtAdminInfo(admin);
+        PtAdminInfo info = new PtAdminInfo(admin, new HashSet<>(DEFAULT_ADMIN_AUTHORITIES));
         Authentication authentication = new AuthenticationImpl(info);
         redisService.setObject(UserInfo.userKey(UserTypeEnum.ADMIN, adminId), authentication);
         String token = JwtTokenUtils.generateToken(adminId, UserTypeEnum.ADMIN);

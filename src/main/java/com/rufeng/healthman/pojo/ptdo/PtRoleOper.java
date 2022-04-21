@@ -1,35 +1,27 @@
 package com.rufeng.healthman.pojo.ptdo;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 
 /**
+ * 角色资源
  * @author rufeng
- * @time 2022-04-20 10:30
- * @package com.rufeng.healthman.pojo.ptdo
- * @description TODO
  */
-
-/**
-    * 学院、教师关联
-    */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PtClgRole implements Serializable {
-    private Long id;
-
-    private String roleName;
-
-    private LocalDateTime created;
-
-    private LocalDateTime modified;
-
+public class PtRoleOper implements Serializable {
     private static final long serialVersionUID = 1L;
+    private Long id;
+    private Long roleId;
+    private String operId;
+    private LocalDateTime created;
+    private LocalDateTime modified;
 }

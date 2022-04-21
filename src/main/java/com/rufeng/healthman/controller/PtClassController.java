@@ -6,7 +6,10 @@ import com.rufeng.healthman.pojo.dto.ptclass.PtClassPageInfo;
 import com.rufeng.healthman.pojo.dto.ptclass.PtClassTreeItem;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.query.PtClassQuery;
+import com.rufeng.healthman.security.authority.ApiAuthority;
+import com.rufeng.healthman.security.authority.Authority;
 import com.rufeng.healthman.service.PtClassService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.validator.constraints.Length;
@@ -36,20 +39,13 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @RequestMapping("/api/class")
 @SecurityRequirement(name = JWT_SCHEME_NAME)
 @Tag(name = "Class Api", description = "班级操作")
+@ApiAuthority
 public class PtClassController {
     private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("班级模板文件.xlsx", StandardCharsets.UTF_8);
     private final PtClassService ptClassService;
 
     public PtClassController(PtClassService ptClassService) {
         this.ptClassService = ptClassService;
-    }
-
-    @GetMapping
-    public ApiResponse<ApiPage<PtClassPageInfo>> page(
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @Validated PtClassQuery ptClassQuery) {
-        return ApiResponse.success(ptClassService.pageClassInfo(page, pageSize, ptClassQuery));
     }
 
     @GetMapping("/tree")
@@ -59,11 +55,22 @@ public class PtClassController {
         return ApiResponse.success(items);
     }
 
+    @Operation(operationId = Authority.CLASS_PAGE, summary = "班级列表")
+    @GetMapping
+    public ApiResponse<ApiPage<PtClassPageInfo>> page(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @Validated PtClassQuery ptClassQuery) {
+        return ApiResponse.success(ptClassService.pageClassInfo(page, pageSize, ptClassQuery));
+    }
+
+    @Operation(operationId = Authority.CLASS_LIST, summary = "所有班级")
     @GetMapping("/list")
     public ApiResponse<List<PtClass>> list(@Validated PtClassQuery query) {
         return ApiResponse.success(ptClassService.listClass(query));
     }
 
+    @Operation(operationId = Authority.CLASS_UPLOAD, summary = "上传班级")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadClass(@RequestPart MultipartFile file,
                                             @RequestParam(required = false) String clgCode) {
@@ -71,6 +78,7 @@ public class PtClassController {
         return ApiResponse.success(count);
     }
 
+    @Operation(operationId = Authority.CLASS_TEMPLATE, summary = "班级excel模板")
     @GetMapping(value = "/template")
     public ResponseEntity<Resource> downloadTemplate() {
         Resource resource = ptClassService.fileTemplate();
@@ -80,11 +88,13 @@ public class PtClassController {
                 .body(resource);
     }
 
+    @Operation(operationId = Authority.CLASS_GRADELIST, summary = "年级列表")
     @GetMapping("/grade/list")
     public ApiResponse<List<Integer>> listGrade(@Length(min = 1) String clgCode) {
         return ApiResponse.success(ptClassService.listGrade(clgCode));
     }
 
+    @Operation(operationId = Authority.CLASS_GET, summary = "班级")
     @GetMapping("/{clsCode}")
     public ApiResponse<PtClass> getPtClass(@PathVariable String clsCode) {
         return ApiResponse.success(ptClassService.getPtClass(clsCode));

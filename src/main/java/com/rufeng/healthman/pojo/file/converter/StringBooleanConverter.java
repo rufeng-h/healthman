@@ -16,7 +16,7 @@ import com.rufeng.healthman.common.util.TranslationUtils;
  */
 public class StringBooleanConverter implements Converter<Boolean> {
     @Override
-    public WriteCellData<?> convertToExcelData(Boolean value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public WriteCellData<?> convertToExcelData(Boolean value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
         return new WriteCellData<>(TranslationUtils.translateBool(value));
     }
 

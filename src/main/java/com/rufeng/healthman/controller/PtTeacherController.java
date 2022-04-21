@@ -2,10 +2,12 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherInfo;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherPageInfo;
 import com.rufeng.healthman.pojo.query.PtTeacherQuery;
+import com.rufeng.healthman.security.authority.ApiAuthority;
+import com.rufeng.healthman.security.authority.Authority;
 import com.rufeng.healthman.service.PtTeacherService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.validator.constraints.Range;
@@ -34,6 +36,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @SecurityRequirement(name = JWT_SCHEME_NAME)
 @RequestMapping("/api/teacher")
 @Tag(name = "Admin Api", description = "教师操作")
+@ApiAuthority
 public class PtTeacherController {
     private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("管理员模板文件.xlsx", StandardCharsets.UTF_8);
     private final PtTeacherService ptTeacherService;
@@ -42,6 +45,7 @@ public class PtTeacherController {
         this.ptTeacherService = ptTeacherService;
     }
 
+    @Operation(operationId = Authority.TEACHER_PAGE, summary = "教师列表")
     @GetMapping
     public ApiResponse<ApiPage<PtTeacherPageInfo>> pageTeacherInfo(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -55,11 +59,13 @@ public class PtTeacherController {
 //        return ApiResponse.success(ptTeacherService.addTeacherSelective());
 //    }
 
+    @Operation(operationId = Authority.TEACHER_UPLOAD, summary = "上传教师")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadTeacher(@RequestPart MultipartFile file) {
         return ApiResponse.success(ptTeacherService.uploadTeacher(file));
     }
 
+    @Operation(operationId = Authority.TEACHER_TEMPLATE, summary = "教师模板")
     @GetMapping("/template")
     public ResponseEntity<Resource> excelTemplate() {
         Resource resource = ptTeacherService.excelTemplate();

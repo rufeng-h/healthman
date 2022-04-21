@@ -14,6 +14,7 @@ import java.io.Serializable;
 public interface Authentication extends Serializable {
     /**
      * userinfo
+     *
      * @return userinfo
      */
     @NonNull

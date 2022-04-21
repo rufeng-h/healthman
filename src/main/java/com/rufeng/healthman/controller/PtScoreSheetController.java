@@ -5,14 +5,19 @@ import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtScoreSheetFormdata;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.query.PtScoreSheetQuery;
+import com.rufeng.healthman.security.authority.ApiAuthority;
+import com.rufeng.healthman.security.authority.Authority;
 import com.rufeng.healthman.service.PtScoreSheetService;
 import com.rufeng.healthman.validation.group.Update;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MAX_UPPER;
 import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER;
 
@@ -27,6 +32,8 @@ import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER;
 @RestController
 @RequestMapping("/scoreSheet")
 @Tag(name = "Score Sheet Api", description = "评分量表")
+@SecurityRequirement(name = JWT_SCHEME_NAME)
+@ApiAuthority
 public class PtScoreSheetController {
     private final PtScoreSheetService ptScoreSheetService;
 
@@ -34,6 +41,7 @@ public class PtScoreSheetController {
         this.ptScoreSheetService = ptScoreSheetService;
     }
 
+    @Operation(operationId = Authority.SCOS_PAGE, summary = "评分标准列表")
     @GetMapping
     public ApiResponse<ApiPage<PtScoreSheet>> pageScoreSheet(
             @RequestParam(defaultValue = "1") Integer page,
@@ -42,11 +50,13 @@ public class PtScoreSheetController {
         return ApiResponse.success(ptScoreSheetService.pageScoreSheet(page, pageSize, query));
     }
 
+    @Operation(operationId = Authority.SCOS_UPLOAD, summary = "上传评分标准")
     @PostMapping(value = "/upload/{subId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadScoreSheet(@RequestPart MultipartFile file, @PathVariable Long subId) {
         return ApiResponse.success(ptScoreSheetService.uploadScoreSheet(subId, file));
     }
 
+    @Operation(operationId = Authority.SCOS_UPDATE, summary = "修改评分标准")
     @PutMapping
     public ApiResponse<Boolean> updateScoreSheet(
             @RequestBody @Validated(Update.class) PtScoreSheetFormdata data) {
@@ -65,6 +75,7 @@ public class PtScoreSheetController {
         return ApiResponse.success(ptScoreSheetService.updateScoreSheet(data));
     }
 
+    @Operation(operationId = Authority.SCOS_DELETE, summary = "删除评分标准")
     @DeleteMapping("/{id}")
     public ApiResponse<Boolean> deleteScoreSheet(@PathVariable Long id) {
         return ApiResponse.success(ptScoreSheetService.deleteById(id));

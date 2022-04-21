@@ -64,7 +64,8 @@ public class PtClassService {
         Map<String, String> teaIdNameMap = ptTeacherService.mapTeaNameByIds(
                 classes.stream().map(PtClass::getTeaId).collect(Collectors.toList()));
         List<PtClassPageInfo> infos = classes.stream().map(c -> new PtClassPageInfo(
-                c, clgCodeNameMap.get(c.getClgCode()), teaIdNameMap.get(c.getTeaId()), map.get(c.getClsCode()))).collect(Collectors.toList());
+                c, clgCodeNameMap.get(c.getClgCode()), teaIdNameMap.get(c.getTeaId()), map.get(c.getClsCode())))
+                .collect(Collectors.toList());
         return ApiPage.convert(classes, infos);
     }
 

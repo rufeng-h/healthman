@@ -7,9 +7,12 @@ import com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.query.PtSubjectQuery;
+import com.rufeng.healthman.security.authority.ApiAuthority;
+import com.rufeng.healthman.security.authority.Authority;
 import com.rufeng.healthman.service.PtSubjectService;
 import com.rufeng.healthman.validation.group.Insert;
 import com.rufeng.healthman.validation.group.Update;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +35,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @RestController
 @SecurityRequirement(name = JWT_SCHEME_NAME)
 @Tag(name = "Subject Api", description = "科目接口")
+@ApiAuthority
 public class PtSubjectController {
     private final PtSubjectService ptSubjectService;
 
@@ -39,16 +43,19 @@ public class PtSubjectController {
         this.ptSubjectService = ptSubjectService;
     }
 
+    @Operation(operationId = Authority.SUBJECT_LIST, summary = "所有科目")
     @GetMapping("/list")
     public ApiResponse<List<PtSubject>> listSubject() {
         return ApiResponse.success(ptSubjectService.listSubject());
     }
 
+    @Operation(operationId = Authority.SUBJECT_INSERT, summary = "新增科目")
     @PostMapping
     public ApiResponse<Boolean> addSubject(@RequestBody @Validated(Insert.class) PtSubjectFormdata data) {
         return ApiResponse.success(ptSubjectService.addSubject(data));
     }
 
+    @Operation(operationId = Authority.SUBJECT_PAGE, summary = "科目列表")
     @GetMapping
     public ApiResponse<ApiPage<SubjectInfo>> pageSubInfo(@RequestParam(defaultValue = "1") @Min(1) Integer page,
                                                          @RequestParam(defaultValue = "8") @Min(1) @Max(100) Integer pageSize,
@@ -57,15 +64,18 @@ public class PtSubjectController {
     }
 
     @PutMapping
+    @Operation(operationId = Authority.SUBJECT_UPDATE, summary = "更新科目")
     public ApiResponse<Boolean> updateSubject(@RequestBody @Validated(Update.class) PtSubjectFormdata data) {
         return ApiResponse.success(ptSubjectService.updateSubject(data));
     }
 
     @DeleteMapping("/{subId}")
+    @Operation(operationId = Authority.SUBJECT_DELETE, summary = "删除科目")
     public ApiResponse<Boolean> deleteSubject(@PathVariable Long subId) {
         return ApiResponse.success(ptSubjectService.deleteSubject(subId));
     }
 
+    @Operation(operationId = Authority.SUBJECT_GET, summary = "科目")
     @GetMapping("/{subId}")
     public ApiResponse<SubjectDetail> getSubject(@PathVariable Long subId) {
         return ApiResponse.success(ptSubjectService.getSubjectDetail(subId));

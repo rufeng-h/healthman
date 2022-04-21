@@ -1,69 +1,78 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.pojo.ptdo.PtUrlResource;
-import java.util.List;
+import com.rufeng.healthman.pojo.ptdo.PtRoleOper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
  * @author rufeng
- * @time 2022-04-19 22:58
+ * @time 2022-04-22 0:25
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
 
 @Mapper
-public interface PtUrlResourceMapper {
+public interface PtRoleOperMapper {
     /**
      * delete by primary key
-     * @param resId primaryKey
+     *
+     * @param id primaryKey
      * @return deleteCount
      */
-    int deleteByPrimaryKey(Long resId);
+    int deleteByPrimaryKey(Long id);
 
     /**
      * insert record to table
+     *
      * @param record the record
      * @return insert count
      */
-    int insert(PtUrlResource record);
+    int insert(PtRoleOper record);
 
-    int insertOrUpdate(PtUrlResource record);
+    int insertOrUpdate(PtRoleOper record);
 
-    int insertOrUpdateSelective(PtUrlResource record);
+    int insertOrUpdateSelective(PtRoleOper record);
 
     /**
      * insert record to table selective
+     *
      * @param record the record
      * @return insert count
      */
-    int insertSelective(PtUrlResource record);
+    int insertSelective(PtRoleOper record);
 
     /**
      * select by primary key
-     * @param resId primary key
+     *
+     * @param id primary key
      * @return object by primary key
      */
-    PtUrlResource selectByPrimaryKey(Long resId);
+    PtRoleOper selectByPrimaryKey(Long id);
 
     /**
      * update record selective
+     *
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(PtUrlResource record);
+    int updateByPrimaryKeySelective(PtRoleOper record);
 
     /**
      * update record
+     *
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKey(PtUrlResource record);
+    int updateByPrimaryKey(PtRoleOper record);
 
-    int updateBatch(List<PtUrlResource> list);
+    int updateBatch(List<PtRoleOper> list);
 
-    int updateBatchSelective(List<PtUrlResource> list);
+    int updateBatchSelective(List<PtRoleOper> list);
 
-    int batchInsert(@Param("list") List<PtUrlResource> list);
+    int batchInsert(@Param("list") List<PtRoleOper> list);
+
+    List<String> listOperIdByRoleIds(List<Long> roleIds);
 }

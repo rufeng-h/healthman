@@ -1,4 +1,4 @@
-package com.rufeng.healthman.security;
+package com.rufeng.healthman.security.filter;
 
 import com.rufeng.healthman.security.context.SecurityContext;
 import com.rufeng.healthman.security.context.SecurityContextHolder;

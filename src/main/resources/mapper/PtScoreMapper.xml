@@ -1,406 +1,411 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtScoreMapper">
-  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtScore">
-    <!--@mbg.generated-->
-    <!--@Table pt_score-->
-    <id column="sco_id" property="scoId" />
-    <result column="stu_id" property="stuId" />
-    <result column="sub_id" property="subId" />
-    <result column="sco_data" property="scoData" />
-    <result column="sco_created" property="scoCreated" />
-    <result column="sco_modified" property="scoModified" />
-    <result column="ms_id" property="msId" />
-    <result column="sco_level" property="scoLevel" />
-    <result column="score" property="score" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    sco_id, stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id, sco_level, score
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from pt_score
-    where sco_id = #{scoId}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    <!--@mbg.generated-->
-    delete from pt_score
-    where sco_id = #{scoId}
-  </delete>
-  <insert id="insert" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_score (stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id, sco_level, 
-      score)
-    values (#{stuId}, #{subId}, #{scoData}, #{scoCreated}, #{scoModified}, #{msId}, #{scoLevel}, 
-      #{score})
-  </insert>
-  <insert id="insertSelective" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_score
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="stuId != null">
-        stu_id,
-      </if>
-      <if test="subId != null">
-        sub_id,
-      </if>
-      <if test="scoData != null">
-        sco_data,
-      </if>
-      <if test="scoCreated != null">
-        sco_created,
-      </if>
-      <if test="scoModified != null">
-        sco_modified,
-      </if>
-      <if test="msId != null">
-        ms_id,
-      </if>
-      <if test="scoLevel != null">
-        sco_level,
-      </if>
-      <if test="score != null">
-        score,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="stuId != null">
-        #{stuId},
-      </if>
-      <if test="subId != null">
-        #{subId},
-      </if>
-      <if test="scoData != null">
-        #{scoData},
-      </if>
-      <if test="scoCreated != null">
-        #{scoCreated},
-      </if>
-      <if test="scoModified != null">
-        #{scoModified},
-      </if>
-      <if test="msId != null">
-        #{msId},
-      </if>
-      <if test="scoLevel != null">
-        #{scoLevel},
-      </if>
-      <if test="score != null">
-        #{score},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore">
-    <!--@mbg.generated-->
-    update pt_score
-    <set>
-      <if test="stuId != null">
-        stu_id = #{stuId},
-      </if>
-      <if test="subId != null">
-        sub_id = #{subId},
-      </if>
-      <if test="scoData != null">
-        sco_data = #{scoData},
-      </if>
-      <if test="scoCreated != null">
-        sco_created = #{scoCreated},
-      </if>
-      <if test="scoModified != null">
-        sco_modified = #{scoModified},
-      </if>
-      <if test="msId != null">
-        ms_id = #{msId},
-      </if>
-      <if test="scoLevel != null">
-        sco_level = #{scoLevel},
-      </if>
-      <if test="score != null">
-        score = #{score},
-      </if>
-    </set>
-    where sco_id = #{scoId}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore">
-    <!--@mbg.generated-->
-    update pt_score
-    set stu_id = #{stuId},
-      sub_id = #{subId},
-      sco_data = #{scoData},
-      sco_created = #{scoCreated},
-      sco_modified = #{scoModified},
-      ms_id = #{msId},
-      sco_level = #{scoLevel},
-      score = #{score}
-    where sco_id = #{scoId}
-  </update>
-  <update id="updateBatch" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_score
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="stu_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.stuId}
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtScore">
+        <!--@mbg.generated-->
+        <!--@Table pt_score-->
+        <id column="sco_id" property="scoId"/>
+        <result column="stu_id" property="stuId"/>
+        <result column="sub_id" property="subId"/>
+        <result column="sco_data" property="scoData"/>
+        <result column="sco_created" property="scoCreated"/>
+        <result column="sco_modified" property="scoModified"/>
+        <result column="ms_id" property="msId"/>
+        <result column="sco_level" property="scoLevel"/>
+        <result column="score" property="score"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        sco_id, stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id, sco_level, score
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_score
+        where sco_id = #{scoId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete
+        from pt_score
+        where sco_id = #{scoId}
+    </delete>
+    <insert id="insert" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_score (stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id, sco_level,
+                              score)
+        values (#{stuId}, #{subId}, #{scoData}, #{scoCreated}, #{scoModified}, #{msId}, #{scoLevel},
+                #{score})
+    </insert>
+    <insert id="insertSelective" keyColumn="sco_id" keyProperty="scoId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="subId != null">
+                sub_id,
+            </if>
+            <if test="scoData != null">
+                sco_data,
+            </if>
+            <if test="scoCreated != null">
+                sco_created,
+            </if>
+            <if test="scoModified != null">
+                sco_modified,
+            </if>
+            <if test="msId != null">
+                ms_id,
+            </if>
+            <if test="scoLevel != null">
+                sco_level,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                #{stuId},
+            </if>
+            <if test="subId != null">
+                #{subId},
+            </if>
+            <if test="scoData != null">
+                #{scoData},
+            </if>
+            <if test="scoCreated != null">
+                #{scoCreated},
+            </if>
+            <if test="scoModified != null">
+                #{scoModified},
+            </if>
+            <if test="msId != null">
+                #{msId},
+            </if>
+            <if test="scoLevel != null">
+                #{scoLevel},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore">
+        <!--@mbg.generated-->
+        update pt_score
+        <set>
+            <if test="stuId != null">
+                stu_id = #{stuId},
+            </if>
+            <if test="subId != null">
+                sub_id = #{subId},
+            </if>
+            <if test="scoData != null">
+                sco_data = #{scoData},
+            </if>
+            <if test="scoCreated != null">
+                sco_created = #{scoCreated},
+            </if>
+            <if test="scoModified != null">
+                sco_modified = #{scoModified},
+            </if>
+            <if test="msId != null">
+                ms_id = #{msId},
+            </if>
+            <if test="scoLevel != null">
+                sco_level = #{scoLevel},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+        </set>
+        where sco_id = #{scoId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore">
+        <!--@mbg.generated-->
+        update pt_score
+        set stu_id       = #{stuId},
+            sub_id       = #{subId},
+            sco_data     = #{scoData},
+            sco_created  = #{scoCreated},
+            sco_modified = #{scoModified},
+            ms_id        = #{msId},
+            sco_level    = #{scoLevel},
+            score        = #{score}
+        where sco_id = #{scoId}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_score
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="stu_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.stuId}
+                </foreach>
+            </trim>
+            <trim prefix="sub_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.subId}
+                </foreach>
+            </trim>
+            <trim prefix="sco_data = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.scoData}
+                </foreach>
+            </trim>
+            <trim prefix="sco_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.scoCreated}
+                </foreach>
+            </trim>
+            <trim prefix="sco_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.scoModified}
+                </foreach>
+            </trim>
+            <trim prefix="ms_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.msId}
+                </foreach>
+            </trim>
+            <trim prefix="sco_level = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.scoLevel}
+                </foreach>
+            </trim>
+            <trim prefix="score = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sco_id = #{item.scoId} then #{item.score}
+                </foreach>
+            </trim>
+        </trim>
+        where sco_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.scoId}
         </foreach>
-      </trim>
-      <trim prefix="sub_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.subId}
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_score
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="stu_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuId != null">
+                        when sco_id = #{item.scoId} then #{item.stuId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sub_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.subId != null">
+                        when sco_id = #{item.scoId} then #{item.subId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sco_data = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.scoData != null">
+                        when sco_id = #{item.scoId} then #{item.scoData}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sco_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.scoCreated != null">
+                        when sco_id = #{item.scoId} then #{item.scoCreated}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sco_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.scoModified != null">
+                        when sco_id = #{item.scoId} then #{item.scoModified}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="ms_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.msId != null">
+                        when sco_id = #{item.scoId} then #{item.msId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sco_level = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.scoLevel != null">
+                        when sco_id = #{item.scoId} then #{item.scoLevel}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="score = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.score != null">
+                        when sco_id = #{item.scoId} then #{item.score}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where sco_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.scoId}
         </foreach>
-      </trim>
-      <trim prefix="sco_data = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.scoData}
+    </update>
+    <insert id="batchInsert" keyColumn="sco_id" keyProperty="scoId" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_score
+        (stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id, sco_level, score)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.stuId}, #{item.subId}, #{item.scoData}, #{item.scoCreated}, #{item.scoModified},
+             #{item.msId}, #{item.scoLevel}, #{item.score})
         </foreach>
-      </trim>
-      <trim prefix="sco_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.scoCreated}
-        </foreach>
-      </trim>
-      <trim prefix="sco_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.scoModified}
-        </foreach>
-      </trim>
-      <trim prefix="ms_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.msId}
-        </foreach>
-      </trim>
-      <trim prefix="sco_level = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.scoLevel}
-        </foreach>
-      </trim>
-      <trim prefix="score = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when sco_id = #{item.scoId} then #{item.score}
-        </foreach>
-      </trim>
-    </trim>
-    where sco_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.scoId}
-    </foreach>
-  </update>
-  <update id="updateBatchSelective" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_score
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="stu_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuId != null">
-            when sco_id = #{item.scoId} then #{item.stuId}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sub_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.subId != null">
-            when sco_id = #{item.scoId} then #{item.subId}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sco_data = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.scoData != null">
-            when sco_id = #{item.scoId} then #{item.scoData}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sco_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.scoCreated != null">
-            when sco_id = #{item.scoId} then #{item.scoCreated}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sco_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.scoModified != null">
-            when sco_id = #{item.scoId} then #{item.scoModified}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="ms_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.msId != null">
-            when sco_id = #{item.scoId} then #{item.msId}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="sco_level = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.scoLevel != null">
-            when sco_id = #{item.scoId} then #{item.scoLevel}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="score = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.score != null">
-            when sco_id = #{item.scoId} then #{item.score}
-          </if>
-        </foreach>
-      </trim>
-    </trim>
-    where sco_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.scoId}
-    </foreach>
-  </update>
-  <insert id="batchInsert" keyColumn="sco_id" keyProperty="scoId" parameterType="map" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_score
-    (stu_id, sub_id, sco_data, sco_created, sco_modified, ms_id, sco_level, score)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.stuId}, #{item.subId}, #{item.scoData}, #{item.scoCreated}, #{item.scoModified}, 
-        #{item.msId}, #{item.scoLevel}, #{item.score})
-    </foreach>
-  </insert>
-  <insert id="insertOrUpdate" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_score
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="scoId != null">
-        sco_id,
-      </if>
-      stu_id,
-      sub_id,
-      sco_data,
-      sco_created,
-      sco_modified,
-      ms_id,
-      sco_level,
-      score,
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="scoId != null">
-        #{scoId},
-      </if>
-      #{stuId},
-      #{subId},
-      #{scoData},
-      #{scoCreated},
-      #{scoModified},
-      #{msId},
-      #{scoLevel},
-      #{score},
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="scoId != null">
-        sco_id = #{scoId},
-      </if>
-      stu_id = #{stuId},
-      sub_id = #{subId},
-      sco_data = #{scoData},
-      sco_created = #{scoCreated},
-      sco_modified = #{scoModified},
-      ms_id = #{msId},
-      sco_level = #{scoLevel},
-      score = #{score},
-    </trim>
-  </insert>
-  <insert id="insertOrUpdateSelective" keyColumn="sco_id" keyProperty="scoId" parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into pt_score
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="scoId != null">
-        sco_id,
-      </if>
-      <if test="stuId != null">
-        stu_id,
-      </if>
-      <if test="subId != null">
-        sub_id,
-      </if>
-      <if test="scoData != null">
-        sco_data,
-      </if>
-      <if test="scoCreated != null">
-        sco_created,
-      </if>
-      <if test="scoModified != null">
-        sco_modified,
-      </if>
-      <if test="msId != null">
-        ms_id,
-      </if>
-      <if test="scoLevel != null">
-        sco_level,
-      </if>
-      <if test="score != null">
-        score,
-      </if>
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="scoId != null">
-        #{scoId},
-      </if>
-      <if test="stuId != null">
-        #{stuId},
-      </if>
-      <if test="subId != null">
-        #{subId},
-      </if>
-      <if test="scoData != null">
-        #{scoData},
-      </if>
-      <if test="scoCreated != null">
-        #{scoCreated},
-      </if>
-      <if test="scoModified != null">
-        #{scoModified},
-      </if>
-      <if test="msId != null">
-        #{msId},
-      </if>
-      <if test="scoLevel != null">
-        #{scoLevel},
-      </if>
-      <if test="score != null">
-        #{score},
-      </if>
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="scoId != null">
-        sco_id = #{scoId},
-      </if>
-      <if test="stuId != null">
-        stu_id = #{stuId},
-      </if>
-      <if test="subId != null">
-        sub_id = #{subId},
-      </if>
-      <if test="scoData != null">
-        sco_data = #{scoData},
-      </if>
-      <if test="scoCreated != null">
-        sco_created = #{scoCreated},
-      </if>
-      <if test="scoModified != null">
-        sco_modified = #{scoModified},
-      </if>
-      <if test="msId != null">
-        ms_id = #{msId},
-      </if>
-      <if test="scoLevel != null">
-        sco_level = #{scoLevel},
-      </if>
-      <if test="score != null">
-        score = #{score},
-      </if>
-    </trim>
-  </insert>
+    </insert>
+    <insert id="insertOrUpdate" keyColumn="sco_id" keyProperty="scoId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scoId != null">
+                sco_id,
+            </if>
+            stu_id,
+            sub_id,
+            sco_data,
+            sco_created,
+            sco_modified,
+            ms_id,
+            sco_level,
+            score,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scoId != null">
+                #{scoId},
+            </if>
+            #{stuId},
+            #{subId},
+            #{scoData},
+            #{scoCreated},
+            #{scoModified},
+            #{msId},
+            #{scoLevel},
+            #{score},
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="scoId != null">
+                sco_id = #{scoId},
+            </if>
+            stu_id       = #{stuId},
+            sub_id       = #{subId},
+            sco_data     = #{scoData},
+            sco_created  = #{scoCreated},
+            sco_modified = #{scoModified},
+            ms_id        = #{msId},
+            sco_level    = #{scoLevel},
+            score        = #{score},
+        </trim>
+    </insert>
+    <insert id="insertOrUpdateSelective" keyColumn="sco_id" keyProperty="scoId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtScore" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scoId != null">
+                sco_id,
+            </if>
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="subId != null">
+                sub_id,
+            </if>
+            <if test="scoData != null">
+                sco_data,
+            </if>
+            <if test="scoCreated != null">
+                sco_created,
+            </if>
+            <if test="scoModified != null">
+                sco_modified,
+            </if>
+            <if test="msId != null">
+                ms_id,
+            </if>
+            <if test="scoLevel != null">
+                sco_level,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scoId != null">
+                #{scoId},
+            </if>
+            <if test="stuId != null">
+                #{stuId},
+            </if>
+            <if test="subId != null">
+                #{subId},
+            </if>
+            <if test="scoData != null">
+                #{scoData},
+            </if>
+            <if test="scoCreated != null">
+                #{scoCreated},
+            </if>
+            <if test="scoModified != null">
+                #{scoModified},
+            </if>
+            <if test="msId != null">
+                #{msId},
+            </if>
+            <if test="scoLevel != null">
+                #{scoLevel},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="scoId != null">
+                sco_id = #{scoId},
+            </if>
+            <if test="stuId != null">
+                stu_id = #{stuId},
+            </if>
+            <if test="subId != null">
+                sub_id = #{subId},
+            </if>
+            <if test="scoData != null">
+                sco_data = #{scoData},
+            </if>
+            <if test="scoCreated != null">
+                sco_created = #{scoCreated},
+            </if>
+            <if test="scoModified != null">
+                sco_modified = #{scoModified},
+            </if>
+            <if test="msId != null">
+                ms_id = #{msId},
+            </if>
+            <if test="scoLevel != null">
+                sco_level = #{scoLevel},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+        </trim>
+    </insert>
 
     <insert id="batchInsertSelective" keyColumn="sco_id" keyProperty="scoId" useGeneratedKeys="true">
         INSERT INTO pt_score (stu_id, sub_id, sco_data, ms_id, score, sco_level)
@@ -418,7 +423,7 @@
 
     <select id="listScoreByStuIds" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM pt_score
         <where>
             <if test="query.msId != null">
@@ -448,7 +453,7 @@
                 AND sub_id = #{subId}
             </if>
             <if test="stuName != null">
-                <bind name="name" value="'%' + stuName + '%'" />
+                <bind name="name" value="'%' + stuName + '%'"/>
                 AND stu_name like #{name}
             </if>
         </where>
@@ -469,7 +474,7 @@
                 AND sub_id = #{subId}
             </if>
             <if test="stuName != null">
-                <bind name="name" value="'%' + stuName + '%'" />
+                <bind name="name" value="'%' + stuName + '%'"/>
                 AND stu_name like #{name}
             </if>
         </where>
@@ -477,7 +482,7 @@
 
     <select id="pageScore" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM pt_score
         <where>
             <if test="msId != null">
@@ -494,7 +499,7 @@
 
     <select id="listScoreByStuIdAndMsIds" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM pt_score
         <where>
             <if test="stuId != null">

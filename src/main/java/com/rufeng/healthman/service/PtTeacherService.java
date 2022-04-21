@@ -19,8 +19,7 @@ import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherPageInfo;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.file.PtTeacherExcel;
 import com.rufeng.healthman.pojo.file.PtTeacherExcelListener;
-import com.rufeng.healthman.pojo.ptdo.PtClass;
-import com.rufeng.healthman.pojo.ptdo.PtTeacher;
+import com.rufeng.healthman.pojo.ptdo.*;
 import com.rufeng.healthman.pojo.query.PtTeacherQuery;
 import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.authentication.AuthenticationImpl;
@@ -41,6 +40,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.rufeng.healthman.security.authority.Authority.DEFAULT_TEACHER_AUTHORITIES;
+
 
 /**
  * @author rufeng
@@ -54,15 +55,26 @@ public class PtTeacherService {
     private final PtTeacherMapper ptTeacherMapper;
     private final RedisService redisService;
     private final FileService fileService;
+    private final PtTeacherRoleService ptTeacherRoleService;
+    private final PtRoleService ptRoleService;
+    private final PtRoleOperService ptRoleOperService;
+    private final PtOperationService ptOperationService;
     private PtCollegeService ptCollegeService;
     private PtClassService ptClassService;
 
     public PtTeacherService(PtTeacherMapper ptTeacherMapper,
                             RedisService redisService,
-                            FileService fileService) {
+                            FileService fileService,
+                            PtTeacherRoleService ptTeacherRoleService,
+                            PtRoleService ptRoleService,
+                            PtRoleOperService ptRoleOperService, PtOperationService ptOperationService) {
         this.ptTeacherMapper = ptTeacherMapper;
         this.redisService = redisService;
         this.fileService = fileService;
+        this.ptTeacherRoleService = ptTeacherRoleService;
+        this.ptRoleService = ptRoleService;
+        this.ptRoleOperService = ptRoleOperService;
+        this.ptOperationService = ptOperationService;
     }
 
     @Autowired
@@ -113,15 +125,17 @@ public class PtTeacherService {
         /* 查班级 */
         List<PtClass> classes = ptClassService.listByTeaId(teacher.getTeaId());
         /* 查询教师角色 */
-//        List<PtTeacherRole> teacherRoles = ptTeacherRoleService.listByTeaId(teacher.getTeaId());
-//        List<Long> roleIds = teacherRoles.stream().map(PtTeacherRole::getRoleId).collect(Collectors.toList());
-//        List<PtRole> roles = ptRoleService.listByIds(roleIds);
-
-        /* 查询权限 TODO */
+        List<PtTeacherRole> teacherRoles = ptTeacherRoleService.listByTeaId(teacher.getTeaId());
+        List<Long> roleIds = teacherRoles.stream().map(PtTeacherRole::getRoleId).collect(Collectors.toList());
+        List<PtRole> roles = ptRoleService.listByIds(roleIds);
+        /* 查询权限 */
+        List<String> operIds = ptRoleOperService.listOperIdByRoleIds(roleIds);
+        List<PtOperation> operations = ptOperationService.listByIds(operIds);
         /* 组装数据 */
-
+        Set<String> authorities = new HashSet<>(DEFAULT_TEACHER_AUTHORITIES);
+        operations.forEach(o -> authorities.add(o.getOperSummary()));
         /* 返回结果 */
-        PtTeacherInfo info = new PtTeacherInfo(teacher, clgName);
+        PtTeacherInfo info = new PtTeacherInfo(teacher, clgName, classes ,roles, authorities);
         /* 认证信息 */
         Authentication authentication = new AuthenticationImpl(info);
         redisService.setObject(UserInfo.userKey(UserTypeEnum.TEACHER, teacher.getTeaId()), authentication);

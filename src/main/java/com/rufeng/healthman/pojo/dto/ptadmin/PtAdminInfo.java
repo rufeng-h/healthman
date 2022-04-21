@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.Set;
+
 /**
  * @author rufeng
  * @time 2022-04-20 10:59
@@ -19,8 +21,8 @@ public class PtAdminInfo extends UserInfo {
     private String phone;
     private String email;
 
-    public PtAdminInfo(PtAdmin admin) {
-        super(admin);
+    public PtAdminInfo(PtAdmin admin, Set<String> authorities) {
+        super(admin, authorities);
         this.phone = admin.getPhone();
         this.email = admin.getEmail();
     }

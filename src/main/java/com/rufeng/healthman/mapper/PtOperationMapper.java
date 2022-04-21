@@ -1,6 +1,6 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.pojo.ptdo.PtTeacherRole;
+import com.rufeng.healthman.pojo.ptdo.PtOperation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,20 +9,20 @@ import java.util.List;
 
 /**
  * @author rufeng
- * @time 2022-04-20 9:31
+ * @time 2022-04-22 0:25
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
 
 @Mapper
-public interface PtTeacherRoleMapper {
+public interface PtOperationMapper {
     /**
      * delete by primary key
      *
-     * @param id primaryKey
+     * @param operId primaryKey
      * @return deleteCount
      */
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String operId);
 
     /**
      * insert record to table
@@ -30,11 +30,11 @@ public interface PtTeacherRoleMapper {
      * @param record the record
      * @return insert count
      */
-    int insert(PtTeacherRole record);
+    int insert(PtOperation record);
 
-    int insertOrUpdate(PtTeacherRole record);
+    int insertOrUpdate(PtOperation record);
 
-    int insertOrUpdateSelective(PtTeacherRole record);
+    int insertOrUpdateSelective(PtOperation record);
 
     /**
      * insert record to table selective
@@ -42,15 +42,15 @@ public interface PtTeacherRoleMapper {
      * @param record the record
      * @return insert count
      */
-    int insertSelective(PtTeacherRole record);
+    int insertSelective(PtOperation record);
 
     /**
      * select by primary key
      *
-     * @param id primary key
+     * @param operId primary key
      * @return object by primary key
      */
-    PtTeacherRole selectByPrimaryKey(Long id);
+    PtOperation selectByPrimaryKey(String operId);
 
     /**
      * update record selective
@@ -58,7 +58,7 @@ public interface PtTeacherRoleMapper {
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(PtTeacherRole record);
+    int updateByPrimaryKeySelective(PtOperation record);
 
     /**
      * update record
@@ -66,13 +66,17 @@ public interface PtTeacherRoleMapper {
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKey(PtTeacherRole record);
+    int updateByPrimaryKey(PtOperation record);
 
-    int updateBatch(List<PtTeacherRole> list);
+    int updateBatch(List<PtOperation> list);
 
-    int updateBatchSelective(List<PtTeacherRole> list);
+    int updateBatchSelective(List<PtOperation> list);
 
-    int batchInsert(@Param("list") List<PtTeacherRole> list);
+    int batchInsert(@Param("list") List<PtOperation> list);
 
-    List<PtTeacherRole> listByTeaId(String teaId);
+    int batchInsertSelective(List<PtOperation> list);
+
+    List<PtOperation> list();
+
+    List<PtOperation> listByIds(List<String> operIds);
 }

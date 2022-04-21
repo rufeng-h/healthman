@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ApiResponse<Void> accessDenied() {
-        return ApiResponse.accessDenied();
+    public ApiResponse<Void> accessDenied(AccessDeniedException ex) {
+        return ApiResponse.accessDenied(ex.getMessage());
     }
 }
