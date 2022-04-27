@@ -45,7 +45,7 @@ public class PtTeacherController {
         this.ptTeacherService = ptTeacherService;
     }
 
-    @Operation(operationId = Authority.TEACHER_PAGE, summary = "教师列表")
+    @Operation(operationId = Authority.PtTeacher.TEACHER_PAGE, summary = "教师列表")
     @GetMapping
     public ApiResponse<ApiPage<PtTeacherPageInfo>> pageTeacherInfo(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -59,13 +59,13 @@ public class PtTeacherController {
 //        return ApiResponse.success(ptTeacherService.addTeacherSelective());
 //    }
 
-    @Operation(operationId = Authority.TEACHER_UPLOAD, summary = "上传教师")
+    @Operation(operationId = Authority.PtTeacher.TEACHER_UPLOAD, summary = "上传教师")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadTeacher(@RequestPart MultipartFile file) {
         return ApiResponse.success(ptTeacherService.uploadTeacher(file));
     }
 
-    @Operation(operationId = Authority.TEACHER_TEMPLATE, summary = "教师模板")
+    @Operation(operationId = Authority.PtTeacher.TEACHER_TEMPLATE, summary = "教师模板")
     @GetMapping("/template")
     public ResponseEntity<Resource> excelTemplate() {
         Resource resource = ptTeacherService.excelTemplate();

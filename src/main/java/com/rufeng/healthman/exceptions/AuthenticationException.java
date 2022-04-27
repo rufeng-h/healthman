@@ -12,6 +12,6 @@ public class AuthenticationException extends PtException {
     }
 
     public AuthenticationException(String message) {
-        super(message, null);
+        this(message, null);
     }
 }

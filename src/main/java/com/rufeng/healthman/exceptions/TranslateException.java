@@ -1,7 +1,5 @@
 package com.rufeng.healthman.exceptions;
 
-import com.rufeng.healthman.exceptions.PtException;
-
 /**
  * @author rufeng
  * @time 2022-04-15 22:30

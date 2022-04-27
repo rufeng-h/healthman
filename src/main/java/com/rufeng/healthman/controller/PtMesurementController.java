@@ -48,14 +48,14 @@ public class PtMesurementController {
         this.ptMesurementService = ptMesurementService;
     }
 
-    @Operation(operationId = Authority.MS_INSERT, summary = "新建体测")
+    @Operation(operationId = Authority.PtMs.MS_INSERT, summary = "新建体测")
     @PostMapping
     public ApiResponse<PtMeasurement> addMesurement(
             @Validated(Insert.class) @RequestBody PtMeasurementFormdata formdata) {
         return ApiResponse.success(ptMesurementService.addMesurement(formdata));
     }
 
-    @Operation(operationId = Authority.MS_PAGE, summary = "体测列表")
+    @Operation(operationId = Authority.PtMs.MS_PAGE, summary = "体测列表")
     @GetMapping
     public ApiResponse<ApiPage<MeasurementInfo>> pageMeasurement(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -64,26 +64,26 @@ public class PtMesurementController {
         return ApiResponse.success(ptMesurementService.pageMeasurementInfo(page, pageSize, query));
     }
 
-    @Operation(operationId = Authority.MS_DELETE, summary = "删除体测")
+    @Operation(operationId = Authority.PtMs.MS_DELETE, summary = "删除体测")
     @DeleteMapping("/{msId}")
     public ApiResponse<Boolean> deleteMeasurement(@PathVariable Long msId) {
         return ApiResponse.success(ptMesurementService.deleteById(msId));
     }
 
-    @Operation(operationId = Authority.MS_UPDATE, summary = "修改体测信息")
+    @Operation(operationId = Authority.PtMs.MS_UPDATE, summary = "修改体测信息")
     @PutMapping
     public ApiResponse<Boolean> updateMeasurement(
             @RequestBody @Validated(Update.class) PtMeasurementFormdata formdata) {
         return ApiResponse.success(ptMesurementService.updateMeasurement(formdata));
     }
 
-    @Operation(operationId = Authority.MS_DETAIL, summary = "体测结果数据")
+    @Operation(operationId = Authority.PtMs.MS_DETAIL, summary = "体测结果数据")
     @GetMapping("/{msId}")
     public ApiResponse<MeasurementDetail> getMeasurementDetail(@PathVariable Long msId) {
         return ApiResponse.success(ptMesurementService.getMeasurementDetail(msId));
     }
 
-    @Operation(operationId = Authority.MS_STUDETAIL, summary = "学生个人成绩")
+    @Operation(operationId = Authority.PtMs.MS_STUDETAIL, summary = "学生个人成绩")
     @GetMapping("/stu/{stuId}")
     public ApiResponse<ApiPage<StuMeasurementDetail>> pageStuMsDetail(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -92,7 +92,7 @@ public class PtMesurementController {
         return ApiResponse.success(ptMesurementService.pageStuMsDetail(page, pageSize, stuId));
     }
 
-    @Operation(operationId = Authority.MS_TEMPLATE, summary = "体测成绩模板")
+    @Operation(operationId = Authority.PtMs.MS_TEMPLATE, summary = "体测成绩模板")
     @GetMapping("/template/{msId}")
     public ResponseEntity<Resource> excelTemplate(@PathVariable Long msId) {
         PtMeasurement measurement = ptMesurementService.getMeasurement(msId);

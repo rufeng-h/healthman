@@ -46,13 +46,13 @@ public class PtStudentController {
         this.ptStudentService = ptStudentService;
     }
 
-    @Operation(operationId = Authority.STUDENT_GET, summary = "学生")
+    @Operation(operationId = Authority.PtStudent.STUDENT_GET, summary = "学生")
     @GetMapping("/{stuId}")
     public ApiResponse<PtStuMeasurementPageInfo> getPtStuByNo(@PathVariable String stuId) {
         return ApiResponse.success(ptStudentService.getStuMsInfo(stuId));
     }
 
-    @Operation(operationId = Authority.STUDENT_PAGE, summary = "学生列表")
+    @Operation(operationId = Authority.PtStudent.STUDENT_PAGE, summary = "学生列表")
     @GetMapping
     public ApiResponse<ApiPage<PtStudentPageInfo>> pageStudentInfo(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -61,7 +61,7 @@ public class PtStudentController {
         return ApiResponse.success(ptStudentService.pageStudentInfo(page, pageSize, query));
     }
 
-    @Operation(operationId = Authority.STUDENT_TEMPLATE, summary = "学生excel模板")
+    @Operation(operationId = Authority.PtStudent.STUDENT_TEMPLATE, summary = "学生excel模板")
     @GetMapping("/template")
     public ResponseEntity<Resource> excelTemplate() {
         Resource resource = ptStudentService.fileTemplate();
@@ -70,7 +70,7 @@ public class PtStudentController {
                 .body(resource);
     }
 
-    @Operation(operationId = Authority.STUDENT_UPLOAD, summary = "学生上传")
+    @Operation(operationId = Authority.PtStudent.STUDENT_UPLOAD, summary = "学生上传")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadStudent(@RequestPart MultipartFile file, @RequestParam(required = false) String clsCode) {
         return ApiResponse.success(ptStudentService.uploadStudent(file, clsCode));

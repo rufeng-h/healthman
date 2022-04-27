@@ -41,7 +41,7 @@ public class PtScoreSheetController {
         this.ptScoreSheetService = ptScoreSheetService;
     }
 
-    @Operation(operationId = Authority.SCOS_PAGE, summary = "评分标准列表")
+    @Operation(operationId = Authority.PtScoreSheet.SCOS_PAGE, summary = "评分标准列表")
     @GetMapping
     public ApiResponse<ApiPage<PtScoreSheet>> pageScoreSheet(
             @RequestParam(defaultValue = "1") Integer page,
@@ -50,13 +50,13 @@ public class PtScoreSheetController {
         return ApiResponse.success(ptScoreSheetService.pageScoreSheet(page, pageSize, query));
     }
 
-    @Operation(operationId = Authority.SCOS_UPLOAD, summary = "上传评分标准")
+    @Operation(operationId = Authority.PtScoreSheet.SCOS_UPLOAD, summary = "上传评分标准")
     @PostMapping(value = "/upload/{subId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadScoreSheet(@RequestPart MultipartFile file, @PathVariable Long subId) {
         return ApiResponse.success(ptScoreSheetService.uploadScoreSheet(subId, file));
     }
 
-    @Operation(operationId = Authority.SCOS_UPDATE, summary = "修改评分标准")
+    @Operation(operationId = Authority.PtScoreSheet.SCOS_UPDATE, summary = "修改评分标准")
     @PutMapping
     public ApiResponse<Boolean> updateScoreSheet(
             @RequestBody @Validated(Update.class) PtScoreSheetFormdata data) {
@@ -75,7 +75,7 @@ public class PtScoreSheetController {
         return ApiResponse.success(ptScoreSheetService.updateScoreSheet(data));
     }
 
-    @Operation(operationId = Authority.SCOS_DELETE, summary = "删除评分标准")
+    @Operation(operationId = Authority.PtScoreSheet.SCOS_DELETE, summary = "删除评分标准")
     @DeleteMapping("/{id}")
     public ApiResponse<Boolean> deleteScoreSheet(@PathVariable Long id) {
         return ApiResponse.success(ptScoreSheetService.deleteById(id));

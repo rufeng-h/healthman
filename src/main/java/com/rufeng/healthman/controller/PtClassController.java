@@ -55,7 +55,7 @@ public class PtClassController {
         return ApiResponse.success(items);
     }
 
-    @Operation(operationId = Authority.CLASS_PAGE, summary = "班级列表")
+    @Operation(operationId = Authority.PtClass.CLASS_PAGE, summary = "班级列表")
     @GetMapping
     public ApiResponse<ApiPage<PtClassPageInfo>> page(
             @RequestParam(defaultValue = "1") Integer page,
@@ -64,13 +64,13 @@ public class PtClassController {
         return ApiResponse.success(ptClassService.pageClassInfo(page, pageSize, ptClassQuery));
     }
 
-    @Operation(operationId = Authority.CLASS_LIST, summary = "所有班级")
+    @Operation(operationId = Authority.PtClass.CLASS_LIST, summary = "所有班级")
     @GetMapping("/list")
     public ApiResponse<List<PtClass>> list(@Validated PtClassQuery query) {
         return ApiResponse.success(ptClassService.listClass(query));
     }
 
-    @Operation(operationId = Authority.CLASS_UPLOAD, summary = "上传班级")
+    @Operation(operationId = Authority.PtClass.CLASS_UPLOAD, summary = "上传班级")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadClass(@RequestPart MultipartFile file,
                                             @RequestParam(required = false) String clgCode) {
@@ -78,7 +78,7 @@ public class PtClassController {
         return ApiResponse.success(count);
     }
 
-    @Operation(operationId = Authority.CLASS_TEMPLATE, summary = "班级excel模板")
+    @Operation(operationId = Authority.PtClass.CLASS_TEMPLATE, summary = "班级excel模板")
     @GetMapping(value = "/template")
     public ResponseEntity<Resource> downloadTemplate() {
         Resource resource = ptClassService.fileTemplate();
@@ -88,13 +88,13 @@ public class PtClassController {
                 .body(resource);
     }
 
-    @Operation(operationId = Authority.CLASS_GRADELIST, summary = "年级列表")
+    @Operation(operationId = Authority.PtClass.CLASS_GRADELIST, summary = "年级列表")
     @GetMapping("/grade/list")
     public ApiResponse<List<Integer>> listGrade(@Length(min = 1) String clgCode) {
         return ApiResponse.success(ptClassService.listGrade(clgCode));
     }
 
-    @Operation(operationId = Authority.CLASS_GET, summary = "班级")
+    @Operation(operationId = Authority.PtClass.CLASS_GET, summary = "班级")
     @GetMapping("/{clsCode}")
     public ApiResponse<PtClass> getPtClass(@PathVariable String clsCode) {
         return ApiResponse.success(ptClassService.getPtClass(clsCode));

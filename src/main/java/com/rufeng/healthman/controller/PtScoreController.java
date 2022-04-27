@@ -46,7 +46,7 @@ public class PtScoreController {
         this.ptScoreService = ptScoreService;
     }
 
-    @Operation(operationId = Authority.SCORE_PAGE, summary = "体测成绩列表")
+    @Operation(operationId = Authority.PtScore.SCORE_PAGE, summary = "体测成绩列表")
     @GetMapping("/ms")
     public ApiResponse<ApiPage<MeasurementScoreInfo>> pageScore(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
@@ -55,7 +55,7 @@ public class PtScoreController {
         return ApiResponse.success(ptScoreService.pageMsScore(page, pageSize, query));
     }
 
-    @Operation(operationId = Authority.SCORE_STU, summary = "学生历次体测成绩")
+    @Operation(operationId = Authority.PtScore.SCORE_STU, summary = "学生历次体测成绩")
     @GetMapping("/stu")
     public ApiResponse<ApiPage<PtScoreInfo>> pageStuScore(@RequestParam(defaultValue = "1") @Min(1) Integer page,
                                                           @RequestParam(defaultValue = "10") @Min(1) @Max(100) Integer pageSize,
@@ -63,13 +63,13 @@ public class PtScoreController {
         return ApiResponse.success(ptScoreService.pageStuScore(page, pageSize, query));
     }
 
-    @Operation(operationId = Authority.SCORE_UPLOAD, summary = "体测成绩上传")
+    @Operation(operationId = Authority.PtScore.SCORE_UPLOAD, summary = "体测成绩上传")
     @PostMapping(value = "/upload/{msId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file, @PathVariable Long msId) {
         return ApiResponse.success(ptScoreService.uploadScore(file, msId));
     }
 
-    @Operation(operationId = Authority.SCORE_DOWNLOAD, summary = "测验成绩下载")
+    @Operation(operationId = Authority.PtScore.SCORE_DOWNLOAD, summary = "测验成绩下载")
     @GetMapping("/download")
     public ResponseEntity<Resource> download(@Validated PtScoreQuery query) {
         Resource resource = ptScoreService.downloadScore(query);

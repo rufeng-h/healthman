@@ -53,32 +53,32 @@ public class PtCollegeController {
 //    }
 
 
-    @Operation(operationId = Authority.COLLEGE_PAGE, summary = "学院列表")
+    @Operation(operationId = Authority.PtCollege.COLLEGE_PAGE, summary = "学院列表")
     @GetMapping
     public ApiResponse<ApiPage<PtCollegePageInfo>> pageCollegeInfo(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
         return ApiResponse.success(ptCollegeService.pageCollegeInfo(page, pageSize));
     }
 
-    @Operation(operationId = Authority.COLLEGE_LIST, summary = "所有学院")
+    @Operation(operationId = Authority.PtCollege.COLLEGE_LIST, summary = "所有学院")
     @GetMapping("/list")
     public ApiResponse<List<PtCollege>> listCollege() {
         return ApiResponse.success(ptCollegeService.listCollege());
     }
 
-    @Operation(operationId = Authority.COLLEGE_UPLOAD, summary = "学院上传")
+    @Operation(operationId = Authority.PtCollege.COLLEGE_UPLOAD, summary = "学院上传")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadCollege(@RequestPart MultipartFile file) {
         Integer count = ptCollegeService.uploadCollege(file);
         return ApiResponse.success(count);
     }
 
-    @Operation(operationId = Authority.COLLEGE_GET, summary = "学院")
+    @Operation(operationId = Authority.PtCollege.COLLEGE_GET, summary = "学院")
     @GetMapping("{clgCode}")
     public ApiResponse<PtCollege> getCollege(@PathVariable String clgCode) {
         return ApiResponse.success(ptCollegeService.getCollege(clgCode));
     }
 
-    @Operation(operationId = Authority.COLLEGE_TEMPLATE, summary = "学院模板文件")
+    @Operation(operationId = Authority.PtCollege.COLLEGE_TEMPLATE, summary = "学院模板文件")
     @GetMapping("/template")
     public ResponseEntity<Resource> fileTemplate() {
         Resource resource = ptCollegeService.fileTemplate();

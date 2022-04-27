@@ -43,19 +43,19 @@ public class PtSubjectController {
         this.ptSubjectService = ptSubjectService;
     }
 
-    @Operation(operationId = Authority.SUBJECT_LIST, summary = "所有科目")
+    @Operation(operationId = Authority.PtSubject.SUBJECT_LIST, summary = "所有科目")
     @GetMapping("/list")
     public ApiResponse<List<PtSubject>> listSubject() {
         return ApiResponse.success(ptSubjectService.listSubject());
     }
 
-    @Operation(operationId = Authority.SUBJECT_INSERT, summary = "新增科目")
+    @Operation(operationId = Authority.PtSubject.SUBJECT_INSERT, summary = "新增科目")
     @PostMapping
     public ApiResponse<Boolean> addSubject(@RequestBody @Validated(Insert.class) PtSubjectFormdata data) {
         return ApiResponse.success(ptSubjectService.addSubject(data));
     }
 
-    @Operation(operationId = Authority.SUBJECT_PAGE, summary = "科目列表")
+    @Operation(operationId = Authority.PtSubject.SUBJECT_PAGE, summary = "科目列表")
     @GetMapping
     public ApiResponse<ApiPage<SubjectInfo>> pageSubInfo(@RequestParam(defaultValue = "1") @Min(1) Integer page,
                                                          @RequestParam(defaultValue = "8") @Min(1) @Max(100) Integer pageSize,
@@ -64,18 +64,18 @@ public class PtSubjectController {
     }
 
     @PutMapping
-    @Operation(operationId = Authority.SUBJECT_UPDATE, summary = "更新科目")
+    @Operation(operationId = Authority.PtSubject.SUBJECT_UPDATE, summary = "更新科目")
     public ApiResponse<Boolean> updateSubject(@RequestBody @Validated(Update.class) PtSubjectFormdata data) {
         return ApiResponse.success(ptSubjectService.updateSubject(data));
     }
 
     @DeleteMapping("/{subId}")
-    @Operation(operationId = Authority.SUBJECT_DELETE, summary = "删除科目")
+    @Operation(operationId = Authority.PtSubject.SUBJECT_DELETE, summary = "删除科目")
     public ApiResponse<Boolean> deleteSubject(@PathVariable Long subId) {
         return ApiResponse.success(ptSubjectService.deleteSubject(subId));
     }
 
-    @Operation(operationId = Authority.SUBJECT_GET, summary = "科目")
+    @Operation(operationId = Authority.PtSubject.SUBJECT_GET, summary = "科目")
     @GetMapping("/{subId}")
     public ApiResponse<SubjectDetail> getSubject(@PathVariable Long subId) {
         return ApiResponse.success(ptSubjectService.getSubjectDetail(subId));

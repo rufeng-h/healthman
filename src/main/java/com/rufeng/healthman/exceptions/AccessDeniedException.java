@@ -13,6 +13,6 @@ public class AccessDeniedException extends PtException {
     }
 
     public AccessDeniedException(String message) {
-        super(message, null);
+        this(message, null);
     }
 }
