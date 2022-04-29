@@ -132,8 +132,8 @@ public class PtTeacherService {
         List<String> operIds = ptRoleOperService.listOperIdByRoleIds(roleIds);
         List<PtOperation> operations = ptOperationService.listByIds(operIds);
         /* 组装数据 */
-        Set<String> authorities = new HashSet<>(DEFAULT_TEACHER_AUTHORITIES);
-        operations.forEach(o -> authorities.add(o.getOperSummary()));
+        Set<String> authorities = new TreeSet<>(DEFAULT_TEACHER_AUTHORITIES);
+        operations.forEach(o -> authorities.add(o.getOperId()));
         /* 返回结果 */
         PtTeacherInfo info = new PtTeacherInfo(teacher, clgName, classes ,roles, authorities);
         /* 认证信息 */
@@ -189,6 +189,7 @@ public class PtTeacherService {
     public boolean updateTeacher(String teaId, PtUserFormdata formdata) {
         PtTeacher ptTeacher = ptTeacherMapper.selectByPrimaryKey(teaId);
         PtTeacher teacher = PtTeacher.builder()
+                .teaId(teaId)
                 .teaDesp(formdata.getDesp())
                 .teaModified(LocalDateTime.now())
                 .avatar(formdata.getAvatar())

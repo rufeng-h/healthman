@@ -4,6 +4,7 @@ import com.rufeng.healthman.mapper.PtOperationMapper;
 import com.rufeng.healthman.pojo.ptdo.PtOperation;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,6 +22,9 @@ public class PtOperationService {
     }
 
     List<PtOperation> listByIds(List<String> operIds){
+        if (operIds.isEmpty()){
+            return Collections.emptyList();
+        }
         return ptOperationMapper.listByIds(operIds);
     }
 }
