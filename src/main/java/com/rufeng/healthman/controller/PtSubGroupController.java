@@ -65,4 +65,10 @@ public class PtSubGroupController {
     public ApiResponse<Boolean> deleteSubGrp(@PathVariable Long grpId) {
         return ApiResponse.success(ptSubgroupService.deleteGrp(grpId));
     }
+
+    @Operation(operationId = Authority.PtSubGroup.SUB_DELETE, summary = "从科目组删除科目")
+    @DeleteMapping("/{grpId}/{subId}")
+    public ApiResponse<Boolean> deleteSub(@PathVariable Long grpId, @PathVariable Long subId){
+        return ApiResponse.success(ptSubgroupService.deleteSub(grpId, subId));
+    }
 }

@@ -53,7 +53,7 @@ class AdminGenerator(object):
             res.append(item)
             cnt += 1
 
-        for i in range(1, 1000):
+        for i in range(1, 200):
             item = {}
             item['工号'] = str(cnt).zfill(6)
             item['姓名'] = faker.name()

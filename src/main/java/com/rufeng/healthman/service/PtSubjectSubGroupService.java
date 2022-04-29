@@ -52,4 +52,8 @@ public class PtSubjectSubGroupService {
     public int deleteByGrpId(Long grpId) {
         return ptSubjectSubgroupMapper.deleteByGrpId(grpId);
     }
+
+    public int deleteByGrpIdAndSubId(Long grpId, Long subId) {
+        return ptSubjectSubgroupMapper.deleteByGrpIdAndSubId(grpId, subId);
+    }
 }

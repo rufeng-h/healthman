@@ -46,6 +46,9 @@ public class PtScoreController {
         this.ptScoreService = ptScoreService;
     }
 
+    /**
+     * TODO 后端限制，教师只能查看自己创建的体测
+     */
     @Operation(operationId = Authority.PtScore.SCORE_PAGE, summary = "体测成绩列表")
     @GetMapping("/ms")
     public ApiResponse<ApiPage<MeasurementScoreInfo>> pageScore(

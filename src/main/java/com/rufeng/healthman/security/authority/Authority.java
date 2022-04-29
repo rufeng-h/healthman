@@ -15,6 +15,11 @@ public class Authority {
     public static final Set<String> DEFAULT_ADMIN_AUTHORITIES = new HashSet<>();
 
     static {
+        DEFAULT_STUDENT_AUTHORITIES.add(PtCollege.COLLEGE_PAGE);
+        DEFAULT_STUDENT_AUTHORITIES.add(PtCollege.COLLEGE_LIST);
+        DEFAULT_STUDENT_AUTHORITIES.add(PtClass.CLASS_PAGE);
+        DEFAULT_STUDENT_AUTHORITIES.add(PtTeacher.TEACHER_PAGE);
+
         DEFAULT_STUDENT_AUTHORITIES.add(PtStudent.STUDENT_GET);
         DEFAULT_STUDENT_AUTHORITIES.add(PtSubject.SUBJECT_GET);
         DEFAULT_STUDENT_AUTHORITIES.add(PtSubject.SUBJECT_PAGE);
@@ -44,6 +49,7 @@ public class Authority {
         DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUBGRP_DELETE);
         DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUBGRP_LIST);
         DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUBGRP_INSERT);
+        DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUB_DELETE);
 
         DEFAULT_TEACHER_AUTHORITIES.add(PtMs.MS_PAGE);
         DEFAULT_TEACHER_AUTHORITIES.add(PtMs.MS_DELETE);
@@ -100,6 +106,7 @@ public class Authority {
         public static final String SUBGRP_INSERT = "subGrp:insert";
         public static final String SUBGRP_LIST = "subGrp:list";
         public static final String SUBGRP_PAGE = "subGrp:page";
+        public static final String SUB_DELETE = "subGrp:subDelete";
     }
 
     public static class PtTeacher {

@@ -83,4 +83,6 @@ public interface PtSubjectSubgroupMapper {
     List<PtSubGrpSubject> listSubGrpSubject(List<Long> grpIds);
 
     int deleteByGrpId(Long grpId);
+
+    int deleteByGrpIdAndSubId(@Param("grpId") Long grpId, @Param("subId") Long subId);
 }

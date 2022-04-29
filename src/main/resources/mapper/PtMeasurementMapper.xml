@@ -344,6 +344,9 @@
                 <bind name="msName" value="'%' + query.msName + '%'"/>
                 AND ms_name like #{msName}
             </if>
+            <if test="query.teaId != null">
+                AND ms_created_admin = #{query.teaId}
+            </if>
         </where>
     </select>
 

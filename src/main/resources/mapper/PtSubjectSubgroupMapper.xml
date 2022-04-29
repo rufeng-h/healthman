@@ -352,4 +352,11 @@
         FROM pt_subject_subgroup
         WHERE grp_id = #{grpId}
     </delete>
+
+    <delete id="deleteByGrpIdAndSubId">
+        DELETE
+        FROM pt_subject_subgroup
+        WHERE grp_id = #{grpId}
+          AND sub_id = #{subId}
+    </delete>
 </mapper>

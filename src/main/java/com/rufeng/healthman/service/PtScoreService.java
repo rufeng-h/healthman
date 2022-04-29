@@ -3,7 +3,9 @@ package com.rufeng.healthman.service;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
+import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.mapper.PtScoreMapper;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptscore.PtScoreInfo;
@@ -60,6 +62,7 @@ public class PtScoreService {
     }
 
 
+    @OperLogRecord(description = "上传体测成绩", operType = OperTypeEnum.INSERT)
     public Integer uploadScore(MultipartFile file, Long msId) {
         PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectService, this,
                 ptStudentService, ptSubStudentService, ptScoreSheetService, msId);

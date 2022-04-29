@@ -109,4 +109,9 @@ public class PtSubgroupService {
         ptSubjectSubGroupService.deleteByGrpId(grpId);
         return ptSubgroupMapper.deleteByPrimaryKey(grpId) == 1;
     }
+
+    @OperLogRecord(description = "从科目组删除科目", operType = OperTypeEnum.DELETE)
+    public boolean deleteSub(Long grpId, Long subId) {
+        return ptSubjectSubGroupService.deleteByGrpIdAndSubId(grpId, subId) == 1;
+    }
 }

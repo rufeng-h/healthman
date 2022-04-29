@@ -103,6 +103,7 @@ public class PtMesurementService {
 
     public ApiPage<MeasurementInfo> pageMeasurementInfo(Integer page, Integer pageSize, PtMeasurementQuery query) {
         PageHelper.startPage(page, pageSize);
+        query.setTeaId(ptCommonService.getCurrentTeacherId());
         Page<PtMeasurement> measurements = ptMeasurementMapper.pageMeasurement(query);
         List<MeasurementInfo> infoList = measurements.stream().map(MeasurementInfo::new).collect(Collectors.toList());
         List<Long> msIds = measurements.stream().map(PtMeasurement::getMsId).collect(Collectors.toList());

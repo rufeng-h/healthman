@@ -16,4 +16,6 @@ import javax.validation.constraints.Size;
 public class PtMeasurementQuery {
     @Size(min = 1)
     private String msName;
+
+    private String teaId;
 }

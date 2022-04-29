@@ -12,6 +12,7 @@ import com.rufeng.healthman.security.context.SecurityContextHolder;
 import com.rufeng.healthman.security.support.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -141,5 +142,11 @@ public class PtCommonService {
                 throw new UnknownException("未知用户类型");
         }
         return menuItems;
+    }
+
+    @Nullable
+    public String getCurrentTeacherId() {
+        UserInfo info = getUserInfo();
+        return info.getUserType() == UserTypeEnum.TEACHER ? info.getUserId() : null;
     }
 }
