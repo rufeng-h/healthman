@@ -21,10 +21,14 @@ public class PtOperationService {
         this.ptOperationMapper = ptOperationMapper;
     }
 
-    List<PtOperation> listByIds(List<String> operIds){
-        if (operIds.isEmpty()){
+    List<PtOperation> listByIds(List<String> operIds) {
+        if (operIds.isEmpty()) {
             return Collections.emptyList();
         }
         return ptOperationMapper.listByIds(operIds);
+    }
+
+    public List<PtOperation> list() {
+        return ptOperationMapper.list();
     }
 }

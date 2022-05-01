@@ -1,7 +1,7 @@
 package com.rufeng.healthman.security.authority;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author rufeng
@@ -10,9 +10,9 @@ import java.util.Set;
  * @description TODO
  */
 public class Authority {
-    public static final Set<String> DEFAULT_STUDENT_AUTHORITIES = new HashSet<>();
-    public static final Set<String> DEFAULT_TEACHER_AUTHORITIES = new HashSet<>();
-    public static final Set<String> DEFAULT_ADMIN_AUTHORITIES = new HashSet<>();
+    public static final Set<String> DEFAULT_STUDENT_AUTHORITIES = new TreeSet<>();
+    public static final Set<String> DEFAULT_TEACHER_AUTHORITIES = new TreeSet<>();
+    public static final Set<String> DEFAULT_ADMIN_AUTHORITIES = new TreeSet<>();
 
     static {
         DEFAULT_STUDENT_AUTHORITIES.add(PtCollege.COLLEGE_PAGE);
@@ -83,12 +83,15 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_TEMPLATE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_UPLOAD);
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_LIST);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.PWD_RESET);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEAHCER_DELETE);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_PAGE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_GET);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_UPLOAD);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_TEMPLATE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_DELETE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.PWD_RESET);
 
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtMs.MS_PAGE);
@@ -96,7 +99,7 @@ public class Authority {
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtScore.SCORE_PAGE);
 
-
+        DEFAULT_ADMIN_AUTHORITIES.add(PtOperation.OPERATION_LIST);
     }
 
     public static class PtSubGroup {
@@ -112,14 +115,15 @@ public class Authority {
     }
 
     public static class PtTeacher {
-
         /**
          * teacher
          */
         public static final String TEACHER_PAGE = "teacher:page";
         public static final String TEACHER_TEMPLATE = "teacher:template";
         public static final String TEACHER_UPLOAD = "teacher:upload";
+        public static final String TEAHCER_DELETE = "teacher:delete";
         public static final String TEACHER_LIST = "teacher:list";
+        public static final String PWD_RESET = "teacher:pwdReset";
     }
 
     public static class PtMs {
@@ -157,6 +161,7 @@ public class Authority {
         public static final String STUDENT_UPLOAD = "student:upload";
         public static final String STUDENT_TEMPLATE = "student:template";
         public static final String STUDENT_DELETE = "student:delete";
+        public static final String PWD_RESET = "student:pwdReset";
     }
 
     public static class PtScore {
@@ -207,5 +212,9 @@ public class Authority {
         public static final String CLASS_UPLOAD = "class:upload";
         public static final String CLASS_DELETE = "class:delete";
         public static final String CLASS_UPDATE = "class:update";
+    }
+
+    public static class PtOperation {
+        public static final String OPERATION_LIST = "operation:list";
     }
 }

@@ -26,7 +26,7 @@ public class SubGroupInfo {
 
     public SubGroupInfo(PtSubgroup subgroup, String grpCreatedAdminName, List<PtSubject> subjects) {
         this.grpCreated = subgroup.getGrpCreated();
-        this.grpCreatedAdminId = subgroup.getGrpCreatedAdmin();
+        this.grpCreatedAdminId = subgroup.getGrpCreatedTea();
         this.grpCreatedAdminName = grpCreatedAdminName;
         this.grpModified = subgroup.getGrpModified();
         this.grpId = subgroup.getGrpId();

@@ -17,7 +17,6 @@ import java.time.LocalDate;
  * @description 学生excel
  */
 @Data
-@NoArgsConstructor
 public class PtStudentExcel {
     @ExcelProperty("学号")
     private String stuId;

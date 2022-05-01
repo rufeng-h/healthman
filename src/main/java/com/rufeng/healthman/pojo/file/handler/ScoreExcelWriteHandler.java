@@ -3,7 +3,7 @@ package com.rufeng.healthman.pojo.file.handler;
 import com.alibaba.excel.write.handler.RowWriteHandler;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
-import com.rufeng.healthman.pojo.file.StuScoreExcel;
+import com.rufeng.healthman.pojo.file.PtStuScoreExportExcel;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -39,7 +39,7 @@ public class ScoreExcelWriteHandler implements RowWriteHandler {
             if (!stuId.equals(prevStuId)) {
                 /* 只有一个科目，不合并单元格 */
                 if (curIdx != prevIdx + 1) {
-                    for (int i = 0; i < StuScoreExcel.MERGE_COLS; i++) {
+                    for (int i = 0; i < PtStuScoreExportExcel.MERGE_COLS; i++) {
                         sheet.addMergedRegion(new CellRangeAddress(prevIdx, curIdx - 1, i, i));
                     }
                 }
@@ -52,7 +52,7 @@ public class ScoreExcelWriteHandler implements RowWriteHandler {
             if (curIdx == prevIdx) {
                 return;
             }
-            for (int i = 0; i < StuScoreExcel.MERGE_COLS; i++) {
+            for (int i = 0; i < PtStuScoreExportExcel.MERGE_COLS; i++) {
                 sheet.addMergedRegion(new CellRangeAddress(prevIdx, curIdx, i, i));
             }
         }

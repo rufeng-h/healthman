@@ -8,6 +8,7 @@ import com.rufeng.healthman.pojo.ptdo.PtTeacher;
 import com.rufeng.healthman.pojo.query.PtTeacherQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -101,8 +102,14 @@ public interface PtTeacherMapper {
      */
     List<PtTeacher> listTeacherListInfo();
 
+    /**
+     * 学院负责人
+     *
+     * @param clgCode 学院代码
+     * @return teacher
+     */
+    @Nullable
     PtTeacher selectPrincipal(String clgCode);
-
 
     List<PtTeacherClgIdentity> listClgIdentity();
 }

@@ -56,6 +56,7 @@ import static com.rufeng.healthman.security.authority.Authority.DEFAULT_STUDENT_
 @Service
 @Slf4j
 public class PtStudentService {
+    private static final String DEFAULT_PWD = "123456";
     private final PtStudentMapper ptStudentMapper;
     private final PtClassService ptClassService;
     private final RedisService redisService;
@@ -224,5 +225,14 @@ public class PtStudentService {
     public boolean deleteStudent(String stuId) {
         ptScoreMapper.deleteByStuId(stuId);
         return ptStudentMapper.deleteByPrimaryKey(stuId) == 1;
+    }
+
+    public boolean resetPwd(String stuId) {
+        PtStudent ptStudent = PtStudent.builder()
+                .stuId(stuId)
+                .password(DigestUtils.md5DigestAsHex(DEFAULT_PWD.getBytes(StandardCharsets.UTF_8)))
+                .stuModified(LocalDateTime.now())
+                .build();
+        return ptStudentMapper.updateByPrimaryKeySelective(ptStudent) == 1;
     }
 }

@@ -1,7 +1,6 @@
 package com.rufeng.healthman.pojo.query;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
 
@@ -12,8 +11,8 @@ import javax.validation.constraints.Size;
  * @description TODO
  */
 @Data
-@NoArgsConstructor
 public class PtSubgroupQuery {
     @Size(min = 1)
     private String grpName;
+    private String grpCreatedTea;
 }

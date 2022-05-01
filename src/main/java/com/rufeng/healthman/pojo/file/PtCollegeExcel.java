@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
  * @description 学院excel
  */
 @Data
-@NoArgsConstructor
 public class PtCollegeExcel {
     @ExcelProperty("学院代码")
     private String clgCode;

@@ -11,7 +11,7 @@ import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptscore.PtScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
 import com.rufeng.healthman.pojo.file.PtScoreExcelListener;
-import com.rufeng.healthman.pojo.file.StuScoreExcel;
+import com.rufeng.healthman.pojo.file.PtStuScoreExportExcel;
 import com.rufeng.healthman.pojo.file.handler.ScoreExcelWriteHandler;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.query.PtScoreQuery;
@@ -113,11 +113,11 @@ public class PtScoreService {
         List<Long> subIds = scores.stream().map(PtScore::getSubId).distinct().collect(Collectors.toList());
         Map<Long, String> subMap = ptSubjectService.mapSubIdSubNameByIds(subIds);
         /* excel数据 */
-        List<StuScoreExcel> excels = scores.stream().map(s ->
-                        new StuScoreExcel(stuMap.get(s.getStuId()), subMap.get(s.getSubId()), s))
-                .sorted(StuScoreExcel::compareTo).collect(Collectors.toList());
+        List<PtStuScoreExportExcel> excels = scores.stream().map(s ->
+                        new PtStuScoreExportExcel(stuMap.get(s.getStuId()), subMap.get(s.getSubId()), s))
+                .sorted(PtStuScoreExportExcel::compareTo).collect(Collectors.toList());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        EasyExcel.write(outputStream, StuScoreExcel.class)
+        EasyExcel.write(outputStream, PtStuScoreExportExcel.class)
                 .registerWriteHandler(new ScoreExcelWriteHandler(excels.size()))
                 .sheet().doWrite(excels);
         return new ByteArrayResource(outputStream.toByteArray());

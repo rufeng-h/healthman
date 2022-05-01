@@ -78,7 +78,13 @@ public class PtStudentController {
 
     @Operation(operationId = Authority.PtStudent.STUDENT_DELETE, summary = "删除学生")
     @DeleteMapping("/{stuId}")
-    public ApiResponse<Boolean> deleteStudent(@PathVariable String stuId){
+    public ApiResponse<Boolean> deleteStudent(@PathVariable String stuId) {
         return ApiResponse.success(ptStudentService.deleteStudent(stuId));
+    }
+
+    @Operation(operationId = Authority.PtStudent.PWD_RESET, summary = "重置学生密码")
+    @PutMapping("/resetPwd/{stuId}")
+    public ApiResponse<Boolean> resetPwd(@PathVariable String stuId) {
+        return ApiResponse.success(ptStudentService.resetPwd(stuId));
     }
 }

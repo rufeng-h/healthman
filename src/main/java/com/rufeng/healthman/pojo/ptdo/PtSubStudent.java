@@ -9,14 +9,8 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * @author rufeng
- * @time 2022-04-16 14:17
- * @package com.rufeng.healthman.pojo.ptdo
- * @description TODO
- */
-
-/**
  * 年级、性别对应的测试科目
+ * @author rufeng
  */
 @Data
 @Builder

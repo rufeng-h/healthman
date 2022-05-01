@@ -95,7 +95,6 @@ public class PtMesurementService {
         long msId = measurement.getMsId();
         List<PtClassMeasurement> list = formdata.getClsCodes().stream().map(code -> PtClassMeasurement.builder()
                 .clsCode(code)
-                .cmsCreatedAdmin(adminId)
                 .msId(msId).build()).collect(Collectors.toList());
         ptClassMeasurementService.batchInsertSelective(list);
         return measurement;
@@ -158,7 +157,6 @@ public class PtMesurementService {
 
     @Transactional(rollbackFor = Exception.class)
     public boolean updateMeasurement(PtMeasurementFormdata formdata) {
-        String adminId = ptCommonService.getCurrentUserId();
         PtMeasurement measurement = PtMeasurement.builder()
                 .grpId(formdata.getGrpId())
                 .msId(formdata.getMsId())
@@ -174,7 +172,7 @@ public class PtMesurementService {
                 code -> PtClassMeasurement.builder()
                         .msId(msId)
                         .clsCode(code)
-                        .cmsCreatedAdmin(adminId).build()).collect(Collectors.toList());
+                        .build()).collect(Collectors.toList());
         return ptClassMeasurementService.batchInsertSelective(list) != 0;
     }
 

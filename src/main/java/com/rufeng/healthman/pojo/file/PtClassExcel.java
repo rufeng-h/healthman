@@ -4,7 +4,6 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.rufeng.healthman.pojo.file.converter.StringGradeConverter;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng
@@ -13,7 +12,6 @@ import lombok.NoArgsConstructor;
  * @description classExcel
  */
 @Data
-@NoArgsConstructor
 public class PtClassExcel {
     @ExcelProperty("班级代码")
     private String clsCode;

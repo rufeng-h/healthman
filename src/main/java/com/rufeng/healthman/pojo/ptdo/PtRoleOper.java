@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 /**
  * 角色资源
+ *
  * @author rufeng
  */
 @Data

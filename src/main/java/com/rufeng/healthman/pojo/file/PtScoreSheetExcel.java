@@ -16,7 +16,6 @@ import java.math.BigDecimal;
  * @description 评分表excel
  */
 @Data
-@NoArgsConstructor
 public class PtScoreSheetExcel {
     @ExcelProperty(value = "年级", converter = StringGradeConverter.class)
     private Integer grade;

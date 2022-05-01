@@ -15,7 +15,6 @@ import java.time.LocalDate;
  * @description adminExcel
  */
 @Data
-@NoArgsConstructor
 public class PtTeacherExcel {
     @ExcelProperty("姓名")
     private String teaName;

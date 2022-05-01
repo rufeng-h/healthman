@@ -1,8 +1,8 @@
 package com.rufeng.healthman.mapper;
 
+import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtClassMeasurement;
-import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author rufeng
- * @time 2022-03-30 0:19
+ * @time 2022-05-02 1:00
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */

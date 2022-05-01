@@ -2,7 +2,6 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherInfo;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherListInfo;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherPageInfo;
 import com.rufeng.healthman.pojo.query.PtTeacherQuery;
@@ -32,7 +31,6 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
  * @author rufeng
  * @time 2022-03-15 12:22
  * @package com.rufeng.healthman.controller
- * @description TODO
  */
 @RestController
 @Validated
@@ -57,12 +55,13 @@ public class PtTeacherController {
         return ApiResponse.success(ptTeacherService.pageTeacherInfo(page, pageSize, query));
     }
 
-//    @PostMapping
-//    public ApiResponse<Boolean> addTeacher(@Validated @RequestBody PtAdminFormdata data) {
-//        return ApiResponse.success(ptTeacherService.addTeacherSelective());
-//    }
+    @Operation(operationId = Authority.PtTeacher.PWD_RESET, summary = "重置教师密码")
+    @PutMapping("/resetPwd/{teaId}")
+    public ApiResponse<Boolean> resetPwd(@PathVariable String teaId) {
+        return ApiResponse.success(ptTeacherService.resetPwd(teaId));
+    }
 
-    @Operation(operationId = Authority.PtTeacher.TEACHER_UPLOAD, summary = "上传教师")
+    @Operation(operationId = Authority.PtTeacher.TEACHER_UPLOAD, summary = "上传教师数据")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadTeacher(@RequestPart MultipartFile file) {
         return ApiResponse.success(ptTeacherService.uploadTeacher(file));
@@ -85,5 +84,11 @@ public class PtTeacherController {
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + TEMPLATE_FILE_NAME + "\"")
                 .body(resource);
+    }
+
+    @Operation(operationId = Authority.PtTeacher.TEAHCER_DELETE, summary = "删除教师")
+    @DeleteMapping("/{teaId}")
+    public ApiResponse<Boolean> deleteTeacher(@PathVariable String teaId) {
+        return ApiResponse.success(ptTeacherService.deleteTeacher(teaId));
     }
 }

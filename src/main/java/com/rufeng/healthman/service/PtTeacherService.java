@@ -54,6 +54,7 @@ import static com.rufeng.healthman.security.authority.Authority.DEFAULT_TEACHER_
 @Slf4j
 @Service
 public class PtTeacherService {
+    private static final String DEFAULT_PWD = "123456";
     private final PtTeacherMapper ptTeacherMapper;
     private final RedisService redisService;
     private final FileService fileService;
@@ -246,5 +247,18 @@ public class PtTeacherService {
         return teachers.stream().map(t -> new PtTeacherListInfo(
                 t,
                 clgNameMap.get(t.getClgCode()))).collect(Collectors.toList());
+    }
+
+    public boolean resetPwd(String teaId) {
+        PtTeacher ptTeacher = PtTeacher.builder()
+                .teaId(teaId)
+                .password(DigestUtils.md5DigestAsHex(DEFAULT_PWD.getBytes(StandardCharsets.UTF_8)))
+                .teaModified(LocalDateTime.now())
+                .build();
+        return ptTeacherMapper.updateByPrimaryKeySelective(ptTeacher) == 1;
+    }
+
+    public boolean deleteTeacher(String teaId) {
+        return ptTeacherMapper.deleteByPrimaryKey(teaId) == 1;
     }
 }

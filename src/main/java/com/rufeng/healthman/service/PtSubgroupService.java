@@ -55,17 +55,17 @@ public class PtSubgroupService {
     @Transactional(rollbackFor = Exception.class)
     public PtSubgroup addSubGroup(PtSubGroupFormdata formdata) {
         List<Long> subIds = formdata.getSubIds();
-        String userId = ptCommonService.getCurrentUserId();
+        String teacherId = ptCommonService.getCurrentTeacherId();
         PtSubgroup subgroup = PtSubgroup.builder()
                 .grpDesp(formdata.getGrpDesp())
                 .grpName(formdata.getGrpName())
-                .grpCreatedAdmin(userId)
+                .grpCreatedTea(teacherId)
                 .build();
         ptSubgroupMapper.insertSelective(subgroup);
         Long grpId = subgroup.getGrpId();
         List<PtSubjectSubgroup> subjectSubgroups = subIds.stream().map(
                         subId -> PtSubjectSubgroup.builder()
-                                .subId(subId).subGrpAdmin(userId)
+                                .subId(subId)
                                 .grpId(grpId).build())
                 .collect(Collectors.toList());
         ptSubjectSubGroupService.batchInsertSelective(subjectSubgroups);
@@ -74,6 +74,7 @@ public class PtSubgroupService {
 
     public ApiPage<SubGroupInfo> pageSubGroupInfo(Integer page, Integer pageSize, PtSubgroupQuery query) {
         PageHelper.startPage(page, pageSize);
+        query.setGrpCreatedTea(ptCommonService.getCurrentTeacherId());
         /* 为分页 */
         Page<PtSubgroup> subgroups = ptSubgroupMapper.pageSubGroup(query);
         /* 查询 */
@@ -81,13 +82,12 @@ public class PtSubgroupService {
         List<PtSubGrpSubject> subGrpSubjects = ptSubjectSubGroupService.listSubGrpSubject(grpIds);
         Map<Long, List<PtSubject>> map = subGrpSubjects.stream().collect(
                 Collectors.toMap(PtSubGrpSubject::getGrpId, PtSubGrpSubject::getSubjects));
-        List<String> adminIds = subgroups.stream().map(PtSubgroup::getGrpCreatedAdmin)
-                .collect(Collectors.toList());
-        List<PtTeacher> admins = ptTeacherService.listByIds(adminIds);
-        Map<String, String> aMap = admins.stream().collect(
+        List<String> teaIds = subgroups.stream().map(PtSubgroup::getGrpCreatedTea).collect(Collectors.toList());
+        List<PtTeacher> teachers = ptTeacherService.listByIds(teaIds);
+        Map<String, String> aMap = teachers.stream().collect(
                 Collectors.toMap(PtTeacher::getTeaId, PtTeacher::getTeaName));
         List<SubGroupInfo> groupInfos = subgroups.stream()
-                .map(s -> new SubGroupInfo(s, aMap.get(s.getGrpCreatedAdmin()),
+                .map(s -> new SubGroupInfo(s, aMap.get(s.getGrpCreatedTea()),
                         map.get(s.getGrpId()))).collect(Collectors.toList());
         return ApiPage.convert(subgroups, groupInfos);
     }

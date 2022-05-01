@@ -142,8 +142,10 @@ public class PtCollegeService {
                 .clgModified(LocalDateTime.now()).build();
         /* 原负责人 */
         PtTeacher teacher = ptTeacherMapper.selectPrincipal(collegeFomrdata.getClgCode());
-        teacher.setPrincipal(false);
-        ptTeacherMapper.updateByPrimaryKeySelective(teacher);
+        if (teacher != null) {
+            teacher.setPrincipal(false);
+            ptTeacherMapper.updateByPrimaryKeySelective(teacher);
+        }
         /* 新负责人 */
         PtTeacher ptTeacher = PtTeacher.builder()
                 .teaId(collegeFomrdata.getTeaId())

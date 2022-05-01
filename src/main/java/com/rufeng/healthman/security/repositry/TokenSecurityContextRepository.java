@@ -35,7 +35,7 @@ public class TokenSecurityContextRepository implements SecurityContextRepository
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         String token = request.getHeader(JWT_HEADER_NAME);
         if (token == null) {
-            log.warn("未找到token！");
+            log.debug("未认证用户！");
             return context;
         }
         String userId = JwtTokenUtils.getId(token);

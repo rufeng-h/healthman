@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PtClassMeasurement implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long cmsId;
@@ -25,5 +25,4 @@ public class PtClassMeasurement implements Serializable {
     private String clsCode;
     private LocalDateTime cmsCreated;
     private LocalDateTime cmsModified;
-    private String cmsCreatedAdmin;
 }
