@@ -1,9 +1,13 @@
 package com.rufeng.healthman.mapper;
 
-import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;import com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup;
-import java.util.List;import java.util.Map;
+import com.rufeng.healthman.config.support.ReturnMap;
+import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
+import com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -84,5 +88,8 @@ public interface PtSubjectSubgroupMapper {
 
     int deleteByGrpId(Long grpId);
 
+    /**
+     * 按ID删
+     */
     int deleteByGrpIdAndSubId(@Param("grpId") Long grpId, @Param("subId") Long subId);
 }

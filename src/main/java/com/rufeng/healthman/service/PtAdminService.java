@@ -5,9 +5,9 @@ import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.mapper.PtAdminMapper;
-import com.rufeng.healthman.pojo.data.LoginFormdata;
+import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
-import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
+import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.dto.ptadmin.PtAdminInfo;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
@@ -45,13 +45,13 @@ public class PtAdminService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginResult login(LoginFormdata loginFormdata) {
-        String adminId = loginFormdata.getUserId();
+    public LoginResult login(PtLoginFormdata ptLoginFormdata) {
+        String adminId = ptLoginFormdata.getUserId();
         PtAdmin admin = ptAdminMapper.selectByPrimaryKey(adminId);
         if (admin == null) {
             throw new AuthenticationException("管理员不存在！");
         }
-        if (!StringUtils.pwdEquals(loginFormdata.getPassword(), admin.getPassword())) {
+        if (!StringUtils.pwdEquals(ptLoginFormdata.getPassword(), admin.getPassword())) {
             throw new AuthenticationException("密码错误！");
         }
         ptAdminMapper.updateByPrimaryKeySelective(
@@ -84,7 +84,7 @@ public class PtAdminService {
         return true;
     }
 
-    public boolean updatePwd(String adminId, UpdatePwdFormdata formdata) {
+    public boolean updatePwd(String adminId, PtPwdUpdateFormdata formdata) {
         PtAdmin admin = ptAdminMapper.selectByPrimaryKey(adminId);
         if (!StringUtils.pwdEquals(formdata.getOldPwd(), admin.getPassword())) {
             throw new AuthenticationException("原始密码错误！");

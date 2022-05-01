@@ -11,10 +11,11 @@ import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.mapper.PtTeacherMapper;
-import com.rufeng.healthman.pojo.data.LoginFormdata;
+import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
-import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
+import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherInfo;
+import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherListInfo;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherPageInfo;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.file.PtTeacherExcel;
@@ -92,7 +93,6 @@ public class PtTeacherService {
 
     public ApiPage<PtTeacherPageInfo> pageTeacherInfo(Integer page, Integer pageSize, PtTeacherQuery query) {
         PageHelper.startPage(page, pageSize);
-        /* 管理员 */
         Page<PtTeacher> teachers = ptTeacherMapper.page(query);
         /* 查学院 */
         List<String> clgCodes = ptCollegeService.getClgCodeFromTeachers(teachers);
@@ -109,12 +109,12 @@ public class PtTeacherService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginResult login(LoginFormdata loginFormdata) {
-        PtTeacher teacher = ptTeacherMapper.selectByPrimaryKey(loginFormdata.getUserId());
+    public LoginResult login(PtLoginFormdata ptLoginFormdata) {
+        PtTeacher teacher = ptTeacherMapper.selectByPrimaryKey(ptLoginFormdata.getUserId());
         if (teacher == null) {
             throw new AuthenticationException("用户不存在!");
         }
-        if (!StringUtils.pwdEquals(loginFormdata.getPassword(), teacher.getPassword())) {
+        if (!StringUtils.pwdEquals(ptLoginFormdata.getPassword(), teacher.getPassword())) {
             throw new AuthenticationException("密码错误!");
         }
         /* 查询学院 */
@@ -135,7 +135,7 @@ public class PtTeacherService {
         Set<String> authorities = new TreeSet<>(DEFAULT_TEACHER_AUTHORITIES);
         operations.forEach(o -> authorities.add(o.getOperId()));
         /* 返回结果 */
-        PtTeacherInfo info = new PtTeacherInfo(teacher, clgName, classes ,roles, authorities);
+        PtTeacherInfo info = new PtTeacherInfo(teacher, clgName, classes, roles, authorities);
         /* 认证信息 */
         Authentication authentication = new AuthenticationImpl(info);
         redisService.setObject(UserInfo.userKey(UserTypeEnum.TEACHER, teacher.getTeaId()), authentication);
@@ -207,7 +207,7 @@ public class PtTeacherService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean updatePwd(String teacherId, UpdatePwdFormdata formdata) {
+    public boolean updatePwd(String teacherId, PtPwdUpdateFormdata formdata) {
         PtTeacher teacher = ptTeacherMapper.selectByPrimaryKey(teacherId);
         if (!StringUtils.pwdEquals(formdata.getOldPwd(), teacher.getPassword())) {
             throw new AuthenticationException("原始密码错误！");
@@ -231,5 +231,15 @@ public class PtTeacherService {
             return Collections.emptyMap();
         }
         return ptTeacherMapper.mapTeaNameByIds(teaIds);
+    }
+
+    public List<PtTeacherListInfo> listTeacherInfo() {
+        Page<PtTeacher> teachers = ptTeacherMapper.list();
+        /* 查学院 */
+        List<String> clgCodes = ptCollegeService.getClgCodeFromTeachers(teachers);
+        Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(clgCodes);
+        return teachers.stream().map(t -> new PtTeacherListInfo(
+                t,
+                clgNameMap.get(t.getClgCode()))).collect(Collectors.toList());
     }
 }

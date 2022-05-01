@@ -48,7 +48,7 @@ public class PtStudentController {
 
     @Operation(operationId = Authority.PtStudent.STUDENT_GET, summary = "学生")
     @GetMapping("/{stuId}")
-    public ApiResponse<PtStuMeasurementPageInfo> getPtStuByNo(@PathVariable String stuId) {
+    public ApiResponse<PtStuMeasurementPageInfo> getStuMsInfo(@PathVariable String stuId) {
         return ApiResponse.success(ptStudentService.getStuMsInfo(stuId));
     }
 

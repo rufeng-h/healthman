@@ -510,4 +510,12 @@
             </foreach>
         </where>
     </select>
+
+    <delete id="deleteByStuIds">
+        DELETE
+        FROM pt_score WHERE stu_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
+    </delete>
 </mapper>

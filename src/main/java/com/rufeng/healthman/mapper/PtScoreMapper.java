@@ -117,4 +117,6 @@ public interface PtScoreMapper {
     Page<PtScore> pageScore(PtScoreQuery query);
 
     List<PtScore> listScoreByStuIdAndMsIds(@Param("stuId") String stuId, @Param("list") List<Long> msIds);
+
+    int deleteByStuIds(List<String> stuIds);
 }

@@ -83,4 +83,6 @@ public interface PtClassMeasurementMapper {
     List<PtClass> listClsMeasurementByMsId(Long msId);
 
     List<PtMeasurementClass> listClsMeasurementByMsIds(List<Long> msIds);
+
+    int deleteByClsCode(String clsCode);
 }

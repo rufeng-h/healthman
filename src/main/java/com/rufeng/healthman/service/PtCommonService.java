@@ -2,9 +2,9 @@ package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.UnknownException;
-import com.rufeng.healthman.pojo.data.LoginFormdata;
+import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
-import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
+import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.dto.support.PtMenuItem;
 import com.rufeng.healthman.security.authentication.Authentication;
@@ -74,14 +74,14 @@ public class PtCommonService {
         return getUserInfo().getUserId();
     }
 
-    public LoginResult login(LoginFormdata loginFormdata) {
-        UserTypeEnum userTypeEnum = loginFormdata.getUserType();
+    public LoginResult login(PtLoginFormdata ptLoginFormdata) {
+        UserTypeEnum userTypeEnum = ptLoginFormdata.getUserType();
         if (userTypeEnum == UserTypeEnum.ADMIN) {
-            return ptAdminService.login(loginFormdata);
+            return ptAdminService.login(ptLoginFormdata);
         } else if (userTypeEnum == UserTypeEnum.STUDENT) {
-            return ptStudentService.login(loginFormdata);
+            return ptStudentService.login(ptLoginFormdata);
         } else if (userTypeEnum == UserTypeEnum.TEACHER) {
-            return ptTeacherService.login(loginFormdata);
+            return ptTeacherService.login(ptLoginFormdata);
         }
         /* 永远不会到这里 */
         throw new UnknownException("未知的用户类型");
@@ -91,7 +91,7 @@ public class PtCommonService {
         return getUserInfo().getUserType();
     }
 
-    public boolean updatePwd(UpdatePwdFormdata formdata) {
+    public boolean updatePwd(PtPwdUpdateFormdata formdata) {
         UserInfo userInfo = getUserInfo();
         UserTypeEnum userType = userInfo.getUserType();
         String userId = userInfo.getUserId();

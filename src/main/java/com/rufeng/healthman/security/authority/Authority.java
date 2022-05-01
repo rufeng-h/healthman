@@ -76,11 +76,13 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_PAGE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_GRADELIST);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_GET);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_DELETE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_UPDATE);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_PAGE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_TEMPLATE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_UPLOAD);
-
+        DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_LIST);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_PAGE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_GET);
@@ -92,7 +94,6 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtMs.MS_DETAIL);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtScore.SCORE_PAGE);
-
 
 
     }
@@ -117,6 +118,7 @@ public class Authority {
         public static final String TEACHER_PAGE = "teacher:page";
         public static final String TEACHER_TEMPLATE = "teacher:template";
         public static final String TEACHER_UPLOAD = "teacher:upload";
+        public static final String TEACHER_LIST = "teacher:list";
     }
 
     public static class PtMs {
@@ -200,5 +202,7 @@ public class Authority {
         public static final String CLASS_PAGE = "class:page";
         public static final String CLASS_TEMPLATE = "class:template";
         public static final String CLASS_UPLOAD = "class:upload";
+        public static final String CLASS_DELETE = "class:delete";
+        public static final String CLASS_UPDATE = "class:update";
     }
 }

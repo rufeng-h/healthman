@@ -1,488 +1,487 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.healthman.mapper.PtStudentMapper">
-  <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtStudent">
-    <!--@mbg.generated-->
-    <!--@Table pt_student-->
-    <id column="stu_id" property="stuId" />
-    <result column="sid" property="sid" />
-    <result column="stu_name" property="stuName" />
-    <result column="stu_birth" property="stuBirth" />
-    <result column="stu_gender" property="stuGender" />
-    <result column="password" property="password" />
-    <result column="avatar" property="avatar" />
-    <result column="cls_code" property="clsCode" />
-    <result column="stu_created" property="stuCreated" />
-    <result column="stu_modified" property="stuModified" />
-    <result column="stu_last_login" property="stuLastLogin" />
-    <result column="stu_desp" property="stuDesp" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created, 
-    stu_modified, stu_last_login, stu_desp
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from pt_student
-    where stu_id = #{stuId}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    <!--@mbg.generated-->
-    delete from pt_student
-    where stu_id = #{stuId}
-  </delete>
-  <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
-    <!--@mbg.generated-->
-    insert into pt_student (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, 
-      cls_code, stu_created, stu_modified, stu_last_login, stu_desp)
-    values (#{stuId}, #{sid}, #{stuName}, #{stuBirth}, #{stuGender}, #{password}, #{avatar}, 
-      #{clsCode}, #{stuCreated}, #{stuModified}, #{stuLastLogin}, #{stuDesp})
-  </insert>
-  <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
-    <!--@mbg.generated-->
-    insert into pt_student
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="stuId != null">
-        stu_id,
-      </if>
-      <if test="sid != null">
-        sid,
-      </if>
-      <if test="stuName != null">
-        stu_name,
-      </if>
-      <if test="stuBirth != null">
-        stu_birth,
-      </if>
-      <if test="stuGender != null">
-        stu_gender,
-      </if>
-      <if test="password != null">
-        `password`,
-      </if>
-      <if test="avatar != null">
-        avatar,
-      </if>
-      <if test="clsCode != null">
-        cls_code,
-      </if>
-      <if test="stuCreated != null">
-        stu_created,
-      </if>
-      <if test="stuModified != null">
-        stu_modified,
-      </if>
-      <if test="stuLastLogin != null">
-        stu_last_login,
-      </if>
-      <if test="stuDesp != null">
-        stu_desp,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="stuId != null">
-        #{stuId},
-      </if>
-      <if test="sid != null">
-        #{sid},
-      </if>
-      <if test="stuName != null">
-        #{stuName},
-      </if>
-      <if test="stuBirth != null">
-        #{stuBirth},
-      </if>
-      <if test="stuGender != null">
-        #{stuGender},
-      </if>
-      <if test="password != null">
-        #{password},
-      </if>
-      <if test="avatar != null">
-        #{avatar},
-      </if>
-      <if test="clsCode != null">
-        #{clsCode},
-      </if>
-      <if test="stuCreated != null">
-        #{stuCreated},
-      </if>
-      <if test="stuModified != null">
-        #{stuModified},
-      </if>
-      <if test="stuLastLogin != null">
-        #{stuLastLogin},
-      </if>
-      <if test="stuDesp != null">
-        #{stuDesp},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
-    <!--@mbg.generated-->
-    update pt_student
-    <set>
-      <if test="sid != null">
-        sid = #{sid},
-      </if>
-      <if test="stuName != null">
-        stu_name = #{stuName},
-      </if>
-      <if test="stuBirth != null">
-        stu_birth = #{stuBirth},
-      </if>
-      <if test="stuGender != null">
-        stu_gender = #{stuGender},
-      </if>
-      <if test="password != null">
-        `password` = #{password},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar},
-      </if>
-      <if test="clsCode != null">
-        cls_code = #{clsCode},
-      </if>
-      <if test="stuCreated != null">
-        stu_created = #{stuCreated},
-      </if>
-      <if test="stuModified != null">
-        stu_modified = #{stuModified},
-      </if>
-      <if test="stuLastLogin != null">
-        stu_last_login = #{stuLastLogin},
-      </if>
-      <if test="stuDesp != null">
-        stu_desp = #{stuDesp},
-      </if>
-    </set>
-    where stu_id = #{stuId}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
-    <!--@mbg.generated-->
-    update pt_student
-    set sid = #{sid},
-      stu_name = #{stuName},
-      stu_birth = #{stuBirth},
-      stu_gender = #{stuGender},
-      `password` = #{password},
-      avatar = #{avatar},
-      cls_code = #{clsCode},
-      stu_created = #{stuCreated},
-      stu_modified = #{stuModified},
-      stu_last_login = #{stuLastLogin},
-      stu_desp = #{stuDesp}
-    where stu_id = #{stuId}
-  </update>
-  <update id="updateBatch" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_student
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="sid = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.sid}
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtStudent">
+        <!--@mbg.generated-->
+        <!--@Table pt_student-->
+        <id column="stu_id" property="stuId"/>
+        <result column="sid" property="sid"/>
+        <result column="stu_name" property="stuName"/>
+        <result column="stu_birth" property="stuBirth"/>
+        <result column="stu_gender" property="stuGender"/>
+        <result column="password" property="password"/>
+        <result column="avatar" property="avatar"/>
+        <result column="cls_code" property="clsCode"/>
+        <result column="stu_created" property="stuCreated"/>
+        <result column="stu_modified" property="stuModified"/>
+        <result column="stu_last_login" property="stuLastLogin"/>
+        <result column="stu_desp" property="stuDesp"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
+        stu_modified, stu_last_login, stu_desp
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_student
+        where stu_id = #{stuId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete
+        from pt_student
+        where stu_id = #{stuId}
+    </delete>
+    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
+        <!--@mbg.generated-->
+        insert into pt_student (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar,
+                                cls_code, stu_created, stu_modified, stu_last_login, stu_desp)
+        values (#{stuId}, #{sid}, #{stuName}, #{stuBirth}, #{stuGender}, #{password}, #{avatar},
+                #{clsCode}, #{stuCreated}, #{stuModified}, #{stuLastLogin}, #{stuDesp})
+    </insert>
+    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
+        <!--@mbg.generated-->
+        insert into pt_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="sid != null">
+                sid,
+            </if>
+            <if test="stuName != null">
+                stu_name,
+            </if>
+            <if test="stuBirth != null">
+                stu_birth,
+            </if>
+            <if test="stuGender != null">
+                stu_gender,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="clsCode != null">
+                cls_code,
+            </if>
+            <if test="stuCreated != null">
+                stu_created,
+            </if>
+            <if test="stuModified != null">
+                stu_modified,
+            </if>
+            <if test="stuLastLogin != null">
+                stu_last_login,
+            </if>
+            <if test="stuDesp != null">
+                stu_desp,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                #{stuId},
+            </if>
+            <if test="sid != null">
+                #{sid},
+            </if>
+            <if test="stuName != null">
+                #{stuName},
+            </if>
+            <if test="stuBirth != null">
+                #{stuBirth},
+            </if>
+            <if test="stuGender != null">
+                #{stuGender},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="clsCode != null">
+                #{clsCode},
+            </if>
+            <if test="stuCreated != null">
+                #{stuCreated},
+            </if>
+            <if test="stuModified != null">
+                #{stuModified},
+            </if>
+            <if test="stuLastLogin != null">
+                #{stuLastLogin},
+            </if>
+            <if test="stuDesp != null">
+                #{stuDesp},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
+        <!--@mbg.generated-->
+        update pt_student
+        <set>
+            <if test="sid != null">
+                sid = #{sid},
+            </if>
+            <if test="stuName != null">
+                stu_name = #{stuName},
+            </if>
+            <if test="stuBirth != null">
+                stu_birth = #{stuBirth},
+            </if>
+            <if test="stuGender != null">
+                stu_gender = #{stuGender},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="clsCode != null">
+                cls_code = #{clsCode},
+            </if>
+            <if test="stuCreated != null">
+                stu_created = #{stuCreated},
+            </if>
+            <if test="stuModified != null">
+                stu_modified = #{stuModified},
+            </if>
+            <if test="stuLastLogin != null">
+                stu_last_login = #{stuLastLogin},
+            </if>
+            <if test="stuDesp != null">
+                stu_desp = #{stuDesp},
+            </if>
+        </set>
+        where stu_id = #{stuId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
+        <!--@mbg.generated-->
+        update pt_student
+        set sid            = #{sid},
+            stu_name       = #{stuName},
+            stu_birth      = #{stuBirth},
+            stu_gender     = #{stuGender},
+            `password`     = #{password},
+            avatar         = #{avatar},
+            cls_code       = #{clsCode},
+            stu_created    = #{stuCreated},
+            stu_modified   = #{stuModified},
+            stu_last_login = #{stuLastLogin},
+            stu_desp       = #{stuDesp}
+        where stu_id = #{stuId}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_student
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="sid = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.sid}
+                </foreach>
+            </trim>
+            <trim prefix="stu_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.stuName}
+                </foreach>
+            </trim>
+            <trim prefix="stu_birth = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.stuBirth}
+                </foreach>
+            </trim>
+            <trim prefix="stu_gender = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.stuGender}
+                </foreach>
+            </trim>
+            <trim prefix="`password` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.password}
+                </foreach>
+            </trim>
+            <trim prefix="avatar = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.avatar}
+                </foreach>
+            </trim>
+            <trim prefix="cls_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.clsCode}
+                </foreach>
+            </trim>
+            <trim prefix="stu_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.stuCreated}
+                </foreach>
+            </trim>
+            <trim prefix="stu_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.stuModified}
+                </foreach>
+            </trim>
+            <trim prefix="stu_last_login = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.stuLastLogin}
+                </foreach>
+            </trim>
+            <trim prefix="stu_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when stu_id = #{item.stuId} then #{item.stuDesp}
+                </foreach>
+            </trim>
+        </trim>
+        where stu_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.stuId}
         </foreach>
-      </trim>
-      <trim prefix="stu_name = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.stuName}
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_student
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="sid = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.sid != null">
+                        when stu_id = #{item.stuId} then #{item.sid}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stu_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuName != null">
+                        when stu_id = #{item.stuId} then #{item.stuName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stu_birth = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuBirth != null">
+                        when stu_id = #{item.stuId} then #{item.stuBirth}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stu_gender = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuGender != null">
+                        when stu_id = #{item.stuId} then #{item.stuGender}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="`password` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.password != null">
+                        when stu_id = #{item.stuId} then #{item.password}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="avatar = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.avatar != null">
+                        when stu_id = #{item.stuId} then #{item.avatar}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="cls_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.clsCode != null">
+                        when stu_id = #{item.stuId} then #{item.clsCode}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stu_created = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuCreated != null">
+                        when stu_id = #{item.stuId} then #{item.stuCreated}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stu_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuModified != null">
+                        when stu_id = #{item.stuId} then #{item.stuModified}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stu_last_login = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuLastLogin != null">
+                        when stu_id = #{item.stuId} then #{item.stuLastLogin}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stu_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.stuDesp != null">
+                        when stu_id = #{item.stuId} then #{item.stuDesp}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where stu_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.stuId}
         </foreach>
-      </trim>
-      <trim prefix="stu_birth = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.stuBirth}
+    </update>
+    <insert id="batchInsert" parameterType="map">
+        <!--@mbg.generated-->
+        insert into pt_student
+        (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
+         stu_modified, stu_last_login, stu_desp)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.stuId}, #{item.sid}, #{item.stuName}, #{item.stuBirth}, #{item.stuGender},
+             #{item.password}, #{item.avatar}, #{item.clsCode}, #{item.stuCreated}, #{item.stuModified},
+             #{item.stuLastLogin}, #{item.stuDesp})
         </foreach>
-      </trim>
-      <trim prefix="stu_gender = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.stuGender}
-        </foreach>
-      </trim>
-      <trim prefix="`password` = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.password}
-        </foreach>
-      </trim>
-      <trim prefix="avatar = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.avatar}
-        </foreach>
-      </trim>
-      <trim prefix="cls_code = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.clsCode}
-        </foreach>
-      </trim>
-      <trim prefix="stu_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.stuCreated}
-        </foreach>
-      </trim>
-      <trim prefix="stu_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.stuModified}
-        </foreach>
-      </trim>
-      <trim prefix="stu_last_login = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.stuLastLogin}
-        </foreach>
-      </trim>
-      <trim prefix="stu_desp = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when stu_id = #{item.stuId} then #{item.stuDesp}
-        </foreach>
-      </trim>
-    </trim>
-    where stu_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.stuId}
-    </foreach>
-  </update>
-  <update id="updateBatchSelective" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update pt_student
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="sid = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.sid != null">
-            when stu_id = #{item.stuId} then #{item.sid}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stu_name = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuName != null">
-            when stu_id = #{item.stuId} then #{item.stuName}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stu_birth = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuBirth != null">
-            when stu_id = #{item.stuId} then #{item.stuBirth}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stu_gender = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuGender != null">
-            when stu_id = #{item.stuId} then #{item.stuGender}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="`password` = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.password != null">
-            when stu_id = #{item.stuId} then #{item.password}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="avatar = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.avatar != null">
-            when stu_id = #{item.stuId} then #{item.avatar}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="cls_code = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.clsCode != null">
-            when stu_id = #{item.stuId} then #{item.clsCode}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stu_created = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuCreated != null">
-            when stu_id = #{item.stuId} then #{item.stuCreated}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stu_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuModified != null">
-            when stu_id = #{item.stuId} then #{item.stuModified}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stu_last_login = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuLastLogin != null">
-            when stu_id = #{item.stuId} then #{item.stuLastLogin}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stu_desp = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.stuDesp != null">
-            when stu_id = #{item.stuId} then #{item.stuDesp}
-          </if>
-        </foreach>
-      </trim>
-    </trim>
-    where stu_id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.stuId}
-    </foreach>
-  </update>
-  <insert id="batchInsert" parameterType="map">
-    <!--@mbg.generated-->
-    insert into pt_student
-    (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created, 
-      stu_modified, stu_last_login, stu_desp)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.stuId}, #{item.sid}, #{item.stuName}, #{item.stuBirth}, #{item.stuGender}, 
-        #{item.password}, #{item.avatar}, #{item.clsCode}, #{item.stuCreated}, #{item.stuModified}, 
-        #{item.stuLastLogin}, #{item.stuDesp})
-    </foreach>
-  </insert>
-  <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
-    <!--@mbg.generated-->
-    insert into pt_student
-    (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created, 
-      stu_modified, stu_last_login, stu_desp)
-    values
-    (#{stuId}, #{sid}, #{stuName}, #{stuBirth}, #{stuGender}, #{password}, #{avatar}, 
-      #{clsCode}, #{stuCreated}, #{stuModified}, #{stuLastLogin}, #{stuDesp})
-    on duplicate key update 
-    stu_id = #{stuId}, 
-    sid = #{sid}, 
-    stu_name = #{stuName}, 
-    stu_birth = #{stuBirth}, 
-    stu_gender = #{stuGender}, 
-    `password` = #{password}, 
-    avatar = #{avatar}, 
-    cls_code = #{clsCode}, 
-    stu_created = #{stuCreated}, 
-    stu_modified = #{stuModified}, 
-    stu_last_login = #{stuLastLogin}, 
-    stu_desp = #{stuDesp}
-  </insert>
-  <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
-    <!--@mbg.generated-->
-    insert into pt_student
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="stuId != null">
-        stu_id,
-      </if>
-      <if test="sid != null">
-        sid,
-      </if>
-      <if test="stuName != null">
-        stu_name,
-      </if>
-      <if test="stuBirth != null">
-        stu_birth,
-      </if>
-      <if test="stuGender != null">
-        stu_gender,
-      </if>
-      <if test="password != null">
-        `password`,
-      </if>
-      <if test="avatar != null">
-        avatar,
-      </if>
-      <if test="clsCode != null">
-        cls_code,
-      </if>
-      <if test="stuCreated != null">
-        stu_created,
-      </if>
-      <if test="stuModified != null">
-        stu_modified,
-      </if>
-      <if test="stuLastLogin != null">
-        stu_last_login,
-      </if>
-      <if test="stuDesp != null">
-        stu_desp,
-      </if>
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="stuId != null">
-        #{stuId},
-      </if>
-      <if test="sid != null">
-        #{sid},
-      </if>
-      <if test="stuName != null">
-        #{stuName},
-      </if>
-      <if test="stuBirth != null">
-        #{stuBirth},
-      </if>
-      <if test="stuGender != null">
-        #{stuGender},
-      </if>
-      <if test="password != null">
-        #{password},
-      </if>
-      <if test="avatar != null">
-        #{avatar},
-      </if>
-      <if test="clsCode != null">
-        #{clsCode},
-      </if>
-      <if test="stuCreated != null">
-        #{stuCreated},
-      </if>
-      <if test="stuModified != null">
-        #{stuModified},
-      </if>
-      <if test="stuLastLogin != null">
-        #{stuLastLogin},
-      </if>
-      <if test="stuDesp != null">
-        #{stuDesp},
-      </if>
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="stuId != null">
-        stu_id = #{stuId},
-      </if>
-      <if test="sid != null">
-        sid = #{sid},
-      </if>
-      <if test="stuName != null">
-        stu_name = #{stuName},
-      </if>
-      <if test="stuBirth != null">
-        stu_birth = #{stuBirth},
-      </if>
-      <if test="stuGender != null">
-        stu_gender = #{stuGender},
-      </if>
-      <if test="password != null">
-        `password` = #{password},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar},
-      </if>
-      <if test="clsCode != null">
-        cls_code = #{clsCode},
-      </if>
-      <if test="stuCreated != null">
-        stu_created = #{stuCreated},
-      </if>
-      <if test="stuModified != null">
-        stu_modified = #{stuModified},
-      </if>
-      <if test="stuLastLogin != null">
-        stu_last_login = #{stuLastLogin},
-      </if>
-      <if test="stuDesp != null">
-        stu_desp = #{stuDesp},
-      </if>
-    </trim>
-  </insert>
+    </insert>
+    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
+        <!--@mbg.generated-->
+        insert into pt_student
+        (stu_id, sid, stu_name, stu_birth, stu_gender, `password`, avatar, cls_code, stu_created,
+         stu_modified, stu_last_login, stu_desp)
+        values (#{stuId}, #{sid}, #{stuName}, #{stuBirth}, #{stuGender}, #{password}, #{avatar},
+                #{clsCode}, #{stuCreated}, #{stuModified}, #{stuLastLogin}, #{stuDesp})
+        on duplicate key update stu_id         = #{stuId},
+                                sid            = #{sid},
+                                stu_name       = #{stuName},
+                                stu_birth      = #{stuBirth},
+                                stu_gender     = #{stuGender},
+                                `password`     = #{password},
+                                avatar         = #{avatar},
+                                cls_code       = #{clsCode},
+                                stu_created    = #{stuCreated},
+                                stu_modified   = #{stuModified},
+                                stu_last_login = #{stuLastLogin},
+                                stu_desp       = #{stuDesp}
+    </insert>
+    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtStudent">
+        <!--@mbg.generated-->
+        insert into pt_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="sid != null">
+                sid,
+            </if>
+            <if test="stuName != null">
+                stu_name,
+            </if>
+            <if test="stuBirth != null">
+                stu_birth,
+            </if>
+            <if test="stuGender != null">
+                stu_gender,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="clsCode != null">
+                cls_code,
+            </if>
+            <if test="stuCreated != null">
+                stu_created,
+            </if>
+            <if test="stuModified != null">
+                stu_modified,
+            </if>
+            <if test="stuLastLogin != null">
+                stu_last_login,
+            </if>
+            <if test="stuDesp != null">
+                stu_desp,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                #{stuId},
+            </if>
+            <if test="sid != null">
+                #{sid},
+            </if>
+            <if test="stuName != null">
+                #{stuName},
+            </if>
+            <if test="stuBirth != null">
+                #{stuBirth},
+            </if>
+            <if test="stuGender != null">
+                #{stuGender},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="clsCode != null">
+                #{clsCode},
+            </if>
+            <if test="stuCreated != null">
+                #{stuCreated},
+            </if>
+            <if test="stuModified != null">
+                #{stuModified},
+            </if>
+            <if test="stuLastLogin != null">
+                #{stuLastLogin},
+            </if>
+            <if test="stuDesp != null">
+                #{stuDesp},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="stuId != null">
+                stu_id = #{stuId},
+            </if>
+            <if test="sid != null">
+                sid = #{sid},
+            </if>
+            <if test="stuName != null">
+                stu_name = #{stuName},
+            </if>
+            <if test="stuBirth != null">
+                stu_birth = #{stuBirth},
+            </if>
+            <if test="stuGender != null">
+                stu_gender = #{stuGender},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="clsCode != null">
+                cls_code = #{clsCode},
+            </if>
+            <if test="stuCreated != null">
+                stu_created = #{stuCreated},
+            </if>
+            <if test="stuModified != null">
+                stu_modified = #{stuModified},
+            </if>
+            <if test="stuLastLogin != null">
+                stu_last_login = #{stuLastLogin},
+            </if>
+            <if test="stuDesp != null">
+                stu_desp = #{stuDesp},
+            </if>
+        </trim>
+    </insert>
     <insert id="batchInsertSelective">
         INSERT INTO pt_student (stu_id, stu_name, stu_birth, stu_gender, cls_code) VALUES
         <foreach collection="items" item="item" separator=",">
@@ -501,7 +500,7 @@
 
     <select id="pageStudent" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM pt_student
         <where>
             <if test="query.stuId != null">
@@ -512,7 +511,7 @@
                 AND pt_student.cls_code = #{query.clsCode}
             </if>
             <if test="query.stuName != null">
-                <bind name="stuName" value="'%' + query.stuName + '%'" />
+                <bind name="stuName" value="'%' + query.stuName + '%'"/>
                 AND pt_student.stu_name like #{stuName}
             </if>
             <if test="query.stuGender != null">
@@ -531,17 +530,31 @@
     </select>
     <select id="listStuBaseInfoByMsId" resultType="com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo">
         WITH cls_info AS (
-        /* 体测建立时，班级的年级 */
-        SELECT pc.cls_code, YEAR(pt_measurement.ms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
-        FROM pt_measurement
-                 INNER JOIN pt_class_measurement pcm on pt_measurement.ms_id = pcm.ms_id
-                 INNER JOIN pt_class pc on pcm.cls_code = pc.cls_code
-        WHERE pt_measurement.ms_id = #{msId})
+            /* 体测建立时，班级的年级 */
+            SELECT pc.cls_code, YEAR(pt_measurement.ms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
+            FROM pt_measurement
+                     INNER JOIN pt_class_measurement pcm on pt_measurement.ms_id = pcm.ms_id
+                     INNER JOIN pt_class pc on pcm.cls_code = pc.cls_code
+            WHERE pt_measurement.ms_id = #{msId})
         SELECT stu_id, stu_gender, grade, stu_name
         FROM pt_student
-             INNER JOIN cls_info ON cls_info.cls_code = pt_student.cls_code
-       </select>
-       <select id="listStuId" resultType="java.lang.String">
-            SELECT stu_id FROM pt_student
-       </select>
+                 INNER JOIN cls_info ON cls_info.cls_code = pt_student.cls_code
+    </select>
+    <select id="listStuId" resultType="java.lang.String">
+        SELECT stu_id
+        FROM pt_student
+    </select>
+
+    <delete id="deleteByClsCode">
+        DELETE
+        FROM pt_student
+        WHERE cls_code = #{clsCode}
+    </delete>
+
+    <select id="listByClsCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_student
+        WHERE cls_code = #{clsCode}
+    </select>
 </mapper>

@@ -5,10 +5,15 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtClassMapper;
+import com.rufeng.healthman.mapper.PtClassMeasurementMapper;
+import com.rufeng.healthman.mapper.PtScoreMapper;
+import com.rufeng.healthman.mapper.PtStudentMapper;
+import com.rufeng.healthman.pojo.data.PtClassFormdata;
 import com.rufeng.healthman.pojo.dto.ptclass.PtClassPageInfo;
 import com.rufeng.healthman.pojo.file.PtClassExcel;
 import com.rufeng.healthman.pojo.file.PtClassExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import com.rufeng.healthman.pojo.query.PtClassQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,10 +21,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +40,20 @@ import java.util.stream.Collectors;
 @Service
 public class PtClassService {
     private final PtClassMapper ptClassMapper;
+    private final PtStudentMapper ptStudentMapper;
+    private final PtClassMeasurementMapper ptClassMeasurementMapper;
+    private final PtScoreMapper ptScoreMapper;
     private PtCollegeService ptCollegeService;
     private PtTeacherService ptTeacherService;
 
-    public PtClassService(PtClassMapper ptClassMapper) {
+    public PtClassService(PtClassMapper ptClassMapper,
+                          PtStudentMapper ptStudentMapper,
+                          PtClassMeasurementMapper ptClassMeasurementMapper,
+                          PtScoreMapper ptScoreMapper) {
         this.ptClassMapper = ptClassMapper;
+        this.ptStudentMapper = ptStudentMapper;
+        this.ptClassMeasurementMapper = ptClassMeasurementMapper;
+        this.ptScoreMapper = ptScoreMapper;
     }
 
     @Autowired
@@ -64,7 +80,9 @@ public class PtClassService {
         Map<String, String> teaIdNameMap = ptTeacherService.mapTeaNameByIds(
                 classes.stream().map(PtClass::getTeaId).collect(Collectors.toList()));
         List<PtClassPageInfo> infos = classes.stream().map(c -> new PtClassPageInfo(
-                c, clgCodeNameMap.get(c.getClgCode()), teaIdNameMap.get(c.getTeaId()), map.get(c.getClsCode())))
+                        c, clgCodeNameMap.get(c.getClgCode()),
+                        teaIdNameMap.get(c.getTeaId()),
+                        map.get(c.getClsCode())))
                 .collect(Collectors.toList());
         return ApiPage.convert(classes, infos);
     }
@@ -139,9 +157,36 @@ public class PtClassService {
     }
 
     public List<PtClass> listByTeaIds(List<String> teaIds) {
-        if (teaIds.isEmpty()){
+        if (teaIds.isEmpty()) {
             return Collections.emptyList();
         }
         return ptClassMapper.listByTeaIds(teaIds);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deletePtClass(String clsCode) {
+        List<PtStudent> students = ptStudentMapper.listByClsCode(clsCode);
+        List<String> stuIds = students.stream().map(PtStudent::getStuId).collect(Collectors.toList());
+        /* 删成绩 */
+        ptScoreMapper.deleteByStuIds(stuIds);
+        /* 删学生 */
+        ptStudentMapper.deleteByClsCode(clsCode);
+        /* 删班级测试 */
+        ptClassMeasurementMapper.deleteByClsCode(clsCode);
+        /* 删班级 */
+        int cnt = ptClassMapper.deleteByPrimaryKey(clsCode);
+        /* TODO 教师个人信息缓存 */
+        return cnt == 1;
+    }
+
+    public boolean updatePtClass(PtClassFormdata classFormdata) {
+        PtClass ptClass = PtClass.builder()
+                .clsCode(classFormdata.getClsCode())
+                .clgCode(classFormdata.getClgCode())
+                .clsModified(LocalDateTime.now())
+                .clsName(classFormdata.getClsName())
+                .teaId(classFormdata.getTeaId())
+                .build();
+        return ptClassMapper.updateByPrimaryKeySelective(ptClass) == 1;
     }
 }

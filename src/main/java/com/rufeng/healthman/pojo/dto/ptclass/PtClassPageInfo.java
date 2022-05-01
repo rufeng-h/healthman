@@ -21,6 +21,7 @@ public class PtClassPageInfo {
     private Integer clsEntryYear;
     private Integer clsEntryGrade;
     private LocalDateTime clsCreated;
+    private LocalDateTime clsModified;
     private String teaName;
     private String teaId;
     private Integer stuCount;
@@ -29,6 +30,7 @@ public class PtClassPageInfo {
         this.clsId = ptClass.getClsId();
         this.clsCode = ptClass.getClsCode();
         this.clsCreated = ptClass.getClsCreated();
+        this.clsModified = ptClass.getClsModified();
         this.clgCode = ptClass.getClgCode();
         this.clgName = clgName;
         this.clsName = ptClass.getClsName();

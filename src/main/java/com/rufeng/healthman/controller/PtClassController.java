@@ -2,6 +2,7 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.data.PtClassFormdata;
 import com.rufeng.healthman.pojo.dto.ptclass.PtClassPageInfo;
 import com.rufeng.healthman.pojo.dto.ptclass.PtClassTreeItem;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
@@ -98,5 +99,18 @@ public class PtClassController {
     @GetMapping("/{clsCode}")
     public ApiResponse<PtClass> getPtClass(@PathVariable String clsCode) {
         return ApiResponse.success(ptClassService.getPtClass(clsCode));
+    }
+
+    @Operation(operationId = Authority.PtClass.CLASS_DELETE, summary = "删除班级")
+    @DeleteMapping("/{clsCode}")
+    public ApiResponse<Boolean> deletePtClass(@PathVariable String clsCode) {
+        return ApiResponse.success(ptClassService.deletePtClass(clsCode));
+    }
+
+
+    @Operation(operationId = Authority.PtClass.CLASS_UPDATE, summary = "更新班级信息")
+    @PutMapping
+    public ApiResponse<Boolean> updatePtClass(@RequestBody @Validated PtClassFormdata classFormdata){
+        return ApiResponse.success(ptClassService.updatePtClass(classFormdata));
     }
 }

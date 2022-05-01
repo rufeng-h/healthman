@@ -350,4 +350,10 @@
                  LEFT JOIN pt_class_measurement pcm on pt_class.cls_code = pcm.cls_code
         WHERE ms_id = #{msId}
     </select>
+
+    <delete id="deleteByClsCode">
+        DELETE
+        FROM pt_class_measurement
+        WHERE cls_code = #{clsCode}
+    </delete>
 </mapper>

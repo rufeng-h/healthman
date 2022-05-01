@@ -9,9 +9,9 @@ import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.mapper.PtStudentMapper;
-import com.rufeng.healthman.pojo.data.LoginFormdata;
+import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
-import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
+import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.PtStuMeasurementPageInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
@@ -82,12 +82,12 @@ public class PtStudentService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginResult login(LoginFormdata loginFormdata) {
-        PtStudent student = ptStudentMapper.selectByPrimaryKey(loginFormdata.getUserId());
+    public LoginResult login(PtLoginFormdata ptLoginFormdata) {
+        PtStudent student = ptStudentMapper.selectByPrimaryKey(ptLoginFormdata.getUserId());
         if (student == null) {
             throw new AuthenticationException("用户不存在!");
         }
-        if (!DigestUtils.md5DigestAsHex(loginFormdata.getPassword().getBytes(StandardCharsets.UTF_8)).equals(student.getPassword())) {
+        if (!DigestUtils.md5DigestAsHex(ptLoginFormdata.getPassword().getBytes(StandardCharsets.UTF_8)).equals(student.getPassword())) {
             throw new AuthenticationException("密码错误!");
         }
         /* 查班级 */
@@ -205,7 +205,7 @@ public class PtStudentService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean updatePwd(String stuId, UpdatePwdFormdata formdata) {
+    public boolean updatePwd(String stuId, PtPwdUpdateFormdata formdata) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
         if (!StringUtils.pwdEquals(formdata.getOldPwd(), student.getPassword())) {
             throw new AuthenticationException("原始密码错误！");

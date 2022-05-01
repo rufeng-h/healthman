@@ -1,9 +1,9 @@
 package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
-import com.rufeng.healthman.pojo.data.LoginFormdata;
+import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
-import com.rufeng.healthman.pojo.data.UpdatePwdFormdata;
+import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
 import com.rufeng.healthman.pojo.dto.support.PtMenuItem;
 import com.rufeng.healthman.security.support.UserInfo;
@@ -50,8 +50,8 @@ public class PtCommonController {
 
     @PostMapping("/login")
     public ApiResponse<LoginResult> login(
-            @RequestBody @Validated LoginFormdata loginFormdata) {
-        return ApiResponse.success(ptCommonService.login(loginFormdata));
+            @RequestBody @Validated PtLoginFormdata ptLoginFormdata) {
+        return ApiResponse.success(ptCommonService.login(ptLoginFormdata));
     }
 
     @SecurityRequirement(name = JWT_SCHEME_NAME)
@@ -69,7 +69,7 @@ public class PtCommonController {
     @SecurityRequirement(name = JWT_SCHEME_NAME)
     @PutMapping("/api/password")
     @Operation(description = "重置密码")
-    public ApiResponse<Boolean> updatePassword(@Validated @RequestBody UpdatePwdFormdata formdata) {
+    public ApiResponse<Boolean> updatePassword(@Validated @RequestBody PtPwdUpdateFormdata formdata) {
         return ApiResponse.success(ptCommonService.updatePwd(formdata));
     }
 

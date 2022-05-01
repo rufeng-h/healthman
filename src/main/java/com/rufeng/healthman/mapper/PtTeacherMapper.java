@@ -90,4 +90,6 @@ public interface PtTeacherMapper {
     Map<String, String> mapTeaNameByIds(List<String> teaIds);
 
     Page<PtTeacher> page(PtTeacherQuery query);
+
+    Page<PtTeacher> list();
 }

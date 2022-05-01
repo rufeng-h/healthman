@@ -2,6 +2,8 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherInfo;
+import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherListInfo;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherPageInfo;
 import com.rufeng.healthman.pojo.query.PtTeacherQuery;
 import com.rufeng.healthman.security.authority.ApiAuthority;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Min;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 
@@ -63,6 +66,15 @@ public class PtTeacherController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadTeacher(@RequestPart MultipartFile file) {
         return ApiResponse.success(ptTeacherService.uploadTeacher(file));
+    }
+
+    /**
+     * TODO 增加查询条件
+     */
+    @Operation(operationId = Authority.PtTeacher.TEACHER_LIST, summary = "所有教师")
+    @GetMapping("/list")
+    public ApiResponse<List<PtTeacherListInfo>> list() {
+        return ApiResponse.success(ptTeacherService.listTeacherInfo());
     }
 
     @Operation(operationId = Authority.PtTeacher.TEACHER_TEMPLATE, summary = "教师模板")

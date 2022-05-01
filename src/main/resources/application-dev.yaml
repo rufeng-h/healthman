@@ -12,7 +12,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://localhost:3306/healthman?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/healthman_test?serverTimezone=Asia/Shanghai
 #  main:
 #    allow-circular-references: true
 springdoc:

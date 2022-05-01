@@ -1,9 +1,14 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;import com.rufeng.healthman.pojo.file.PtStudentExcel;import com.rufeng.healthman.pojo.ptdo.PtStudent;
-import java.util.List;
-import com.rufeng.healthman.pojo.query.PtStudentQuery;import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;
+import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
+import com.rufeng.healthman.pojo.file.PtStudentExcel;
+import com.rufeng.healthman.pojo.ptdo.PtStudent;
+import com.rufeng.healthman.pojo.query.PtStudentQuery;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -88,4 +93,8 @@ public interface PtStudentMapper {
     Page<PtStudent> pageStudent(@Param("query") PtStudentQuery query);
 
     List<String> listStuId();
+
+    int deleteByClsCode(String clsCode);
+
+    List<PtStudent> listByClsCode(String clsCode);
 }
