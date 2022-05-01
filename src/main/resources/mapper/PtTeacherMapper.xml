@@ -650,9 +650,21 @@
         </where>
     </select>
 
-    <select id="list" resultMap="BaseResultMap">
+    <select id="selectPrincipal" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
+        FROM pt_teacher
+        WHERE clg_code = #{clgCode}
+          AND principal = 1;
+    </select>
+
+    <select id="listClgIdentity" resultType="com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherClgIdentity">
+        SELECT tea_id, principal, clg_code
+        FROM pt_teacher
+    </select>
+
+    <select id="listTeacherListInfo" resultMap="BaseResultMap">
+        SELECT tea_id, tea_name, clg_code
         FROM pt_teacher
     </select>
 </mapper>

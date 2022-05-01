@@ -35,7 +35,6 @@ public class Authority {
         DEFAULT_TEACHER_AUTHORITIES.add(PtTeacher.TEACHER_PAGE);
 
         DEFAULT_TEACHER_AUTHORITIES.add(PtClass.CLASS_PAGE);
-        DEFAULT_TEACHER_AUTHORITIES.add(PtClass.CLASS_GRADELIST);
         DEFAULT_TEACHER_AUTHORITIES.add(PtClass.CLASS_GET);
         DEFAULT_TEACHER_AUTHORITIES.add(PtClass.CLASS_LIST);
 
@@ -69,12 +68,13 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtCollege.COLLEGE_TEMPLATE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtCollege.COLLEGE_UPLOAD);
         DEFAULT_ADMIN_AUTHORITIES.add(PtCollege.COLLEGE_LIST);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtCollege.COLLEGE_DELETE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtCollege.COLLEGE_UPDATE);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_LIST);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_UPLOAD);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_TEMPLATE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_PAGE);
-        DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_GRADELIST);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_GET);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_DELETE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtClass.CLASS_UPDATE);
@@ -88,6 +88,7 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_GET);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_UPLOAD);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_TEMPLATE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_DELETE);
 
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtMs.MS_PAGE);
@@ -155,6 +156,7 @@ public class Authority {
         public static final String STUDENT_PAGE = "student:page";
         public static final String STUDENT_UPLOAD = "student:upload";
         public static final String STUDENT_TEMPLATE = "student:template";
+        public static final String STUDENT_DELETE = "student:delete";
     }
 
     public static class PtScore {
@@ -177,6 +179,8 @@ public class Authority {
         public static final String COLLEGE_PAGE = "college:page";
         public static final String COLLEGE_TEMPLATE = "college:template";
         public static final String COLLEGE_UPLOAD = "college:upload";
+        public static final String COLLEGE_DELETE = "college:delete";
+        public static final String COLLEGE_UPDATE = "college:update";
     }
 
     public static class PtSubject {
@@ -197,7 +201,6 @@ public class Authority {
          * class
          */
         public static final String CLASS_GET = "class:get";
-        public static final String CLASS_GRADELIST = "class:gradeList";
         public static final String CLASS_LIST = "class:list";
         public static final String CLASS_PAGE = "class:page";
         public static final String CLASS_TEMPLATE = "class:template";

@@ -2,6 +2,7 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
+import com.rufeng.healthman.pojo.data.PtCollegeFomrdata;
 import com.rufeng.healthman.pojo.dto.ptcollege.PtCollegePageInfo;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.security.authority.ApiAuthority;
@@ -85,5 +86,17 @@ public class PtCollegeController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + FILE_TEMPLATE_NAME + "\"")
                 .body(resource);
+    }
+
+    @Operation(operationId = Authority.PtCollege.COLLEGE_DELETE, summary = "删除学院")
+    @DeleteMapping("/{clgCode}")
+    public ApiResponse<Boolean> deleteCollege(@PathVariable String clgCode) {
+        return ApiResponse.success(ptCollegeService.deleteCollege(clgCode));
+    }
+
+    @Operation(operationId = Authority.PtCollege.COLLEGE_UPDATE, summary = "更新学院信息")
+    @PutMapping
+    public ApiResponse<Boolean> updateCollege(@RequestBody @Validated PtCollegeFomrdata collegeFomrdata) {
+        return ApiResponse.success(ptCollegeService.updateCollege(collegeFomrdata));
     }
 }

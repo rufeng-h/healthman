@@ -73,8 +73,8 @@ public class PtTeacherController {
      */
     @Operation(operationId = Authority.PtTeacher.TEACHER_LIST, summary = "所有教师")
     @GetMapping("/list")
-    public ApiResponse<List<PtTeacherListInfo>> list() {
-        return ApiResponse.success(ptTeacherService.listTeacherInfo());
+    public ApiResponse<List<PtTeacherListInfo>> listTeacherListInfo() {
+        return ApiResponse.success(ptTeacherService.listTeacherListInfo());
     }
 
     @Operation(operationId = Authority.PtTeacher.TEACHER_TEMPLATE, summary = "教师模板")

@@ -119,4 +119,6 @@ public interface PtScoreMapper {
     List<PtScore> listScoreByStuIdAndMsIds(@Param("stuId") String stuId, @Param("list") List<Long> msIds);
 
     int deleteByStuIds(List<String> stuIds);
+
+    int deleteByStuId(String stuId);
 }

@@ -1,7 +1,6 @@
 package com.rufeng.healthman.pojo.data;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -13,7 +12,6 @@ import java.time.LocalDate;
  * @description TODO
  */
 @Data
-@NoArgsConstructor
 public class PtUserFormdata {
     @NotEmpty
     private String desp;

@@ -2,13 +2,15 @@ package com.rufeng.healthman.mapper;
 
 import com.github.pagehelper.Page;
 import com.rufeng.healthman.config.support.ReturnMap;
-import com.rufeng.healthman.pojo.file.PtTeacherExcel;import com.rufeng.healthman.pojo.ptdo.PtTeacher;
-import java.util.List;
-import java.util.Map;
-
+import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherClgIdentity;
+import com.rufeng.healthman.pojo.file.PtTeacherExcel;
+import com.rufeng.healthman.pojo.ptdo.PtTeacher;
 import com.rufeng.healthman.pojo.query.PtTeacherQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -84,6 +86,9 @@ public interface PtTeacherMapper {
 
     List<PtTeacher> listByIds(List<String> teacherIds);
 
+    /**
+     * 查询负责人
+     */
     List<PtTeacher> listPincipal(List<String> clgCodes);
 
     @ReturnMap
@@ -91,5 +96,13 @@ public interface PtTeacherMapper {
 
     Page<PtTeacher> page(PtTeacherQuery query);
 
-    Page<PtTeacher> list();
+    /**
+     * 返回 id, name, clgCode字段
+     */
+    List<PtTeacher> listTeacherListInfo();
+
+    PtTeacher selectPrincipal(String clgCode);
+
+
+    List<PtTeacherClgIdentity> listClgIdentity();
 }

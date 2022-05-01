@@ -12,8 +12,9 @@ import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.mapper.PtTeacherMapper;
 import com.rufeng.healthman.pojo.data.PtLoginFormdata;
-import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
+import com.rufeng.healthman.pojo.data.PtUserFormdata;
+import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherClgIdentity;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherInfo;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherListInfo;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherPageInfo;
@@ -185,6 +186,10 @@ public class PtTeacherService {
         return ptTeacherMapper.listTeaId();
     }
 
+    public List<PtTeacherClgIdentity> listClgIdentity() {
+        return ptTeacherMapper.listClgIdentity();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public boolean updateTeacher(String teaId, PtUserFormdata formdata) {
         PtTeacher ptTeacher = ptTeacherMapper.selectByPrimaryKey(teaId);
@@ -233,8 +238,8 @@ public class PtTeacherService {
         return ptTeacherMapper.mapTeaNameByIds(teaIds);
     }
 
-    public List<PtTeacherListInfo> listTeacherInfo() {
-        Page<PtTeacher> teachers = ptTeacherMapper.list();
+    public List<PtTeacherListInfo> listTeacherListInfo() {
+        List<PtTeacher> teachers = ptTeacherMapper.listTeacherListInfo();
         /* 查学院 */
         List<String> clgCodes = ptCollegeService.getClgCodeFromTeachers(teachers);
         Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(clgCodes);

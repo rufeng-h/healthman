@@ -75,4 +75,10 @@ public class PtStudentController {
     public ApiResponse<Integer> uploadStudent(@RequestPart MultipartFile file, @RequestParam(required = false) String clsCode) {
         return ApiResponse.success(ptStudentService.uploadStudent(file, clsCode));
     }
+
+    @Operation(operationId = Authority.PtStudent.STUDENT_DELETE, summary = "删除学生")
+    @DeleteMapping("/{stuId}")
+    public ApiResponse<Boolean> deleteStudent(@PathVariable String stuId){
+        return ApiResponse.success(ptStudentService.deleteStudent(stuId));
+    }
 }

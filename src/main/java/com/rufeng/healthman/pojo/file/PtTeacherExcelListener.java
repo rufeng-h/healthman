@@ -7,15 +7,16 @@ import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
-import com.rufeng.healthman.pojo.ptdo.PtClass;
+import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherClgIdentity;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
-import com.rufeng.healthman.service.PtClassService;
 import com.rufeng.healthman.service.PtCollegeService;
 import com.rufeng.healthman.service.PtTeacherService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +31,7 @@ public class PtTeacherExcelListener extends AnalysisEventListener<PtTeacherExcel
     private final PtTeacherService ptTeacherService;
     @SuppressWarnings("UnstableApiUsage")
     private final BloomFilter<String> teaIdBloomFilter;
+    private final Set<String> principalClgs = new HashSet<>();
     private int handledCount = 0;
     private List<PtTeacherExcel> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
@@ -39,9 +41,14 @@ public class PtTeacherExcelListener extends AnalysisEventListener<PtTeacherExcel
         this.ptTeacherService = ptTeacherService;
         clgMap = ptCollegeService.listCollege().stream().collect(
                 Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
-        List<String> adminIds = ptTeacherService.listTeaId();
+        List<PtTeacherClgIdentity> clgIdentities = ptTeacherService.listClgIdentity();
         teaIdBloomFilter = BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), 1 << 16, 0.001);
-        adminIds.forEach(teaIdBloomFilter::put);
+        clgIdentities.forEach(t -> {
+            teaIdBloomFilter.put(t.getTeaId());
+            if (Boolean.TRUE.equals(t.getPrincipal())) {
+                principalClgs.add(t.getClgCode());
+            }
+        });
     }
 
     @Override
@@ -63,14 +70,13 @@ public class PtTeacherExcelListener extends AnalysisEventListener<PtTeacherExcel
 
     @SuppressWarnings("UnstableApiUsage")
     private void validate(PtTeacherExcel data) {
-        String adminId = data.getTeaId();
+        String teaId = data.getTeaId();
         /* 工号 */
-        if (!StringUtils.isLetterNumeric(adminId)) {
+        if (!StringUtils.isLetterNumeric(teaId)) {
             throw new ExcelException("工号不能空，且只能包含数字和字母");
         }
-        if (teaIdBloomFilter.mightContain(adminId)) {
-            System.out.println(teaIdBloomFilter);
-            throw new ExcelException("工号不能重复：" + adminId);
+        if (teaIdBloomFilter.mightContain(teaId)) {
+            throw new ExcelException("工号不能重复：" + teaId);
         }
         /* 名称 */
         if (StringUtils.isEmptyOrBlank(data.getTeaName())) {
@@ -87,7 +93,15 @@ public class PtTeacherExcelListener extends AnalysisEventListener<PtTeacherExcel
         if (data.getTeaBirth() == null) {
             throw new ExcelException("出生日期不能为空");
         }
-        teaIdBloomFilter.put(adminId);
+        /* 负责人只能有一个 */
+        if (Boolean.TRUE.equals(data.getPrincipal())) {
+            String clgCode = clgMap.get(data.getClgName());
+            if (principalClgs.contains(clgCode)) {
+                throw new ExcelException(data.getClgName() + "已有负责人！");
+            }
+            principalClgs.add(clgCode);
+        }
+        teaIdBloomFilter.put(teaId);
     }
 
     @Override

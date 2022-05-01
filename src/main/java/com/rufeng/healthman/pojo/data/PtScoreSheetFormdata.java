@@ -5,7 +5,6 @@ import com.rufeng.healthman.enums.GradeEnum;
 import com.rufeng.healthman.validation.group.Insert;
 import com.rufeng.healthman.validation.group.Update;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -19,7 +18,6 @@ import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER_STR;
  * @package com.rufeng.healthman.pojo.data
  * @description TODO
  */
-@NoArgsConstructor
 @Data
 public class PtScoreSheetFormdata {
     @Null(groups = Insert.class)

@@ -17,13 +17,11 @@ public class PtTeacherListInfo {
     /**
      * 所属学院
      */
-    private String clgCode;
     private String clgName;
 
     public PtTeacherListInfo(PtTeacher teacher, String clgName) {
         this.teaId = teacher.getTeaId();
         this.teaName = teacher.getTeaName();
         this.clgName = clgName;
-        this.clgCode = teacher.getClgCode();
     }
 }

@@ -103,10 +103,6 @@ public class PtClassService {
         return ptClassMapper.listClass(new PtClassQuery());
     }
 
-    public List<Integer> listGrade(@Nullable String clgCode) {
-        return ptClassMapper.listGrade(clgCode);
-    }
-
 
     public PtClass getPtClass(String classCode) {
         return ptClassMapper.selectByPrimaryKey(classCode);

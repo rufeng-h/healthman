@@ -420,15 +420,6 @@
             </if>
         </where>
     </select>
-    <select id="listGrade" resultType="java.lang.Integer">
-        SELECT DISTINCT YEAR(current_timestamp) - pt_class.cls_entry_year + pt_class.cls_entry_grade
-        FROM pt_class
-        <where>
-            <if test="clgCode != null">
-                clg_code = #{clgCode}
-            </if>
-        </where>
-    </select>
 
     <select id="countStudent" resultType="map">
         SELECT pt_class.cls_code, COUNT(pt_student.stu_gender)

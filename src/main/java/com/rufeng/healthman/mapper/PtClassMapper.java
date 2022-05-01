@@ -89,13 +89,6 @@ public interface PtClassMapper {
     List<PtClass> listClass(@NonNull PtClassQuery query);
 
     /**
-     * 查询所有年级
-     *
-     * @return page
-     */
-    List<Integer> listGrade(@Param("clgCode") String clgCode);
-
-    /**
      * 插入excel数据
      *
      * @param cachedDataList excel数据

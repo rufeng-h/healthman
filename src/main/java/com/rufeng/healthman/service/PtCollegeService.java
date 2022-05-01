@@ -5,6 +5,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtCollegeMapper;
+import com.rufeng.healthman.mapper.PtTeacherMapper;
+import com.rufeng.healthman.pojo.data.PtCollegeFomrdata;
 import com.rufeng.healthman.pojo.dto.ptcollege.PtCollegePageInfo;
 import com.rufeng.healthman.pojo.file.PtCollegeExcel;
 import com.rufeng.healthman.pojo.file.PtCollegeExcelListener;
@@ -16,10 +18,12 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,10 +39,12 @@ import java.util.stream.Collectors;
 @Service
 public class PtCollegeService {
     private final PtCollegeMapper ptCollegeMapper;
+    private final PtTeacherMapper ptTeacherMapper;
     private PtTeacherService ptTeacherService;
 
-    public PtCollegeService(PtCollegeMapper ptCollegeMapper) {
+    public PtCollegeService(PtCollegeMapper ptCollegeMapper, PtTeacherMapper ptTeacherMapper) {
         this.ptCollegeMapper = ptCollegeMapper;
+        this.ptTeacherMapper = ptTeacherMapper;
     }
 
     @Autowired
@@ -116,7 +122,34 @@ public class PtCollegeService {
         List<String> clgCodes = colleges.stream().map(PtCollege::getClgCode).collect(Collectors.toList());
         List<PtTeacher> teachers = ptTeacherService.listPrincipal(clgCodes);
         Map<String, PtTeacher> teacherMap = teachers.stream().collect(Collectors.toMap(PtTeacher::getClgCode, t -> t));
-        List<PtCollegePageInfo> infos = colleges.stream().map(c -> new PtCollegePageInfo(c, teacherMap.get(c.getClgCode()))).collect(Collectors.toList());
+        List<PtCollegePageInfo> infos = colleges.stream().map(c -> new PtCollegePageInfo(c,
+                teacherMap.get(c.getClgCode()))).collect(Collectors.toList());
         return ApiPage.convert(colleges, infos);
+    }
+
+    public boolean deleteCollege(String clgCode) {
+        return ptCollegeMapper.deleteByPrimaryKey(clgCode) == 1;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateCollege(PtCollegeFomrdata collegeFomrdata) {
+        PtCollege ptCollege = PtCollege.builder()
+                .clgCode(collegeFomrdata.getClgCode())
+                .clgHome(collegeFomrdata.getClgHome())
+                .clgName(collegeFomrdata.getClgName())
+                .clgTel(collegeFomrdata.getClgTel())
+                .clgOffice(collegeFomrdata.getClgOffice())
+                .clgModified(LocalDateTime.now()).build();
+        /* 原负责人 */
+        PtTeacher teacher = ptTeacherMapper.selectPrincipal(collegeFomrdata.getClgCode());
+        teacher.setPrincipal(false);
+        ptTeacherMapper.updateByPrimaryKeySelective(teacher);
+        /* 新负责人 */
+        PtTeacher ptTeacher = PtTeacher.builder()
+                .teaId(collegeFomrdata.getTeaId())
+                .principal(true).build();
+        ptTeacherMapper.updateByPrimaryKeySelective(ptTeacher);
+        /* 更新学院 */
+        return ptCollegeMapper.updateByPrimaryKeySelective(ptCollege) == 1;
     }
 }

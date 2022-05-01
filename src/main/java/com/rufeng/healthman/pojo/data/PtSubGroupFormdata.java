@@ -1,7 +1,6 @@
 package com.rufeng.healthman.pojo.data;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.List;
  * @description TODO
  */
 @Data
-@NoArgsConstructor
 public class PtSubGroupFormdata {
     @NotEmpty
     private String grpName;

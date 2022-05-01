@@ -518,4 +518,10 @@
             #{item}
         </foreach>)
     </delete>
+
+    <delete id="deleteByStuId">
+        DELETE
+        FROM pt_score
+        WHERE stu_id = #{stuId}
+    </delete>
 </mapper>

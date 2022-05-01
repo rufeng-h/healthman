@@ -89,11 +89,6 @@ public class PtClassController {
                 .body(resource);
     }
 
-    @Operation(operationId = Authority.PtClass.CLASS_GRADELIST, summary = "年级列表")
-    @GetMapping("/grade/list")
-    public ApiResponse<List<Integer>> listGrade(@Length(min = 1) String clgCode) {
-        return ApiResponse.success(ptClassService.listGrade(clgCode));
-    }
 
     @Operation(operationId = Authority.PtClass.CLASS_GET, summary = "班级")
     @GetMapping("/{clsCode}")

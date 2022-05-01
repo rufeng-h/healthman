@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author rufeng
  * @time 2022-04-16 10:58
  * @package com.rufeng.healthman.common.util
- * @description TODO
+ * @description 方便获取IOC容器信息
  */
 @Component
 public class SpringUtils implements EnvironmentAware {

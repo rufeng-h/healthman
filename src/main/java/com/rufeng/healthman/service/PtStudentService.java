@@ -8,10 +8,11 @@ import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
+import com.rufeng.healthman.mapper.PtScoreMapper;
 import com.rufeng.healthman.mapper.PtStudentMapper;
 import com.rufeng.healthman.pojo.data.PtLoginFormdata;
-import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
+import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.PtStuMeasurementPageInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
@@ -60,17 +61,19 @@ public class PtStudentService {
     private final RedisService redisService;
     private final PtCollegeService ptCollegeService;
     private final FileService fileService;
+    private final PtScoreMapper ptScoreMapper;
     private PtMesurementService ptMesurementService;
 
     public PtStudentService(PtStudentMapper ptStudentMapper,
                             PtClassService ptClassService,
                             RedisService redisService,
-                            PtCollegeService ptCollegeService, FileService fileService) {
+                            PtCollegeService ptCollegeService, FileService fileService, PtScoreMapper ptScoreMapper) {
         this.ptStudentMapper = ptStudentMapper;
         this.ptClassService = ptClassService;
         this.redisService = redisService;
         this.ptCollegeService = ptCollegeService;
         this.fileService = fileService;
+        this.ptScoreMapper = ptScoreMapper;
     }
 
     /**
@@ -215,5 +218,11 @@ public class PtStudentService {
         stu.setPassword(DigestUtils.md5DigestAsHex(formdata.getNewPwd().getBytes(StandardCharsets.UTF_8)));
         stu.setStuModified(LocalDateTime.now());
         return ptStudentMapper.updateByPrimaryKeySelective(stu) == 1;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteStudent(String stuId) {
+        ptScoreMapper.deleteByStuId(stuId);
+        return ptStudentMapper.deleteByPrimaryKey(stuId) == 1;
     }
 }

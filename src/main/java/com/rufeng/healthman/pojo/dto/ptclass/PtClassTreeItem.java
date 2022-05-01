@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @author rufeng
  * @time 2022-03-12 12:03
  * @package com.rufeng.healthman.pojo.BO.ptclass
- * @description TODO
+ * @description .
  */
 public class PtClassTreeItem implements TreeItem {
     private final String key;

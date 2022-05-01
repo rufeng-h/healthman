@@ -1,7 +1,6 @@
 package com.rufeng.healthman.pojo.data;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,7 +12,6 @@ import javax.validation.constraints.Size;
  * @description TODO
  */
 @Data
-@NoArgsConstructor
 public class PtPwdUpdateFormdata {
     @Size(min = 6, max = 20)
     @NotNull

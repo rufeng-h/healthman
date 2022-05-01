@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
  * @author rufeng
  * @time 2022-04-16 13:33
  * @package com.rufeng.healthman.common.util
- * @description TODO
+ * @description string util
  */
 public class StringUtils {
     public static boolean isEmptyOrBlank(CharSequence cs) {

@@ -1,7 +1,6 @@
 package com.rufeng.healthman.pojo.data;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -12,7 +11,6 @@ import javax.validation.constraints.NotEmpty;
  * @description 更新班级信息
  */
 @Data
-@NoArgsConstructor
 public class PtClassFormdata {
     /**
      * 唯一性，存在校验

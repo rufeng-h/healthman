@@ -12,7 +12,7 @@ import java.util.Set;
  * @author rufeng
  * @time 2022-04-20 10:59
  * @package com.rufeng.healthman.pojo.dto.ptadmin
- * @description TODO
+ * @description 管理员登录信息
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

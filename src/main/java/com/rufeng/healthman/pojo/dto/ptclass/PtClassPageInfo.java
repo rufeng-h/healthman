@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * @author rufeng
  * @time 2022-03-22 23:06
  * @package com.rufeng.healthman.pojo.DTO.ptclass
- * @description TODO
+ * @description 班级分页信息
  */
 @Data
 public class PtClassPageInfo {
