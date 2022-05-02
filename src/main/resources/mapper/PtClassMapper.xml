@@ -400,7 +400,7 @@
         </foreach>
     </insert>
 
-    <select id="listClass" resultType="com.rufeng.healthman.pojo.ptdo.PtClass">
+    <select id="listClassByQuery" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_class
@@ -418,42 +418,39 @@
             <if test="grade != null">
                 AND YEAR(current_timestamp) - cls_entry_year + pt_class.cls_entry_grade = #{grade}
             </if>
+            <if test="teaId != null">
+                AND tea_id = #{teaId}
+            </if>
         </where>
     </select>
 
     <select id="countStudent" resultType="map">
         SELECT pt_class.cls_code, COUNT(pt_student.stu_gender)
         FROM pt_class
-                 LEFT JOIN pt_student on pt_class.cls_code = pt_student.cls_code
-        <where>
-            <foreach close=")" collection="clsCodes" item="item" open="pt_class.cls_code IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
-        GROUP BY pt_class.cls_code
+                 LEFT JOIN pt_student on pt_class.cls_code = pt_student.cls_code WHERE pt_class.cls_code IN (
+        <foreach collection="clsCodes" item="item" separator=",">
+            #{item}
+        </foreach>)
+    GROUP BY pt_class.cls_code
     </select>
 
     <select id="mapClsNameByIds" resultType="map">
         SELECT cls_code,
                cls_name
         FROM pt_class
-        <where>
-            <foreach close=")" collection="items" item="item" open="cls_code IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        WHERE cls_code IN (
+        <foreach collection="items" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <select id="listClassByClsCodes" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List">
-        </include>
-        FROM pt_class
-        <where>
-            <foreach close=")" collection="list" item="item" open="cls_code IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        <include refid="Base_Column_List"/>
+        FROM pt_class WHERE cls_code IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <select id="listByTeaId" resultMap="BaseResultMap">
@@ -481,18 +478,33 @@
             <if test="grade != null">
                 AND YEAR(current_timestamp) - cls_entry_year + pt_class.cls_entry_grade = #{grade}
             </if>
+            <if test="teaId != null">
+                AND tea_id = #{teaId}
+            </if>
         </where>
     </select>
 
     <select id="listByTeaIds" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List">
-        </include>
+        <include refid="Base_Column_List"/>
+        FROM pt_class WHERE tea_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
+    </select>
+
+    <select id="listClassByMsId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM pt_class
-        <where>
-            <foreach close=")" collection="list" item="item" open="tea_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        WHERE cls_code IN (SELECT cls_code
+                           FROM pt_class_measurement
+                           WHERE ms_id = #{msId});
+    </select>
+
+    <select id="listClass" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_class
     </select>
 </mapper>

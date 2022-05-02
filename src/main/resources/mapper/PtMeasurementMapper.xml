@@ -442,12 +442,10 @@ stusubs AS (
     <select id="listMeasurement" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pt_measurement
-        <where>
-            <foreach close=")" collection="list" item="item" open="ms_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_measurement WHERE ms_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <select id="countStuByMsIds" resultType="map">

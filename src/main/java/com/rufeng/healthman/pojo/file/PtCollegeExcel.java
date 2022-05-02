@@ -2,7 +2,6 @@ package com.rufeng.healthman.pojo.file;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author rufeng

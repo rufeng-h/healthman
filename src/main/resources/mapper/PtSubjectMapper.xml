@@ -298,31 +298,22 @@
             </if>
         </trim>
     </insert>
-    <select id="listSubject" resultType="com.rufeng.healthman.pojo.ptdo.PtSubject">
-        SELECT sub_id, sub_name, sub_desp, sub_created, sub_modified
-        FROM pt_subject
-    </select>
-
 
     <select id="listSubjectByIds" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pt_subject
-        <where>
-            <foreach close=")" collection="list" item="item" open="sub_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_subject WHERE sub_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <select id="mapSubIdSubNameByIds" resultType="java.util.Map">
         SELECT sub_id, sub_name
-        FROM pt_subject
-        <where>
-            <foreach close=")" collection="list" item="item" open="sub_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_subject WHERE sub_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <select id="listLevels" resultType="java.lang.String">
@@ -344,5 +335,16 @@
                 #{item}
             </foreach>
         </where>
+    </select>
+
+    <select id="listSubjectByMsId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM (SELECT sub_id
+              FROM pt_subject_subgroup
+              WHERE pt_subject_subgroup.grp_id = (SELECT grp_id
+                                                  FROM pt_measurement
+                                                  WHERE ms_id = #{msId})) sub_ids
+                 NATURAL JOIN pt_subject;
     </select>
 </mapper>

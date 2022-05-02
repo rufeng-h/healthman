@@ -1,6 +1,7 @@
 package com.rufeng.healthman.pojo.ptdo;
 
 import com.rufeng.healthman.enums.OperTypeEnum;
+import com.rufeng.healthman.enums.UserTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,11 +42,11 @@ public class PtOperLog implements Serializable {
     /**
      * 操作人
      */
-    private String operAdminId;
+    private String operUserId;
     /**
      * 操作人名称
      */
-    private String operAdminName;
+    private String operUserName;
     /**
      * 请求uri
      */
@@ -57,4 +58,5 @@ public class PtOperLog implements Serializable {
      */
     private Integer operStatus;
     private OperTypeEnum operType;
+    private UserTypeEnum operUserType;
 }

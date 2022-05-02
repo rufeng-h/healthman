@@ -3,48 +3,37 @@ package com.rufeng.healthman.service;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.UnknownException;
 import com.rufeng.healthman.pojo.data.PtLoginFormdata;
-import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
+import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
-import com.rufeng.healthman.pojo.dto.support.PtMenuItem;
 import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.context.SecurityContextHolder;
 import com.rufeng.healthman.security.support.UserInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author rufeng
  * @time 2022-03-21 15:46
  * @package com.rufeng.healthman.service.impl
- * @description TODO
  */
 @Service
 @Slf4j
 public class PtCommonService {
     private final RedisService redisService;
     private final PtAdminService ptAdminService;
-    private PtTeacherService ptTeacherService;
-    private PtStudentService ptStudentService;
+    private final PtTeacherService ptTeacherService;
+    private final PtStudentService ptStudentService;
 
-    public PtCommonService(RedisService redisService, PtAdminService ptAdminService) {
+    public PtCommonService(RedisService redisService,
+                           PtAdminService ptAdminService,
+                           PtTeacherService ptTeacherService,
+                           PtStudentService ptStudentService) {
         this.redisService = redisService;
         this.ptAdminService = ptAdminService;
-    }
-
-    @Autowired
-    public void setPtAdminService(PtTeacherService ptTeacherService) {
         this.ptTeacherService = ptTeacherService;
-    }
-
-    @Autowired
-    public void setPtStudentService(PtStudentService ptStudentService) {
         this.ptStudentService = ptStudentService;
     }
 
@@ -123,30 +112,13 @@ public class PtCommonService {
         throw new UnknownException("未知异常");
     }
 
-    public List<PtMenuItem> listMenu() {
-        UserTypeEnum userType = getCurrentUserType();
-        List<PtMenuItem> menuItems = new ArrayList<>();
-        switch (userType) {
-            case ADMIN:
-                menuItems.add(PtMenuItem.ADMIN_MENU_ITEM);
-                break;
-            case TEACHER:
-                menuItems.add(PtMenuItem.SUBJECT_MENU_ITEM);
-                menuItems.add(PtMenuItem.MEASUREMENT_MENU_ITEM);
-                menuItems.add(PtMenuItem.BASEDATA_MENU_ITEM);
-                break;
-            case STUDENT:
-                menuItems.add(PtMenuItem.MEASUREMENT_MENU_ITEM);
-                break;
-            default:
-                throw new UnknownException("未知用户类型");
-        }
-        return menuItems;
-    }
-
     @Nullable
     public String getCurrentTeacherId() {
         UserInfo info = getUserInfo();
-        return info.getUserType() == UserTypeEnum.TEACHER ? info.getUserId() : null;
+        if (info.getUserType() == UserTypeEnum.TEACHER) {
+            return info.getUserId();
+        }
+        return null;
     }
+
 }

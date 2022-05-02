@@ -2,6 +2,7 @@ package com.rufeng.healthman.common.aop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rufeng.healthman.pojo.ptdo.PtOperLog;
+import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.service.PtCommonService;
 import com.rufeng.healthman.service.PtOperLogService;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -42,14 +43,16 @@ public class OperationAop {
     public Object operLog(ProceedingJoinPoint pjp) throws Throwable {
         PtOperLog operLog = null;
         if (ptCommonService.isLogin()) {
+            UserInfo userInfo = ptCommonService.getUserInfo();
             MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
             Method method = methodSignature.getMethod();
             OperLogRecord operation = method.getAnnotation(OperLogRecord.class);
             if (operation != null) {
                 operLog = new PtOperLog();
                 operLog.setOperMethod(method.getName());
-                operLog.setOperAdminId(ptCommonService.getCurrentUserId());
-                operLog.setOperAdminName(ptCommonService.getCurrentUserName());
+                operLog.setOperUserId(userInfo.getUserId());
+                operLog.setOperUserName(userInfo.getUsername());
+                operLog.setOperUserType(userInfo.getUserType());
                 operLog.setOperDesc(operation.description());
                 operLog.setOperType(operation.operType());
                 ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

@@ -90,7 +90,7 @@ public interface PtTeacherMapper {
     /**
      * 查询负责人
      */
-    List<PtTeacher> listPincipal(List<String> clgCodes);
+    List<PtTeacher> listPrincipal(List<String> clgCodes);
 
     @ReturnMap
     Map<String, String> mapTeaNameByIds(List<String> teaIds);

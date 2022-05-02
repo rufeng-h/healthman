@@ -4,10 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.api.ApiPage;
-import com.rufeng.healthman.mapper.PtClassMapper;
-import com.rufeng.healthman.mapper.PtClassMeasurementMapper;
-import com.rufeng.healthman.mapper.PtScoreMapper;
-import com.rufeng.healthman.mapper.PtStudentMapper;
+import com.rufeng.healthman.mapper.*;
 import com.rufeng.healthman.pojo.data.PtClassFormdata;
 import com.rufeng.healthman.pojo.dto.ptclass.PtClassPageInfo;
 import com.rufeng.healthman.pojo.file.PtClassExcel;
@@ -15,7 +12,6 @@ import com.rufeng.healthman.pojo.file.PtClassExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtStudent;
 import com.rufeng.healthman.pojo.query.PtClassQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.NonNull;
@@ -43,41 +39,35 @@ public class PtClassService {
     private final PtStudentMapper ptStudentMapper;
     private final PtClassMeasurementMapper ptClassMeasurementMapper;
     private final PtScoreMapper ptScoreMapper;
-    private PtCollegeService ptCollegeService;
-    private PtTeacherService ptTeacherService;
+    private final PtCollegeMapper ptCollegeMapper;
+    private final PtTeacherMapper ptTeacherMapper;
 
     public PtClassService(PtClassMapper ptClassMapper,
                           PtStudentMapper ptStudentMapper,
                           PtClassMeasurementMapper ptClassMeasurementMapper,
-                          PtScoreMapper ptScoreMapper) {
+                          PtScoreMapper ptScoreMapper,
+                          PtCollegeMapper ptCollegeMapper,
+                          PtTeacherMapper ptTeacherMapper) {
         this.ptClassMapper = ptClassMapper;
         this.ptStudentMapper = ptStudentMapper;
         this.ptClassMeasurementMapper = ptClassMeasurementMapper;
         this.ptScoreMapper = ptScoreMapper;
-    }
-
-    @Autowired
-    public void setPtCollegeService(PtCollegeService ptCollegeService) {
-        this.ptCollegeService = ptCollegeService;
-    }
-
-    /**
-     * 循环依赖 TODO
-     */
-    @Autowired
-    public void setPtTeacherService(PtTeacherService ptTeacherService) {
-        this.ptTeacherService = ptTeacherService;
+        this.ptCollegeMapper = ptCollegeMapper;
+        this.ptTeacherMapper = ptTeacherMapper;
     }
 
     public ApiPage<PtClassPageInfo> pageClassInfo(Integer page, Integer pageSize, @NonNull PtClassQuery ptClassQuery) {
         PageHelper.startPage(page, pageSize);
         Page<PtClass> classes = ptClassMapper.page(ptClassQuery);
+        if (classes.isEmpty()) {
+            return ApiPage.empty(classes);
+        }
         /* 查学院 */
-        List<String> clgCodes = ptCollegeService.getClgCodeFromClasses(classes);
-        Map<String, String> clgCodeNameMap = ptCollegeService.mapClgNameByIds(clgCodes);
+        List<String> clgCodes = PtCollegeService.getClgCodeFromClasses(classes);
+        Map<String, String> clgCodeNameMap = ptCollegeMapper.mapClgNameByIds(clgCodes);
         List<String> clsCodes = classes.stream().map(PtClass::getClsCode).collect(Collectors.toList());
         Map<String, Integer> map = ptClassMapper.countStudent(clsCodes);
-        Map<String, String> teaIdNameMap = ptTeacherService.mapTeaNameByIds(
+        Map<String, String> teaIdNameMap = ptTeacherMapper.mapTeaNameByIds(
                 classes.stream().map(PtClass::getTeaId).collect(Collectors.toList()));
         List<PtClassPageInfo> infos = classes.stream().map(c -> new PtClassPageInfo(
                         c, clgCodeNameMap.get(c.getClgCode()),
@@ -87,20 +77,8 @@ public class PtClassService {
         return ApiPage.convert(classes, infos);
     }
 
-
-    public List<PtClass> listClass(@NonNull PtClassQuery query) {
-        return ptClassMapper.listClass(query);
-    }
-
-    public List<PtClass> listClass(List<String> clsCodes) {
-        if (clsCodes.size() == 0) {
-            return Collections.emptyList();
-        }
-        return ptClassMapper.listClassByClsCodes(clsCodes);
-    }
-
-    public List<PtClass> listClass() {
-        return ptClassMapper.listClass(new PtClassQuery());
+    public List<PtClass> listClass(PtClassQuery query) {
+        return ptClassMapper.listClassByQuery(query);
     }
 
 
@@ -110,7 +88,7 @@ public class PtClassService {
 
 
     public Integer uploadClass(MultipartFile file, @Nullable String clgCode) {
-        PtClassExcelListener excelListener = new PtClassExcelListener(this, ptCollegeService, ptTeacherService, clgCode);
+        PtClassExcelListener excelListener = new PtClassExcelListener(this, ptCollegeMapper, ptTeacherMapper, clgCode);
         try {
             EasyExcel.read(file.getInputStream(), PtClassExcel.class, excelListener).sheet().doRead();
         } catch (IOException e) {
@@ -132,20 +110,6 @@ public class PtClassService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcel.write(outputStream, PtClassExcel.class).sheet().doWrite(Collections.emptyList());
         return new ByteArrayResource(outputStream.toByteArray());
-    }
-
-    public Map<String, String> mapClsNameByIds(List<String> collect) {
-        if (collect.size() == 0) {
-            return Collections.emptyMap();
-        }
-        return ptClassMapper.mapClsNameByIds(collect);
-    }
-
-    public Map<String, Integer> countStudent(List<String> clsCodes) {
-        if (clsCodes.size() == 0) {
-            return Collections.emptyMap();
-        }
-        return ptClassMapper.countStudent(clsCodes);
     }
 
     public List<PtClass> listByTeaId(String teaId) {

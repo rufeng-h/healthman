@@ -8,14 +8,12 @@ import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
-import com.rufeng.healthman.mapper.PtScoreMapper;
-import com.rufeng.healthman.mapper.PtStudentMapper;
+import com.rufeng.healthman.mapper.*;
 import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.PtStuMeasurementPageInfo;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.StuMeasurementStatus;
-import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentPageInfo;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
@@ -30,7 +28,6 @@ import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.authentication.AuthenticationImpl;
 import com.rufeng.healthman.security.support.UserInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -58,31 +55,27 @@ import static com.rufeng.healthman.security.authority.Authority.DEFAULT_STUDENT_
 public class PtStudentService {
     private static final String DEFAULT_PWD = "123456";
     private final PtStudentMapper ptStudentMapper;
-    private final PtClassService ptClassService;
     private final RedisService redisService;
-    private final PtCollegeService ptCollegeService;
     private final FileService fileService;
     private final PtScoreMapper ptScoreMapper;
-    private PtMesurementService ptMesurementService;
+    private final PtMeasurementMapper ptMeasurementMapper;
+    private final PtCollegeMapper ptCollegeMapper;
+    private final PtClassMapper ptClassMapper;
 
     public PtStudentService(PtStudentMapper ptStudentMapper,
-                            PtClassService ptClassService,
                             RedisService redisService,
-                            PtCollegeService ptCollegeService, FileService fileService, PtScoreMapper ptScoreMapper) {
+                            FileService fileService,
+                            PtScoreMapper ptScoreMapper,
+                            PtMeasurementMapper ptMeasurementMapper,
+                            PtCollegeMapper ptCollegeMapper,
+                            PtClassMapper ptClassMapper) {
         this.ptStudentMapper = ptStudentMapper;
-        this.ptClassService = ptClassService;
         this.redisService = redisService;
-        this.ptCollegeService = ptCollegeService;
+        this.ptCollegeMapper = ptCollegeMapper;
         this.fileService = fileService;
         this.ptScoreMapper = ptScoreMapper;
-    }
-
-    /**
-     * 循环依赖 TODO
-     */
-    @Autowired
-    public void setPtMesurementService(PtMesurementService ptMesurementService) {
-        this.ptMesurementService = ptMesurementService;
+        this.ptMeasurementMapper = ptMeasurementMapper;
+        this.ptClassMapper = ptClassMapper;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -95,9 +88,12 @@ public class PtStudentService {
             throw new AuthenticationException("密码错误!");
         }
         /* 查班级 */
-        PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
+        PtClass ptClass = ptClassMapper.selectByPrimaryKey(student.getClsCode());
         /* 查学院 */
-        PtCollege college = ptCollegeService.getCollege(ptClass.getClgCode());
+        PtCollege college = null;
+        if (ptClass.getClgCode() != null) {
+            college = ptCollegeMapper.selectByPrimaryKey(ptClass.getClgCode());
+        }
         UserInfo info = new PtStudentInfo(student, ptClass, college, new HashSet<>(DEFAULT_STUDENT_AUTHORITIES));
         /* 认证信息 */
         Authentication authentication = new AuthenticationImpl(info);
@@ -113,20 +109,19 @@ public class PtStudentService {
         return new LoginResult(token, info);
     }
 
-    public List<PtStudentBaseInfo> listStuBaseInfoByMsId(Long msId) {
-        return ptStudentMapper.listStuBaseInfoByMsId(msId);
-    }
-
     public ApiPage<PtStudentPageInfo> pageStudentInfo(Integer page, Integer pageSize, PtStudentQuery query) {
         PageHelper.startPage(page, pageSize);
         Page<PtStudent> students = ptStudentMapper.pageStudent(query);
+        if (students.isEmpty()){
+            return ApiPage.empty(students);
+        }
         /* 查班级名 */
         List<String> clsCodes = students.stream().map(PtStudent::getClsCode).collect(Collectors.toList());
-        List<PtClass> classes = ptClassService.listClass(clsCodes);
+        List<PtClass> classes = ptClassMapper.listClassByClsCodes(clsCodes);
         Map<String, PtClass> clsMap = classes.stream().collect(Collectors.toMap(PtClass::getClsCode, c -> c));
         /* 查学院名和代码 */
-        List<String> clgCodes = ptCollegeService.getClgCodeFromClasses(classes);
-        Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(clgCodes);
+        List<String> clgCodes = PtCollegeService.getClgCodeFromClasses(classes);
+        Map<String, String> clgNameMap = ptCollegeMapper.mapClgNameByIds(clgCodes);
         /* 组装数据 */
         List<PtStudentPageInfo> infos = students.stream().map(s -> {
             PtClass cls = clsMap.get(s.getClsCode());
@@ -148,7 +143,7 @@ public class PtStudentService {
 
 
     public Integer uploadStudent(MultipartFile file, String clsCode) {
-        PtStudentExcelListener listener = new PtStudentExcelListener(this, ptClassService, clsCode);
+        PtStudentExcelListener listener = new PtStudentExcelListener(this, ptClassMapper, clsCode);
         try {
             EasyExcel.read(file.getInputStream(), PtStudentExcel.class, listener).sheet().doRead();
         } catch (IOException e) {
@@ -168,18 +163,20 @@ public class PtStudentService {
     public PtStuMeasurementPageInfo getStuMsInfo(String stuId) {
         PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
         /* 查班级 */
-        PtClass ptClass = ptClassService.getPtClass(student.getClsCode());
+        PtClass ptClass = ptClassMapper.selectByPrimaryKey(student.getClsCode());
         /* 查学院 */
         String clgCode = ptClass.getClgCode();
         PtCollege college = null;
         if (clgCode != null) {
-            college = ptCollegeService.getCollege(clgCode);
+            college = ptCollegeMapper.selectByPrimaryKey(clgCode);
         }
         /* 查体测完成状态 */
-        Map<Long, Boolean> msStatusMap = ptMesurementService.listStuMsStatus(stuId);
-        List<PtMeasurement> measurements = ptMesurementService.listMeasurement(new ArrayList<>(msStatusMap.keySet()));
-        List<StuMeasurementStatus> msStatus = measurements.stream().map(m -> new StuMeasurementStatus(m, msStatusMap.get(m.getMsId()))).collect(Collectors.toList());
-        /* 查分数 */
+        Map<Long, Boolean> msStatusMap = ptMeasurementMapper.listStuMsStatus(stuId);
+        List<StuMeasurementStatus> msStatus = new ArrayList<>();
+        if (!msStatusMap.isEmpty()) {
+            List<PtMeasurement> measurements = ptMeasurementMapper.listMeasurement(new ArrayList<>(msStatusMap.keySet()));
+            msStatus = measurements.stream().map(m -> new StuMeasurementStatus(m, msStatusMap.get(m.getMsId()))).collect(Collectors.toList());
+        }
         if (college == null) {
             return new PtStuMeasurementPageInfo(student, ptClass.getClsName(), msStatus);
         }

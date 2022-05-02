@@ -6,11 +6,12 @@ import com.alibaba.excel.util.ListUtils;
 import com.rufeng.healthman.common.util.SpringUtils;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
+import com.rufeng.healthman.mapper.PtCollegeMapper;
+import com.rufeng.healthman.mapper.PtTeacherMapper;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
+import com.rufeng.healthman.pojo.query.PtClassQuery;
 import com.rufeng.healthman.service.PtClassService;
-import com.rufeng.healthman.service.PtCollegeService;
-import com.rufeng.healthman.service.PtTeacherService;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -42,25 +43,25 @@ public class PtClassExcelListener extends AnalysisEventListener<PtClassExcel> {
      * 从班级中获取年级，dev模式
      */
     private final Pattern pattern = Pattern.compile("(\\d{4})-");
-    private int handledCount = 0;
     private final boolean isDevMode = SpringUtils.isDevMode();
+    private int handledCount = 0;
     /**
      * 缓存的数据
      */
     private List<PtClassExcel> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
     public PtClassExcelListener(PtClassService ptClassService,
-                                PtCollegeService ptCollegeService,
-                                PtTeacherService ptTeacherService,
+                                PtCollegeMapper ptCollegeMapper,
+                                PtTeacherMapper ptTeacherMapper,
                                 String clgCode) {
         this.ptClassService = ptClassService;
         this.clgCode = clgCode;
-        clgNameMap = ptCollegeService.listCollege().stream().collect(
+        clgNameMap = ptCollegeMapper.listCollege().stream().collect(
                 Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
-        List<PtClass> classes = ptClassService.listClass();
+        List<PtClass> classes = ptClassService.listClass(new PtClassQuery());
         clsNames = classes.stream().map(PtClass::getClsName).collect(Collectors.toSet());
         clsCodes = classes.stream().map(PtClass::getClsCode).collect(Collectors.toSet());
-        teaIds = new HashSet<>(ptTeacherService.listTeaId());
+        teaIds = new HashSet<>(ptTeacherMapper.listTeaId());
     }
 
     @Override

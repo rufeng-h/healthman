@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import lombok.Data;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -46,5 +47,15 @@ public class ApiPage<T> {
         page.setItems(items);
         page.setCurrent(source.getPageNum());
         return page;
+    }
+
+    public static <T> ApiPage<T> empty(Page<?> page) {
+        ApiPage<T> apiPage = new ApiPage<>();
+        apiPage.setItems(Collections.emptyList());
+        apiPage.setTotal(page.getTotal());
+        apiPage.setPageSize(page.getPageSize());
+        apiPage.setPages(page.getPages());
+        apiPage.setCurrent(page.getPageNum());
+        return apiPage;
     }
 }

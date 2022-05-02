@@ -95,9 +95,20 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_DELETE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.PWD_RESET);
 
+        DEFAULT_ADMIN_AUTHORITIES.add(PtSubject.SUBJECT_PAGE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtSubject.SUBJECT_DELETE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtSubject.SUBJECT_GET);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtSubject.SUBJECT_UPDATE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtSubject.SUBJECT_INSERT);
+
+        DEFAULT_ADMIN_AUTHORITIES.add(PtScoreSheet.SCOS_PAGE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtScoreSheet.SCOS_DELETE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtScoreSheet.SCOS_UPDATE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtScoreSheet.SCOS_UPLOAD);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtMs.MS_PAGE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtMs.MS_DETAIL);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtMs.MS_STUDETAIL);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtScore.SCORE_PAGE);
 
@@ -199,7 +210,6 @@ public class Authority {
         public static final String SUBJECT_DELETE = "subject:delete";
         public static final String SUBJECT_GET = "subject:get";
         public static final String SUBJECT_INSERT = "subject:insert";
-        public static final String SUBJECT_LIST = "subject:list";
         public static final String SUBJECT_PAGE = "subject:page";
         public static final String SUBJECT_UPDATE = "subject:update";
     }

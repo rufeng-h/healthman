@@ -4,7 +4,6 @@ import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtClassFormdata;
 import com.rufeng.healthman.pojo.dto.ptclass.PtClassPageInfo;
-import com.rufeng.healthman.pojo.dto.ptclass.PtClassTreeItem;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.query.PtClassQuery;
 import com.rufeng.healthman.security.authority.ApiAuthority;
@@ -13,7 +12,6 @@ import com.rufeng.healthman.service.PtClassService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 
@@ -47,13 +44,6 @@ public class PtClassController {
 
     public PtClassController(PtClassService ptClassService) {
         this.ptClassService = ptClassService;
-    }
-
-    @GetMapping("/tree")
-    public ApiResponse<List<PtClassTreeItem>> tree(@Validated PtClassQuery query) {
-        List<PtClass> classList = ptClassService.listClass(query);
-        List<PtClassTreeItem> items = classList.stream().map(PtClassTreeItem::new).collect(Collectors.toList());
-        return ApiResponse.success(items);
     }
 
     @Operation(operationId = Authority.PtClass.CLASS_PAGE, summary = "班级列表")
@@ -105,7 +95,7 @@ public class PtClassController {
 
     @Operation(operationId = Authority.PtClass.CLASS_UPDATE, summary = "更新班级信息")
     @PutMapping
-    public ApiResponse<Boolean> updatePtClass(@RequestBody @Validated PtClassFormdata classFormdata){
+    public ApiResponse<Boolean> updatePtClass(@RequestBody @Validated PtClassFormdata classFormdata) {
         return ApiResponse.success(ptClassService.updatePtClass(classFormdata));
     }
 }

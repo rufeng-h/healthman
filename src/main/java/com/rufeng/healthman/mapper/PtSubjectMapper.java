@@ -1,9 +1,15 @@
 package com.rufeng.healthman.mapper;
 
-import com.github.pagehelper.Page;import com.rufeng.healthman.config.support.ReturnMap;import com.rufeng.healthman.pojo.ptdo.PtSubject;
-import java.util.List;import java.util.Map;
-import com.rufeng.healthman.pojo.query.PtSubjectQuery;import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;
+import com.rufeng.healthman.config.support.ReturnMap;
+import com.rufeng.healthman.pojo.ptdo.PtSubject;
+import com.rufeng.healthman.pojo.query.PtSubjectQuery;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.lang.NonNull;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -73,13 +79,6 @@ public interface PtSubjectMapper {
 
     int batchInsert(@Param("list") List<PtSubject> list);
 
-    /**
-     * 查询所有
-     *
-     * @return list
-     */
-    List<PtSubject> listSubject();
-
     List<PtSubject> listSubjectByIds(List<Long> subIds);
 
     @ReturnMap
@@ -88,4 +87,6 @@ public interface PtSubjectMapper {
     List<String> listLevels(Long subId);
 
     Page<PtSubject> pageSubjectByQueryAndSubIds(@Param("query") PtSubjectQuery query, @Param("list") List<Long> gradeSubIds);
+
+    List<PtSubject> listSubjectByMsId(@NonNull Long msId);
 }

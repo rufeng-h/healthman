@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.OperTypeEnum;
-import com.rufeng.healthman.mapper.PtMeasurementMapper;
+import com.rufeng.healthman.mapper.*;
 import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementDetail;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementInfo;
@@ -18,7 +18,6 @@ import com.rufeng.healthman.pojo.dto.ptsubject.SubjectStatus;
 import com.rufeng.healthman.pojo.m2m.PtMeasurementClass;
 import com.rufeng.healthman.pojo.ptdo.*;
 import com.rufeng.healthman.pojo.query.PtMeasurementQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -39,56 +38,45 @@ import java.util.stream.Collectors;
 public class PtMesurementService {
     private final PtCommonService ptCommonService;
     private final PtMeasurementMapper ptMeasurementMapper;
-    private final PtClassMeasurementService ptClassMeasurementService;
-    private final PtSubjectSubGroupService ptSubjectSubGroupService;
-    private final PtTeacherService ptTeacherService;
-    private final PtSubgroupService ptSubgroupService;
-
-    private PtSubjectService ptSubjectService;
-    private PtScoreService ptScoreService;
-    private PtStudentService ptStudentService;
+    private final PtSubjectSubgroupMapper ptSubjectSubgroupMapper;
+    private final PtScoreMapper ptScoreMapper;
+    private final PtStudentMapper ptStudentMapper;
+    private final PtSubjectMapper ptSubjectMapper;
+    private final PtClassMeasurementMapper ptClassMeasurementMapper;
+    private final PtClassMapper ptClassMapper;
+    private final PtSubgroupMapper ptSubgroupMapper;
+    private final PtTeacherMapper ptTeacherMapper;
 
     public PtMesurementService(PtCommonService ptCommonService,
                                PtMeasurementMapper ptMeasurementMapper,
-                               PtClassMeasurementService ptClassMeasurementService,
-                               PtSubjectSubGroupService ptSubjectSubGroupService,
-                               PtTeacherService ptTeacherService,
-                               PtSubgroupService ptSubgroupService) {
+                               PtSubjectSubgroupMapper ptSubjectSubgroupMapper,
+                               PtScoreMapper ptScoreMapper,
+                               PtStudentMapper ptStudentMapper,
+                               PtSubjectMapper ptSubjectMapper,
+                               PtClassMeasurementMapper ptClassMeasurementMapper,
+                               PtClassMapper ptClassMapper,
+                               PtSubgroupMapper ptSubgroupMapper,
+                               PtTeacherMapper ptTeacherMapper) {
         this.ptCommonService = ptCommonService;
         this.ptMeasurementMapper = ptMeasurementMapper;
-        this.ptClassMeasurementService = ptClassMeasurementService;
-        this.ptSubjectSubGroupService = ptSubjectSubGroupService;
-        this.ptTeacherService = ptTeacherService;
-        this.ptSubgroupService = ptSubgroupService;
-    }
-
-    /**
-     * 循环依赖
-     * TODO
-     */
-    @Autowired
-    public void setPtStudentService(PtStudentService ptStudentService) {
-        this.ptStudentService = ptStudentService;
-    }
-
-    @Autowired
-    public void setPtScoreService(PtScoreService ptScoreService) {
-        this.ptScoreService = ptScoreService;
-    }
-
-    @Autowired
-    public void setPtSubjectService(PtSubjectService ptSubjectService) {
-        this.ptSubjectService = ptSubjectService;
+        this.ptSubjectSubgroupMapper = ptSubjectSubgroupMapper;
+        this.ptScoreMapper = ptScoreMapper;
+        this.ptStudentMapper = ptStudentMapper;
+        this.ptSubjectMapper = ptSubjectMapper;
+        this.ptClassMeasurementMapper = ptClassMeasurementMapper;
+        this.ptClassMapper = ptClassMapper;
+        this.ptSubgroupMapper = ptSubgroupMapper;
+        this.ptTeacherMapper = ptTeacherMapper;
     }
 
     @OperLogRecord(description = "新建体测", operType = OperTypeEnum.INSERT)
     @Transactional(rollbackFor = Exception.class)
     public PtMeasurement addMesurement(PtMeasurementFormdata formdata) {
-        String adminId = ptCommonService.getCurrentUserId();
+        String teacherId = ptCommonService.getCurrentTeacherId();
         PtMeasurement measurement = PtMeasurement.builder()
                 .grpId(formdata.getGrpId())
                 .msName(formdata.getMsName())
-                .msCreatedAdmin(adminId)
+                .msCreatedAdmin(teacherId)
                 .msDesp(formdata.getMsDesp())
                 .build();
         ptMeasurementMapper.insertSelective(measurement);
@@ -96,7 +84,7 @@ public class PtMesurementService {
         List<PtClassMeasurement> list = formdata.getClsCodes().stream().map(code -> PtClassMeasurement.builder()
                 .clsCode(code)
                 .msId(msId).build()).collect(Collectors.toList());
-        ptClassMeasurementService.batchInsertSelective(list);
+        ptClassMeasurementMapper.batchInsertSelective(list);
         return measurement;
     }
 
@@ -104,18 +92,21 @@ public class PtMesurementService {
         PageHelper.startPage(page, pageSize);
         query.setTeaId(ptCommonService.getCurrentTeacherId());
         Page<PtMeasurement> measurements = ptMeasurementMapper.pageMeasurement(query);
+        if (measurements.isEmpty()) {
+            return ApiPage.empty(measurements);
+        }
         List<MeasurementInfo> infoList = measurements.stream().map(MeasurementInfo::new).collect(Collectors.toList());
         List<Long> msIds = measurements.stream().map(PtMeasurement::getMsId).collect(Collectors.toList());
-        /* 查admin */
-        List<PtTeacher> admins = ptTeacherService.listByIds(measurements.stream()
+        /* 查teacher */
+        List<PtTeacher> teachers = ptTeacherMapper.listByIds(measurements.stream()
                 .map(PtMeasurement::getMsCreatedAdmin).collect(Collectors.toList()));
-        Map<String, PtTeacher> aMap = admins.stream().collect(Collectors.toMap(PtTeacher::getTeaId, a -> a));
+        Map<String, PtTeacher> aMap = teachers.stream().collect(Collectors.toMap(PtTeacher::getTeaId, a -> a));
         /* 科目数 */
         List<Long> grpIds = measurements.stream().map(PtMeasurement::getGrpId).collect(Collectors.toList());
-        Map<Long, Integer> grpSubCount = ptSubjectSubGroupService.countSubByGrpIds(grpIds);
-        Map<Long, String> grpNameMap = ptSubgroupService.mapGrpIdGrpNameByIds(grpIds);
+        Map<Long, Integer> grpSubCount = ptSubjectSubgroupMapper.countSubByGrpIds(grpIds);
+        Map<Long, String> grpNameMap = ptSubgroupMapper.mapGrpIdGrpNameByIds(grpIds);
         /* 班级 */
-        List<PtMeasurementClass> classes = ptClassMeasurementService.listClsMeasurementByMsIds(msIds);
+        List<PtMeasurementClass> classes = ptClassMeasurementMapper.listClsMeasurementByMsIds(msIds);
         Map<Long, MeasurementInfo> cMap = infoList.stream().collect(Collectors.toMap(MeasurementInfo::getMsId, s -> s));
         /* 查询学生数 */
         Map<Long, Integer> msStuCount = this.countStuByMsIds(msIds);
@@ -149,9 +140,9 @@ public class PtMesurementService {
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long msId) {
         /* 删除关联记录 */
-        ptClassMeasurementService.delByMsId(msId);
+        ptClassMeasurementMapper.deleteByMsId(msId);
         /* 删除成绩记录 */
-        ptScoreService.deleteByMsId(msId);
+        ptScoreMapper.deleteByMsId(msId);
         return ptMeasurementMapper.deleteByPrimaryKey(msId) == 1;
     }
 
@@ -166,27 +157,27 @@ public class PtMesurementService {
         Long msId = measurement.getMsId();
         ptMeasurementMapper.updateByPrimaryKeySelective(measurement);
         /* 删除原来的关联记录 */
-        ptClassMeasurementService.delByMsId(msId);
+        ptClassMeasurementMapper.deleteByMsId(msId);
         /* 插入现在的关联记录 */
         List<PtClassMeasurement> list = formdata.getClsCodes().stream().map(
                 code -> PtClassMeasurement.builder()
                         .msId(msId)
                         .clsCode(code)
                         .build()).collect(Collectors.toList());
-        return ptClassMeasurementService.batchInsertSelective(list) != 0;
+        return ptClassMeasurementMapper.batchInsertSelective(list) != 0;
     }
 
     public MeasurementDetail getMeasurementDetail(Long msId) {
         PtMeasurement measurement = ptMeasurementMapper.selectByPrimaryKey(msId);
-        /* 查admin */
-        PtTeacher admin = ptTeacherService.getTeacher(measurement.getMsCreatedAdmin());
+        /* 查teacher */
+        PtTeacher admin = ptTeacherMapper.selectByPrimaryKey(measurement.getMsCreatedAdmin());
         /* 查科目组 */
-        PtSubgroup subgroup = ptSubgroupService.getSubGrp(measurement.getGrpId());
+        PtSubgroup subgroup = ptSubgroupMapper.selectByPrimaryKey(measurement.getGrpId());
         /* 查科目 */
-        List<Long> subIds = ptSubjectSubGroupService.listSubIdByGrpId(subgroup.getGrpId());
-        List<PtSubject> subjects = ptSubjectService.listSubject(subIds);
+        List<Long> subIds = ptSubjectSubgroupMapper.listSubIdByGrpId(subgroup.getGrpId());
+        List<PtSubject> subjects = ptSubjectMapper.listSubjectByIds(subIds);
         /* 查班级 */
-        List<PtClass> classes = ptClassMeasurementService.listClassByMsId(msId);
+        List<PtClass> classes = ptClassMapper.listClassByMsId(msId);
         /* 查学生总人数 */
         int totalStuCnt = ptMeasurementMapper.countStuByMsId(msId);
         /* 查已完成人数 */
@@ -195,28 +186,24 @@ public class PtMesurementService {
     }
 
 
-    public List<PtMeasurement> listMeasurement(List<Long> msIds) {
-        if (msIds.size() == 0) {
-            return Collections.emptyList();
-        }
-        return ptMeasurementMapper.listMeasurement(msIds);
-    }
-
     public ApiPage<StuMeasurementDetail> pageStuMsDetail(Integer page, Integer pageSize, String stuId) {
         PageHelper.startPage(page, pageSize);
         Page<PtMeasurement> measurements = ptMeasurementMapper.pageStuMs(stuId);
+        if (measurements.isEmpty()) {
+            return ApiPage.empty(measurements);
+        }
         List<Long> msIds = measurements.stream().map(PtMeasurement::getMsId).collect(Collectors.toList());
         /* 查询体测各科目完成情况 */
         List<MeasurementSubStatus> subStatuses = ptMeasurementMapper.listMsSubStatus(stuId, msIds);
         List<Long> subIds = subStatuses.stream().map(MeasurementSubStatus::getSubId).collect(Collectors.toList());
-        List<PtSubject> subjects = ptSubjectService.listSubject(subIds);
+        List<PtSubject> subjects = ptSubjectMapper.listSubjectByIds(subIds);
         Map<Long, PtSubject> subMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubId, s -> s));
         /* 查分数 */
-        List<PtScore> scores = ptScoreService.listScoreByStuIdAndMsIds(stuId, msIds);
+        List<PtScore> scores = ptScoreMapper.listScoreByStuIdAndMsIds(stuId, msIds);
         /* 查admin */
-        List<String> adminIds = measurements.stream().map(PtMeasurement::getMsCreatedAdmin).distinct().collect(Collectors.toList());
-        List<PtTeacher> admins = ptTeacherService.listByIds(adminIds);
-        Map<String, PtTeacher> adminMap = admins.stream().collect(Collectors.toMap(PtTeacher::getTeaId, a -> a));
+        List<String> teaIds = measurements.stream().map(PtMeasurement::getMsCreatedAdmin).distinct().collect(Collectors.toList());
+        List<PtTeacher> teachers = ptTeacherMapper.listByIds(teaIds);
+        Map<String, PtTeacher> adminMap = teachers.stream().collect(Collectors.toMap(PtTeacher::getTeaId, a -> a));
         /* 组装科目 */
         Map<Long, List<SubjectStatus>> resSubMap = new HashMap<>(10);
         subStatuses.forEach(status -> {
@@ -236,18 +223,14 @@ public class PtMesurementService {
         return ApiPage.convert(measurements, res);
     }
 
-    public Map<Long, Boolean> listStuMsStatus(String stuId) {
-        return ptMeasurementMapper.listStuMsStatus(stuId);
-    }
-
     public PtMeasurement getMeasurement(long msId) {
         return ptMeasurementMapper.selectByPrimaryKey(msId);
     }
 
     public Resource excelTemplate(Long msId) {
-        List<PtStudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
+        List<PtStudentBaseInfo> students = ptStudentMapper.listStuBaseInfoByMsId(msId);
         List<List<String>> data = students.stream().map(s -> List.of(s.getStuId())).collect(Collectors.toList());
-        List<PtSubject> ptSubjects = ptSubjectService.listSubject(msId);
+        List<PtSubject> ptSubjects = ptSubjectMapper.listSubjectByMsId(msId);
         List<List<String>> header = ptSubjects.stream().map(s -> List.of(s.getSubName())).collect(Collectors.toList());
         header.add(0, List.of("学号"));
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

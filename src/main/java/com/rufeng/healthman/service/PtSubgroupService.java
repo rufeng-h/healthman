@@ -7,6 +7,7 @@ import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.mapper.PtSubGroupShareMapper;
 import com.rufeng.healthman.mapper.PtSubgroupMapper;
+import com.rufeng.healthman.mapper.PtSubjectSubgroupMapper;
 import com.rufeng.healthman.mapper.PtTeacherMapper;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
 import com.rufeng.healthman.pojo.data.PtSubGrpShareFormdata;
@@ -36,19 +37,19 @@ public class PtSubgroupService {
 
     private final PtSubgroupMapper ptSubgroupMapper;
     private final PtCommonService ptCommonService;
-    private final PtSubjectSubGroupService ptSubjectSubGroupService;
     private final PtSubGroupShareMapper ptSubGroupShareMapper;
     private final PtTeacherMapper ptTeacherMapper;
+    private final PtSubjectSubgroupMapper ptSubjectSubgroupMapper;
 
     public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper,
                              PtCommonService ptCommonService,
-                             PtSubjectSubGroupService ptSubjectSubGroupService,
-                             PtSubGroupShareMapper ptSubGroupShareMapper, PtTeacherMapper ptTeacherMapper) {
+                             PtSubGroupShareMapper ptSubGroupShareMapper,
+                             PtTeacherMapper ptTeacherMapper, PtSubjectSubgroupMapper ptSubjectSubgroupMapper) {
         this.ptSubgroupMapper = ptSubgroupMapper;
         this.ptCommonService = ptCommonService;
-        this.ptSubjectSubGroupService = ptSubjectSubGroupService;
         this.ptSubGroupShareMapper = ptSubGroupShareMapper;
         this.ptTeacherMapper = ptTeacherMapper;
+        this.ptSubjectSubgroupMapper = ptSubjectSubgroupMapper;
     }
 
     public List<PtSubgroup> listSubGroup() {
@@ -72,7 +73,7 @@ public class PtSubgroupService {
                                 .subId(subId)
                                 .grpId(grpId).build())
                 .collect(Collectors.toList());
-        ptSubjectSubGroupService.batchInsertSelective(subjectSubgroups);
+        ptSubjectSubgroupMapper.batchInsertSelective(subjectSubgroups);
         return subgroup;
     }
 
@@ -100,14 +101,18 @@ public class PtSubgroupService {
         PageHelper.startPage(page, pageSize);
         ApiPage<SubGroupInfo> groupInfos = query.getSelf() ?
                 this.pageOwnerSubGroupInfo(query) : this.pageAllSubgroupInfo(query);
+        if (groupInfos.getItems().isEmpty()) {
+            return groupInfos;
+        }
         /* 查询科目 */
         List<Long> grpIds = groupInfos.getItems().stream().map(SubGroupInfo::getGrpId).collect(Collectors.toList());
-        List<PtSubGrpSubject> subGrpSubjects = ptSubjectSubGroupService.listSubGrpSubject(grpIds);
+        List<PtSubGrpSubject> subGrpSubjects = ptSubjectSubgroupMapper.listSubGrpSubject(grpIds);
         Map<Long, List<PtSubject>> map = subGrpSubjects.stream().collect(
                 Collectors.toMap(PtSubGrpSubject::getGrpId, PtSubGrpSubject::getSubjects));
         /* 已分享对象 */
         List<PtSubGrpShareTeaId> shareTeaIds = ptSubGroupShareMapper.listSharedTeaIds(grpIds);
-        Map<Long, List<String>> sharedTo = shareTeaIds.stream().collect(Collectors.toMap(PtSubGrpShareTeaId::getGrpId, PtSubGrpShareTeaId::getTeaIds));
+        Map<Long, List<String>> sharedTo = shareTeaIds.stream()
+                .collect(Collectors.toMap(PtSubGrpShareTeaId::getGrpId, PtSubGrpShareTeaId::getTeaIds));
         groupInfos.getItems().forEach(g -> {
             g.setSubjects(map.get(g.getGrpId()));
             g.setSharedTeaIds(sharedTo.get(g.getGrpId()));
@@ -115,27 +120,19 @@ public class PtSubgroupService {
         return groupInfos;
     }
 
-    public PtSubgroup getSubGrp(Long grpId) {
-        return ptSubgroupMapper.selectByPrimaryKey(grpId);
-    }
-
-    public Map<Long, String> mapGrpIdGrpNameByIds(List<Long> grpIds) {
-        if (grpIds.size() == 0) {
-            return Collections.emptyMap();
-        }
-        return ptSubgroupMapper.mapGrpIdGrpNameByIds(grpIds);
-    }
-
     @OperLogRecord(description = "删除科目组", operType = OperTypeEnum.DELETE)
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteGrp(Long grpId) {
-        ptSubjectSubGroupService.deleteByGrpId(grpId);
+        ptSubjectSubgroupMapper.deleteByGrpId(grpId);
         return ptSubgroupMapper.deleteByPrimaryKey(grpId) == 1;
     }
 
+    /**
+     * 应该主键删除 TODO
+     */
     @OperLogRecord(description = "从科目组删除科目", operType = OperTypeEnum.DELETE)
     public boolean deleteSub(Long grpId, Long subId) {
-        return ptSubjectSubGroupService.deleteByGrpIdAndSubId(grpId, subId) == 1;
+        return ptSubjectSubgroupMapper.deleteByGrpIdAndSubId(grpId, subId) == 1;
     }
 
     @Transactional(rollbackFor = Exception.class)

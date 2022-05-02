@@ -6,7 +6,6 @@ import com.rufeng.healthman.pojo.file.PtCollegeExcel;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Map;
@@ -87,14 +86,6 @@ public interface PtCollegeMapper {
     List<PtCollege> listCollege();
 
     /**
-     * 主键查
-     *
-     * @param clgCode 学院代码
-     * @return college
-     */
-    PtCollege getCollege(@NonNull @Param("clgCode") String clgCode);
-
-    /**
      * excel批量添加
      *
      * @param cachedDataList data
@@ -104,9 +95,6 @@ public interface PtCollegeMapper {
 
     @ReturnMap
     Map<String, String> mapClgNameByIds(@Param("items") List<String> clgs);
-
-    @ReturnMap
-    Map<String, String> mapAdminIdClgNameByIds(@Param("items") List<String> collect);
 
     Page<PtCollege> page();
 }

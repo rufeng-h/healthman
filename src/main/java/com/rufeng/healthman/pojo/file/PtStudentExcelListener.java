@@ -7,8 +7,8 @@ import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
+import com.rufeng.healthman.mapper.PtClassMapper;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
-import com.rufeng.healthman.service.PtClassService;
 import com.rufeng.healthman.service.PtStudentService;
 
 import java.nio.charset.StandardCharsets;
@@ -36,7 +36,7 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
     private List<PtStudentExcel> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
     @SuppressWarnings("UnstableApiUsage")
-    public PtStudentExcelListener(PtStudentService ptStudentService, PtClassService ptClassService, String clsCode) {
+    public PtStudentExcelListener(PtStudentService ptStudentService, PtClassMapper ptClassMapper, String clsCode) {
         this.ptStudentService = ptStudentService;
         this.clsCode = clsCode;
         List<String> stuIds = ptStudentService.listStuId();
@@ -44,7 +44,7 @@ public class PtStudentExcelListener extends AnalysisEventListener<PtStudentExcel
                 Funnels.stringFunnel(StandardCharsets.UTF_8), 1 << 20, 0.001);
         stuIds.forEach(stuIdBloomFilter::put);
         /* 可以只返回名称和代码 */
-        List<PtClass> classes = ptClassService.listClass();
+        List<PtClass> classes = ptClassMapper.listClass();
         clsMap = classes.stream().collect(Collectors.toMap(PtClass::getClsName, PtClass::getClsCode));
     }
 

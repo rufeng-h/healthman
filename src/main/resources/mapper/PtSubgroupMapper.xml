@@ -327,12 +327,10 @@
 
     <select id="mapGrpIdGrpNameByIds" resultType="java.util.Map">
         SELECT grp_id, grp_name
-        FROM pt_subgroup
-        <where>
-            <foreach close=")" collection="list" item="item" open="grp_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_subgroup WHERE grp_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <select id="pageAllSubGroup" resultType="com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo">

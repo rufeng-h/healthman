@@ -80,13 +80,10 @@ public interface PtClassMapper {
 
     int batchInsert(@Param("list") List<PtClass> list);
 
-    /**
-     * 同上，不分页
-     *
-     * @param query 查询参数
-     * @return page
-     */
-    List<PtClass> listClass(@NonNull PtClassQuery query);
+
+    List<PtClass> listClassByQuery(PtClassQuery query);
+
+    List<PtClass> listClass();
 
     /**
      * 插入excel数据
@@ -115,4 +112,6 @@ public interface PtClassMapper {
     Page<PtClass> page(PtClassQuery ptClassQuery);
 
     List<PtClass> listByTeaIds(List<String> teaIds);
+
+    List<PtClass> listClassByMsId(Long msId);
 }

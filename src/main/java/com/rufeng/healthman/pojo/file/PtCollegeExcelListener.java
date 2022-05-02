@@ -62,6 +62,9 @@ public class PtCollegeExcelListener extends AnalysisEventListener<PtCollegeExcel
         if (clgNames.contains(data.getClgName())) {
             throw new ExcelException("学院名重复！");
         }
+        if (StringUtils.isEmptyOrBlank(data.getClgHome())){
+            throw new ExcelException("学院主页不能为空！");
+        }
         clgNames.add(data.getClgName());
         clgCodes.add(data.getClgCode());
     }

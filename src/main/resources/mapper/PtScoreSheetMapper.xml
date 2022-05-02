@@ -406,11 +406,10 @@
     <select id="listSubIdBySubIds" resultType="long">
         SELECT DISTINCT sub_id
         FROM pt_score_sheet
-        <where>
-            <foreach close=")" collection="list" item="item" open="sub_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        WHERE sub_id IN
+        (<foreach collection="list" item="item" separator=",">
+        #{item}
+    </foreach>)
     </select>
 
     <delete id="deleteBySubId">
@@ -446,11 +445,9 @@
 
     <delete id="deleteByIds">
         DELETE
-        FROM pt_score_sheet
-        <where>
-            <foreach collection="list" item="item" close=")" open="id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_score_sheet WHERE id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </delete>
 </mapper>

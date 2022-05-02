@@ -222,12 +222,10 @@
 
     <select id="listSubStudentBySubIds" resultType="com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent">
         SELECT id, sub_id, grade, gender
-        FROM pt_sub_student
-        <where>
-            <foreach close=")" collection="list" item="item" open="sub_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_sub_student WHERE sub_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <insert id="batchInsertSelective">
@@ -257,11 +255,9 @@
 
     <delete id="deleteByIds">
         DELETE
-        FROM pt_sub_student
-        <where>
-            <foreach collection="list" item="item" separator="," open="id IN (" close=")">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_sub_student WHERE id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </delete>
 </mapper>

@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.OperTypeEnum;
-import com.rufeng.healthman.mapper.PtScoreMapper;
+import com.rufeng.healthman.mapper.*;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptscore.PtScoreInfo;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
@@ -37,21 +37,21 @@ import java.util.stream.Collectors;
 @Service
 public class PtScoreService {
     private final PtScoreMapper ptScoreMapper;
-    private final PtStudentService ptStudentService;
-    private final PtSubStudentService ptSubStudentService;
-    private final PtScoreSheetService ptScoreSheetService;
-    private final PtSubjectService ptSubjectService;
+    private final PtSubStudentMapper ptSubStudentMapper;
+    private final PtStudentMapper ptStudentMapper;
+    private final PtSubjectMapper ptSubjectMapper;
+    private final PtScoreSheetMapper ptScoreSheetMapper;
 
     public PtScoreService(PtScoreMapper ptScoreMapper,
-                          PtStudentService ptStudentService,
-                          PtSubStudentService ptSubStudentService,
-                          PtScoreSheetService ptScoreSheetService,
-                          PtSubjectService ptSubjectService) {
+                          PtSubStudentMapper ptSubStudentMapper,
+                          PtStudentMapper ptStudentMapper,
+                          PtSubjectMapper ptSubjectMapper,
+                          PtScoreSheetMapper ptScoreSheetMapper) {
         this.ptScoreMapper = ptScoreMapper;
-        this.ptStudentService = ptStudentService;
-        this.ptSubStudentService = ptSubStudentService;
-        this.ptScoreSheetService = ptScoreSheetService;
-        this.ptSubjectService = ptSubjectService;
+        this.ptSubStudentMapper = ptSubStudentMapper;
+        this.ptSubjectMapper = ptSubjectMapper;
+        this.ptStudentMapper = ptStudentMapper;
+        this.ptScoreSheetMapper = ptScoreSheetMapper;
     }
 
     public Integer addScoreSelective(List<PtScore> dataList) {
@@ -64,8 +64,8 @@ public class PtScoreService {
 
     @OperLogRecord(description = "上传体测成绩", operType = OperTypeEnum.INSERT)
     public Integer uploadScore(MultipartFile file, Long msId) {
-        PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectService, this,
-                ptStudentService, ptSubStudentService, ptScoreSheetService, msId);
+        PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectMapper, this,
+                ptStudentMapper, ptSubStudentMapper, ptScoreSheetMapper, msId);
         try {
             EasyExcel.read(file.getInputStream(), listener).sheet().doRead();
         } catch (IOException e) {
@@ -79,6 +79,9 @@ public class PtScoreService {
         PageHelper.startPage(page, pageSize);
         /* 为分页 */
         Page<MeasurementScoreInfo> measurementScoreInfos = ptScoreMapper.pageStuScoreInfo(query);
+        if (measurementScoreInfos.size() == 0) {
+            return ApiPage.empty(measurementScoreInfos);
+        }
         List<String> stuIds = measurementScoreInfos.stream().map(MeasurementScoreInfo::getStuId).collect(Collectors.toList());
         List<PtScore> scores = this.listScoreByStuIds(stuIds, query);
         /* 学生基本信息 */
@@ -86,7 +89,7 @@ public class PtScoreService {
                 .collect(Collectors.toMap(MeasurementScoreInfo::getStuId, s -> s));
         /* 查科目 */
         List<Long> subIds = scores.stream().map(PtScore::getSubId).distinct().collect(Collectors.toList());
-        Map<Long, String> sMap = ptSubjectService.mapSubIdSubNameByIds(subIds);
+        Map<Long, String> sMap = ptSubjectMapper.mapSubIdSubNameByIds(subIds);
         scores.forEach(s -> infoMap.get(s.getStuId()).getScores().add(new PtScoreInfo(s, sMap.get(s.getSubId()))));
         return ApiPage.convert(measurementScoreInfos);
     }
@@ -98,10 +101,6 @@ public class PtScoreService {
         return ptScoreMapper.listScoreByStuIds(stuIds, query);
     }
 
-    public int deleteByMsId(Long msId) {
-        return ptScoreMapper.deleteByMsId(msId);
-    }
-
     public Resource downloadScore(PtScoreQuery query) {
         /* 基本信息 */
         List<PtStudentBaseInfo> stuInfos = ptScoreMapper.listStuBaseInfo(query);
@@ -111,7 +110,7 @@ public class PtScoreService {
         List<PtScore> scores = this.listScoreByStuIds(stuIds, query);
         /* 科目信息 */
         List<Long> subIds = scores.stream().map(PtScore::getSubId).distinct().collect(Collectors.toList());
-        Map<Long, String> subMap = ptSubjectService.mapSubIdSubNameByIds(subIds);
+        Map<Long, String> subMap = ptSubjectMapper.mapSubIdSubNameByIds(subIds);
         /* excel数据 */
         List<PtStuScoreExportExcel> excels = scores.stream().map(s ->
                         new PtStuScoreExportExcel(stuMap.get(s.getStuId()), subMap.get(s.getSubId()), s))
@@ -126,17 +125,13 @@ public class PtScoreService {
     public ApiPage<PtScoreInfo> pageStuScore(Integer page, Integer pageSize, PtScoreQuery query) {
         PageHelper.startPage(page, pageSize);
         Page<PtScore> scores = ptScoreMapper.pageScore(query);
+        if (scores.isEmpty()) {
+            return ApiPage.empty(scores);
+        }
         /* 查科目 */
         List<Long> subIds = scores.stream().map(PtScore::getSubId).distinct().collect(Collectors.toList());
-        Map<Long, String> subNameMap = ptSubjectService.mapSubIdSubNameByIds(subIds);
+        Map<Long, String> subNameMap = ptSubjectMapper.mapSubIdSubNameByIds(subIds);
         List<PtScoreInfo> infos = scores.stream().map(s -> new PtScoreInfo(s, subNameMap.get(s.getSubId()))).collect(Collectors.toList());
         return ApiPage.convert(scores, infos);
-    }
-
-    public List<PtScore> listScoreByStuIdAndMsIds(String stuId, List<Long> msIds) {
-        if (stuId == null || msIds.size() == 0) {
-            return Collections.emptyList();
-        }
-        return ptScoreMapper.listScoreByStuIdAndMsIds(stuId, msIds);
     }
 }

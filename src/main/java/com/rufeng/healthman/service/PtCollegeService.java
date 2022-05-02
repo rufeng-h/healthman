@@ -13,7 +13,6 @@ import com.rufeng.healthman.pojo.file.PtCollegeExcelListener;
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
 import com.rufeng.healthman.pojo.ptdo.PtTeacher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
@@ -40,16 +39,30 @@ import java.util.stream.Collectors;
 public class PtCollegeService {
     private final PtCollegeMapper ptCollegeMapper;
     private final PtTeacherMapper ptTeacherMapper;
-    private PtTeacherService ptTeacherService;
 
     public PtCollegeService(PtCollegeMapper ptCollegeMapper, PtTeacherMapper ptTeacherMapper) {
         this.ptCollegeMapper = ptCollegeMapper;
         this.ptTeacherMapper = ptTeacherMapper;
     }
 
-    @Autowired
-    public void setPtTeacherService(PtTeacherService ptTeacherService) {
-        this.ptTeacherService = ptTeacherService;
+    public static List<String> getClgCodeFromClasses(List<PtClass> classes) {
+        List<String> clgCodes = new ArrayList<>();
+        classes.stream().map(PtClass::getClgCode).forEach(clgCode -> {
+            if (clgCode != null) {
+                clgCodes.add(clgCode);
+            }
+        });
+        return clgCodes;
+    }
+
+    public static List<String> getClgCodeFromTeachers(List<PtTeacher> teachers) {
+        List<String> clgCodes = new ArrayList<>();
+        teachers.stream().map(PtTeacher::getClgCode).forEach(clgCode -> {
+            if (clgCode != null) {
+                clgCodes.add(clgCode);
+            }
+        });
+        return clgCodes;
     }
 
     public List<PtCollege> listCollege() {
@@ -60,7 +73,7 @@ public class PtCollegeService {
         if (clgCode == null) {
             return null;
         }
-        return ptCollegeMapper.getCollege(clgCode);
+        return ptCollegeMapper.selectByPrimaryKey(clgCode);
     }
 
     public Integer uploadCollege(MultipartFile file) {
@@ -73,14 +86,12 @@ public class PtCollegeService {
         return listener.getHandledCount();
     }
 
-
     public int addCollegeSelective(List<PtCollegeExcel> cachedDataList) {
         if (cachedDataList.size() == 0) {
             return 0;
         }
         return ptCollegeMapper.batchInsertSelective(cachedDataList);
     }
-
 
     public Resource fileTemplate() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -89,38 +100,14 @@ public class PtCollegeService {
         return new ByteArrayResource(outputStream.toByteArray());
     }
 
-    public Map<String, String> mapClgNameByIds(List<String> collect) {
-        if (collect.size() == 0) {
-            return Collections.emptyMap();
-        }
-        return ptCollegeMapper.mapClgNameByIds(collect);
-    }
-
-    public List<String> getClgCodeFromTeachers(List<PtTeacher> teachers) {
-        List<String> clgCodes = new ArrayList<>();
-        teachers.stream().map(PtTeacher::getClgCode).forEach(clgCode -> {
-            if (clgCode != null) {
-                clgCodes.add(clgCode);
-            }
-        });
-        return clgCodes;
-    }
-
-    public List<String> getClgCodeFromClasses(List<PtClass> classes) {
-        List<String> clgCodes = new ArrayList<>();
-        classes.stream().map(PtClass::getClgCode).forEach(clgCode -> {
-            if (clgCode != null) {
-                clgCodes.add(clgCode);
-            }
-        });
-        return clgCodes;
-    }
-
     public ApiPage<PtCollegePageInfo> pageCollegeInfo(Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         Page<PtCollege> colleges = ptCollegeMapper.page();
+        if (colleges.isEmpty()) {
+            return ApiPage.empty(colleges);
+        }
         List<String> clgCodes = colleges.stream().map(PtCollege::getClgCode).collect(Collectors.toList());
-        List<PtTeacher> teachers = ptTeacherService.listPrincipal(clgCodes);
+        List<PtTeacher> teachers = ptTeacherMapper.listPrincipal(clgCodes);
         Map<String, PtTeacher> teacherMap = teachers.stream().collect(Collectors.toMap(PtTeacher::getClgCode, t -> t));
         List<PtCollegePageInfo> infos = colleges.stream().map(c -> new PtCollegePageInfo(c,
                 teacherMap.get(c.getClgCode()))).collect(Collectors.toList());

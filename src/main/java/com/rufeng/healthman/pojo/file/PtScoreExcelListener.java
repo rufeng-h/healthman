@@ -5,13 +5,17 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.util.ListUtils;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
+import com.rufeng.healthman.mapper.PtScoreSheetMapper;
+import com.rufeng.healthman.mapper.PtStudentMapper;
+import com.rufeng.healthman.mapper.PtSubStudentMapper;
+import com.rufeng.healthman.mapper.PtSubjectMapper;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.pojo.dto.ptstu.PtStudentBaseInfo;
 import com.rufeng.healthman.pojo.ptdo.PtScore;
 import com.rufeng.healthman.pojo.ptdo.PtScoreSheet;
 import com.rufeng.healthman.pojo.ptdo.PtSubStudent;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
-import com.rufeng.healthman.service.*;
+import com.rufeng.healthman.service.PtScoreService;
 import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
@@ -33,9 +37,9 @@ import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER;
 public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, String>> {
     private static final String STUDENT_ID_HEADER = "学号";
     private static final int BATCH_COUNT = 100;
-    private final PtSubStudentService ptSubStudentService;
     private final PtScoreService ptScoreService;
-    private final PtScoreSheetService ptScoreSheetService;
+    private final PtSubStudentMapper ptSubStudentMapper;
+    private final PtScoreSheetMapper ptScoreSheetMapper;
     /**
      * 科目名查Id
      */
@@ -52,21 +56,21 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
     private int stuIdColumnIndex = -1;
 
     public PtScoreExcelListener(
-            PtSubjectService ptSubjectService,
+            PtSubjectMapper ptSubjectMapper,
             PtScoreService ptScoreService,
-            PtStudentService ptStudentService,
-            PtSubStudentService ptSubStudentService,
-            PtScoreSheetService ptScoreSheetService,
+            PtStudentMapper ptStudentMapper,
+            PtSubStudentMapper ptSubStudentMapper,
+            PtScoreSheetMapper ptScoreSheetMapper,
             long msId) {
-        this.ptSubStudentService = ptSubStudentService;
-        this.ptScoreSheetService = ptScoreSheetService;
+        this.ptSubStudentMapper = ptSubStudentMapper;
+        this.ptScoreSheetMapper = ptScoreSheetMapper;
         this.msId = msId;
         this.ptScoreService = ptScoreService;
         /* 所有参加本次测验的学生 */
-        List<PtStudentBaseInfo> students = ptStudentService.listStuBaseInfoByMsId(msId);
+        List<PtStudentBaseInfo> students = ptStudentMapper.listStuBaseInfoByMsId(msId);
         stuInfoMap = students.stream().collect(Collectors.toMap(PtStudentBaseInfo::getStuId, s -> s));
         /* 本次测验所有科目  */
-        List<PtSubject> subjects = ptSubjectService.listSubject(msId);
+        List<PtSubject> subjects = ptSubjectMapper.listSubjectByMsId(msId);
         subjectMap = subjects.stream().collect(Collectors.toMap(PtSubject::getSubName, PtSubject::getSubId));
         colSubIdMap = new HashMap<>(subjectMap.size());
     }
@@ -112,12 +116,12 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
             SubStudent subStudent = new SubStudent(baseInfo, subId);
             /* 是否需要测试该科目 */
             if (!scoreSheetcache.containsKey(subStudent)) {
-                PtSubStudent s = ptSubStudentService.getBySubStudent(subStudent);
+                PtSubStudent s = ptSubStudentMapper.selectByPrimaryKey(subStudent.getSubId(), subStudent.getGrade(), subStudent.getGender().getGender());
                 if (s == null) {
                     throw new ExcelException("学号" + curStuId + "无需测试" + key + "科目");
                 }
                 /* 评分标准 */
-                List<PtScoreSheet> sheets = ptScoreSheetService.listScoreSheet(subStudent);
+                List<PtScoreSheet> sheets = ptScoreSheetMapper.listScoreSheetBySubStudent(subStudent);
                 scoreSheetcache.put(subStudent, sheets);
             }
             if (!StringUtils.isValidNumber(value)) {

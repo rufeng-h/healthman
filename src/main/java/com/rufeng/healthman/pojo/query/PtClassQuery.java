@@ -4,6 +4,8 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotBlank;
+
 
 /**
  * @author rufeng
@@ -21,4 +23,6 @@ public class PtClassQuery {
     private String clgCode;
     @Range(min = 1, max = 16)
     private Integer grade;
+    @Length(min = 1)
+    private String teaId;
 }

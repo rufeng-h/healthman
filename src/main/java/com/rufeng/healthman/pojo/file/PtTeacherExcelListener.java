@@ -7,9 +7,9 @@ import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
+import com.rufeng.healthman.mapper.PtCollegeMapper;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherClgIdentity;
 import com.rufeng.healthman.pojo.ptdo.PtCollege;
-import com.rufeng.healthman.service.PtCollegeService;
 import com.rufeng.healthman.service.PtTeacherService;
 
 import java.nio.charset.StandardCharsets;
@@ -37,9 +37,9 @@ public class PtTeacherExcelListener extends AnalysisEventListener<PtTeacherExcel
 
     @SuppressWarnings("UnstableApiUsage")
     public PtTeacherExcelListener(PtTeacherService ptTeacherService,
-                                  PtCollegeService ptCollegeService) {
+                                  PtCollegeMapper ptCollegeMapper) {
         this.ptTeacherService = ptTeacherService;
-        clgMap = ptCollegeService.listCollege().stream().collect(
+        clgMap = ptCollegeMapper.listCollege().stream().collect(
                 Collectors.toMap(PtCollege::getClgName, PtCollege::getClgCode));
         List<PtTeacherClgIdentity> clgIdentities = ptTeacherService.listClgIdentity();
         teaIdBloomFilter = BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), 1 << 16, 0.001);

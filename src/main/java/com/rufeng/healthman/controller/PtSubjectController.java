@@ -5,7 +5,6 @@ import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtSubjectFormdata;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectDetail;
 import com.rufeng.healthman.pojo.dto.ptsubject.SubjectInfo;
-import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.query.PtSubjectQuery;
 import com.rufeng.healthman.security.authority.ApiAuthority;
 import com.rufeng.healthman.security.authority.Authority;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.List;
 
 import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 
@@ -28,7 +26,6 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
  * @author rufeng
  * @time 2022-03-17 18:40
  * @package com.rufeng.healthman.controller
- * @description TODO
  */
 @RequestMapping("/api/subject")
 @Validated
@@ -41,12 +38,6 @@ public class PtSubjectController {
 
     public PtSubjectController(PtSubjectService ptSubjectService) {
         this.ptSubjectService = ptSubjectService;
-    }
-
-    @Operation(operationId = Authority.PtSubject.SUBJECT_LIST, summary = "所有科目")
-    @GetMapping("/list")
-    public ApiResponse<List<PtSubject>> listSubject() {
-        return ApiResponse.success(ptSubjectService.listSubject());
     }
 
     @Operation(operationId = Authority.PtSubject.SUBJECT_INSERT, summary = "新增科目")

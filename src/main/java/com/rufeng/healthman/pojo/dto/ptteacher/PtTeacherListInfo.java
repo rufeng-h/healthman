@@ -2,6 +2,7 @@ package com.rufeng.healthman.pojo.dto.ptteacher;
 
 import com.rufeng.healthman.pojo.ptdo.PtTeacher;
 import lombok.Data;
+import org.springframework.lang.Nullable;
 
 /**
  * @author rufeng
@@ -17,11 +18,16 @@ public class PtTeacherListInfo {
     /**
      * 所属学院
      */
+    @Nullable
     private String clgName;
 
-    public PtTeacherListInfo(PtTeacher teacher, String clgName) {
+    public PtTeacherListInfo(PtTeacher teacher, @Nullable String clgName) {
         this.teaId = teacher.getTeaId();
         this.teaName = teacher.getTeaName();
         this.clgName = clgName;
+    }
+
+    public PtTeacherListInfo(PtTeacher teacher) {
+        this(teacher, null);
     }
 }

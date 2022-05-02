@@ -1,9 +1,10 @@
 package com.rufeng.healthman.mapper;
 
 import com.rufeng.healthman.pojo.ptdo.PtAdmin;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**

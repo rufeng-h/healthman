@@ -2,10 +2,9 @@ package com.rufeng.healthman.controller;
 
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtLoginFormdata;
-import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
+import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
-import com.rufeng.healthman.pojo.dto.support.PtMenuItem;
 import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.service.FileService;
 import com.rufeng.healthman.service.PtCommonService;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
-import java.util.List;
 
 import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 
@@ -78,12 +76,5 @@ public class PtCommonController {
     @Operation(description = "更新用户信息")
     public ApiResponse<Boolean> updateUser(@RequestBody @Validated PtUserFormdata formdata) {
         return ApiResponse.success(ptCommonService.updateUser(formdata));
-    }
-
-    @SecurityRequirement(name = JWT_SCHEME_NAME)
-    @GetMapping("/api/menu")
-    @Operation(description = "获取用户菜单")
-    public ApiResponse<List<PtMenuItem>> menuList() {
-        return ApiResponse.success(ptCommonService.listMenu());
     }
 }

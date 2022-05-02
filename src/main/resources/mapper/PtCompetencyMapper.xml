@@ -267,12 +267,10 @@
     <select id="listCompByIds" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pt_competency
-        <where>
-            <foreach close=")" collection="list" item="item" open="comp_id IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        FROM pt_competency WHERE comp_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
 
     <select id="listComp" resultMap="BaseResultMap">

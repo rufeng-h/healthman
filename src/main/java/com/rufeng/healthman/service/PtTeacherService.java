@@ -10,7 +10,7 @@ import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
-import com.rufeng.healthman.mapper.PtTeacherMapper;
+import com.rufeng.healthman.mapper.*;
 import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
@@ -27,7 +27,6 @@ import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.authentication.AuthenticationImpl;
 import com.rufeng.healthman.security.support.UserInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -55,53 +54,47 @@ import static com.rufeng.healthman.security.authority.Authority.DEFAULT_TEACHER_
 @Service
 public class PtTeacherService {
     private static final String DEFAULT_PWD = "123456";
+    private final PtTeacherRoleMapper ptTeacherRoleMapper;
     private final PtTeacherMapper ptTeacherMapper;
     private final RedisService redisService;
     private final FileService fileService;
-    private final PtTeacherRoleService ptTeacherRoleService;
-    private final PtRoleService ptRoleService;
-    private final PtRoleOperService ptRoleOperService;
-    private final PtOperationService ptOperationService;
-    private PtCollegeService ptCollegeService;
-    private PtClassService ptClassService;
+    private final PtClassMapper ptClassMapper;
+    private final PtCollegeMapper ptCollegeMapper;
+    private final PtOperationMapper ptOperationMapper;
+    private final PtRoleOperMapper ptRoleOperMapper;
+    private final PtRoleMapper ptRoleMapper;
 
-    public PtTeacherService(PtTeacherMapper ptTeacherMapper,
+    public PtTeacherService(PtTeacherRoleMapper ptTeacherRoleMapper, PtTeacherMapper ptTeacherMapper,
                             RedisService redisService,
                             FileService fileService,
-                            PtTeacherRoleService ptTeacherRoleService,
-                            PtRoleService ptRoleService,
-                            PtRoleOperService ptRoleOperService, PtOperationService ptOperationService) {
+                            PtClassMapper ptClassMapper,
+                            PtCollegeMapper ptCollegeMapper,
+                            PtOperationMapper operationMapper,
+                            PtRoleOperMapper ptRoleOperMapper, PtRoleMapper ptRoleMapper) {
+        this.ptTeacherRoleMapper = ptTeacherRoleMapper;
         this.ptTeacherMapper = ptTeacherMapper;
         this.redisService = redisService;
         this.fileService = fileService;
-        this.ptTeacherRoleService = ptTeacherRoleService;
-        this.ptRoleService = ptRoleService;
-        this.ptRoleOperService = ptRoleOperService;
-        this.ptOperationService = ptOperationService;
-    }
+        this.ptClassMapper = ptClassMapper;
+        this.ptCollegeMapper = ptCollegeMapper;
+        this.ptOperationMapper = operationMapper;
 
-    @Autowired
-    public void setPtCollegeService(PtCollegeService ptCollegeService) {
-        this.ptCollegeService = ptCollegeService;
-    }
-
-    /**
-     * 循环依赖
-     */
-    @Autowired
-    public void setPtClassService(PtClassService ptClassService) {
-        this.ptClassService = ptClassService;
+        this.ptRoleOperMapper = ptRoleOperMapper;
+        this.ptRoleMapper = ptRoleMapper;
     }
 
     public ApiPage<PtTeacherPageInfo> pageTeacherInfo(Integer page, Integer pageSize, PtTeacherQuery query) {
         PageHelper.startPage(page, pageSize);
         Page<PtTeacher> teachers = ptTeacherMapper.page(query);
+        if (teachers.isEmpty()) {
+            return ApiPage.empty(teachers);
+        }
         /* 查学院 */
-        List<String> clgCodes = ptCollegeService.getClgCodeFromTeachers(teachers);
-        Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(clgCodes);
+        List<String> clgCodes = PtCollegeService.getClgCodeFromTeachers(teachers);
+        Map<String, String> clgNameMap = ptCollegeMapper.mapClgNameByIds(clgCodes);
         /* 查班级 */
         List<String> teaIds = teachers.stream().map(PtTeacher::getTeaId).collect(Collectors.toList());
-        List<PtClass> classes = ptClassService.listByTeaIds(teaIds);
+        List<PtClass> classes = ptClassMapper.listByTeaIds(teaIds);
         Map<String, List<PtClass>> map = new HashMap<>(teachers.size());
         classes.forEach(c -> map.computeIfAbsent(c.getTeaId(), k -> new ArrayList<>()).add(c));
         List<PtTeacherPageInfo> infos = teachers.stream().map(
@@ -122,20 +115,22 @@ public class PtTeacherService {
         /* 查询学院 */
         String clgName = null;
         if (teacher.getClgCode() != null) {
-            clgName = ptCollegeService.getCollege(teacher.getClgCode()).getClgName();
+            clgName = ptCollegeMapper.selectByPrimaryKey(teacher.getClgCode()).getClgName();
         }
         /* 查班级 */
-        List<PtClass> classes = ptClassService.listByTeaId(teacher.getTeaId());
+        List<PtClass> classes = ptClassMapper.listByTeaId(teacher.getTeaId());
         /* 查询教师角色 */
-        List<PtTeacherRole> teacherRoles = ptTeacherRoleService.listByTeaId(teacher.getTeaId());
+        List<PtTeacherRole> teacherRoles = ptTeacherRoleMapper.listByTeaId(teacher.getTeaId());
         List<Long> roleIds = teacherRoles.stream().map(PtTeacherRole::getRoleId).collect(Collectors.toList());
-        List<PtRole> roles = ptRoleService.listByIds(roleIds);
+        List<PtRole> roles = ptRoleMapper.listByIds(roleIds);
         /* 查询权限 */
-        List<String> operIds = ptRoleOperService.listOperIdByRoleIds(roleIds);
-        List<PtOperation> operations = ptOperationService.listByIds(operIds);
-        /* 组装数据 */
+        List<String> operIds = ptRoleOperMapper.listOperIdByRoleIds(roleIds);
         Set<String> authorities = new TreeSet<>(DEFAULT_TEACHER_AUTHORITIES);
-        operations.forEach(o -> authorities.add(o.getOperId()));
+        if (operIds.size() != 0) {
+            List<PtOperation> operations = ptOperationMapper.listByIds(operIds);
+            /* 组装数据 */
+            operations.forEach(o -> authorities.add(o.getOperId()));
+        }
         /* 返回结果 */
         PtTeacherInfo info = new PtTeacherInfo(teacher, clgName, classes, roles, authorities);
         /* 认证信息 */
@@ -157,7 +152,7 @@ public class PtTeacherService {
 
     @OperLogRecord(description = "导入教师数据", operType = OperTypeEnum.INSERT)
     public Integer uploadTeacher(MultipartFile file) {
-        PtTeacherExcelListener listener = new PtTeacherExcelListener(this, ptCollegeService);
+        PtTeacherExcelListener listener = new PtTeacherExcelListener(this, ptCollegeMapper);
         try {
             EasyExcel.read(file.getInputStream(), PtTeacherExcel.class, listener).sheet().doRead();
         } catch (IOException e) {
@@ -177,14 +172,6 @@ public class PtTeacherService {
             return Collections.emptyList();
         }
         return ptTeacherMapper.listByIds(teacherIds);
-    }
-
-    public PtTeacher getTeacher(String teacherId) {
-        return ptTeacherMapper.selectByPrimaryKey(teacherId);
-    }
-
-    public List<String> listTeaId() {
-        return ptTeacherMapper.listTeaId();
     }
 
     public List<PtTeacherClgIdentity> listClgIdentity() {
@@ -225,28 +212,19 @@ public class PtTeacherService {
         return ptTeacherMapper.updateByPrimaryKeySelective(ptTeacher) == 1;
     }
 
-    public List<PtTeacher> listPrincipal(List<String> clgCodes) {
-        if (clgCodes.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return ptTeacherMapper.listPincipal(clgCodes);
-    }
-
-    public Map<String, String> mapTeaNameByIds(List<String> teaIds) {
-        if (teaIds.isEmpty()) {
-            return Collections.emptyMap();
-        }
-        return ptTeacherMapper.mapTeaNameByIds(teaIds);
-    }
-
     public List<PtTeacherListInfo> listTeacherListInfo() {
         List<PtTeacher> teachers = ptTeacherMapper.listTeacherListInfo();
+        if (teachers.isEmpty()) {
+            return Collections.emptyList();
+        }
         /* 查学院 */
-        List<String> clgCodes = ptCollegeService.getClgCodeFromTeachers(teachers);
-        Map<String, String> clgNameMap = ptCollegeService.mapClgNameByIds(clgCodes);
-        return teachers.stream().map(t -> new PtTeacherListInfo(
-                t,
-                clgNameMap.get(t.getClgCode()))).collect(Collectors.toList());
+        List<String> clgCodes = PtCollegeService.getClgCodeFromTeachers(teachers);
+        if (clgCodes.size() != 0) {
+            Map<String, String> clgNameMap = ptCollegeMapper.mapClgNameByIds(clgCodes);
+            return teachers.stream().map(t -> new PtTeacherListInfo(
+                    t, clgNameMap.get(t.getClgCode()))).collect(Collectors.toList());
+        }
+        return teachers.stream().map(PtTeacherListInfo::new).collect(Collectors.toList());
     }
 
     public boolean resetPwd(String teaId) {

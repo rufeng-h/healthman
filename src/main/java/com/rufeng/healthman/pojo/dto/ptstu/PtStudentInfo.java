@@ -7,6 +7,7 @@ import com.rufeng.healthman.security.support.UserInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -25,9 +26,11 @@ public class PtStudentInfo extends UserInfo {
     private String clsName;
     private LocalDate birth;
 
-    public PtStudentInfo(PtStudent student, PtClass ptClass, PtCollege college, Set<String> authorities) {
+    public PtStudentInfo(PtStudent student, PtClass ptClass, @Nullable PtCollege college, Set<String> authorities) {
         super(student, authorities);
-        this.clgName = college.getClgName();
+        if (college != null) {
+            this.clgName = college.getClgName();
+        }
         this.clsName = ptClass.getClsName();
         this.birth = student.getStuBirth();
     }

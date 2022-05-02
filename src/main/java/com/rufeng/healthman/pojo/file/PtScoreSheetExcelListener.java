@@ -6,9 +6,9 @@ import com.alibaba.excel.util.ListUtils;
 import com.rufeng.healthman.common.util.StringUtils;
 import com.rufeng.healthman.common.util.TranslationUtils;
 import com.rufeng.healthman.exceptions.ExcelException;
+import com.rufeng.healthman.mapper.PtSubStudentMapper;
 import com.rufeng.healthman.pojo.dto.ptscoresheet.SubStudent;
 import com.rufeng.healthman.service.PtScoreSheetService;
-import com.rufeng.healthman.service.PtSubStudentService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,10 +33,10 @@ public class PtScoreSheetExcelListener extends AnalysisEventListener<PtScoreShee
 
     public PtScoreSheetExcelListener(long subId,
                                      PtScoreSheetService ptScoreSheetService,
-                                     PtSubStudentService ptSubStudentService) {
+                                     PtSubStudentMapper ptSubStudentMapper) {
         this.subId = subId;
         this.ptScoreSheetService = ptScoreSheetService;
-        this.subStudents = new HashSet<>(ptSubStudentService.listSubStudentBySubId(subId));
+        this.subStudents = new HashSet<>(ptSubStudentMapper.listSubStudentBySubId(subId));
     }
 
     @Override

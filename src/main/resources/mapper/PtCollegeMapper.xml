@@ -358,26 +358,16 @@
         <include refid="Base_Column_List"/>
         FROM pt_college;
     </select>
-    <select id="getCollege" resultType="com.rufeng.healthman.pojo.ptdo.PtCollege">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM pt_college
-        WHERE clg_code = #{clgCode}
-    </select>
 
     <select id="mapClgNameByIds" resultType="map">
         SELECT clg_code,
                clg_name
         FROM pt_college
-        <where>
-            <foreach close=")" collection="items" item="item" open="clg_code IN (" separator=",">
-                #{item}
-            </foreach>
-        </where>
+        WHERE clg_code IN(
+        <foreach collection="items" item="item" separator=",">
+            #{item}
+        </foreach>)
     </select>
-
-    <delete id="mapAdminIdClgNameByIds">
-    </delete>
 
     <select id="page" resultMap="BaseResultMap">
         SELECT

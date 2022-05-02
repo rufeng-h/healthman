@@ -45,14 +45,6 @@ public class PtCollegeController {
         this.ptCollegeService = ptCollegeService;
     }
 
-//    @GetMapping("/tree")
-//    public ApiResponse<List<PtCollegeTreeItem>> treeCollege() {
-//        List<PtCollege> colleges = ptCollegeService.listCollege();
-//        List<PtCollegeTreeItem> treeItems =
-//                colleges.stream().map(PtCollegeTreeItem::new).collect(Collectors.toList());
-//        return ApiResponse.success(treeItems);
-//    }
-
 
     @Operation(operationId = Authority.PtCollege.COLLEGE_PAGE, summary = "学院列表")
     @GetMapping
