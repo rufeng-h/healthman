@@ -3,6 +3,7 @@ package com.rufeng.healthman.controller;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
+import com.rufeng.healthman.pojo.data.PtSubGrpShareFormdata;
 import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
 import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
 import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
@@ -68,7 +69,13 @@ public class PtSubGroupController {
 
     @Operation(operationId = Authority.PtSubGroup.SUB_DELETE, summary = "从科目组删除科目")
     @DeleteMapping("/{grpId}/{subId}")
-    public ApiResponse<Boolean> deleteSub(@PathVariable Long grpId, @PathVariable Long subId){
+    public ApiResponse<Boolean> deleteSub(@PathVariable Long grpId, @PathVariable Long subId) {
         return ApiResponse.success(ptSubgroupService.deleteSub(grpId, subId));
+    }
+
+    @Operation(operationId = Authority.PtSubGroup.SUBGRP_SHARE, summary = "分享科目组")
+    @PostMapping("/share")
+    public ApiResponse<Boolean> shareSubGrp(@RequestBody @Validated PtSubGrpShareFormdata formdata) {
+        return ApiResponse.success(ptSubgroupService.shareSubGrp(formdata));
     }
 }

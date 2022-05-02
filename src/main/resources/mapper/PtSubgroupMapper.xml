@@ -8,12 +8,12 @@
         <result column="grp_name" property="grpName"/>
         <result column="grp_desp" property="grpDesp"/>
         <result column="grp_created" property="grpCreated"/>
-        <result column="grp_created_tea" property="grpCreatedTea"/>
+        <result column="grp_created_tea_id" property="grpCreatedTeaId"/>
         <result column="grp_modified" property="grpModified"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        grp_id, grp_name, grp_desp, grp_created, grp_created_tea, grp_modified
+        grp_id, grp_name, grp_desp, grp_created, grp_created_tea_id, grp_modified
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -31,8 +31,8 @@
     <insert id="insert" keyColumn="grp_id" keyProperty="grpId" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_subgroup (grp_name, grp_desp, grp_created, grp_created_tea, grp_modified)
-        values (#{grpName}, #{grpDesp}, #{grpCreated}, #{grpCreatedTea}, #{grpModified})
+        insert into pt_subgroup (grp_name, grp_desp, grp_created, grp_created_tea_id, grp_modified)
+        values (#{grpName}, #{grpDesp}, #{grpCreated}, #{grpCreatedTeaId}, #{grpModified})
     </insert>
     <insert id="insertSelective" keyColumn="grp_id" keyProperty="grpId"
             parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup" useGeneratedKeys="true">
@@ -48,8 +48,8 @@
             <if test="grpCreated != null">
                 grp_created,
             </if>
-            <if test="grpCreatedTea != null">
-                grp_created_tea,
+            <if test="grpCreatedTeaId != null">
+                grp_created_tea_id,
             </if>
             <if test="grpModified != null">
                 grp_modified,
@@ -65,8 +65,8 @@
             <if test="grpCreated != null">
                 #{grpCreated},
             </if>
-            <if test="grpCreatedTea != null">
-                #{grpCreatedTea},
+            <if test="grpCreatedTeaId != null">
+                #{grpCreatedTeaId},
             </if>
             <if test="grpModified != null">
                 #{grpModified},
@@ -86,8 +86,8 @@
             <if test="grpCreated != null">
                 grp_created = #{grpCreated},
             </if>
-            <if test="grpCreatedTea != null">
-                grp_created_tea = #{grpCreatedTea},
+            <if test="grpCreatedTeaId != null">
+                grp_created_tea_id = #{grpCreatedTeaId},
             </if>
             <if test="grpModified != null">
                 grp_modified = #{grpModified},
@@ -98,11 +98,11 @@
     <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubgroup">
         <!--@mbg.generated-->
         update pt_subgroup
-        set grp_name        = #{grpName},
-            grp_desp        = #{grpDesp},
-            grp_created     = #{grpCreated},
-            grp_created_tea = #{grpCreatedTea},
-            grp_modified    = #{grpModified}
+        set grp_name           = #{grpName},
+            grp_desp           = #{grpDesp},
+            grp_created        = #{grpCreated},
+            grp_created_tea_id = #{grpCreatedTeaId},
+            grp_modified       = #{grpModified}
         where grp_id = #{grpId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
@@ -124,9 +124,9 @@
                     when grp_id = #{item.grpId} then #{item.grpCreated}
                 </foreach>
             </trim>
-            <trim prefix="grp_created_tea = case" suffix="end,">
+            <trim prefix="grp_created_tea_id = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when grp_id = #{item.grpId} then #{item.grpCreatedTea}
+                    when grp_id = #{item.grpId} then #{item.grpCreatedTeaId}
                 </foreach>
             </trim>
             <trim prefix="grp_modified = case" suffix="end,">
@@ -165,10 +165,10 @@
                     </if>
                 </foreach>
             </trim>
-            <trim prefix="grp_created_tea = case" suffix="end,">
+            <trim prefix="grp_created_tea_id = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    <if test="item.grpCreatedTea != null">
-                        when grp_id = #{item.grpId} then #{item.grpCreatedTea}
+                    <if test="item.grpCreatedTeaId != null">
+                        when grp_id = #{item.grpId} then #{item.grpCreatedTeaId}
                     </if>
                 </foreach>
             </trim>
@@ -188,10 +188,10 @@
     <insert id="batchInsert" keyColumn="grp_id" keyProperty="grpId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_subgroup
-            (grp_name, grp_desp, grp_created, grp_created_tea, grp_modified)
+            (grp_name, grp_desp, grp_created, grp_created_tea_id, grp_modified)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.grpName}, #{item.grpDesp}, #{item.grpCreated}, #{item.grpCreatedTea}, #{item.grpModified})
+            (#{item.grpName}, #{item.grpDesp}, #{item.grpCreated}, #{item.grpCreatedTeaId}, #{item.grpModified})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="grp_id" keyProperty="grpId"
@@ -205,7 +205,7 @@
             grp_name,
             grp_desp,
             grp_created,
-            grp_created_tea,
+            grp_created_tea_id,
             grp_modified,
         </trim>
         values
@@ -216,7 +216,7 @@
             #{grpName},
             #{grpDesp},
             #{grpCreated},
-            #{grpCreatedTea},
+            #{grpCreatedTeaId},
             #{grpModified},
         </trim>
         on duplicate key update
@@ -224,11 +224,11 @@
             <if test="grpId != null">
                 grp_id = #{grpId},
             </if>
-            grp_name        = #{grpName},
-            grp_desp        = #{grpDesp},
-            grp_created     = #{grpCreated},
-            grp_created_tea = #{grpCreatedTea},
-            grp_modified    = #{grpModified},
+            grp_name           = #{grpName},
+            grp_desp           = #{grpDesp},
+            grp_created        = #{grpCreated},
+            grp_created_tea_id = #{grpCreatedTeaId},
+            grp_modified       = #{grpModified},
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="grp_id" keyProperty="grpId"
@@ -248,8 +248,8 @@
             <if test="grpCreated != null">
                 grp_created,
             </if>
-            <if test="grpCreatedTea != null">
-                grp_created_tea,
+            <if test="grpCreatedTeaId != null">
+                grp_created_tea_id,
             </if>
             <if test="grpModified != null">
                 grp_modified,
@@ -269,8 +269,8 @@
             <if test="grpCreated != null">
                 #{grpCreated},
             </if>
-            <if test="grpCreatedTea != null">
-                #{grpCreatedTea},
+            <if test="grpCreatedTeaId != null">
+                #{grpCreatedTeaId},
             </if>
             <if test="grpModified != null">
                 #{grpModified},
@@ -290,8 +290,8 @@
             <if test="grpCreated != null">
                 grp_created = #{grpCreated},
             </if>
-            <if test="grpCreatedTea != null">
-                grp_created_tea = #{grpCreatedTea},
+            <if test="grpCreatedTeaId != null">
+                grp_created_tea_id = #{grpCreatedTeaId},
             </if>
             <if test="grpModified != null">
                 grp_modified = #{grpModified},
@@ -300,9 +300,15 @@
     </insert>
 
     <select id="listSubGroup" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from pt_subgroup
+        SELECT grp_id, grp_name, grp_desp, grp_created, grp_created_tea_id, grp_modified
+        FROM (SELECT grp_id
+              FROM pt_subgroup
+              WHERE grp_created_tea_id = #{teaId}
+              UNION ALL
+              SELECT grp_id
+              FROM pt_sub_group_share
+              WHERE tea_id = #{teaId}) grps
+                 NATURAL JOIN pt_subgroup
     </select>
     <select id="pageSubGroup" resultMap="BaseResultMap">
         SELECT
@@ -313,8 +319,8 @@
                 <bind name="grpName" value="'%' + query.grpName + '%'"/>
                 grp_name like #{grpName}
             </if>
-            <if test="query.grpCreatedTea != null">
-                AND grp_created_tea = #{query.grpCreatedTea}
+            <if test="query.teaId != null">
+                AND grp_created_tea_id = #{query.teaId}
             </if>
         </where>
     </select>
@@ -326,6 +332,26 @@
             <foreach close=")" collection="list" item="item" open="grp_id IN (" separator=",">
                 #{item}
             </foreach>
+        </where>
+    </select>
+
+    <select id="pageAllSubGroup" resultType="com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo">
+        SELECT share_time, grp_id, grp_name, grp_desp, grp_created, grp_created_tea_id, grp_modified
+        FROM (SELECT grp_id, NULL as share_time
+              FROM pt_subgroup
+              WHERE grp_created_tea_id = #{query.teaId}
+              UNION ALL
+              SELECT grp_id, share_time
+              FROM pt_sub_group_share
+              WHERE tea_id = #{query.teaId}) grps
+                 NATURAL JOIN pt_subgroup
+
+        <where>
+            <if test="query.grpName != null">
+                <bind name="grpName" value="'%' + query.grpName + '%'"/>
+                    grp_name like
+                    #{grpName}
+            </if>
         </where>
     </select>
 </mapper>

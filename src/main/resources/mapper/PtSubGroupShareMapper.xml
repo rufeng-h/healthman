@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.healthman.mapper.PtSubGroupShareMapper">
+    <resultMap id="BaseResultMap" type="com.rufeng.healthman.pojo.ptdo.PtSubGroupShare">
+        <!--@mbg.generated-->
+        <!--@Table pt_sub_group_share-->
+        <id column="sid" property="sid"/>
+        <result column="grp_id" property="grpId"/>
+        <result column="tea_id" property="teaId"/>
+        <result column="share_tea_id" property="shareTeaId"/>
+        <result column="share_time" property="shareTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        sid, grp_id, tea_id, share_tea_id, share_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from pt_sub_group_share
+        where sid = #{sid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete
+        from pt_sub_group_share
+        where sid = #{sid}
+    </delete>
+    <insert id="insert" keyColumn="sid" keyProperty="sid" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubGroupShare"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_sub_group_share (grp_id, tea_id, share_tea_id, share_time)
+        values (#{grpId}, #{teaId}, #{shareTeaId}, #{shareTime})
+    </insert>
+    <insert id="insertSelective" keyColumn="sid" keyProperty="sid"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubGroupShare" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_sub_group_share
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="grpId != null">
+                grp_id,
+            </if>
+            <if test="teaId != null">
+                tea_id,
+            </if>
+            <if test="shareTeaId != null">
+                share_tea_id,
+            </if>
+            <if test="shareTime != null">
+                share_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="grpId != null">
+                #{grpId},
+            </if>
+            <if test="teaId != null">
+                #{teaId},
+            </if>
+            <if test="shareTeaId != null">
+                #{shareTeaId},
+            </if>
+            <if test="shareTime != null">
+                #{shareTime},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubGroupShare">
+        <!--@mbg.generated-->
+        update pt_sub_group_share
+        <set>
+            <if test="grpId != null">
+                grp_id = #{grpId},
+            </if>
+            <if test="teaId != null">
+                tea_id = #{teaId},
+            </if>
+            <if test="shareTeaId != null">
+                share_tea_id = #{shareTeaId},
+            </if>
+            <if test="shareTime != null">
+                share_time = #{shareTime},
+            </if>
+        </set>
+        where sid = #{sid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtSubGroupShare">
+        <!--@mbg.generated-->
+        update pt_sub_group_share
+        set grp_id       = #{grpId},
+            tea_id       = #{teaId},
+            share_tea_id = #{shareTeaId},
+            share_time   = #{shareTime}
+        where sid = #{sid}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_sub_group_share
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="grp_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sid = #{item.sid} then #{item.grpId}
+                </foreach>
+            </trim>
+            <trim prefix="tea_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sid = #{item.sid} then #{item.teaId}
+                </foreach>
+            </trim>
+            <trim prefix="share_tea_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sid = #{item.sid} then #{item.shareTeaId}
+                </foreach>
+            </trim>
+            <trim prefix="share_time = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when sid = #{item.sid} then #{item.shareTime}
+                </foreach>
+            </trim>
+        </trim>
+        where sid in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.sid}
+        </foreach>
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update pt_sub_group_share
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="grp_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.grpId != null">
+                        when sid = #{item.sid} then #{item.grpId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tea_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.teaId != null">
+                        when sid = #{item.sid} then #{item.teaId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="share_tea_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.shareTeaId != null">
+                        when sid = #{item.sid} then #{item.shareTeaId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="share_time = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.shareTime != null">
+                        when sid = #{item.sid} then #{item.shareTime}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where sid in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.sid}
+        </foreach>
+    </update>
+    <insert id="batchInsert" keyColumn="sid" keyProperty="sid" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_sub_group_share
+            (grp_id, tea_id, share_tea_id, share_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.grpId}, #{item.teaId}, #{item.shareTeaId}, #{item.shareTime})
+        </foreach>
+    </insert>
+    <insert id="insertOrUpdate" keyColumn="sid" keyProperty="sid"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubGroupShare" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_sub_group_share
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">
+                sid,
+            </if>
+            grp_id,
+            tea_id,
+            share_tea_id,
+            share_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">
+                #{sid},
+            </if>
+            #{grpId},
+            #{teaId},
+            #{shareTeaId},
+            #{shareTime},
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="sid != null">
+                sid = #{sid},
+            </if>
+            grp_id       = #{grpId},
+            tea_id       = #{teaId},
+            share_tea_id = #{shareTeaId},
+            share_time   = #{shareTime},
+        </trim>
+    </insert>
+    <insert id="insertOrUpdateSelective" keyColumn="sid" keyProperty="sid"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtSubGroupShare" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_sub_group_share
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">
+                sid,
+            </if>
+            <if test="grpId != null">
+                grp_id,
+            </if>
+            <if test="teaId != null">
+                tea_id,
+            </if>
+            <if test="shareTeaId != null">
+                share_tea_id,
+            </if>
+            <if test="shareTime != null">
+                share_time,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">
+                #{sid},
+            </if>
+            <if test="grpId != null">
+                #{grpId},
+            </if>
+            <if test="teaId != null">
+                #{teaId},
+            </if>
+            <if test="shareTeaId != null">
+                #{shareTeaId},
+            </if>
+            <if test="shareTime != null">
+                #{shareTime},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="sid != null">
+                sid = #{sid},
+            </if>
+            <if test="grpId != null">
+                grp_id = #{grpId},
+            </if>
+            <if test="teaId != null">
+                tea_id = #{teaId},
+            </if>
+            <if test="shareTeaId != null">
+                share_tea_id = #{shareTeaId},
+            </if>
+            <if test="shareTime != null">
+                share_time = #{shareTime},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByShareTeaId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_sub_group_share
+        WHERE share_tea_id = #{teacherId}
+    </select>
+
+    <delete id="deleteByIds">
+        DELETE
+        FROM pt_sub_group_share WHERE sid IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
+    </delete>
+
+    <insert id="batchInsertSelective">
+        INSERT INTO pt_sub_group_share (share_tea_id, `grp_id`, `tea_id`)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.shareTeaId}, #{item.grpId}, #{item.teaId})
+        </foreach>
+    </insert>
+
+    <resultMap id="PtSubGrpShareTeaIdMap" type="com.rufeng.healthman.pojo.m2m.PtSubGrpShareTeaId">
+        <id column="grp_id" property="grpId"/>
+        <collection property="teaIds" ofType="java.lang.String">
+        </collection>
+    </resultMap>
+
+    <select id="listSharedTeaIds" resultMap="PtSubGrpShareTeaIdMap">
+        SELECT tea_id, grp_id
+        FROM pt_sub_group_share WHERE grp_id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
+    </select>
+</mapper>

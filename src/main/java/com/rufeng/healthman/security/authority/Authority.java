@@ -33,6 +33,7 @@ public class Authority {
         DEFAULT_TEACHER_AUTHORITIES.add(PtCollege.COLLEGE_GET);
 
         DEFAULT_TEACHER_AUTHORITIES.add(PtTeacher.TEACHER_PAGE);
+        DEFAULT_TEACHER_AUTHORITIES.add(PtTeacher.TEACHER_LIST);
 
         DEFAULT_TEACHER_AUTHORITIES.add(PtClass.CLASS_PAGE);
         DEFAULT_TEACHER_AUTHORITIES.add(PtClass.CLASS_GET);
@@ -48,6 +49,7 @@ public class Authority {
         DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUBGRP_DELETE);
         DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUBGRP_LIST);
         DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUBGRP_INSERT);
+        DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUBGRP_SHARE);
         DEFAULT_TEACHER_AUTHORITIES.add(PtSubGroup.SUB_DELETE);
 
         DEFAULT_TEACHER_AUTHORITIES.add(PtMs.MS_PAGE);
@@ -112,6 +114,7 @@ public class Authority {
         public static final String SUBGRP_LIST = "subGrp:list";
         public static final String SUBGRP_PAGE = "subGrp:page";
         public static final String SUB_DELETE = "subGrp:subDelete";
+        public static final String SUBGRP_SHARE = "subGrp:share";
     }
 
     public static class PtTeacher {

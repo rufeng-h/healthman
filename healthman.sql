@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 01/05/2022 20:59:13
+ Date: 02/05/2022 18:02:51
 */
 
 SET NAMES utf8mb4;
@@ -37,7 +37,7 @@ CREATE TABLE `pt_admin`  (
   PRIMARY KEY (`admin_id`) USING BTREE,
   UNIQUE INDEX `pt_admin_admin_name_uindex`(`admin_name`) USING BTREE,
   UNIQUE INDEX `pt_admin_aid_uindex`(`aid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '管理员' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '管理员' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_class
@@ -76,7 +76,7 @@ CREATE TABLE `pt_class_measurement`  (
   INDEX `cls_code`(`cls_code`) USING BTREE,
   CONSTRAINT `pt_class_measurement_ibfk_1` FOREIGN KEY (`ms_id`) REFERENCES `pt_measurement` (`ms_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_class_measurement_ibfk_2` FOREIGN KEY (`cls_code`) REFERENCES `pt_class` (`cls_code`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '班级、测量中间表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 113 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '班级、测量中间表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_college
@@ -128,7 +128,7 @@ CREATE TABLE `pt_measurement`  (
   INDEX `ms_created_admin`(`ms_created_admin`) USING BTREE,
   CONSTRAINT `pt_measurement_ibfk_2` FOREIGN KEY (`grp_id`) REFERENCES `pt_subgroup` (`grp_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_measurement_ibfk_3` FOREIGN KEY (`ms_created_admin`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '测量记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '测量记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_oper_log
@@ -150,7 +150,7 @@ CREATE TABLE `pt_oper_log`  (
   PRIMARY KEY (`oper_id`) USING BTREE,
   INDEX `oper_admin_id`(`oper_admin_id`) USING BTREE,
   CONSTRAINT `pt_oper_log_ibfk_1` FOREIGN KEY (`oper_admin_id`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '操作记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '操作记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_operation
@@ -164,7 +164,7 @@ CREATE TABLE `pt_operation`  (
   `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`oper_id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '接口表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '接口表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_prescription
@@ -276,6 +276,25 @@ CREATE TABLE `pt_student`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 174069 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '学生表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for pt_sub_group_share
+-- ----------------------------
+DROP TABLE IF EXISTS `pt_sub_group_share`;
+CREATE TABLE `pt_sub_group_share`  (
+  `grp_id` bigint(0) UNSIGNED NOT NULL,
+  `tea_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `share_tea_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `share_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `sid` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`sid`) USING BTREE,
+  INDEX `grp_id`(`grp_id`) USING BTREE,
+  INDEX `tea_id`(`tea_id`) USING BTREE,
+  INDEX `share_tea`(`share_tea_id`) USING BTREE,
+  CONSTRAINT `pt_sub_group_share_ibfk_1` FOREIGN KEY (`grp_id`) REFERENCES `pt_subgroup` (`grp_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `pt_sub_group_share_ibfk_2` FOREIGN KEY (`tea_id`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `pt_sub_group_share_ibfk_3` FOREIGN KEY (`share_tea_id`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目组分享' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for pt_sub_student
 -- ----------------------------
 DROP TABLE IF EXISTS `pt_sub_student`;
@@ -299,13 +318,13 @@ CREATE TABLE `pt_subgroup`  (
   `grp_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `grp_desp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '无',
   `grp_created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-  `grp_created_tea` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `grp_created_tea_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `grp_modified` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`grp_id`) USING BTREE,
   UNIQUE INDEX `pt_subject_group_grp_name_uindex`(`grp_name`) USING BTREE,
-  INDEX `grp_created_admin`(`grp_created_tea`) USING BTREE,
-  CONSTRAINT `pt_subgroup_ibfk_1` FOREIGN KEY (`grp_created_tea`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目组' ROW_FORMAT = Dynamic;
+  INDEX `grp_created_admin`(`grp_created_tea_id`) USING BTREE,
+  CONSTRAINT `pt_subgroup_ibfk_1` FOREIGN KEY (`grp_created_tea_id`) REFERENCES `pt_teacher` (`tea_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目组' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_subject
@@ -339,7 +358,7 @@ CREATE TABLE `pt_subject_subgroup`  (
   INDEX `sub_id`(`sub_id`) USING BTREE,
   CONSTRAINT `pt_subject_subgroup_ibfk_1` FOREIGN KEY (`grp_id`) REFERENCES `pt_subgroup` (`grp_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `pt_subject_subgroup_ibfk_2` FOREIGN KEY (`sub_id`) REFERENCES `pt_subject` (`sub_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目与科目组关联' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 104 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '科目与科目组关联' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pt_teacher

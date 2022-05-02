@@ -5,21 +5,23 @@ import com.github.pagehelper.PageHelper;
 import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.enums.OperTypeEnum;
+import com.rufeng.healthman.mapper.PtSubGroupShareMapper;
 import com.rufeng.healthman.mapper.PtSubgroupMapper;
+import com.rufeng.healthman.mapper.PtTeacherMapper;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
+import com.rufeng.healthman.pojo.data.PtSubGrpShareFormdata;
 import com.rufeng.healthman.pojo.dto.subgroup.SubGroupInfo;
+import com.rufeng.healthman.pojo.m2m.PtSubGrpShareTeaId;
 import com.rufeng.healthman.pojo.m2m.PtSubGrpSubject;
+import com.rufeng.healthman.pojo.ptdo.PtSubGroupShare;
 import com.rufeng.healthman.pojo.ptdo.PtSubgroup;
 import com.rufeng.healthman.pojo.ptdo.PtSubject;
 import com.rufeng.healthman.pojo.ptdo.PtSubjectSubgroup;
-import com.rufeng.healthman.pojo.ptdo.PtTeacher;
 import com.rufeng.healthman.pojo.query.PtSubgroupQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,20 +37,22 @@ public class PtSubgroupService {
     private final PtSubgroupMapper ptSubgroupMapper;
     private final PtCommonService ptCommonService;
     private final PtSubjectSubGroupService ptSubjectSubGroupService;
-    private final PtTeacherService ptTeacherService;
+    private final PtSubGroupShareMapper ptSubGroupShareMapper;
+    private final PtTeacherMapper ptTeacherMapper;
 
     public PtSubgroupService(PtSubgroupMapper ptSubgroupMapper,
                              PtCommonService ptCommonService,
                              PtSubjectSubGroupService ptSubjectSubGroupService,
-                             PtTeacherService ptTeacherService) {
+                             PtSubGroupShareMapper ptSubGroupShareMapper, PtTeacherMapper ptTeacherMapper) {
         this.ptSubgroupMapper = ptSubgroupMapper;
         this.ptCommonService = ptCommonService;
         this.ptSubjectSubGroupService = ptSubjectSubGroupService;
-        this.ptTeacherService = ptTeacherService;
+        this.ptSubGroupShareMapper = ptSubGroupShareMapper;
+        this.ptTeacherMapper = ptTeacherMapper;
     }
 
     public List<PtSubgroup> listSubGroup() {
-        return ptSubgroupMapper.listSubGroup();
+        return ptSubgroupMapper.listSubGroup(ptCommonService.getCurrentTeacherId());
     }
 
     @OperLogRecord(description = "添加科目组", operType = OperTypeEnum.INSERT)
@@ -59,7 +63,7 @@ public class PtSubgroupService {
         PtSubgroup subgroup = PtSubgroup.builder()
                 .grpDesp(formdata.getGrpDesp())
                 .grpName(formdata.getGrpName())
-                .grpCreatedTea(teacherId)
+                .grpCreatedTeaId(teacherId)
                 .build();
         ptSubgroupMapper.insertSelective(subgroup);
         Long grpId = subgroup.getGrpId();
@@ -72,24 +76,43 @@ public class PtSubgroupService {
         return subgroup;
     }
 
-    public ApiPage<SubGroupInfo> pageSubGroupInfo(Integer page, Integer pageSize, PtSubgroupQuery query) {
-        PageHelper.startPage(page, pageSize);
-        query.setGrpCreatedTea(ptCommonService.getCurrentTeacherId());
-        /* 为分页 */
+    /**
+     * 查询所有，自己创建的和他人分享的
+     */
+    private ApiPage<SubGroupInfo> pageAllSubgroupInfo(PtSubgroupQuery query) {
+        Page<SubGroupInfo> groupInfos = ptSubgroupMapper.pageAllSubGroup(query);
+        List<String> teaIds = groupInfos.stream().map(SubGroupInfo::getGrpCreatedTeaId).collect(Collectors.toList());
+        Map<String, String> teaMap = ptTeacherMapper.mapTeaNameByIds(teaIds);
+        groupInfos.forEach(g -> g.setGrpCreatedTeaName(teaMap.get(g.getGrpCreatedTeaId())));
+        /* 查教师 */
+        return ApiPage.convert(groupInfos);
+    }
+
+    private ApiPage<SubGroupInfo> pageOwnerSubGroupInfo(PtSubgroupQuery query) {
         Page<PtSubgroup> subgroups = ptSubgroupMapper.pageSubGroup(query);
-        /* 查询 */
-        List<Long> grpIds = subgroups.stream().map(PtSubgroup::getGrpId).collect(Collectors.toList());
+        List<SubGroupInfo> groupInfos = subgroups.stream()
+                .map(s -> new SubGroupInfo(s, ptCommonService.getCurrentUserName())).collect(Collectors.toList());
+        return ApiPage.convert(subgroups, groupInfos);
+    }
+
+    public ApiPage<SubGroupInfo> pageSubGroupInfo(Integer page, Integer pageSize, PtSubgroupQuery query) {
+        query.setTeaId(ptCommonService.getCurrentTeacherId());
+        PageHelper.startPage(page, pageSize);
+        ApiPage<SubGroupInfo> groupInfos = query.getSelf() ?
+                this.pageOwnerSubGroupInfo(query) : this.pageAllSubgroupInfo(query);
+        /* 查询科目 */
+        List<Long> grpIds = groupInfos.getItems().stream().map(SubGroupInfo::getGrpId).collect(Collectors.toList());
         List<PtSubGrpSubject> subGrpSubjects = ptSubjectSubGroupService.listSubGrpSubject(grpIds);
         Map<Long, List<PtSubject>> map = subGrpSubjects.stream().collect(
                 Collectors.toMap(PtSubGrpSubject::getGrpId, PtSubGrpSubject::getSubjects));
-        List<String> teaIds = subgroups.stream().map(PtSubgroup::getGrpCreatedTea).collect(Collectors.toList());
-        List<PtTeacher> teachers = ptTeacherService.listByIds(teaIds);
-        Map<String, String> aMap = teachers.stream().collect(
-                Collectors.toMap(PtTeacher::getTeaId, PtTeacher::getTeaName));
-        List<SubGroupInfo> groupInfos = subgroups.stream()
-                .map(s -> new SubGroupInfo(s, aMap.get(s.getGrpCreatedTea()),
-                        map.get(s.getGrpId()))).collect(Collectors.toList());
-        return ApiPage.convert(subgroups, groupInfos);
+        /* 已分享对象 */
+        List<PtSubGrpShareTeaId> shareTeaIds = ptSubGroupShareMapper.listSharedTeaIds(grpIds);
+        Map<Long, List<String>> sharedTo = shareTeaIds.stream().collect(Collectors.toMap(PtSubGrpShareTeaId::getGrpId, PtSubGrpShareTeaId::getTeaIds));
+        groupInfos.getItems().forEach(g -> {
+            g.setSubjects(map.get(g.getGrpId()));
+            g.setSharedTeaIds(sharedTo.get(g.getGrpId()));
+        });
+        return groupInfos;
     }
 
     public PtSubgroup getSubGrp(Long grpId) {
@@ -113,5 +136,29 @@ public class PtSubgroupService {
     @OperLogRecord(description = "从科目组删除科目", operType = OperTypeEnum.DELETE)
     public boolean deleteSub(Long grpId, Long subId) {
         return ptSubjectSubGroupService.deleteByGrpIdAndSubId(grpId, subId) == 1;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean shareSubGrp(PtSubGrpShareFormdata formdata) {
+        String teacherId = ptCommonService.getCurrentTeacherId();
+        List<PtSubGroupShare> raw = ptSubGroupShareMapper.selectByShareTeaId(teacherId);
+        Set<PtSubGroupShare> rawSet = new HashSet<>(raw);
+        Set<PtSubGroupShare> curSet = formdata.getTeaIds().stream().map(id ->
+                PtSubGroupShare
+                        .builder()
+                        .shareTeaId(teacherId)
+                        .teaId(id)
+                        .grpId(formdata.getGrpId())
+                        .build()).collect(Collectors.toSet());
+        rawSet.removeAll(curSet);
+        if (rawSet.size() > 0) {
+            ptSubGroupShareMapper.deleteByIds(rawSet.stream().map(PtSubGroupShare::getSid).collect(Collectors.toList()));
+        }
+        rawSet = new HashSet<>(raw);
+        curSet.removeAll(rawSet);
+        if (curSet.size() > 0) {
+            ptSubGroupShareMapper.batchInsertSelective(new ArrayList<>(curSet));
+        }
+        return true;
     }
 }

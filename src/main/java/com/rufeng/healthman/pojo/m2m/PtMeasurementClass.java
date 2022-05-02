@@ -13,7 +13,6 @@ import java.util.List;
  * @description 解决分页或者全查询多对多映射问题
  */
 @Data
-@NoArgsConstructor
 public class PtMeasurementClass {
     private List<PtClass> classes;
     private Long msId;

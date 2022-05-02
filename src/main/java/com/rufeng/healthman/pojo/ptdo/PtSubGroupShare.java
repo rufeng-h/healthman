@@ -9,25 +9,23 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * 科目组
+ * 科目组分享
  * @author rufeng
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PtSubgroup implements Serializable {
+public class PtSubGroupShare implements Serializable {
+    private Long sid;
+
     private Long grpId;
 
-    private String grpName;
+    private String teaId;
 
-    private String grpDesp;
+    private String shareTeaId;
 
-    private LocalDateTime grpCreated;
-
-    private String grpCreatedTeaId;
-
-    private LocalDateTime grpModified;
+    private LocalDateTime shareTime;
 
     private static final long serialVersionUID = 1L;
 }
