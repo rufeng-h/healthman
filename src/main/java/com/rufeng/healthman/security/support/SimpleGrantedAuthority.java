@@ -8,7 +8,6 @@ import lombok.ToString;
  * @author rufeng
  * @time 2022-04-19 18:31
  * @package com.rufeng.healthman.security.support
- * @description TODO
  */
 @EqualsAndHashCode
 @ToString

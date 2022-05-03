@@ -59,10 +59,6 @@ public class PtCommonService {
         return authentication.getUserInfo();
     }
 
-    public String getCurrentUserId() {
-        return getUserInfo().getUserId();
-    }
-
     public LoginResult login(PtLoginFormdata ptLoginFormdata) {
         UserTypeEnum userTypeEnum = ptLoginFormdata.getUserType();
         if (userTypeEnum == UserTypeEnum.ADMIN) {
@@ -74,10 +70,6 @@ public class PtCommonService {
         }
         /* 永远不会到这里 */
         throw new UnknownException("未知的用户类型");
-    }
-
-    public UserTypeEnum getCurrentUserType() {
-        return getUserInfo().getUserType();
     }
 
     public boolean updatePwd(PtPwdUpdateFormdata formdata) {

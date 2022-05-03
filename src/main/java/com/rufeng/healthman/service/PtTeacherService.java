@@ -167,13 +167,6 @@ public class PtTeacherService {
         return new ByteArrayResource(outputStream.toByteArray());
     }
 
-    public List<PtTeacher> listByIds(List<String> teacherIds) {
-        if (teacherIds.size() == 0) {
-            return Collections.emptyList();
-        }
-        return ptTeacherMapper.listByIds(teacherIds);
-    }
-
     public List<PtTeacherClgIdentity> listClgIdentity() {
         return ptTeacherMapper.listClgIdentity();
     }
