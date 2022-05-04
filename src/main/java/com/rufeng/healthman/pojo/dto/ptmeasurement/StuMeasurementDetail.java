@@ -19,7 +19,7 @@ public class StuMeasurementDetail {
     /**
      * 需要测试的科目及状态
      */
-    List<SubjectStatus> subjects;
+    private List<SubjectStatus> subjects;
     private Long msId;
     private String msName;
     private String msCreatedAdminId;

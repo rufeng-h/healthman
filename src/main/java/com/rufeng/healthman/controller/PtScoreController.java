@@ -51,7 +51,7 @@ public class PtScoreController {
      */
     @Operation(operationId = Authority.PtScore.SCORE_PAGE, summary = "体测成绩列表")
     @GetMapping("/ms")
-    public ApiResponse<ApiPage<MeasurementScoreInfo>> pageScore(
+    public ApiResponse<ApiPage<MeasurementScoreInfo>> pageMsScore(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
             @RequestParam(defaultValue = "10") @Min(1) @Max(100) Integer pageSize,
             @Validated(PtScoreQuery.MsQuery.class) PtScoreQuery query) {

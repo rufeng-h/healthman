@@ -17,10 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author rufeng
@@ -80,12 +77,5 @@ public class PtScoreSheetService {
 
     public boolean deleteById(Long id) {
         return ptScoreSheetMapper.deleteById(id) == 1;
-    }
-
-    public int deleteByIds(List<Long> ids) {
-        if (ids.isEmpty()) {
-            return 0;
-        }
-        return ptScoreSheetMapper.deleteByIds(ids);
     }
 }

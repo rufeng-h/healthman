@@ -35,7 +35,7 @@ public class PtStuScoreExportExcel implements Comparable<PtStuScoreExportExcel> 
     private Integer score;
     @ExcelProperty("等级")
     private String scoLevel;
-    @ExcelProperty(value = "测试时间")
+    @ExcelProperty("测试时间")
     private LocalDateTime scoCreated;
 
     public PtStuScoreExportExcel(PtStudentBaseInfo stu, String subName, PtScore score) {
