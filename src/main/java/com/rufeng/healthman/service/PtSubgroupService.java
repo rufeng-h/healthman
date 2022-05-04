@@ -110,6 +110,7 @@ public class PtSubgroupService {
         Map<Long, List<PtSubject>> map = subGrpSubjects.stream().collect(
                 Collectors.toMap(PtSubGrpSubject::getGrpId, PtSubGrpSubject::getSubjects));
         /* 已分享对象 */
+        /* TODO 开启对话框时获取 */
         List<PtSubGrpShareTeaId> shareTeaIds = ptSubGroupShareMapper.listSharedTeaIds(grpIds);
         Map<Long, List<String>> sharedTo = shareTeaIds.stream()
                 .collect(Collectors.toMap(PtSubGrpShareTeaId::getGrpId, PtSubGrpShareTeaId::getTeaIds));

@@ -22,6 +22,7 @@ import static com.rufeng.healthman.pojo.ptdo.PtScoreSheet.MIN_LOWER;
  * @time 2022-04-10 15:58
  * @package com.rufeng.healthman.pojo.file
  * @description 读取评分标准
+ * TODO 区间不能交叉
  */
 public class PtScoreSheetExcelListener extends AnalysisEventListener<PtScoreSheetExcel> {
     private static final int BATCH_COUNT = 100;

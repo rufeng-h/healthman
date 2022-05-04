@@ -8,7 +8,7 @@ import pymysql
 
 class SQL:
     def __init__(self):
-        self.conn = pymysql.connect(user='root', password='123456', database='healthman')
+        self.conn = pymysql.connect(user='root', password='123456', database='healthman_test')
         self.cursor = self.conn.cursor()
 
     def get_stus(self, gender, cls_code):
@@ -46,4 +46,4 @@ class MySQL:
 
 
 def get_conn():
-    return pymysql.connect(user='root', password='123456', database='healthman')
+    return pymysql.connect(user='root', password='123456', database='healthman_test')

@@ -64,11 +64,12 @@ public class PtSubjectService {
     @Transactional(rollbackFor = Exception.class)
     public boolean updateSubject(PtSubjectFormdata data) {
         Long subId = data.getSubId();
-        PtSubject subject = new PtSubject();
-        subject.setSubDesp(data.getSubDesp());
-        subject.setSubName(data.getSubName());
-        subject.setCompId(data.getCompId());
-        subject.setSubId(subId);
+        PtSubject subject = PtSubject.builder()
+                .subDesp(data.getSubDesp())
+                .subId(subId)
+                .subName(data.getSubName())
+                .compId(data.getCompId())
+                .build();
         /* 处理年级、性别 */
         List<SubStudent> subStudents = data.getSubStudents();
         subStudents.forEach(item -> item.setSubId(subId));
@@ -106,7 +107,7 @@ public class PtSubjectService {
         /* 科目主体 */
         PageHelper.startPage(page, pageSize);
         Page<PtSubject> subjects = ptSubjectMapper.pageSubjectByQueryAndSubIds(query, gradeSubIds);
-        if (subjects.isEmpty()){
+        if (subjects.isEmpty()) {
             return ApiPage.empty(subjects);
         }
         /* 运动能力 */
