@@ -2,7 +2,6 @@ package com.rufeng.healthman.pojo.m2m;
 
 import com.rufeng.healthman.pojo.ptdo.PtClass;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 

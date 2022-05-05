@@ -1,5 +1,6 @@
 package com.rufeng.healthman.mapper;
 
+import com.rufeng.healthman.pojo.m2m.PtRoleOperation;
 import com.rufeng.healthman.pojo.ptdo.PtRoleOper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -75,4 +76,7 @@ public interface PtRoleOperMapper {
     int batchInsert(@Param("list") List<PtRoleOper> list);
 
     List<String> listOperIdByRoleIds(List<Long> roleIds);
+
+
+    List<PtRoleOperation> listRoleOperByRoleIds(List<Long> roleIds);
 }

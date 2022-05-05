@@ -273,4 +273,25 @@
             </foreach>
         </where>
     </select>
+
+    <resultMap id="PtRoleOperationMap" type="com.rufeng.healthman.pojo.m2m.PtRoleOperation">
+        <id property="roleId" column="role_id"/>
+        <collection property="operations" ofType="com.rufeng.healthman.pojo.ptdo.PtOperation">
+        </collection>
+    </resultMap>
+    <select id="listRoleOperByRoleIds" resultMap="PtRoleOperationMap">
+        SELECT role_id,
+               po.oper_id,
+               po.oper_name,
+               po.pid,
+               po.oper_desp,
+               po.oper_summary,
+               pt_role_oper.created
+        FROM pt_role_oper
+                 LEFT JOIN pt_operation po on pt_role_oper.oper_id = po.oper_id
+        WHERE role_id IN(
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>)
+    </select>
 </mapper>

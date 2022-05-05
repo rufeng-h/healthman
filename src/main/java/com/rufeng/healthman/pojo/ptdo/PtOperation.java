@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 /**
  * 接口表
- *
  * @author rufeng
  */
 @Data
@@ -20,9 +19,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PtOperation implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String operId;
+    private Long operId;
+    private String operName;
     private String operSummary;
     private String operDesp;
     private LocalDateTime created;
-    private Long id;
+    private Long pid;
 }

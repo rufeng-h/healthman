@@ -129,7 +129,7 @@ public class PtTeacherService {
         if (operIds.size() != 0) {
             List<PtOperation> operations = ptOperationMapper.listByIds(operIds);
             /* 组装数据 */
-            operations.forEach(o -> authorities.add(o.getOperId()));
+            operations.forEach(o -> authorities.add(o.getOperName()));
         }
         /* 返回结果 */
         PtTeacherInfo info = new PtTeacherInfo(teacher, clgName, classes, roles, authorities);

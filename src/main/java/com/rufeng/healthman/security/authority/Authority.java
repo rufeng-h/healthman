@@ -27,6 +27,7 @@ public class Authority {
         DEFAULT_STUDENT_AUTHORITIES.add(PtMs.MS_STUDETAIL);
     }
 
+
     static {
         DEFAULT_TEACHER_AUTHORITIES.add(PtCollege.COLLEGE_LIST);
         DEFAULT_TEACHER_AUTHORITIES.add(PtCollege.COLLEGE_PAGE);
@@ -87,6 +88,8 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_LIST);
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.PWD_RESET);
         DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEAHCER_DELETE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_GET);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtTeacher.TEACHER_UPDATE);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_PAGE);
         DEFAULT_ADMIN_AUTHORITIES.add(PtStudent.STUDENT_GET);
@@ -113,6 +116,12 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtScore.SCORE_PAGE);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtOperation.OPERATION_LIST);
+
+        DEFAULT_ADMIN_AUTHORITIES.add(PtRole.ROLE_PAGE);
+    }
+
+    public static class PtRole {
+        public static final String ROLE_PAGE = "role:page";
     }
 
     public static class PtSubGroup {
@@ -138,6 +147,10 @@ public class Authority {
         public static final String TEAHCER_DELETE = "teacher:delete";
         public static final String TEACHER_LIST = "teacher:list";
         public static final String PWD_RESET = "teacher:pwdReset";
+
+        /* TODO */
+        public static final String TEACHER_UPDATE = "teacher:update";
+        public static final String TEACHER_GET = "teacher:get";
     }
 
     public static class PtMs {

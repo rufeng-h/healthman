@@ -37,7 +37,7 @@ public abstract class UserInfo implements Serializable {
     private Collection<String> authorities;
 
     public UserInfo(PtTeacher teacher, Set<String> authorities) {
-        this.authorities = authorities;
+        this.authorities = Collections.unmodifiableSet(authorities);
         this.userId = teacher.getTeaId();
         this.username = teacher.getTeaName();
         this.avatar = teacher.getAvatar();

@@ -1,5 +1,6 @@
 package com.rufeng.healthman.mapper;
 
+import com.github.pagehelper.Page;
 import com.rufeng.healthman.pojo.ptdo.PtOperation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -9,7 +10,7 @@ import java.util.List;
 
 /**
  * @author rufeng
- * @time 2022-05-03 2:38
+ * @time 2022-05-05 20:20
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -22,7 +23,7 @@ public interface PtOperationMapper {
      * @param operId primaryKey
      * @return deleteCount
      */
-    int deleteByPrimaryKey(String operId);
+    int deleteByPrimaryKey(Long operId);
 
     /**
      * insert record to table
@@ -50,7 +51,7 @@ public interface PtOperationMapper {
      * @param operId primary key
      * @return object by primary key
      */
-    PtOperation selectByPrimaryKey(String operId);
+    PtOperation selectByPrimaryKey(Long operId);
 
     /**
      * update record selective
@@ -74,9 +75,10 @@ public interface PtOperationMapper {
 
     int batchInsert(@Param("list") List<PtOperation> list);
 
-    int batchInsertSelective(List<PtOperation> list);
 
     List<PtOperation> list();
 
     List<PtOperation> listByIds(List<String> operIds);
+
+    Page<PtOperation> page();
 }

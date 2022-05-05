@@ -5,39 +5,42 @@
         <!--@mbg.generated-->
         <!--@Table pt_operation-->
         <id column="oper_id" property="operId"/>
+        <result column="oper_name" property="operName"/>
         <result column="oper_summary" property="operSummary"/>
         <result column="oper_desp" property="operDesp"/>
         <result column="created" property="created"/>
-        <result column="id" property="id"/>
+        <result column="pid" property="pid"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        oper_id, oper_summary, oper_desp, created, id
+        oper_id, oper_name, oper_summary, oper_desp, created, pid
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--@mbg.generated-->
         select
         <include refid="Base_Column_List"/>
         from pt_operation
         where oper_id = #{operId}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         <!--@mbg.generated-->
         delete
         from pt_operation
         where oper_id = #{operId}
     </delete>
-    <insert id="insert" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation">
+    <insert id="insert" keyColumn="oper_id" keyProperty="operId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation" useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_operation (oper_id, oper_summary, oper_desp, created, id)
-        values (#{operId}, #{operSummary}, #{operDesp}, #{created}, #{id})
+        insert into pt_operation (oper_name, oper_summary, oper_desp, created, pid)
+        values (#{operName}, #{operSummary}, #{operDesp}, #{created}, #{pid})
     </insert>
-    <insert id="insertSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation">
+    <insert id="insertSelective" keyColumn="oper_id" keyProperty="operId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_operation
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="operId != null">
-                oper_id,
+            <if test="operName != null">
+                oper_name,
             </if>
             <if test="operSummary != null">
                 oper_summary,
@@ -48,13 +51,13 @@
             <if test="created != null">
                 created,
             </if>
-            <if test="id != null">
-                id,
+            <if test="pid != null">
+                pid,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="operId != null">
-                #{operId},
+            <if test="operName != null">
+                #{operName},
             </if>
             <if test="operSummary != null">
                 #{operSummary},
@@ -65,8 +68,8 @@
             <if test="created != null">
                 #{created},
             </if>
-            <if test="id != null">
-                #{id},
+            <if test="pid != null">
+                #{pid},
             </if>
         </trim>
     </insert>
@@ -74,6 +77,9 @@
         <!--@mbg.generated-->
         update pt_operation
         <set>
+            <if test="operName != null">
+                oper_name = #{operName},
+            </if>
             <if test="operSummary != null">
                 oper_summary = #{operSummary},
             </if>
@@ -83,8 +89,8 @@
             <if test="created != null">
                 created = #{created},
             </if>
-            <if test="id != null">
-                id = #{id},
+            <if test="pid != null">
+                pid = #{pid},
             </if>
         </set>
         where oper_id = #{operId}
@@ -92,16 +98,22 @@
     <update id="updateByPrimaryKey" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation">
         <!--@mbg.generated-->
         update pt_operation
-        set oper_summary = #{operSummary},
+        set oper_name    = #{operName},
+            oper_summary = #{operSummary},
             oper_desp    = #{operDesp},
             created      = #{created},
-            id           = #{id}
+            pid          = #{pid}
         where oper_id = #{operId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
         <!--@mbg.generated-->
         update pt_operation
         <trim prefix="set" suffixOverrides=",">
+            <trim prefix="oper_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when oper_id = #{item.operId} then #{item.operName}
+                </foreach>
+            </trim>
             <trim prefix="oper_summary = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when oper_id = #{item.operId} then #{item.operSummary}
@@ -117,9 +129,9 @@
                     when oper_id = #{item.operId} then #{item.created}
                 </foreach>
             </trim>
-            <trim prefix="id = case" suffix="end,">
+            <trim prefix="pid = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    when oper_id = #{item.operId} then #{item.id}
+                    when oper_id = #{item.operId} then #{item.pid}
                 </foreach>
             </trim>
         </trim>
@@ -132,6 +144,13 @@
         <!--@mbg.generated-->
         update pt_operation
         <trim prefix="set" suffixOverrides=",">
+            <trim prefix="oper_name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.operName != null">
+                        when oper_id = #{item.operId} then #{item.operName}
+                    </if>
+                </foreach>
+            </trim>
             <trim prefix="oper_summary = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     <if test="item.operSummary != null">
@@ -153,10 +172,10 @@
                     </if>
                 </foreach>
             </trim>
-            <trim prefix="id = case" suffix="end,">
+            <trim prefix="pid = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
-                    <if test="item.id != null">
-                        when oper_id = #{item.operId} then #{item.id}
+                    <if test="item.pid != null">
+                        when oper_id = #{item.operId} then #{item.pid}
                     </if>
                 </foreach>
             </trim>
@@ -166,32 +185,62 @@
             #{item.operId}
         </foreach>
     </update>
-    <insert id="batchInsert" parameterType="map">
+    <insert id="batchInsert" keyColumn="oper_id" keyProperty="operId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_operation
-            (oper_id, oper_summary, oper_desp, created, id)
+            (oper_name, oper_summary, oper_desp, created, pid)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.operId}, #{item.operSummary}, #{item.operDesp}, #{item.created}, #{item.id})
+            (#{item.operName}, #{item.operSummary}, #{item.operDesp}, #{item.created}, #{item.pid})
         </foreach>
     </insert>
-    <insert id="insertOrUpdate" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation">
-        <!--@mbg.generated-->
-        insert into pt_operation
-            (oper_id, oper_summary, oper_desp, created, id)
-        values (#{operId}, #{operSummary}, #{operDesp}, #{created}, #{id})
-        on duplicate key update oper_id      = #{operId},
-                                oper_summary = #{operSummary},
-                                oper_desp    = #{operDesp},
-                                created      = #{created},
-                                id           = #{id}
-    </insert>
-    <insert id="insertOrUpdateSelective" parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation">
+    <insert id="insertOrUpdate" keyColumn="oper_id" keyProperty="operId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_operation
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="operId != null">
                 oper_id,
+            </if>
+            oper_name,
+            oper_summary,
+            oper_desp,
+            created,
+            pid,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="operId != null">
+                #{operId},
+            </if>
+            #{operName},
+            #{operSummary},
+            #{operDesp},
+            #{created},
+            #{pid},
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="operId != null">
+                oper_id = #{operId},
+            </if>
+            oper_name    = #{operName},
+            oper_summary = #{operSummary},
+            oper_desp    = #{operDesp},
+            created      = #{created},
+            pid          = #{pid},
+        </trim>
+    </insert>
+    <insert id="insertOrUpdateSelective" keyColumn="oper_id" keyProperty="operId"
+            parameterType="com.rufeng.healthman.pojo.ptdo.PtOperation" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into pt_operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="operId != null">
+                oper_id,
+            </if>
+            <if test="operName != null">
+                oper_name,
             </if>
             <if test="operSummary != null">
                 oper_summary,
@@ -202,14 +251,17 @@
             <if test="created != null">
                 created,
             </if>
-            <if test="id != null">
-                id,
+            <if test="pid != null">
+                pid,
             </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="operId != null">
                 #{operId},
+            </if>
+            <if test="operName != null">
+                #{operName},
             </if>
             <if test="operSummary != null">
                 #{operSummary},
@@ -220,14 +272,17 @@
             <if test="created != null">
                 #{created},
             </if>
-            <if test="id != null">
-                #{id},
+            <if test="pid != null">
+                #{pid},
             </if>
         </trim>
         on duplicate key update
         <trim suffixOverrides=",">
             <if test="operId != null">
                 oper_id = #{operId},
+            </if>
+            <if test="operName != null">
+                oper_name = #{operName},
             </if>
             <if test="operSummary != null">
                 oper_summary = #{operSummary},
@@ -238,33 +293,34 @@
             <if test="created != null">
                 created = #{created},
             </if>
-            <if test="id != null">
-                id = #{id},
+            <if test="pid != null">
+                pid = #{pid},
             </if>
         </trim>
-    </insert>
-
-    <insert id="batchInsertSelective">
-        INSERT INTO pt_operation (`oper_id`, `oper_summary`)
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-            (#{item.operId}, #{item.operSummary})
-        </foreach>
     </insert>
 
     <select id="list" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_operation
+        ORDER BY oper_id
     </select>
 
     <select id="listByIds" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM pt_operation
-        WHERE oper_id IN (
+        WHERE oper_name IN (
         <foreach collection="list" item="item" separator=",">
             #{item}
         </foreach>)
+    ORDER BY oper_id
+    </select>
+
+    <select id="page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_operation
+        ORDER BY oper_id
     </select>
 </mapper>

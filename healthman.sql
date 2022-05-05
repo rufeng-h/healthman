@@ -398,7 +398,7 @@ CREATE TABLE `pt_role_oper`  (
   INDEX `role_id`(`role_id`) USING BTREE,
   INDEX `oper_id`(`oper_id`) USING BTREE,
   CONSTRAINT `pt_role_oper_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `pt_role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `pt_role_oper_ibfk_2` FOREIGN KEY (`oper_id`) REFERENCES `pt_operation` (`oper_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `pt_role_oper_ibfk_2` FOREIGN KEY (`oper_id`) REFERENCES `pt_operation` (oper_name) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '角色资源' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

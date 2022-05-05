@@ -8,10 +8,12 @@
         <result column="role_name" property="roleName"/>
         <result column="role_created" property="roleCreated"/>
         <result column="role_modified" property="roleModified"/>
+        <result column="role_desp" property="roleDesp"/>
+        <result column="status" property="status"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        role_id, role_name, role_created, role_modified
+        role_id, role_name, role_created, role_modified, role_desp, `status`
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -29,8 +31,8 @@
     <insert id="insert" keyColumn="role_id" keyProperty="roleId" parameterType="com.rufeng.healthman.pojo.ptdo.PtRole"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into pt_role (role_name, role_created, role_modified)
-        values (#{roleName}, #{roleCreated}, #{roleModified})
+        insert into pt_role (role_name, role_created, role_modified, role_desp, `status`)
+        values (#{roleName}, #{roleCreated}, #{roleModified}, #{roleDesp}, #{status})
     </insert>
     <insert id="insertSelective" keyColumn="role_id" keyProperty="roleId"
             parameterType="com.rufeng.healthman.pojo.ptdo.PtRole" useGeneratedKeys="true">
@@ -46,6 +48,12 @@
             <if test="roleModified != null">
                 role_modified,
             </if>
+            <if test="roleDesp != null">
+                role_desp,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="roleName != null">
@@ -56,6 +64,12 @@
             </if>
             <if test="roleModified != null">
                 #{roleModified},
+            </if>
+            <if test="roleDesp != null">
+                #{roleDesp},
+            </if>
+            <if test="status != null">
+                #{status},
             </if>
         </trim>
     </insert>
@@ -72,6 +86,12 @@
             <if test="roleModified != null">
                 role_modified = #{roleModified},
             </if>
+            <if test="roleDesp != null">
+                role_desp = #{roleDesp},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
         </set>
         where role_id = #{roleId}
     </update>
@@ -80,7 +100,9 @@
         update pt_role
         set role_name     = #{roleName},
             role_created  = #{roleCreated},
-            role_modified = #{roleModified}
+            role_modified = #{roleModified},
+            role_desp     = #{roleDesp},
+            `status`      = #{status}
         where role_id = #{roleId}
     </update>
     <update id="updateBatch" parameterType="java.util.List">
@@ -100,6 +122,16 @@
             <trim prefix="role_modified = case" suffix="end,">
                 <foreach collection="list" index="index" item="item">
                     when role_id = #{item.roleId} then #{item.roleModified}
+                </foreach>
+            </trim>
+            <trim prefix="role_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when role_id = #{item.roleId} then #{item.roleDesp}
+                </foreach>
+            </trim>
+            <trim prefix="`status` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when role_id = #{item.roleId} then #{item.status}
                 </foreach>
             </trim>
         </trim>
@@ -133,6 +165,20 @@
                     </if>
                 </foreach>
             </trim>
+            <trim prefix="role_desp = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.roleDesp != null">
+                        when role_id = #{item.roleId} then #{item.roleDesp}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="`status` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.status != null">
+                        when role_id = #{item.roleId} then #{item.status}
+                    </if>
+                </foreach>
+            </trim>
         </trim>
         where role_id in
         <foreach close=")" collection="list" item="item" open="(" separator=", ">
@@ -142,10 +188,10 @@
     <insert id="batchInsert" keyColumn="role_id" keyProperty="roleId" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into pt_role
-            (role_name, role_created, role_modified)
+            (role_name, role_created, role_modified, role_desp, `status`)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.roleName}, #{item.roleCreated}, #{item.roleModified})
+            (#{item.roleName}, #{item.roleCreated}, #{item.roleModified}, #{item.roleDesp}, #{item.status})
         </foreach>
     </insert>
     <insert id="insertOrUpdate" keyColumn="role_id" keyProperty="roleId"
@@ -159,6 +205,8 @@
             role_name,
             role_created,
             role_modified,
+            role_desp,
+            `status`,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -168,6 +216,8 @@
             #{roleName},
             #{roleCreated},
             #{roleModified},
+            #{roleDesp},
+            #{status},
         </trim>
         on duplicate key update
         <trim suffixOverrides=",">
@@ -177,6 +227,8 @@
             role_name     = #{roleName},
             role_created  = #{roleCreated},
             role_modified = #{roleModified},
+            role_desp     = #{roleDesp},
+            `status`      = #{status},
         </trim>
     </insert>
     <insert id="insertOrUpdateSelective" keyColumn="role_id" keyProperty="roleId"
@@ -196,6 +248,12 @@
             <if test="roleModified != null">
                 role_modified,
             </if>
+            <if test="roleDesp != null">
+                role_desp,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -210,6 +268,12 @@
             </if>
             <if test="roleModified != null">
                 #{roleModified},
+            </if>
+            <if test="roleDesp != null">
+                #{roleDesp},
+            </if>
+            <if test="status != null">
+                #{status},
             </if>
         </trim>
         on duplicate key update
@@ -226,6 +290,12 @@
             <if test="roleModified != null">
                 role_modified = #{roleModified},
             </if>
+            <if test="roleDesp != null">
+                role_desp = #{roleDesp},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
         </trim>
     </insert>
 
@@ -234,15 +304,15 @@
         <include refid="Base_Column_List"/>
         FROM pt_role
         <where>
-            <foreach collection="list" item="item" separator="," open="role_id IN (" close=")">
+            <foreach close=")" collection="list" item="item" open="role_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
     </select>
 
-    <delete id="batchInsertSelective">
-    </delete>
-
-    <select id="listRole" resultMap="BaseResultMap">
+    <select id="page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_role
     </select>
 </mapper>

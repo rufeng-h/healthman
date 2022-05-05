@@ -1,5 +1,7 @@
 package com.rufeng.healthman.service;
 
+import com.github.pagehelper.PageHelper;
+import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.mapper.PtOperationMapper;
 import com.rufeng.healthman.pojo.ptdo.PtOperation;
 import org.springframework.stereotype.Service;
@@ -21,5 +23,10 @@ public class PtOperationService {
 
     public List<PtOperation> list() {
         return ptOperationMapper.list();
+    }
+
+    public ApiPage<PtOperation> page(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        return ApiPage.convert(ptOperationMapper.page());
     }
 }

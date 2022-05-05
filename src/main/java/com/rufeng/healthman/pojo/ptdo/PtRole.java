@@ -24,4 +24,9 @@ public class PtRole implements Serializable {
     private String roleName;
     private LocalDateTime roleCreated;
     private LocalDateTime roleModified;
+    private String roleDesp;
+    /**
+     * 状态
+     */
+    private Boolean status;
 }
