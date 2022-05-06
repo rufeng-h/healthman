@@ -17,7 +17,6 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
  * @author rufeng
  * @time 2022-04-10 13:10
  * @package com.rufeng.healthman.controller
- * @description TODO
  */
 @RequestMapping("/api/comp")
 @Validated

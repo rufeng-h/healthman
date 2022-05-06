@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 /**
@@ -22,7 +23,25 @@ public class PtRoleOper implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
     private Long roleId;
-    private String operId;
+    private Long operId;
     private LocalDateTime created;
     private LocalDateTime modified;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PtRoleOper)) {
+            return false;
+        }
+        PtRoleOper that = (PtRoleOper) o;
+        return Objects.equals(roleId, that.roleId) && Objects.equals(operId, that.operId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roleId, operId);
+    }
 }

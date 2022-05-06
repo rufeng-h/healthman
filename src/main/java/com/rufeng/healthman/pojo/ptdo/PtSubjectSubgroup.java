@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 
 /**
  * 科目与科目组关联
+ *
+ * @author rufeng
  */
 @Data
 @Builder

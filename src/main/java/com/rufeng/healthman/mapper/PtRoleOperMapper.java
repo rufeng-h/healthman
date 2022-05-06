@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @author rufeng
- * @time 2022-04-22 0:25
+ * @time 2022-05-06 10:08
  * @package com.rufeng.healthman.mapper
  * @description TODO
  */
@@ -77,6 +77,11 @@ public interface PtRoleOperMapper {
 
     List<String> listOperIdByRoleIds(List<Long> roleIds);
 
+    List<PtRoleOperation> listRoleOperationByRoleIds(List<Long> roleIds);
 
-    List<PtRoleOperation> listRoleOperByRoleIds(List<Long> roleIds);
+    int deleteByRoleId(Long roleId);
+
+    List<PtRoleOper> listByRoleId(Long roleId);
+
+    int deleteByIds(List<Long> ids);
 }

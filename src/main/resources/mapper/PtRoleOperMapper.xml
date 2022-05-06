@@ -268,18 +268,19 @@
         SELECT oper_id
         FROM pt_role_oper
         <where>
-            <foreach collection="list" separator="," open="role_id IN (" item="item" close=")">
+            <foreach close=")" collection="list" item="item" open="role_id IN (" separator=",">
                 #{item}
             </foreach>
         </where>
     </select>
 
     <resultMap id="PtRoleOperationMap" type="com.rufeng.healthman.pojo.m2m.PtRoleOperation">
-        <id property="roleId" column="role_id"/>
-        <collection property="operations" ofType="com.rufeng.healthman.pojo.ptdo.PtOperation">
+        <id column="role_id" property="roleId"/>
+        <collection autoMapping="true" ofType="com.rufeng.healthman.pojo.ptdo.PtOperation" property="operations">
+            <id column="oper_id" property="operId"/>
         </collection>
     </resultMap>
-    <select id="listRoleOperByRoleIds" resultMap="PtRoleOperationMap">
+    <select id="listRoleOperationByRoleIds" resultMap="PtRoleOperationMap">
         SELECT role_id,
                po.oper_id,
                po.oper_name,
@@ -290,8 +291,29 @@
         FROM pt_role_oper
                  LEFT JOIN pt_operation po on pt_role_oper.oper_id = po.oper_id
         WHERE role_id IN(
-        <foreach collection="list" separator="," item="item">
+        <foreach collection="list" item="item" separator=",">
             #{item}
         </foreach>)
     </select>
+
+    <delete id="deleteByRoleId">
+        DELETE
+        FROM pt_role_oper
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <select id="listByRoleId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pt_role_oper
+        WHERE role_id = #{roleId}
+    </select>
+
+    <delete id="deleteByIds">
+        DELETE
+        FROM pt_role_oper WHERE id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
+    </delete>
 </mapper>

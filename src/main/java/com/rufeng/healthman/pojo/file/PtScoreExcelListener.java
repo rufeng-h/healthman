@@ -48,6 +48,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
      * 列索引映射科目Id
      */
     private final Map<Integer, Long> colSubIdMap;
+    private final Map<Integer, String> headMap = new HashMap<>();
     private final long msId;
     private final Map<SubStudent, List<PtScoreSheet>> scoreSheetcache = new HashMap<>(10);
     private final Map<String, PtStudentBaseInfo> stuInfoMap;
@@ -77,6 +78,7 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
+        this.headMap.putAll(headMap);
         Set<Map.Entry<Integer, String>> entrySet = headMap.entrySet();
         for (Map.Entry<Integer, String> entry : entrySet) {
             int key = entry.getKey();
@@ -116,9 +118,9 @@ public class PtScoreExcelListener extends AnalysisEventListener<Map<Integer, Str
             SubStudent subStudent = new SubStudent(baseInfo, subId);
             /* 是否需要测试该科目 */
             if (!scoreSheetcache.containsKey(subStudent)) {
-                PtSubStudent s = ptSubStudentMapper.selectByPrimaryKey(subStudent.getSubId(), subStudent.getGrade(), subStudent.getGender().getGender());
+                PtSubStudent s = ptSubStudentMapper.selectByPrimaryKey(subStudent.getSubId(), subStudent.getGrade(), subStudent.getGender().name());
                 if (s == null) {
-                    throw new ExcelException("学号" + curStuId + "无需测试" + key + "科目");
+                    throw new ExcelException("学号" + curStuId + "无需测试" + headMap.get(key) + "科目");
                 }
                 /* 评分标准 */
                 List<PtScoreSheet> sheets = ptScoreSheetMapper.listScoreSheetBySubStudent(subStudent);

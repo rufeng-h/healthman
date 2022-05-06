@@ -118,10 +118,16 @@ public class Authority {
         DEFAULT_ADMIN_AUTHORITIES.add(PtOperation.OPERATION_LIST);
 
         DEFAULT_ADMIN_AUTHORITIES.add(PtRole.ROLE_PAGE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtRole.ROLE_INSERT);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtRole.ROLE_DELETE);
+        DEFAULT_ADMIN_AUTHORITIES.add(PtRole.ROLE_UPDATE);
     }
 
     public static class PtRole {
         public static final String ROLE_PAGE = "role:page";
+        public static final String ROLE_INSERT = "role:insert";
+        public static final String ROLE_DELETE = "role:delete";
+        public static final String ROLE_UPDATE = "role:update";
     }
 
     public static class PtSubGroup {
@@ -151,6 +157,7 @@ public class Authority {
         /* TODO */
         public static final String TEACHER_UPDATE = "teacher:update";
         public static final String TEACHER_GET = "teacher:get";
+        public static final String TEAHCER_AUTH = "teacher:auth";
     }
 
     public static class PtMs {
