@@ -28,15 +28,21 @@ import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.authentication.AuthenticationImpl;
 import com.rufeng.healthman.security.support.UserInfo;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -62,13 +68,7 @@ public class PtStudentService {
     private final PtCollegeMapper ptCollegeMapper;
     private final PtClassMapper ptClassMapper;
 
-    public PtStudentService(PtStudentMapper ptStudentMapper,
-                            RedisService redisService,
-                            FileService fileService,
-                            PtScoreMapper ptScoreMapper,
-                            PtMeasurementMapper ptMeasurementMapper,
-                            PtCollegeMapper ptCollegeMapper,
-                            PtClassMapper ptClassMapper) {
+    public PtStudentService(PtStudentMapper ptStudentMapper, RedisService redisService, FileService fileService, PtScoreMapper ptScoreMapper, PtMeasurementMapper ptMeasurementMapper, PtCollegeMapper ptCollegeMapper, PtClassMapper ptClassMapper) {
         this.ptStudentMapper = ptStudentMapper;
         this.redisService = redisService;
         this.ptCollegeMapper = ptCollegeMapper;
@@ -100,9 +100,7 @@ public class PtStudentService {
         redisService.setObject(UserInfo.userKey(UserTypeEnum.STUDENT, student.getStuId()), authentication);
 
         /* 更新登录时间 */
-        PtStudent stu = PtStudent.builder()
-                .stuId(student.getStuId())
-                .stuLastLogin(LocalDateTime.now()).build();
+        PtStudent stu = PtStudent.builder().stuId(student.getStuId()).stuLastLogin(LocalDateTime.now()).build();
         ptStudentMapper.updateByPrimaryKeySelective(stu);
 
         String token = JwtTokenUtils.generateToken(student.getStuId(), UserTypeEnum.STUDENT);
@@ -112,7 +110,7 @@ public class PtStudentService {
     public ApiPage<PtStudentPageInfo> pageStudentInfo(Integer page, Integer pageSize, PtStudentQuery query) {
         PageHelper.startPage(page, pageSize);
         Page<PtStudent> students = ptStudentMapper.pageStudent(query);
-        if (students.isEmpty()){
+        if (students.isEmpty()) {
             return ApiPage.empty(students);
         }
         /* 查班级名 */
@@ -225,11 +223,28 @@ public class PtStudentService {
     }
 
     public boolean resetPwd(String stuId) {
-        PtStudent ptStudent = PtStudent.builder()
-                .stuId(stuId)
-                .password(DigestUtils.md5DigestAsHex(DEFAULT_PWD.getBytes(StandardCharsets.UTF_8)))
-                .stuModified(LocalDateTime.now())
-                .build();
+        PtStudent ptStudent = PtStudent.builder().stuId(stuId).password(DigestUtils.md5DigestAsHex(DEFAULT_PWD.getBytes(StandardCharsets.UTF_8))).stuModified(LocalDateTime.now()).build();
         return ptStudentMapper.updateByPrimaryKeySelective(ptStudent) == 1;
+    }
+
+    public Resource export(String stuId) {
+        PtStudent student = ptStudentMapper.selectByPrimaryKey(stuId);
+        PtClass ptClass = ptClassMapper.selectByPrimaryKey(student.getClsCode());
+        Map<String, Object> map = new HashMap<>();
+        map.put("stuId", student.getStuId());
+        map.put("stuName", student.getStuName());
+        map.put("stuGender", student.getStuGender().getGender());
+        map.put("clsName", ptClass.getClsName());
+        map.put("stuBirth", student.getStuBirth());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            ClassPathResource resource = new ClassPathResource("pdf/Blank_A4.jasper");
+            InputStream inputStream = resource.getInputStream();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, map, new JREmptyDataSource());
+            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        } catch (IOException | JRException e) {
+            e.printStackTrace();
+        }
+        return new ByteArrayResource(outputStream.toByteArray());
     }
 }

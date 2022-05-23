@@ -40,7 +40,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     public AuthenticationFilter(AuthenticateFailHandler authenticateFailHandler, AccessDeniedHandler accessDeniedHandler) {
         this.authenticateFailHandler = authenticateFailHandler;
         this.accessDeniedHandler = accessDeniedHandler;
-        addUrlPatterns("/api/**", "/test/api/**");
+//        addUrlPatterns("/api/**", "/test/api/**");
     }
 
     @Override

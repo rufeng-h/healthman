@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="717c487a-984d-46a9-9a3c-a8c752fc7185">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<parameter name="stuId" class="java.lang.String">
+		<parameterDescription><![CDATA[学号]]></parameterDescription>
+	</parameter>
+	<parameter name="stuName" class="java.lang.String">
+		<parameterDescription><![CDATA[姓名]]></parameterDescription>
+	</parameter>
+	<parameter name="stuGender" class="java.lang.String"/>
+	<parameter name="stuBirth" class="java.lang.LocalDate"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<title>
+		<band height="73" splitType="Stretch">
+			<image hAlign="Center" vAlign="Middle" isLazy="true">
+				<reportElement x="140" y="16" width="50" height="40" uuid="6ea13841-53e9-4e08-9c7f-8cf07c79a4f9">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="190" y="17" width="170" height="38" uuid="de913292-9062-4873-bb69-f79a3438b7f4">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="微软雅黑" size="25" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[体质测试报告]]></text>
+			</staticText>
+			<textField pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="470" y="27" width="100" height="19" forecolor="#F7211E" backcolor="#6422D6" uuid="43168bbe-28a6-4363-87b0-0c3183dc5466"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="70" y="10" width="50" height="30" uuid="bb9c031b-c3e6-419c-a7af-db9ca874accd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+				</textElement>
+				<text><![CDATA[学号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="10" width="40" height="30" uuid="a505f369-3933-4205-b459-e329f87f4f81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<text><![CDATA[姓名]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="10" width="80" height="30" uuid="5bd5b9a7-5c1e-47e0-94e4-6783f0e900cc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{stuId}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="260" y="10" width="100" height="30" uuid="8059e4e8-b15a-4167-a65c-b56dc06fd012"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{stuName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="10" width="30" height="30" uuid="c3a2d0ee-aa7e-4664-aaf6-8df96b4ae747"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{stuGender}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="10" width="40" height="30" uuid="c259d3e1-e614-4c92-9272-4f2acf777163"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+				</textElement>
+				<text><![CDATA[性别]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="224" y="10" width="133" height="30" uuid="3889b5e5-fe9a-40ab-8001-464806ca48d6"/>
+				<textElement textAlignment="Center">
+					<font fontName="yahei" size="20"/>
+				</textElement>
+				<text><![CDATA[体质健康系统]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="240" y="50" width="100" height="30" uuid="8cb93998-0c26-4d63-abd0-7706c1ac06b1"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

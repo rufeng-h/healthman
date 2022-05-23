@@ -87,4 +87,12 @@ public class PtStudentController {
     public ApiResponse<Boolean> resetPwd(@PathVariable String stuId) {
         return ApiResponse.success(ptStudentService.resetPwd(stuId));
     }
+
+    @GetMapping("/export")
+    public ResponseEntity<Resource> export(@RequestParam String stuId) {
+        Resource resource = ptStudentService.export(stuId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode("测试.pdf", StandardCharsets.UTF_8) + "\"")
+                .body(resource);
+    }
 }

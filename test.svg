@@ -1,0 +1,38 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 600 400">
+<rect width="600" height="400" x="0" y="0" id="0" fill="none" fill-opacity="1"></rect>
+<path d="M60 330.5L540 330.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M60 262.5L540 262.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M60 195.5L540 195.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M60 127.5L540 127.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M60 60.5L540 60.5" fill="none" stroke="#E0E6F1"></path>
+<path d="M60 330.5L540 330.5" fill="none" stroke="#6E7079" stroke-linecap="round"></path>
+<path d="M60.5 330L60.5 335" fill="none" stroke="#6E7079"></path>
+<path d="M140.5 330L140.5 335" fill="none" stroke="#6E7079"></path>
+<path d="M220.5 330L220.5 335" fill="none" stroke="#6E7079"></path>
+<path d="M300.5 330L300.5 335" fill="none" stroke="#6E7079"></path>
+<path d="M380.5 330L380.5 335" fill="none" stroke="#6E7079"></path>
+<path d="M460.5 330L460.5 335" fill="none" stroke="#6E7079"></path>
+<path d="M540.5 330L540.5 335" fill="none" stroke="#6E7079"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Microsoft YaHei;" transform="translate(52 330)" fill="#6E7079">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Microsoft YaHei;" transform="translate(52 262.5)" fill="#6E7079">10</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Microsoft YaHei;" transform="translate(52 195)" fill="#6E7079">20</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Microsoft YaHei;" transform="translate(52 127.5)" fill="#6E7079">30</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Microsoft YaHei;" transform="translate(52 60)" fill="#6E7079">40</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Microsoft YaHei;" y="6" transform="translate(100 338)" fill="#6E7079">衬衫</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Microsoft YaHei;" y="6" transform="translate(180 338)" fill="#6E7079">羊毛衫</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Microsoft YaHei;" y="6" transform="translate(260 338)" fill="#6E7079">雪纺衫</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Microsoft YaHei;" y="6" transform="translate(340 338)" fill="#6E7079">裤子</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Microsoft YaHei;" y="6" transform="translate(420 338)" fill="#6E7079">高跟鞋</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Microsoft YaHei;" y="6" transform="translate(500 338)" fill="#6E7079">袜子</text>
+<path d="M72.4 330l55.2 0l0 -33.75l-55.2 0Z" fill="#5470c6"></path>
+<path d="M152.4 330l55.2 0l0 -135l-55.2 0Z" fill="#5470c6"></path>
+<path d="M232.4 330l55.2 0l0 -243l-55.2 0Z" fill="#5470c6"></path>
+<path d="M312.4 330l55.2 0l0 -67.5l-55.2 0Z" fill="#5470c6"></path>
+<path d="M392.4 330l55.2 0l0 -67.5l-55.2 0Z" fill="#5470c6"></path>
+<path d="M472.4 330l55.2 0l0 -135l-55.2 0Z" fill="#5470c6"></path>
+<path d="M-5 -5l64 0l0 24l-64 0Z" transform="translate(273 5)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
+<path d="M3.5 0L21.5 0A3.5 3.5 0 0 1 25 3.5L25 10.5A3.5 3.5 0 0 1 21.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(273 5)" fill="#5470c6"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:Microsoft YaHei;" x="30" y="7" transform="translate(273 5)" fill="#333">销量</text>
+<path d="M-5 -5l156.3115 0l0 28l-156.3115 0Z" transform="translate(5 5)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:18px;font-family:Microsoft YaHei;font-weight:bold;" xml:space="preserve" y="9" transform="translate(5 5)" fill="#464646">ECharts 入门示例</text>
+</svg>
