@@ -10,6 +10,7 @@
 	</parameter>
 	<parameter name="stuGender" class="java.lang.String"/>
 	<parameter name="stuBirth" class="java.lang.LocalDate"/>
+	<parameter name="clsName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -37,7 +38,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="70" splitType="Stretch">
+		<band height="92" splitType="Stretch">
 			<staticText>
 				<reportElement x="70" y="10" width="50" height="30" uuid="bb9c031b-c3e6-419c-a7af-db9ca874accd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -81,6 +82,20 @@
 				</textElement>
 				<text><![CDATA[性别]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="70" y="60" width="40" height="30" uuid="264c5aa4-e98f-4569-b908-6535a9076f04"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+				</textElement>
+				<text><![CDATA[班级]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="60" width="100" height="30" uuid="9de7c95b-6ebe-408a-afcc-92592f4a623a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clsName}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
