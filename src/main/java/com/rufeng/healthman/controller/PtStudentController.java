@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.PtStuMeasurementPageInfo;
@@ -70,12 +71,14 @@ public class PtStudentController {
                 .body(resource);
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtStudent.STUDENT_UPLOAD, summary = "学生上传")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadStudent(@RequestPart MultipartFile file, @RequestParam(required = false) String clsCode) {
         return ApiResponse.success(ptStudentService.uploadStudent(file, clsCode));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtStudent.STUDENT_DELETE, summary = "删除学生")
     @DeleteMapping("/{stuId}")
     public ApiResponse<Boolean> deleteStudent(@PathVariable String stuId) {
@@ -88,6 +91,7 @@ public class PtStudentController {
         return ApiResponse.success(ptStudentService.resetPwd(stuId));
     }
 
+    @OperLogRecord("体质报告导出")
     @GetMapping("/export")
     public ResponseEntity<Resource> export(@RequestParam String stuId) {
         Resource resource = ptStudentService.export(stuId);

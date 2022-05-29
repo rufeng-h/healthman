@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.dto.ptmeasurement.MeasurementScoreInfo;
@@ -66,12 +67,14 @@ public class PtScoreController {
         return ApiResponse.success(ptScoreService.pageStuScore(page, pageSize, query));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtScore.SCORE_UPLOAD, summary = "体测成绩上传")
     @PostMapping(value = "/upload/{msId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadScore(@RequestPart MultipartFile file, @PathVariable Long msId) {
         return ApiResponse.success(ptScoreService.uploadScore(file, msId));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtScore.SCORE_DOWNLOAD, summary = "测验成绩下载")
     @GetMapping("/download")
     public ResponseEntity<Resource> download(@Validated PtScoreQuery query) {

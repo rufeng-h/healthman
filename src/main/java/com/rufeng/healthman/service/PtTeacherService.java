@@ -3,11 +3,9 @@ package com.rufeng.healthman.service;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.util.JwtTokenUtils;
 import com.rufeng.healthman.common.util.StringUtils;
-import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.AuthenticationException;
 import com.rufeng.healthman.mapper.*;
@@ -150,7 +148,6 @@ public class PtTeacherService {
         return ptTeacherMapper.batchInsertSelective(list);
     }
 
-    @OperLogRecord(description = "导入教师数据", operType = OperTypeEnum.INSERT)
     public Integer uploadTeacher(MultipartFile file) {
         PtTeacherExcelListener listener = new PtTeacherExcelListener(this, ptCollegeMapper);
         try {

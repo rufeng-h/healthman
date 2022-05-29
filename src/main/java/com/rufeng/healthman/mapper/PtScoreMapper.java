@@ -127,4 +127,6 @@ public interface PtScoreMapper {
     int deleteByStuIds(List<String> stuIds);
 
     int deleteByStuId(String stuId);
+
+    long count();
 }

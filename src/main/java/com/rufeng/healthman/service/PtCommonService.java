@@ -2,10 +2,15 @@ package com.rufeng.healthman.service;
 
 import com.rufeng.healthman.enums.UserTypeEnum;
 import com.rufeng.healthman.exceptions.UnknownException;
+import com.rufeng.healthman.mapper.PtMeasurementMapper;
+import com.rufeng.healthman.mapper.PtScoreMapper;
+import com.rufeng.healthman.mapper.PtStudentMapper;
+import com.rufeng.healthman.mapper.PtTeacherMapper;
 import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
+import com.rufeng.healthman.pojo.dto.support.PtDashbordInfo;
 import com.rufeng.healthman.security.authentication.Authentication;
 import com.rufeng.healthman.security.context.SecurityContextHolder;
 import com.rufeng.healthman.security.support.UserInfo;
@@ -22,15 +27,23 @@ import org.springframework.util.Assert;
 @Service
 @Slf4j
 public class PtCommonService {
+    private final PtStudentMapper ptStudentMapper;
+    private final PtTeacherMapper ptTeacherMapper;
+    private final PtScoreMapper ptScoreMapper;
+    private final PtMeasurementMapper ptMeasurementMapper;
     private final RedisService redisService;
     private final PtAdminService ptAdminService;
     private final PtTeacherService ptTeacherService;
     private final PtStudentService ptStudentService;
 
-    public PtCommonService(RedisService redisService,
+    public PtCommonService(PtStudentMapper ptStudentMapper, PtTeacherMapper ptTeacherMapper, PtScoreMapper ptScoreMapper, PtMeasurementMapper ptMeasurementMapper, RedisService redisService,
                            PtAdminService ptAdminService,
                            PtTeacherService ptTeacherService,
                            PtStudentService ptStudentService) {
+        this.ptStudentMapper = ptStudentMapper;
+        this.ptTeacherMapper = ptTeacherMapper;
+        this.ptScoreMapper = ptScoreMapper;
+        this.ptMeasurementMapper = ptMeasurementMapper;
         this.redisService = redisService;
         this.ptAdminService = ptAdminService;
         this.ptTeacherService = ptTeacherService;
@@ -113,4 +126,11 @@ public class PtCommonService {
         return null;
     }
 
+    public PtDashbordInfo dashbord() {
+        long scoreCnt = ptScoreMapper.count();
+        long msCnt = ptMeasurementMapper.count();
+        long stuCnt = ptStudentMapper.count();
+        long teaCnt = ptTeacherMapper.count();
+        return new PtDashbordInfo(stuCnt, teaCnt, scoreCnt, msCnt);
+    }
 }

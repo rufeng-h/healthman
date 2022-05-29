@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtClassFormdata;
@@ -61,6 +62,7 @@ public class PtClassController {
         return ApiResponse.success(ptClassService.listClass(query));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtClass.CLASS_UPLOAD, summary = "上传班级")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadClass(@RequestPart MultipartFile file,
@@ -86,13 +88,14 @@ public class PtClassController {
         return ApiResponse.success(ptClassService.getPtClass(clsCode));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtClass.CLASS_DELETE, summary = "删除班级")
     @DeleteMapping("/{clsCode}")
     public ApiResponse<Boolean> deletePtClass(@PathVariable String clsCode) {
         return ApiResponse.success(ptClassService.deletePtClass(clsCode));
     }
 
-
+    @OperLogRecord
     @Operation(operationId = Authority.PtClass.CLASS_UPDATE, summary = "更新班级信息")
     @PutMapping
     public ApiResponse<Boolean> updatePtClass(@RequestBody @Validated PtClassFormdata classFormdata) {

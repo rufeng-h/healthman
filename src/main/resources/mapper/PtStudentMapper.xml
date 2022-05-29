@@ -557,4 +557,8 @@
         FROM pt_student
         WHERE cls_code = #{clsCode}
     </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(0) FROM pt_student
+    </select>
 </mapper>

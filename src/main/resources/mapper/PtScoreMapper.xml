@@ -520,4 +520,9 @@
         FROM pt_score
         WHERE stu_id = #{stuId}
     </delete>
+
+    <select id="count" resultType="java.lang.Long">
+        SELECT COUNT(0)
+        FROM pt_score
+    </select>
 </mapper>

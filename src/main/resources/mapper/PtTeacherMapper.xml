@@ -667,4 +667,9 @@
         SELECT tea_id, tea_name, clg_code
         FROM pt_teacher
     </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(0)
+        FROM pt_teacher
+    </select>
 </mapper>

@@ -69,7 +69,6 @@ public class PtMeasurementService {
         this.ptTeacherMapper = ptTeacherMapper;
     }
 
-    @OperLogRecord(description = "新建体测", operType = OperTypeEnum.INSERT)
     @Transactional(rollbackFor = Exception.class)
     public PtMeasurement addMesurement(PtMeasurementFormdata formdata) {
         String teacherId = ptCommonService.getCurrentTeacherId();

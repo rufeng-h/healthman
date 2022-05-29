@@ -62,7 +62,6 @@ public class PtScoreService {
     }
 
 
-    @OperLogRecord(description = "上传体测成绩", operType = OperTypeEnum.INSERT)
     public Integer uploadScore(MultipartFile file, Long msId) {
         PtScoreExcelListener listener = new PtScoreExcelListener(ptSubjectMapper, this,
                 ptStudentMapper, ptSubStudentMapper, ptScoreSheetMapper, msId);

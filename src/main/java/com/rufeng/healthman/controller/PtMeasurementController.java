@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtMeasurementFormdata;
@@ -48,6 +49,7 @@ public class PtMeasurementController {
         this.ptMeasurementService = ptMeasurementService;
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtMs.MS_INSERT, summary = "新建体测")
     @PostMapping
     public ApiResponse<PtMeasurement> addMesurement(
@@ -64,12 +66,14 @@ public class PtMeasurementController {
         return ApiResponse.success(ptMeasurementService.pageMeasurementInfo(page, pageSize, query));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtMs.MS_DELETE, summary = "删除体测")
     @DeleteMapping("/{msId}")
     public ApiResponse<Boolean> deleteMeasurement(@PathVariable Long msId) {
         return ApiResponse.success(ptMeasurementService.deleteById(msId));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtMs.MS_UPDATE, summary = "修改体测信息")
     @PutMapping
     public ApiResponse<Boolean> updateMeasurement(

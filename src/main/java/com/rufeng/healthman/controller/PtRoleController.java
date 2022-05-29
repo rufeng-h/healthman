@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtRoleFormdata;
@@ -45,21 +46,24 @@ public class PtRoleController {
         return ApiResponse.success(ptRoleService.page(page, pageSize));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtRole.ROLE_INSERT, summary = "添加角色")
     @PostMapping
     public ApiResponse<Boolean> addRole(@Validated(Insert.class) @RequestBody PtRoleFormdata formdata) {
         return ApiResponse.success(ptRoleService.addRole(formdata));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtRole.ROLE_UPDATE, summary = "更新角色")
     @PutMapping
     public ApiResponse<Boolean> updateRole(@Validated(Update.class) @RequestBody PtRoleFormdata formdata) {
         return ApiResponse.success(ptRoleService.updateRole(formdata));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtRole.ROLE_DELETE, summary = "删除角色")
     @DeleteMapping("/{roleId}")
-    public ApiResponse<Boolean> updateRole(@PathVariable Long roleId) {
+    public ApiResponse<Boolean> deleteRole(@PathVariable Long roleId) {
         return ApiResponse.success(ptRoleService.deleteRole(roleId));
     }
 }

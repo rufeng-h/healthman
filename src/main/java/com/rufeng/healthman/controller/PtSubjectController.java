@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtSubjectFormdata;
@@ -40,6 +41,7 @@ public class PtSubjectController {
         this.ptSubjectService = ptSubjectService;
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtSubject.SUBJECT_INSERT, summary = "新增科目")
     @PostMapping
     public ApiResponse<Boolean> addSubject(@RequestBody @Validated(Insert.class) PtSubjectFormdata data) {
@@ -54,12 +56,14 @@ public class PtSubjectController {
         return ApiResponse.success(ptSubjectService.pageSubjectInfo(page, pageSize, query));
     }
 
+    @OperLogRecord
     @PutMapping
     @Operation(operationId = Authority.PtSubject.SUBJECT_UPDATE, summary = "更新科目")
     public ApiResponse<Boolean> updateSubject(@RequestBody @Validated(Update.class) PtSubjectFormdata data) {
         return ApiResponse.success(ptSubjectService.updateSubject(data));
     }
 
+    @OperLogRecord
     @DeleteMapping("/{subId}")
     @Operation(operationId = Authority.PtSubject.SUBJECT_DELETE, summary = "删除科目")
     public ApiResponse<Boolean> deleteSubject(@PathVariable Long subId) {

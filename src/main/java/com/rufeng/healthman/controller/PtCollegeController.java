@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtCollegeFomrdata;
@@ -58,13 +59,13 @@ public class PtCollegeController {
         return ApiResponse.success(ptCollegeService.listCollege());
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtCollege.COLLEGE_UPLOAD, summary = "学院上传")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadCollege(@RequestPart MultipartFile file) {
         Integer count = ptCollegeService.uploadCollege(file);
         return ApiResponse.success(count);
     }
-
     @Operation(operationId = Authority.PtCollege.COLLEGE_GET, summary = "学院")
     @GetMapping("{clgCode}")
     public ApiResponse<PtCollege> getCollege(@PathVariable String clgCode) {
@@ -80,12 +81,14 @@ public class PtCollegeController {
                 .body(resource);
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtCollege.COLLEGE_DELETE, summary = "删除学院")
     @DeleteMapping("/{clgCode}")
     public ApiResponse<Boolean> deleteCollege(@PathVariable String clgCode) {
         return ApiResponse.success(ptCollegeService.deleteCollege(clgCode));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtCollege.COLLEGE_UPDATE, summary = "更新学院信息")
     @PutMapping
     public ApiResponse<Boolean> updateCollege(@RequestBody @Validated PtCollegeFomrdata collegeFomrdata) {

@@ -1,7 +1,5 @@
 package com.rufeng.healthman.common.aop;
 
-import com.rufeng.healthman.enums.OperTypeEnum;
-
 import java.lang.annotation.*;
 
 /**
@@ -14,7 +12,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface OperLogRecord {
-    String description();
-
-    OperTypeEnum operType();
+    String value() default "";
 }

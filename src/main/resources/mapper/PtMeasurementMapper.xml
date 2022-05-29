@@ -378,15 +378,14 @@
         </where>
         ),
 #      测验中学生需要测验的科目
-stusubs AS (
-    SELECT stu_id, stus.ms_id, subs.sub_id
-    FROM subs
-             INNER JOIN stus
-                        ON stus.ms_id = subs.ms_id
-             INNER JOIN pt_sub_student pss
-                        ON pss.grade = stus.grade AND
-                           stu_gender = pss.gender AND
-                           subs.sub_id = pss.sub_id)
+stusubs AS (SELECT stu_id, stus.ms_id, subs.sub_id
+            FROM subs
+                     INNER JOIN stus
+                                ON stus.ms_id = subs.ms_id
+                     INNER JOIN pt_sub_student pss
+                                ON pss.grade = stus.grade AND
+                                   stu_gender = pss.gender AND
+                                   subs.sub_id = pss.sub_id)
         select t1.ms_id, count(t1.stu_id)
         from (select stu_id, ms_id, count(sub_id) as cnt
               from stusubs
@@ -418,14 +417,13 @@ stusubs AS (
                                LEFT JOIN pt_subgroup ps on pt_subject_subgroup.grp_id = ps.grp_id
                       WHERE pt_measurement.ms_id = #{msId}),
 #      测验中学生需要测验的科目
-             stusubs AS (
-                 SELECT stu_id, subs.sub_id
-                 FROM subs
-                          JOIN stus
-                          INNER JOIN pt_sub_student pss
-                                     ON pss.grade = stus.grade AND
-                                        stu_gender = pss.gender AND
-                                        subs.sub_id = pss.sub_id)
+             stusubs AS (SELECT stu_id, subs.sub_id
+                         FROM subs
+                                  JOIN stus
+                                  INNER JOIN pt_sub_student pss
+                                             ON pss.grade = stus.grade AND
+                                                stu_gender = pss.gender AND
+                                                subs.sub_id = pss.sub_id)
         select count(t1.stu_id)
         from (select stu_id, count(sub_id) as cnt
               from stusubs
@@ -481,15 +479,14 @@ stusubs AS (
     </select>
 
     <select id="countStuByMsId" resultType="int">
-        WITH stus AS (
-            SELECT ms_id,
-                   stu_id,
-                   stu_gender                                                 AS gender,
-                   YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
-            FROM pt_class_measurement
-                     INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code
-                     INNER JOIN pt_student ps on pc.cls_code = ps.cls_code
-            WHERE ms_id = #{msId}),
+        WITH stus AS (SELECT ms_id,
+                             stu_id,
+                             stu_gender                                                 AS gender,
+                             YEAR(cms_created) - pc.cls_entry_year + pc.cls_entry_grade AS grade
+                      FROM pt_class_measurement
+                               INNER JOIN pt_class pc on pt_class_measurement.cls_code = pc.cls_code
+                               INNER JOIN pt_student ps on pc.cls_code = ps.cls_code
+                      WHERE ms_id = #{msId}),
              #      测验科目信息
              subs AS (SELECT sub_id
                       from pt_subject_subgroup
@@ -627,5 +624,10 @@ stusubs AS (
         SELECT pt_measurement.ms_id, ms_name, ms_desp, ms_created, ms_modified, grp_id, ms_created_admin
         FROM ms_ids
                  INNER JOIN pt_measurement ON ms_ids.ms_id = pt_measurement.ms_id
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(0)
+        FROM pt_measurement
     </select>
 </mapper>

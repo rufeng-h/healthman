@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.dto.ptteacher.PtTeacherListInfo;
@@ -39,7 +40,7 @@ import static com.rufeng.healthman.config.OpenApiConfig.JWT_SCHEME_NAME;
 @Tag(name = "Admin Api", description = "教师操作")
 @ApiAuthority
 public class PtTeacherController {
-    private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("管理员模板文件.xlsx", StandardCharsets.UTF_8);
+    private static final String TEMPLATE_FILE_NAME = URLEncoder.encode("教师模板文件.xlsx", StandardCharsets.UTF_8);
     private final PtTeacherService ptTeacherService;
 
     public PtTeacherController(PtTeacherService ptTeacherService) {
@@ -61,6 +62,7 @@ public class PtTeacherController {
         return ApiResponse.success(ptTeacherService.resetPwd(teaId));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtTeacher.TEACHER_UPLOAD, summary = "上传教师数据")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadTeacher(@RequestPart MultipartFile file) {
@@ -70,6 +72,7 @@ public class PtTeacherController {
     /**
      * TODO 增加查询条件
      */
+    @OperLogRecord
     @Operation(operationId = Authority.PtTeacher.TEACHER_LIST, summary = "所有教师")
     @GetMapping("/list")
     public ApiResponse<List<PtTeacherListInfo>> listTeacherListInfo() {
@@ -86,6 +89,7 @@ public class PtTeacherController {
                 .body(resource);
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtTeacher.TEAHCER_DELETE, summary = "删除教师")
     @DeleteMapping("/{teaId}")
     public ApiResponse<Boolean> deleteTeacher(@PathVariable String teaId) {

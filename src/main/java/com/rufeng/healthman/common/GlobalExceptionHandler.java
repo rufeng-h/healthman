@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
         if (e instanceof DuplicateKeyException) {
             messge = "系统存在重复记录！";
         } else if (e instanceof DataIntegrityViolationException) {
-            messge = "该资源正在使用中！";
+            messge = "资源正在被使用，无法进行此操作！";
         }
         return ApiResponse.clientError(messge);
     }

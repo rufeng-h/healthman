@@ -107,4 +107,6 @@ public interface PtMeasurementMapper {
     Map<Long, Boolean> listStuMsStatus(String stuId);
 
     Page<PtMeasurement> pageStuMs(String stuId);
+
+    long count();
 }

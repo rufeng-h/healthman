@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtScoreSheetFormdata;
@@ -49,13 +50,14 @@ public class PtScoreSheetController {
             @Validated PtScoreSheetQuery query) {
         return ApiResponse.success(ptScoreSheetService.pageScoreSheet(page, pageSize, query));
     }
-
+    @OperLogRecord
     @Operation(operationId = Authority.PtScoreSheet.SCOS_UPLOAD, summary = "上传评分标准")
     @PostMapping(value = "/upload/{subId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Integer> uploadScoreSheet(@RequestPart MultipartFile file, @PathVariable Long subId) {
         return ApiResponse.success(ptScoreSheetService.uploadScoreSheet(subId, file));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtScoreSheet.SCOS_UPDATE, summary = "修改评分标准")
     @PutMapping
     public ApiResponse<Boolean> updateScoreSheet(
@@ -75,6 +77,7 @@ public class PtScoreSheetController {
         return ApiResponse.success(ptScoreSheetService.updateScoreSheet(data));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtScoreSheet.SCOS_DELETE, summary = "删除评分标准")
     @DeleteMapping("/{id}")
     public ApiResponse<Boolean> deleteScoreSheet(@PathVariable Long id) {

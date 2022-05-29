@@ -1,10 +1,13 @@
 package com.rufeng.healthman.common.aop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rufeng.healthman.common.util.StringUtils;
+import com.rufeng.healthman.enums.OperTypeEnum;
 import com.rufeng.healthman.pojo.ptdo.PtOperLog;
 import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.service.PtCommonService;
 import com.rufeng.healthman.service.PtOperLogService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -31,9 +34,7 @@ public class OperationAop {
     private final ObjectMapper objectMapper;
     private final PtCommonService ptCommonService;
 
-    public OperationAop(PtOperLogService ptOperLogService,
-                        ObjectMapper objectMapper,
-                        PtCommonService ptCommonService) {
+    public OperationAop(PtOperLogService ptOperLogService, ObjectMapper objectMapper, PtCommonService ptCommonService) {
         this.ptOperLogService = ptOperLogService;
         this.objectMapper = objectMapper;
         this.ptCommonService = ptCommonService;
@@ -46,18 +47,23 @@ public class OperationAop {
             UserInfo userInfo = ptCommonService.getUserInfo();
             MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
             Method method = methodSignature.getMethod();
-            OperLogRecord operation = method.getAnnotation(OperLogRecord.class);
-            if (operation != null) {
+            OperLogRecord logRecord = method.getAnnotation(OperLogRecord.class);
+            if (logRecord != null) {
+                Operation operation = method.getAnnotation(Operation.class);
                 operLog = new PtOperLog();
                 operLog.setOperMethod(method.getName());
                 operLog.setOperUserId(userInfo.getUserId());
                 operLog.setOperUserName(userInfo.getUsername());
                 operLog.setOperUserType(userInfo.getUserType());
-                operLog.setOperDesc(operation.description());
-                operLog.setOperType(operation.operType());
+                if (!StringUtils.isEmptyOrBlank(logRecord.value())) {
+                    operLog.setOperDesc(logRecord.value());
+                } else if (operation != null) {
+                    operLog.setOperDesc(operation.summary());
+                }
                 ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
                 if (requestAttributes != null) {
                     HttpServletRequest request = requestAttributes.getRequest();
+                    operLog.setOperType(httpMethod2OperTypeEnum(request.getMethod()));
                     operLog.setOperUri(request.getRequestURI());
                     operLog.setOperIp(request.getRemoteAddr());
                     operLog.setOperReqParam(objectMapper.writeValueAsString(request.getParameterMap()));
@@ -77,6 +83,20 @@ public class OperationAop {
             if (operLog != null) {
                 ptOperLogService.addLog(operLog);
             }
+        }
+    }
+
+    private OperTypeEnum httpMethod2OperTypeEnum(String method) {
+        String m = method.toUpperCase();
+        switch (m) {
+            case "PUT":
+                return OperTypeEnum.UPDATE;
+            case "DELETE":
+                return OperTypeEnum.DELETE;
+            case "POST":
+                return OperTypeEnum.INSERT;
+            default:
+                return OperTypeEnum.OTHER;
         }
     }
 }

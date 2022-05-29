@@ -112,4 +112,6 @@ public interface PtTeacherMapper {
     PtTeacher selectPrincipal(String clgCode);
 
     List<PtTeacherClgIdentity> listClgIdentity();
+
+    long count();
 }

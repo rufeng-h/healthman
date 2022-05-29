@@ -56,7 +56,6 @@ public class PtSubgroupService {
         return ptSubgroupMapper.listSubGroup(ptCommonService.getCurrentTeacherId());
     }
 
-    @OperLogRecord(description = "添加科目组", operType = OperTypeEnum.INSERT)
     @Transactional(rollbackFor = Exception.class)
     public PtSubgroup addSubGroup(PtSubGroupFormdata formdata) {
         List<Long> subIds = formdata.getSubIds();
@@ -121,7 +120,6 @@ public class PtSubgroupService {
         return groupInfos;
     }
 
-    @OperLogRecord(description = "删除科目组", operType = OperTypeEnum.DELETE)
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteGrp(Long grpId) {
         ptSubjectSubgroupMapper.deleteByGrpId(grpId);
@@ -131,7 +129,6 @@ public class PtSubgroupService {
     /**
      * 应该主键删除 TODO
      */
-    @OperLogRecord(description = "从科目组删除科目", operType = OperTypeEnum.DELETE)
     public boolean deleteSub(Long grpId, Long subId) {
         return ptSubjectSubgroupMapper.deleteByGrpIdAndSubId(grpId, subId) == 1;
     }

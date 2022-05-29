@@ -5,6 +5,7 @@ import com.rufeng.healthman.pojo.data.PtLoginFormdata;
 import com.rufeng.healthman.pojo.data.PtPwdUpdateFormdata;
 import com.rufeng.healthman.pojo.data.PtUserFormdata;
 import com.rufeng.healthman.pojo.dto.support.LoginResult;
+import com.rufeng.healthman.pojo.dto.support.PtDashbordInfo;
 import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.service.FileService;
 import com.rufeng.healthman.service.PtCommonService;
@@ -76,5 +77,10 @@ public class PtCommonController {
     @Operation(description = "更新用户信息")
     public ApiResponse<Boolean> updateUser(@RequestBody @Validated PtUserFormdata formdata) {
         return ApiResponse.success(ptCommonService.updateUser(formdata));
+    }
+
+    @GetMapping("/api/dashbord")
+    public ApiResponse<PtDashbordInfo> dashbord() {
+        return ApiResponse.success(ptCommonService.dashbord());
     }
 }

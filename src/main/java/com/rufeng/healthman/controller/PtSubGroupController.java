@@ -1,5 +1,6 @@
 package com.rufeng.healthman.controller;
 
+import com.rufeng.healthman.common.aop.OperLogRecord;
 import com.rufeng.healthman.common.api.ApiPage;
 import com.rufeng.healthman.common.api.ApiResponse;
 import com.rufeng.healthman.pojo.data.PtSubGroupFormdata;
@@ -47,6 +48,7 @@ public class PtSubGroupController {
         return ApiResponse.success(ptSubgroupService.listSubGroup());
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtSubGroup.SUBGRP_INSERT, summary = "新增科目组")
     @PostMapping
     public ApiResponse<PtSubgroup> addSubGroup(@Validated @RequestBody PtSubGroupFormdata formdata) {
@@ -55,24 +57,25 @@ public class PtSubGroupController {
 
     @Operation(operationId = Authority.PtSubGroup.SUBGRP_PAGE, summary = "科目组列表")
     @GetMapping
-    public ApiResponse<ApiPage<SubGroupInfo>> pageSubGroupInfo(@RequestParam(defaultValue = "1") @Min(1) Integer page,
-                                                               @RequestParam(defaultValue = "3") @Min(1) @Max(100) Integer pageSize,
-                                                               @Validated PtSubgroupQuery query) {
+    public ApiResponse<ApiPage<SubGroupInfo>> pageSubGroupInfo(@RequestParam(defaultValue = "1") @Min(1) Integer page, @RequestParam(defaultValue = "3") @Min(1) @Max(100) Integer pageSize, @Validated PtSubgroupQuery query) {
         return ApiResponse.success(ptSubgroupService.pageSubGroupInfo(page, pageSize, query));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtSubGroup.SUBGRP_DELETE, summary = "删除科目组")
     @DeleteMapping("/{grpId}")
     public ApiResponse<Boolean> deleteSubGrp(@PathVariable Long grpId) {
         return ApiResponse.success(ptSubgroupService.deleteGrp(grpId));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtSubGroup.SUB_DELETE, summary = "从科目组删除科目")
     @DeleteMapping("/{grpId}/{subId}")
     public ApiResponse<Boolean> deleteSub(@PathVariable Long grpId, @PathVariable Long subId) {
         return ApiResponse.success(ptSubgroupService.deleteSub(grpId, subId));
     }
 
+    @OperLogRecord
     @Operation(operationId = Authority.PtSubGroup.SUBGRP_SHARE, summary = "分享科目组")
     @PostMapping("/share")
     public ApiResponse<Boolean> shareSubGrp(@RequestBody @Validated PtSubGrpShareFormdata formdata) {

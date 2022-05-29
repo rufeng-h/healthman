@@ -97,4 +97,6 @@ public interface PtStudentMapper {
     int deleteByClsCode(String clsCode);
 
     List<PtStudent> listByClsCode(String clsCode);
+
+    long count();
 }
