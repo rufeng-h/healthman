@@ -8,17 +8,28 @@ import com.rufeng.healthman.security.support.UserInfo;
 import com.rufeng.healthman.service.PtCommonService;
 import com.rufeng.healthman.service.PtOperLogService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.common.TemplateParserContext;
+import org.springframework.expression.spel.SpelParserConfiguration;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.SimpleEvaluationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author rufeng
@@ -29,6 +40,7 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 @Order(1)
+@Slf4j
 public class OperationAop {
     private final PtOperLogService ptOperLogService;
     private final ObjectMapper objectMapper;
@@ -68,6 +80,16 @@ public class OperationAop {
                     operLog.setOperIp(request.getRemoteAddr());
                     operLog.setOperReqParam(objectMapper.writeValueAsString(request.getParameterMap()));
                 }
+
+                if (!StringUtils.isEmptyOrBlank(logRecord.spel())) {
+                    SpelExpressionParser parser = new SpelExpressionParser();
+                    EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+                    for (Map.Entry<String, Object> entry : resolveParams(method, pjp).entrySet()) {
+                        context.setVariable(entry.getKey(), entry.getValue());
+                    }
+
+                    log.info(parser.parseExpression(logRecord.spel()).getValue(context,String.class));
+                }
             }
         }
         try {
@@ -84,6 +106,16 @@ public class OperationAop {
                 ptOperLogService.addLog(operLog);
             }
         }
+    }
+
+    private Map<String, Object> resolveParams(Method method, ProceedingJoinPoint pjp) {
+        Parameter[] parameters = method.getParameters();
+        Map<String, Object> map = new HashMap<>();
+        Object[] args = pjp.getArgs();
+        for (int i = 0; i < parameters.length; i++){
+            map.put(parameters[i].getName(), args[i]);
+        }
+        return map;
     }
 
     private OperTypeEnum httpMethod2OperTypeEnum(String method) {

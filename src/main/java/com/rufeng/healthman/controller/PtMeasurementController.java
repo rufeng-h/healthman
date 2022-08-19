@@ -49,7 +49,7 @@ public class PtMeasurementController {
         this.ptMeasurementService = ptMeasurementService;
     }
 
-    @OperLogRecord
+    @OperLogRecord(spel = "新建体测为：{#formdata.msId} {#formdata.msName}")
     @Operation(operationId = Authority.PtMs.MS_INSERT, summary = "新建体测")
     @PostMapping
     public ApiResponse<PtMeasurement> addMesurement(
@@ -73,7 +73,7 @@ public class PtMeasurementController {
         return ApiResponse.success(ptMeasurementService.deleteById(msId));
     }
 
-    @OperLogRecord
+    @OperLogRecord(spel = "'体测编号：' + #formdata.msId + ' ' + #formdata.msName")
     @Operation(operationId = Authority.PtMs.MS_UPDATE, summary = "修改体测信息")
     @PutMapping
     public ApiResponse<Boolean> updateMeasurement(
