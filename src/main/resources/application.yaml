@@ -3,7 +3,7 @@ server:
 spring:
   jackson:
     default-property-inclusion: non_null
-    date-format: yyyy-MM-dd HH:mm:SS
+    date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   servlet:
     multipart:
